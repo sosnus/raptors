@@ -1,15 +1,13 @@
 package pl.raptors.raptorsRobotsApp.domain.movement;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.raptors.raptorsRobotsApp.domain.enums.ParkingType;
 import pl.raptors.raptorsRobotsApp.domain.enums.StandStatus;
 import pl.raptors.raptorsRobotsApp.domain.enums.StandType;
 
-@Getter
-@Setter
+@Data
 @Document(collection = "stands")
 public class Stand {
 
@@ -23,7 +21,6 @@ public class Stand {
     private Double yQuaternionCoordinate;
     private Double zQuaternionCoordinate;
     private Double wQuaternionCoordinate;
-    private StandStatus status;
     private ParkingType parkingType;
     private StandType standType;
 
@@ -37,7 +34,6 @@ public class Stand {
         this.yQuaternionCoordinate = yQuaternionCoordinate;
         this.zQuaternionCoordinate = zQuaternionCoordinate;
         this.wQuaternionCoordinate = wQuaternionCoordinate;
-        this.status = status;
         this.parkingType = parkingType;
         this.standType = standType;
     }

@@ -18,9 +18,9 @@ public class RobotReview {
     private String id;
     private Robot robot;
 //    private Date plannedDate;
-    private String plannedDate; // na potrzeby przykładowych danych zmieniłem na string
+    private String plannedDate; // na potrzeby przykładowych danych zmieniłem na string todo
 //    private Date realizationDate;
-    private String realizationDate; // na potrzeby przykładowych danych zmieniłem na string
+    private String realizationDate; // na potrzeby przykładowych danych zmieniłem na string todo
     private ReviewType reviewType;
 
     public RobotReview(Robot robot, String plannedDate, String realizationDate, ReviewType reviewType)

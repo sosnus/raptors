@@ -5,19 +5,18 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document(collection = "corridor_points")
-public class CorridorPoint {
+@Document(collection = "movement_path_points")
+public class MovementPathPoint {
 
     @Id
     private String id;
-    private Corridor corridor;
+    private MovementPath path;
     private Integer polygonVertexNumber;
     private Double xCoordinate;
     private Double yCoordinate;
 
-    public CorridorPoint(Corridor corridor, Integer polygonVertexNumber, Double xCoordinate, Double yCoordinate)
-    {
-        this.corridor = corridor;
+    public MovementPathPoint(MovementPath path, Integer polygonVertexNumber, Double xCoordinate, Double yCoordinate) {
+        this.path = path;
         this.polygonVertexNumber = polygonVertexNumber;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;

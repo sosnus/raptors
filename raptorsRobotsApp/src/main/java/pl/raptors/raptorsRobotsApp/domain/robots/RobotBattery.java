@@ -1,21 +1,18 @@
 package pl.raptors.raptorsRobotsApp.domain.robots;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
-@Getter
-@Setter
+@Data
 @Document(collection = "batteries")
 public class RobotBattery {
 
     @Id
     private String id;
     //private Date productionDate;
-    private String productionDate; //na potrzeby przykładowych danych zmieniam na stringa
+    private String productionDate; //na potrzeby przykładowych danych zmieniam na stringa todo
     private BatteryType type;
 
     public RobotBattery(String productionDate, BatteryType type)

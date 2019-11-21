@@ -1,5 +1,11 @@
 package pl.raptors.raptorsRobotsApp.domain.enums;
 
 public enum StandType {
-    RECEIVING, LOADING, BOTH, CHARGING, PARKING
+    RECEIVING,
+    LOADING,
+    CHARGING,
+    PARKING,
+    RECEIVING_LOADING,
+    STORAGE,
+
 }

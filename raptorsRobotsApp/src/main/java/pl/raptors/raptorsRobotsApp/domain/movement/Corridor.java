@@ -1,11 +1,10 @@
 package pl.raptors.raptorsRobotsApp.domain.movement;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter @Setter
+@Data
 @Document(collection = "corridors")
 public class Corridor {
 
