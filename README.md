@@ -1,5 +1,5 @@
 # raptors
-Dotychczas stworzone modele i i ch aktualizacja (update: 20.11.2019):
+Dotychczas stworzone modele i i ch aktualizacja (update: 21.11.2019):
 1. Mapa MovementMap @Document
 2. Ścieżka MovementPath @Document
 3. Punkty korytarza CorridorPoints @Document
@@ -16,13 +16,13 @@ Dotychczas stworzone modele i i ch aktualizacja (update: 20.11.2019):
 14. Typ przeglądu robota ReviewType Enum
 15. Model robota RobotModel @Document
 16. Typ napędu PropulsionType @Document
-17. Rodzaj dostawki ExtraRobotElement @Document 
+17. Rodzaj dostawki ExtraRobotElement @Document TODO
 18. Punkty ścieżek MovementPathPoint @Document
 19. Trasa Route @Document
-20. Priorytety tras RoutePriority @Document
+20. Priorytety tras RoutePriority @Document TODO
 21. Zachowania Behaviour @Document
 22. Typ zachowania (nazwa) BehaviourType Enum
-23. Priorytety zadań Task priority Enum
+23. Priorytety zadań Task priority Enum  TODO
 24. Zadania RobotTask @Document
 25. Parametry chwilowe TempParameters @Document
 26. Status Robota RobotStatus Enum
