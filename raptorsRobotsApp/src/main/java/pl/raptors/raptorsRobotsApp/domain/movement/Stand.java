@@ -27,4 +27,18 @@ public class Stand {
     private ParkingType parkingType;
     private StandType standType;
 
+    public Stand(String name, Double xStandCoordinate, Double yStandCoordinate, Double zStandCoordinate, Double xQuaternionCoordinate, Double yQuaternionCoordinate, Double zQuaternionCoordinate, Double wQuaternionCoordinate, StandStatus status, ParkingType parkingType, StandType standType)
+    {
+        this.name = name;
+        this.xStandCoordinate = xStandCoordinate;
+        this.yStandCoordinate = yStandCoordinate;
+        this.zStandCoordinate = zStandCoordinate;
+        this.xQuaternionCoordinate = xQuaternionCoordinate;
+        this.yQuaternionCoordinate = yQuaternionCoordinate;
+        this.zQuaternionCoordinate = zQuaternionCoordinate;
+        this.wQuaternionCoordinate = wQuaternionCoordinate;
+        this.status = status;
+        this.parkingType = parkingType;
+        this.standType = standType;
+    }
 }

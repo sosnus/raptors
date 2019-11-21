@@ -15,4 +15,11 @@ public class MovementPath {
     private String name;
     private Double xCoordinate;
     private Double yCoordinate;
+
+    public MovementPath(String name, Double xCoordinate, Double yCoordinate)
+    {
+        this.name = name;
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+    }
 }

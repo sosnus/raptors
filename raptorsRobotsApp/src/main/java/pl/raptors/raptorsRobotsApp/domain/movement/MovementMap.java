@@ -1,11 +1,10 @@
 package pl.raptors.raptorsRobotsApp.domain.movement;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter @Setter
+@Data
 @Document(collection = "movement_maps")
 public class MovementMap {
     @Id
@@ -14,4 +13,10 @@ public class MovementMap {
     private String pgmFilePath;
     private String yamlFilePath;
 
+    public MovementMap(String name, String pgmFilePath, String yamlFilePath)
+    {
+        this.name = name;
+        this.pgmFilePath = pgmFilePath;
+        this.yamlFilePath = yamlFilePath;
+    }
 }

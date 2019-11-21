@@ -16,4 +16,12 @@ public class Robot {
     private Boolean available;
     private ExtraRobotElement extraRobotElement;
     private RobotModel model;
+
+    public Robot(String robotIp, Boolean available, ExtraRobotElement extraRobotElement, RobotModel model)
+    {
+        this.robotIp = robotIp;
+        this.available = available;
+        this.extraRobotElement = extraRobotElement;
+        this.model = model;
+    }
 }

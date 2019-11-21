@@ -16,4 +16,11 @@ public class MapArea {
     private String name;
     private MovementMap map;
     private AreaType type;
+
+    public MapArea(String name, MovementMap map, AreaType type)
+    {
+        this.name = name;
+        this.map = map;
+        this.type = type;
+    }
 }

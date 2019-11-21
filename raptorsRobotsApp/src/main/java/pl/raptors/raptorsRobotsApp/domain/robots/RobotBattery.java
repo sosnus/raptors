@@ -14,6 +14,13 @@ public class RobotBattery {
 
     @Id
     private String id;
-    private Date productionDate;
+    //private Date productionDate;
+    private String productionDate; //na potrzeby przykładowych danych zmieniam na stringa
     private BatteryType type;
+
+    public RobotBattery(String productionDate, BatteryType type)
+    {
+        this.productionDate = productionDate;
+        this.type = type;
+    }
 }

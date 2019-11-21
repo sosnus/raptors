@@ -17,4 +17,11 @@ public class CorridorPoint {
     private Double xCoordinate;
     private Double yCoordinate;
 
+    public CorridorPoint(Corridor corridor, Integer polygonVertexNumber, Double xCoordinate, Double yCoordinate)
+    {
+        this.corridor = corridor;
+        this.polygonVertexNumber = polygonVertexNumber;
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+    }
 }

@@ -15,4 +15,11 @@ public class ExtraRobotElement {
     private String name;
     private String dimensions;
     private String functionality;
+
+    public ExtraRobotElement(String name, String dimensions, String functionality)
+    {
+        this.name = name;
+        this.dimensions = dimensions;
+        this.functionality = functionality;
+    }
 }

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(collection = "users")//naswa kolekcji po stronie mongo
+@Document(collection = "users")//nazwa kolekcji po stronie mongo
 public class User {
 
     @Id

@@ -13,4 +13,10 @@ public class Corridor {
     private String id;
     private String name;
     private MovementPath movementPath;
+
+    public Corridor(String name, MovementPath movementPath)
+    {
+        this.name = name;
+        this.movementPath = movementPath;
+    }
 }

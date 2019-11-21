@@ -21,4 +21,16 @@ public class RobotModel {
     private String height;
     private String turningRadius;
     private PropulsionType propulsionType;
+
+    public RobotModel(String name, String maxLiftingCapacity, String maxVelocity, String length, String width, String height, String turningRadius, PropulsionType propulsionType)
+    {
+        this.name = name;
+        this.maxLiftingCapacity = maxLiftingCapacity;
+        this.maxVelocity = maxVelocity;
+        this.length = length;
+        this.width = width;
+        this.height = height;
+        this.turningRadius = turningRadius;
+        this.propulsionType = propulsionType;
+    }
 }
