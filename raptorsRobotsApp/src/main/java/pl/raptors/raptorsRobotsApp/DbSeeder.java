@@ -7,6 +7,7 @@ import pl.raptors.raptorsRobotsApp.domain.Role;
 import pl.raptors.raptorsRobotsApp.domain.User;
 import pl.raptors.raptorsRobotsApp.domain.enums.PropulsionType;
 import pl.raptors.raptorsRobotsApp.domain.movement.*;
+import pl.raptors.raptorsRobotsApp.domain.movement.MovementPathPoint;
 import pl.raptors.raptorsRobotsApp.domain.robots.*;
 import pl.raptors.raptorsRobotsApp.repository.RoleRepository;
 import pl.raptors.raptorsRobotsApp.repository.UserRepository;
@@ -14,16 +15,22 @@ import pl.raptors.raptorsRobotsApp.repository.movement.*;
 import pl.raptors.raptorsRobotsApp.repository.robots.*;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static pl.raptors.raptorsRobotsApp.domain.enums.AreaType.FORBIDDEN;
+import static pl.raptors.raptorsRobotsApp.domain.enums.BehaviourType.*;
 import static pl.raptors.raptorsRobotsApp.domain.enums.ParkingType.DETAILED;
 import static pl.raptors.raptorsRobotsApp.domain.enums.PropulsionType.TODO;
 import static pl.raptors.raptorsRobotsApp.domain.enums.ReviewType.SERVICE_CALL;
+import static pl.raptors.raptorsRobotsApp.domain.enums.RobotStatus.TODO_ROBOT_STATUS;
+import static pl.raptors.raptorsRobotsApp.domain.enums.RoutePriority.TODO_PRIORITY;
 import static pl.raptors.raptorsRobotsApp.domain.enums.StandStatus.FREE;
 import static pl.raptors.raptorsRobotsApp.domain.enums.StandType.LOADING;
+import static pl.raptors.raptorsRobotsApp.domain.enums.StandType.CHARGING;
+import static pl.raptors.raptorsRobotsApp.domain.enums.TaskPriority.TODO_TASK_PRIORITY;
 
 //bedzie to klasa wstawiająca do bazy przykladowego uzytkownika
 @Component
@@ -56,7 +63,18 @@ public class DbSeeder implements CommandLineRunner {
     private RobotRepository robotRepository;
     @Autowired
     private RobotReviewRepository robotReviewRepository;
-
+    @Autowired
+    private MovementPathPointRepository movementPathPointRepository;
+    @Autowired
+    private PathPointRepository pathPointRepository;
+    @Autowired
+    private RouteRepository routeRepository;
+    @Autowired
+    private BehaviourRepository behaviourRepository;
+    @Autowired
+    private RobotTaskRepository robotTaskRepository;
+    @Autowired
+    private TempParametersRepository tempParametersRepository;
 
 
     @Override
@@ -182,7 +200,79 @@ public class DbSeeder implements CommandLineRunner {
                 11.0,
                 FREE,
                 DETAILED,
+                CHARGING
+        );
+
+        Stand stand2= new Stand(
+                "mnagazyn",
+                55.21,
+                133.54,
+                1.0,
+                88.0,
+                72.4,
+                86.34,
+                33.0,
+                FREE,
+                DETAILED,
                 LOADING
+        );
+
+        MovementPathPoint movementPathPoint= new MovementPathPoint(
+                movementPath,
+                20,
+                43.2,
+                50.2
+        );
+
+        PathPoint pathPoint= new PathPoint(
+                movementPath,
+                1,
+                10.05,
+                355.124
+        );
+
+        Route route= new Route(
+                movementMap,
+                movementPath,
+                corridor,
+                "najszybsza główna",
+                stand2,
+                stand,
+                TODO_PRIORITY
+        );
+
+        Behaviour behaviour= new Behaviour(
+                WAIT,
+                "* WILL BE JSON *"
+        );
+
+        Behaviour behaviour2= new Behaviour(
+                GO_TO,
+                "* WILL BE JSON *"
+        );
+
+        Behaviour behaviour3= new Behaviour(
+                DOCKAGE,
+                "* WILL BE JSON *"
+        );
+
+
+        List<Behaviour> behaviours= new ArrayList();
+        behaviours.add(behaviour);
+        behaviours.add(behaviour2);
+        behaviours.add(behaviour3);
+
+        RobotTask robotTask= new RobotTask(
+                "transport tools",
+                behaviours,
+                "2019-6-21 16:00",
+                TODO_TASK_PRIORITY
+        );
+
+        TempParameters tempParameters= new TempParameters(
+                "magazyn-hala C3",
+                77.4,
+                TODO_ROBOT_STATUS
         );
 
         //czyść baze
@@ -199,7 +289,12 @@ public class DbSeeder implements CommandLineRunner {
         this.robotModelRepository.deleteAll();
         this.robotRepository.deleteAll();
         this.robotReviewRepository.deleteAll();
-
+        this.movementPathPointRepository.deleteAll();
+        this.pathPointRepository.deleteAll();
+        this.routeRepository.deleteAll();
+        this.behaviourRepository.deleteAll();
+        this.robotTaskRepository.deleteAll();
+        this.tempParametersRepository.deleteAll();
 
         //dodaj do bazy dane
         this.movementMapRepository.save(movementMap);
@@ -215,7 +310,15 @@ public class DbSeeder implements CommandLineRunner {
         this.robotBatteryRepository.save(robotBattery);
         this.robotReviewRepository.save(robotReview);
         this.standRepository.save(stand);
-
+        this.standRepository.save(stand2);
+        this.movementPathPointRepository.save(movementPathPoint);
+        this.pathPointRepository.save(pathPoint);
+        this.routeRepository.save(route);
+        this.behaviourRepository.save(behaviour);
+        this.behaviourRepository.save(behaviour2);
+        this.behaviourRepository.save(behaviour3);
+        this.robotTaskRepository.save(robotTask);
+        this.tempParametersRepository.save(tempParameters);
     }
 
 }
