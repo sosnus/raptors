@@ -113,11 +113,7 @@ public class DbSeeder implements CommandLineRunner {
                 -30.67
         );
 
-        MovementPath movementPath= new MovementPath(
-                "droga glówna B",
-                45.50,
-                13.00
-        );
+        MovementPath movementPath=new MovementPath("droga glówna B");
 
         Corridor corridor= new Corridor(
                 "pomost",
