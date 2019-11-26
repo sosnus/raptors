@@ -1,10 +1,9 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {MDBBootstrapModule} from "angular-bootstrap-md";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
+// @ts-ignore
 @NgModule({
   declarations: [
     AppComponent
@@ -12,7 +11,6 @@ import {MDBBootstrapModule} from "angular-bootstrap-md";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MDBBootstrapModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
