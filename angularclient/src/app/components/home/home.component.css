@@ -1,0 +1,30 @@
+.sideBar{
+  position: fixed;
+  width: 30%;
+  max-width: 400px;
+  height: 100%;
+}
+.card-header{
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+  border-radius: 0;
+
+}
+.card{
+  border-radius: 0;
+}
+.clickable{
+  cursor: pointer;
+}
+
+.rotate-icon{
+  -moz-transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+.rotate-icon.down{
+  -ms-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
