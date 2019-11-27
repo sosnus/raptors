@@ -5,10 +5,10 @@
 
     <!-- Card header -->
     <div class="card-header grey z-depth-2" role="tab" id="headingTwo1">
-      <a class="collapsed text-uppercase mb-0 py-1" data-toggle="collapse" data-target="#collapseTwo1">
+      <a class="collapsed text-uppercase mb-0 py-1" data-toggle="collapse" data-target="#collapseTwo1" (click)="rotateIcon('collapseIcon1')">
         <h5 class="mb-0 white-text font-weight-bold">
           Zadania
-          <i class="fa fa-angle-down" style="float: right;" aria-controls="collapseTwo2"></i>
+          <i class="fa fa-angle-down rotate-icon" style="float: right;" id="collapseIcon1"></i>
         </h5>
       </a>
     </div>
@@ -26,9 +26,10 @@
 
     <!-- Card header -->
     <div class="card-header grey z-depth-2" role="tab" id="headingTwo2">
-      <a class="collapsed text-uppercase mb-0 py-1" data-toggle="collapse" data-target="#collapseTwo2">
+      <a class="collapsed text-uppercase mb-0 py-1" data-toggle="collapse" data-target="#collapseTwo2" (click)="rotateIcon('collapseIcon2')">
         <h5 class="mb-0 white-text font-weight-bold">
-          Roboty<i class="fa fa-angle-down rotate-icon" style="float: right;"></i>
+          Roboty
+          <i class="fa fa-angle-down rotate-icon" style="float: right;" id="collapseIcon2"></i>
         </h5>
       </a>
     </div>

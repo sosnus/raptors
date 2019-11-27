@@ -31,4 +31,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
+  rotateIcon(elementID: string): void {
+    document.getElementById(elementID).classList.toggle('down');
+  }
 }
