@@ -1,11 +1,25 @@
-.navbar-expand-lg .navbar-nav .nav-link {
-  padding-right: 2rem;
-  padding-left: 2rem;
+.navbar-nav {
+  font-size: 1rem;
+  letter-spacing: 1px;
+  color: #a03337;
+  text-transform: uppercase;
+  font-weight: 400;
 }
-.navbar-brand img{
-  height: 30px;
-  width: 110px;
-  margin-left: 2rem;
+
+.navbar a{
+  color: #a03337 !important;
+}
+
+.navbar {
+  padding-left: 5rem;
+  background: white !important;
+}
+
+.navbar-collapse {
+  padding-left: 7rem;
+}
+.nav-item{
+  padding-right: 1rem;
 }
 
 

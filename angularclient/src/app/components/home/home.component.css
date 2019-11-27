@@ -1,14 +1,23 @@
 .sideBar{
   position: fixed;
-  width: 30%;
-  max-width: 400px;
+  width: 23%;
+  max-width: 340px;
   height: 100%;
 }
 .card-header{
-  padding-top: 1.2rem;
-  padding-bottom: 1.2rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
   border-radius: 0;
-
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  background: #a03337;
+}
+.card-item{
+  background: white;
+}
+.card-header h5{
+  font-size: 1.1rem;
+  font-weight: 400 !important;
 }
 .card{
   border-radius: 0;
