@@ -38,6 +38,8 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
     private AreaPointRepository areaPointRepository;
     @Autowired
     private CorridorPointRepository corridorPointRepository;
@@ -50,7 +52,7 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     private MovementPathRepository movementPathRepository;
     @Autowired
-        private StandRepository standRepository;
+    private StandRepository standRepository;
     @Autowired
     private BatteryTypeRepository batteryTypeRepository;
     @Autowired
@@ -80,12 +82,14 @@ public class DbSeeder implements CommandLineRunner {
     @Override
     public void run(String... strings) {
 
+        Role regularUser = new Role("regularUser");
+
         User testowyUser1 = new User(
                 "testowy@gmail.com",
                 "test",
                 //jeśli więcej niż 1 rola, to Array.asList()
                 Collections.singletonList(
-                        new Role("regularUser")
+                        regularUser
                 )
 
         );
@@ -95,16 +99,18 @@ public class DbSeeder implements CommandLineRunner {
                 "test2",
                 //jeśli więcej niż 1 rola, to Array.asList()
                 Collections.singletonList(
-                        new Role("regularUser")
+                        regularUser
                 )
 
         );
 
-        //wywalanie wszystkich userów
+        //wywalanie wszystkich userów i ról
+        this.roleRepository.deleteAll();
         this.userRepository.deleteAll();
 
         //wrzucanie utworzonych userów do bazy
         List<User> usersToAdd = Arrays.asList(testowyUser1, testowyUser2);
+        this.roleRepository.save(regularUser);
         this.userRepository.saveAll(usersToAdd);
 
 
