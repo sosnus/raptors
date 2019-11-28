@@ -5,16 +5,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document(collection = "behaviours")
-public class Behaviour {
+@Document(collection = "extra_robot_elements_functionality")
+public class ElementFunctionality {
 
     @Id
     private String id;
     private String name;
-    private String parameters;//will be json
 
-    public Behaviour(String name, String parameters) {
+    public ElementFunctionality(String name) {
         this.name = name;
-        this.parameters = parameters;
     }
 }

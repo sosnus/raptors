@@ -3,9 +3,9 @@ package pl.raptors.raptorsRobotsApp.domain.movement;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.raptors.raptorsRobotsApp.domain.enums.ParkingType;
-import pl.raptors.raptorsRobotsApp.domain.enums.StandStatus;
-import pl.raptors.raptorsRobotsApp.domain.enums.StandType;
+import pl.raptors.raptorsRobotsApp.domain.type.ParkingType;
+import pl.raptors.raptorsRobotsApp.domain.type.StandStatus;
+import pl.raptors.raptorsRobotsApp.domain.type.StandType;
 
 @Data
 @Document(collection = "stands")

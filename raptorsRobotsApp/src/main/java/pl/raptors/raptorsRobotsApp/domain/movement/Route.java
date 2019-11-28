@@ -3,7 +3,7 @@ package pl.raptors.raptorsRobotsApp.domain.movement;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.raptors.raptorsRobotsApp.domain.enums.RoutePriority;
+import pl.raptors.raptorsRobotsApp.domain.type.RoutePriority;
 
 @Data
 @Document(collection = "routes")

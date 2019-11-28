@@ -3,7 +3,7 @@ package pl.raptors.raptorsRobotsApp.domain.robots;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.raptors.raptorsRobotsApp.domain.enums.RobotStatus;
+import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
 
 @Data
 @Document(collection = "temp_parameters")

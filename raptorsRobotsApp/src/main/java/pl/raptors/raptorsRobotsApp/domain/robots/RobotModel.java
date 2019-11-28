@@ -3,7 +3,7 @@ package pl.raptors.raptorsRobotsApp.domain.robots;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.raptors.raptorsRobotsApp.domain.enums.PropulsionType;
+import pl.raptors.raptorsRobotsApp.domain.type.PropulsionType;
 
 @Data
 @Document(collection = "robot_models")
