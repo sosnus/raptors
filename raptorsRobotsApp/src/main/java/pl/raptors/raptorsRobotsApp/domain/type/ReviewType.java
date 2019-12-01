@@ -14,5 +14,8 @@ public class ReviewType {
     public ReviewType(String name) {
         this.name = name;
     }
+
+    public ReviewType() {
+    }
 }
 

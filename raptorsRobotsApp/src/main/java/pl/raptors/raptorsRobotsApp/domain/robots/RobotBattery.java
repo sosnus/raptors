@@ -20,4 +20,7 @@ public class RobotBattery {
         this.productionDate = productionDate;
         this.type = type;
     }
+
+    public RobotBattery() {
+    }
 }

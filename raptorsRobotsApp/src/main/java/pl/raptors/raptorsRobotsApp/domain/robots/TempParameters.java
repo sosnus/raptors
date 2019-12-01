@@ -20,4 +20,7 @@ public class TempParameters {
         this.batteryLevel = batteryLevel;
         this.status = status;
     }
+
+    public TempParameters() {
+    }
 }

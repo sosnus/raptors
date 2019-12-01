@@ -21,4 +21,7 @@ public class PathPoint {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
+
+    public PathPoint() {
+    }
 }

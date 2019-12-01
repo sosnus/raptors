@@ -25,4 +25,7 @@ public class RobotTask {
         this.startTime = startTime;
         this.priority = priority;
     }
+
+    public RobotTask() {
+    }
 }

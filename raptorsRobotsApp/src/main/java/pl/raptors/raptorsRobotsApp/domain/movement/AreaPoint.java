@@ -25,4 +25,7 @@ public class AreaPoint {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
+
+    public AreaPoint() {
+    }
 }

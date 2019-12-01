@@ -22,4 +22,7 @@ public class CorridorPoint {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
+
+    public CorridorPoint() {
+    }
 }

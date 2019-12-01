@@ -31,4 +31,7 @@ public class RobotModel {
         this.turningRadius = turningRadius;
         this.propulsionType = propulsionType;
     }
+
+    public RobotModel() {
+    }
 }

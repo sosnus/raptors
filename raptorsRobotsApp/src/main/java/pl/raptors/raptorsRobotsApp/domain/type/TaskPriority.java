@@ -19,4 +19,7 @@ public class TaskPriority {
         this.name = name;
         this.weight = weight;
     }
+
+    public TaskPriority() {
+    }
 }

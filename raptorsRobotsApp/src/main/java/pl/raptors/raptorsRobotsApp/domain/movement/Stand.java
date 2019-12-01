@@ -37,4 +37,7 @@ public class Stand {
         this.parkingType = parkingType;
         this.standType = standType;
     }
+
+    public Stand() {
+    }
 }

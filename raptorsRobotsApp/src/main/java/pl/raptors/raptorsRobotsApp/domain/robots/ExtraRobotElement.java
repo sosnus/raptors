@@ -28,4 +28,7 @@ public class ExtraRobotElement {
         this.name = name;
         this.dimensions = dimensions;
     }
+
+    public ExtraRobotElement() {
+    }
 }

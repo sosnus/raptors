@@ -27,4 +27,7 @@ public class RobotReview {
         this.realizationDate = realizationDate;
         this.reviewType = reviewType;
     }
+
+    public RobotReview() {
+    }
 }

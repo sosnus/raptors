@@ -18,4 +18,7 @@ public class Corridor {
         this.name = name;
         this.movementPath = movementPath;
     }
+
+    public Corridor() {
+    }
 }

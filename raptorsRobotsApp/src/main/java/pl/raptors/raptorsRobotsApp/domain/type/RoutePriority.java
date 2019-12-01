@@ -19,4 +19,7 @@ public class RoutePriority {
         this.name = name;
         this.weight = weight;
     }
+
+    public RoutePriority() {
+    }
 }

@@ -21,4 +21,7 @@ public class MovementPathPoint {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
+
+    public MovementPathPoint() {
+    }
 }

@@ -15,4 +15,7 @@ public class ElementFunctionality {
     public ElementFunctionality(String name) {
         this.name = name;
     }
+
+    public ElementFunctionality() {
+    }
 }

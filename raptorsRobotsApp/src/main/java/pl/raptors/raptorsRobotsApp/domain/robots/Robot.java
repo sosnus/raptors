@@ -22,4 +22,7 @@ public class Robot {
         this.extraRobotElement = extraRobotElement;
         this.model = model;
     }
+
+    public Robot() {
+    }
 }

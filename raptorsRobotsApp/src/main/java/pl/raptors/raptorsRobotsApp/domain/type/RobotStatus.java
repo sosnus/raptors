@@ -14,4 +14,7 @@ public class RobotStatus {
     public RobotStatus(String name) {
         this.name = name;
     }
+
+    public RobotStatus() {
+    }
 }

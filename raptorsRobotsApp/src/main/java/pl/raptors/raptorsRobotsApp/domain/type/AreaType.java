@@ -14,5 +14,8 @@ public class AreaType {
     public AreaType(String name) {
         this.name = name;
     }
+
+    public AreaType() {
+    }
 }
 

@@ -22,4 +22,7 @@ public class BatteryType {
         this.ratedVoltage = ratedVoltage;
         this.maxCurrent = maxCurrent;
     }
+
+    public BatteryType() {
+    }
 }

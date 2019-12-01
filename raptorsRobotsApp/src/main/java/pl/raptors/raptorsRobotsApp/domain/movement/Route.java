@@ -28,4 +28,7 @@ public class Route {
         this.end = end;
         this.priority = priority;
     }
+
+    public Route() {
+    }
 }

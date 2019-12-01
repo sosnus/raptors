@@ -14,6 +14,9 @@ public class ParkingType {
     public ParkingType(String name) {
         this.name = name;
     }
+
+    public ParkingType() {
+    }
 }
 
 

@@ -14,4 +14,7 @@ public class StandStatus {
     public StandStatus(String name) {
         this.name = name;
     }
+
+    public StandStatus() {
+    }
 }

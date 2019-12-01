@@ -19,4 +19,7 @@ public class MovementMap {
         this.pgmFilePath = pgmFilePath;
         this.yamlFilePath = yamlFilePath;
     }
+
+    public MovementMap() {
+    }
 }

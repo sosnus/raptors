@@ -14,5 +14,8 @@ public class PropulsionType {
     public PropulsionType(String name) {
         this.name = name;
     }
+
+    public PropulsionType() {
+    }
 }
 

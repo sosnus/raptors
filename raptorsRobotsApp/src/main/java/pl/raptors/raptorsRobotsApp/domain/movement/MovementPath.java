@@ -14,4 +14,7 @@ public class MovementPath {
     public MovementPath(String name) {
         this.name = name;
     }
+
+    public MovementPath() {
+    }
 }

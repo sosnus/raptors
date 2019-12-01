@@ -21,4 +21,7 @@ public class MapArea {
         this.map = map;
         this.type = type;
     }
+
+    public MapArea() {
+    }
 }

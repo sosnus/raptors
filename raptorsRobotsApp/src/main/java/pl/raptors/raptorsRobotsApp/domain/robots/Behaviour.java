@@ -17,4 +17,7 @@ public class Behaviour {
         this.name = name;
         this.parameters = parameters;
     }
+
+    public Behaviour() {
+    }
 }
