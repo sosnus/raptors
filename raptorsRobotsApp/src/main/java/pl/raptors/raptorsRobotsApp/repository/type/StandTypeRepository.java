@@ -6,4 +6,6 @@ import pl.raptors.raptorsRobotsApp.domain.type.StandType;
 
 @Repository
 public interface StandTypeRepository extends MongoRepository<StandType,String> {
+
+    public StandType findByName(String name);
 }
