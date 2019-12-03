@@ -1,10 +1,11 @@
 package pl.raptors.raptorsRobotsApp.domain.type;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
+@NoArgsConstructor
 @Data
 @Document(collection = "stand_types")
 public class StandType {
@@ -14,9 +15,6 @@ public class StandType {
 
     public StandType(String name) {
         this.name = name;
-    }
-
-    public StandType() {
     }
 }
 

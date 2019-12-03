@@ -1,9 +1,11 @@
 package pl.raptors.raptorsRobotsApp.domain.movement;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@NoArgsConstructor
 @Data
 @Document(collection = "corridors")
 public class Corridor {
@@ -17,8 +19,5 @@ public class Corridor {
     {
         this.name = name;
         this.movementPath = movementPath;
-    }
-
-    public Corridor() {
     }
 }

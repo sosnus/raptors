@@ -1,13 +1,13 @@
 package pl.raptors.raptorsRobotsApp.domain.robots;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.raptors.raptorsRobotsApp.domain.type.ReviewType;
 
-@Getter
-@Setter
+@NoArgsConstructor
+@Data
 @Document(collection = "robot_reviews")
 public class RobotReview {
 
@@ -26,8 +26,5 @@ public class RobotReview {
         this.plannedDate = plannedDate;
         this.realizationDate = realizationDate;
         this.reviewType = reviewType;
-    }
-
-    public RobotReview() {
     }
 }

@@ -1,10 +1,12 @@
 package pl.raptors.raptorsRobotsApp.domain.robots;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
 
+@NoArgsConstructor
 @Data
 @Document(collection = "temp_parameters")
 public class TempParameters {
@@ -21,6 +23,4 @@ public class TempParameters {
         this.status = status;
     }
 
-    public TempParameters() {
-    }
 }

@@ -1,10 +1,12 @@
 package pl.raptors.raptorsRobotsApp.domain.robots;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.raptors.raptorsRobotsApp.domain.type.PropulsionType;
 
+@NoArgsConstructor
 @Data
 @Document(collection = "robot_models")
 public class RobotModel {
@@ -30,8 +32,5 @@ public class RobotModel {
         this.height = height;
         this.turningRadius = turningRadius;
         this.propulsionType = propulsionType;
-    }
-
-    public RobotModel() {
     }
 }

@@ -1,11 +1,12 @@
 package pl.raptors.raptorsRobotsApp.domain.type;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.UniqueElements;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@NoArgsConstructor
 @Data
 @Document(collection = "route_priorities")
 public class RoutePriority {
@@ -18,8 +19,5 @@ public class RoutePriority {
     public RoutePriority(String name, Integer weight) {
         this.name = name;
         this.weight = weight;
-    }
-
-    public RoutePriority() {
     }
 }

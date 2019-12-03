@@ -2,9 +2,11 @@ package pl.raptors.raptorsRobotsApp.domain.robots;
 
 import lombok.Data;
 
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@NoArgsConstructor
 @Data
 @Document(collection = "batteries")
 public class RobotBattery {
@@ -19,8 +21,5 @@ public class RobotBattery {
     {
         this.productionDate = productionDate;
         this.type = type;
-    }
-
-    public RobotBattery() {
     }
 }

@@ -1,10 +1,12 @@
 package pl.raptors.raptorsRobotsApp.domain.movement;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.raptors.raptorsRobotsApp.domain.type.RoutePriority;
 
+@NoArgsConstructor
 @Data
 @Document(collection = "routes")
 public class Route {
@@ -27,8 +29,5 @@ public class Route {
         this.start = start;
         this.end = end;
         this.priority = priority;
-    }
-
-    public Route() {
     }
 }

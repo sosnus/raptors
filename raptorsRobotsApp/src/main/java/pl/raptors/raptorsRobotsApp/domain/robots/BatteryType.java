@@ -1,9 +1,11 @@
 package pl.raptors.raptorsRobotsApp.domain.robots;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@NoArgsConstructor
 @Data
 @Document(collection = "battery_types")
 public class BatteryType {
@@ -21,8 +23,5 @@ public class BatteryType {
         this.capacity = capacity;
         this.ratedVoltage = ratedVoltage;
         this.maxCurrent = maxCurrent;
-    }
-
-    public BatteryType() {
     }
 }

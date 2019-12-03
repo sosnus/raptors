@@ -1,9 +1,11 @@
 package pl.raptors.raptorsRobotsApp.domain.robots;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@NoArgsConstructor
 @Data
 @Document(collection = "robots")
 public class Robot {
@@ -21,8 +23,5 @@ public class Robot {
         this.available = available;
         this.extraRobotElement = extraRobotElement;
         this.model = model;
-    }
-
-    public Robot() {
     }
 }

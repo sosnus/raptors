@@ -1,11 +1,11 @@
 package pl.raptors.raptorsRobotsApp.domain.movement;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@NoArgsConstructor
 @Data
 @Document(collection = "area_points")
 public class AreaPoint {
@@ -17,15 +17,11 @@ public class AreaPoint {
     private Double xCoordinate;
     private Double yCoordinate;
 
-
     public AreaPoint(MapArea mapArea, Integer polygonVertexNumber, Double xCoordinate, Double yCoordinate)
     {
         this.mapArea = mapArea;
         this.polygonVertexNumber = polygonVertexNumber;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
-    }
-
-    public AreaPoint() {
     }
 }

@@ -1,9 +1,11 @@
 package pl.raptors.raptorsRobotsApp.domain.movement;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@NoArgsConstructor
 @Data
 @Document(collection = "path_points")
 public class PathPoint {
@@ -20,8 +22,5 @@ public class PathPoint {
         this.polygonVertexNumber = polygonVertexNumber;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
-    }
-
-    public PathPoint() {
     }
 }
