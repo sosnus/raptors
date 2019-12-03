@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.domain.movement;
 
 import lombok.Data;
+import org.bson.types.Binary;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,13 +13,10 @@ public class MovementMap {
     @Id
     private String id;
     private String name;
-    private String pgmFilePath;
-    private String yamlFilePath;
+    private Binary mapImage;
 
-    public MovementMap(String name, String pgmFilePath, String yamlFilePath)
-    {
+    public MovementMap(String name, Binary mapImage) {
         this.name = name;
-        this.pgmFilePath = pgmFilePath;
-        this.yamlFilePath = yamlFilePath;
+        this.mapImage = mapImage;
     }
 }
