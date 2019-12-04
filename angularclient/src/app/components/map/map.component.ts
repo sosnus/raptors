@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet-easybutton';
+
 import { MapService } from '../../services/map.service';
 
 

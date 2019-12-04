@@ -21,6 +21,8 @@
 .nav-item{
   padding-right: 1rem;
 }
-
+html,body{
+  height:100%;
+}
 
 

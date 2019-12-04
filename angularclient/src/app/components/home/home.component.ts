@@ -7,23 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  robots: Object[] = [
-    {
-      id: '0',
-      robotIP: '10.21.129.22',
-      available: true
-    },
-    {
-      id: '1',
-      robotIP: '10.21.129.23',
-      available: true
-    },
-    {
-      id: '2',
-      robotIP: '10.21.128.10',
-      available: true
-    }
-  ];
 
   constructor() {
   }
@@ -31,7 +14,4 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  rotateIcon(elementID: string): void {
-    document.getElementById(elementID).classList.toggle('down');
-  }
 }

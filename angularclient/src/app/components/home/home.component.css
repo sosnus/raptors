@@ -1,39 +1,4 @@
-.sideBar{
-  position: fixed;
-  width: 23%;
-  max-width: 340px;
-  height: 100%;
-}
-.card-header{
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
-  border-radius: 0;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
-  background: #a03337;
-}
-.card-item{
-  background: white;
-}
-.card-header h5{
-  font-size: 1.1rem;
-  font-weight: 400 !important;
-}
-.card{
-  border-radius: 0;
-}
-.clickable{
-  cursor: pointer;
-}
-
-.rotate-icon{
-  -moz-transition: all 0.2s linear;
-  -webkit-transition: all 0.2s linear;
-  transition: all 0.2s linear;
-}
-.rotate-icon.down{
-  -ms-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
+.map{
+  position: absolute;
+  margin: 20px;
 }
