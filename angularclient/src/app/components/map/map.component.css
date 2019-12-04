@@ -1,0 +1,17 @@
+.map-container {
+  position: relative;
+  width: 800px;
+  height: 800px;
+}
+
+.map-frame {
+  border: 2px solid black;
+  height: 100%;
+}
+
+#map {
+  height: 100%;
+}
+.star{
+  font-size: 1.5em;
+}
