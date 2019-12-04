@@ -1,0 +1,30 @@
+package pl.raptors.raptorsRobotsApp.domain.robots;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import pl.raptors.raptorsRobotsApp.domain.type.TaskPriority;
+
+import java.util.List;
+
+@NoArgsConstructor
+@Data
+@Document(collection = "robot_tasks")
+public class RobotTask {
+
+    @Id
+    private String id;
+    private String name;
+    private List<Behaviour> behaviours;
+    //private Date startTime; //zamiana dla łatwiejszej implementacji przykłądowych danych
+    private String startTime;
+    private TaskPriority priority;
+
+    public RobotTask(String name, List<Behaviour> behaviours, String startTime, TaskPriority priority) {
+        this.name = name;
+        this.behaviours = behaviours;
+        this.startTime = startTime;
+        this.priority = priority;
+    }
+}
