@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import 'leaflet-easybutton';
-
-import { MapService } from '../../services/map.service';
+import 'leaflet-rotatedmarker';
 
 
 @Component({
@@ -11,6 +9,13 @@ import { MapService } from '../../services/map.service';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
+
+
+  //Example data
+  //Leaflet accepts coordinates in [y,x]
+  private robotPosXY = [992, 992];
+  private robotMarkers = [];
+  private imageResolution = 1984;
 
   private map;
 
@@ -22,37 +27,41 @@ export class MapComponent implements OnInit {
     //   data => this.convertToMap(data)
     // );
     this.initMap();
+    const robotsArray = [this.robotPosXY];
+    this.createRobotMarkers(robotsArray, 0.01);
+    setTimeout(() => this.updateRobotMarkerPositions([[100, 992]], 0.01), 3000);
   }
 
   private convertToMap(image: any): void {
     const base64Data = btoa(image);
-    const imageURL = 'data:image/pgm;base64,' + base64Data;
+    const imageURL = 'data:image/jpg;base64,' + base64Data;
   }
 
   private initMap(): void {
-    const imageUrl = 'http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg';
-    const imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
+    const imageUrl = './assets/maps/sim_map.jpg';
+    const imageBounds = [[0, 0], [800, 800]];
     this.map = L.map('map', {
       crs: L.CRS.Simple
-      // center: [39.8282, -98.5795],
-      // zoom: 3
     });
-
     L.imageOverlay(imageUrl, imageBounds).addTo(this.map);
     this.map.fitBounds(imageBounds);
-
-    const helloPopup = L.popup().setContent('Hello World!');
-
-    L.easyButton('<span class="star">&curren;</span>', (btn, map) => {
-      helloPopup.setLatLng(map.getCenter()).openOn(map);
-    }).addTo( this.map );
-
-
-    // const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //   maxZoom: 19,
-    // });
-    //
-    // tiles.addTo(this.map);
   }
 
+  private createRobotMarkers(robots: number[][], resolution: number) {
+    robots.forEach(robot => {
+      const position = [robot[1] * (800 / this.imageResolution), robot[0] * (800 / this.imageResolution)];
+      this.robotMarkers.push(
+        L.marker(position, {
+          rotationAngle: 45
+        }).addTo(this.map)
+      )
+    })
+  }
+
+  private updateRobotMarkerPositions(robots: number[][], resolution: number) {
+    for (let i = 0; i < robots.length; i++) {
+      const position = [robots[i][1] * (800 / 1984), robots[i][0] * (800 / 1984)];
+      this.robotMarkers[i].setLatLng(position);
+    }
+  }
 }
