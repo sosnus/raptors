@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # raptors- Aplikacja frontend
 Aplikacja wykorzystuje w warstwie frontowej framework Angular w wersji 8.
 * W celu uruchomienia projektu na urządzeniu wymagana jest instalacja środowisja [Node.js](https://nodejs.org/en/).
@@ -10,4 +9,3 @@ Aplikacja wykorzystuje w warstwie frontowej framework Angular w wersji 8.
 Connection string Mongodb Compass: mongodb+srv://user:user@robotapp-t7ifm.mongodb.net/test  
 Username: user  
 password: user
->>>>>>> origin/Domain
