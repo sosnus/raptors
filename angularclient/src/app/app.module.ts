@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { MapComponent } from './components/map/map.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { MapService } from './services/map.service';
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 // @ts-ignore
 @NgModule({
@@ -18,8 +19,9 @@ import { MapService } from './services/map.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
   ],
-  providers: [MapService],
+  providers: [MapService,HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

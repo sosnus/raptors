@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet-rotatedmarker';
+import {MapService} from "../../services/map.service";
 
 
 @Component({
@@ -19,13 +20,13 @@ export class MapComponent implements OnInit {
 
   private map;
 
-  constructor() {
+  constructor(private mapService: MapService) {
   }
 
   ngOnInit() {
-    // this.mapService.getMap('1').subscribe(
-    //   data => this.convertToMap(data)
-    // );
+    this.mapService.getMap('5de6d1d99574033bbb79cf85').subscribe(
+      data => this.convertToMap(data)
+    );
     this.initMap();
     const robotsArray = [this.robotPosXY];
     this.createRobotMarkers(robotsArray, 0.01);
