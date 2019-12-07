@@ -1,24 +1,27 @@
 package pl.raptors.raptorsRobotsApp;
 
-import com.mongodb.gridfs.GridFS;
-import com.mongodb.gridfs.GridFSInputFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.stereotype.Component;
-import pl.raptors.raptorsRobotsApp.domain.Role;
-import pl.raptors.raptorsRobotsApp.domain.User;
+import pl.raptors.raptorsRobotsApp.domain.accounts.Role;
+import pl.raptors.raptorsRobotsApp.domain.accounts.User;
+import pl.raptors.raptorsRobotsApp.domain.graphs.Edge;
+import pl.raptors.raptorsRobotsApp.domain.graphs.Graph;
+import pl.raptors.raptorsRobotsApp.domain.graphs.Vertex;
 import pl.raptors.raptorsRobotsApp.domain.movement.*;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementPathPoint;
 import pl.raptors.raptorsRobotsApp.domain.robots.*;
 import pl.raptors.raptorsRobotsApp.domain.type.*;
-import pl.raptors.raptorsRobotsApp.repository.RoleRepository;
-import pl.raptors.raptorsRobotsApp.repository.UserRepository;
+import pl.raptors.raptorsRobotsApp.repository.accounts.RoleRepository;
+import pl.raptors.raptorsRobotsApp.repository.accounts.UserRepository;
+import pl.raptors.raptorsRobotsApp.repository.graphs.EdgeRepository;
+import pl.raptors.raptorsRobotsApp.repository.graphs.GraphRepository;
+import pl.raptors.raptorsRobotsApp.repository.graphs.VertexRepository;
 import pl.raptors.raptorsRobotsApp.repository.movement.*;
 import pl.raptors.raptorsRobotsApp.repository.robots.*;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,6 +73,13 @@ public class DbSeeder implements CommandLineRunner {
     private RobotTaskRepository robotTaskRepository;
     @Autowired
     private TempParametersRepository tempParametersRepository;
+    @Autowired
+    private GraphRepository graphRepository;
+    @Autowired
+    private EdgeRepository edgeRepository;
+    @Autowired
+    private VertexRepository vertexRepository;
+
 
     @Autowired
     private GridFsOperations gridFsOperations;
@@ -101,6 +111,30 @@ public class DbSeeder implements CommandLineRunner {
         this.roleRepository.save(regularUser);
         this.userRepository.saveAll(usersToAdd);
 
+        //GRAFY
+        Vertex vertex1 = new Vertex(17.5,25.0,"A");
+        Vertex vertex2 = new Vertex(15.0,20.0,"B");
+        Vertex vertex3 = new Vertex(20.0,20.0,"C");
+        Vertex vertex4 = new Vertex(15.0,15.0,"D");
+        Vertex vertex5 = new Vertex(20.0,15.0,"E");
+
+        Edge edge1 = new Edge(vertex1, vertex2, false);
+        Edge edge2 = new Edge(vertex1, vertex3, false);
+        Edge edge3 = new Edge(vertex2, vertex4, false);
+        Edge edge4 = new Edge(vertex3, vertex5, false);
+
+        List<Vertex> verticesToAdd = Arrays.asList(vertex1, vertex2, vertex3, vertex4, vertex5);
+        List<Edge> edgesToAdd = Arrays.asList(edge1, edge2, edge3, edge4);
+
+        Graph graph = new Graph(edgesToAdd);
+
+        this.vertexRepository.deleteAll();
+        this.edgeRepository.deleteAll();
+        this.graphRepository.deleteAll();
+
+        this.vertexRepository.saveAll(verticesToAdd);
+        this.edgeRepository.saveAll(edgesToAdd);
+        this.graphRepository.save(graph);
 
         //KOLEJNOSC JEST WAZNA
 
