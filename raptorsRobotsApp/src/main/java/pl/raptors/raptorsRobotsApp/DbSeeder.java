@@ -20,6 +20,7 @@ import pl.raptors.raptorsRobotsApp.repository.graphs.GraphRepository;
 import pl.raptors.raptorsRobotsApp.repository.graphs.VertexRepository;
 import pl.raptors.raptorsRobotsApp.repository.movement.*;
 import pl.raptors.raptorsRobotsApp.repository.robots.*;
+import pl.raptors.raptorsRobotsApp.repository.type.*;
 
 
 import java.io.IOException;
@@ -79,6 +80,24 @@ public class DbSeeder implements CommandLineRunner {
     private EdgeRepository edgeRepository;
     @Autowired
     private VertexRepository vertexRepository;
+    @Autowired
+    private AreaTypeRepository areaTypeRepository;
+    @Autowired
+    private ParkingTypeRepository parkingTypeRepository;
+    @Autowired
+    private PropulsionTypeRepository propulsionTypeRepository;
+    @Autowired
+    private ReviewTypeRepository reviewTypeRepository;
+    @Autowired
+    private RobotStatusRepository robotStatusRepository;
+    @Autowired
+    private RoutePriorityRepository routePriorityRepository;
+    @Autowired
+    private StandStatusRepository standStatusRepository;
+    @Autowired
+    private StandTypeRepository standTypeRepository;
+    @Autowired
+    private TaskPriorityRepository taskPriorityRepository;
 
 
     @Autowired
@@ -112,11 +131,11 @@ public class DbSeeder implements CommandLineRunner {
         this.userRepository.saveAll(usersToAdd);
 
         //GRAFY
-        Vertex vertex1 = new Vertex(17.5,25.0,"A");
-        Vertex vertex2 = new Vertex(15.0,20.0,"B");
-        Vertex vertex3 = new Vertex(20.0,20.0,"C");
-        Vertex vertex4 = new Vertex(15.0,15.0,"D");
-        Vertex vertex5 = new Vertex(20.0,15.0,"E");
+        Vertex vertex1 = new Vertex(17.5, 25.0, "A");
+        Vertex vertex2 = new Vertex(15.0, 20.0, "B");
+        Vertex vertex3 = new Vertex(20.0, 20.0, "C");
+        Vertex vertex4 = new Vertex(15.0, 15.0, "D");
+        Vertex vertex5 = new Vertex(20.0, 15.0, "E");
 
         Edge edge1 = new Edge(vertex1, vertex2, false);
         Edge edge2 = new Edge(vertex1, vertex3, false);
@@ -206,7 +225,6 @@ public class DbSeeder implements CommandLineRunner {
         TempParameters tempParameters = new TempParameters("magazyn-hala C3", 77.4, robotStatus);
 
 
-
         //czyść baze
         this.areaPointRepository.deleteAll();
         this.corridorRepository.deleteAll();
@@ -227,6 +245,16 @@ public class DbSeeder implements CommandLineRunner {
         this.behaviourRepository.deleteAll();
         this.robotTaskRepository.deleteAll();
         this.tempParametersRepository.deleteAll();
+        //type
+        this.areaTypeRepository.deleteAll();
+        this.parkingTypeRepository.deleteAll();
+        this.propulsionTypeRepository.deleteAll();
+        this.reviewTypeRepository.deleteAll();
+        this.robotStatusRepository.deleteAll();
+        this.routePriorityRepository.deleteAll();
+        this.standStatusRepository.deleteAll();
+        this.standTypeRepository.deleteAll();
+        this.taskPriorityRepository.deleteAll();
 
         //dodaj do bazy dane
         //this.movementMapRepository.save(movementMap);
@@ -251,6 +279,17 @@ public class DbSeeder implements CommandLineRunner {
         this.behaviourRepository.save(behaviour3);
         this.robotTaskRepository.save(robotTask);
         this.tempParametersRepository.save(tempParameters);
+        //type
+        this.areaTypeRepository.save(areaType);
+        this.parkingTypeRepository.save(parkingType);
+        this.propulsionTypeRepository.save(propulsionType);
+        this.reviewTypeRepository.save(reviewType);
+        this.robotStatusRepository.save(robotStatus);
+        this.routePriorityRepository.save(routePriority);
+        this.standStatusRepository.save(standStatus);
+        this.standTypeRepository.save(standType);
+        this.taskPriorityRepository.save(taskPriority);
+
     }
 
 }

@@ -9,7 +9,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.ExtraRobotElementService;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/robots/extra-elements")
 public class ExtraRobotElementController {
 

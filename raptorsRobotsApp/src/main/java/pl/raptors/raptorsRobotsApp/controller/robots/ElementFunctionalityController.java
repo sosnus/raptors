@@ -9,7 +9,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.ElementFunctionalityService;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/robots/element-functionalities")
 public class ElementFunctionalityController {
 

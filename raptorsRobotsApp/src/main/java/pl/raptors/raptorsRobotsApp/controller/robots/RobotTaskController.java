@@ -9,7 +9,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.RobotTaskService;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/robots/tasks")
 public class RobotTaskController {
 

@@ -3,7 +3,6 @@ package pl.raptors.raptorsRobotsApp.service.type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.type.StandStatus;
-import pl.raptors.raptorsRobotsApp.domain.type.StandStatus;
 import pl.raptors.raptorsRobotsApp.repository.type.StandStatusRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 

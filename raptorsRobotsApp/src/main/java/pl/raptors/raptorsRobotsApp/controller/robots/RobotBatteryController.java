@@ -9,7 +9,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.RobotBatteryService;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/robots/batteries")
 public class RobotBatteryController {
 

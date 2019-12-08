@@ -9,7 +9,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.TempParametersService;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/robots/temp-parameters")
 public class TempParametersController {
 
