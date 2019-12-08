@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class MapAreaService implements CRUDService<MapArea> {
+
     @Autowired
     MapAreaRepository repository;
 

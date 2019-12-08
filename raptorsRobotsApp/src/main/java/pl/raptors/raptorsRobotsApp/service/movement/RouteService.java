@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class RouteService implements CRUDService<Route> {
+
     @Autowired
     RouteRepository repository;
 

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementMap;
-import pl.raptors.raptorsRobotsApp.domain.movement.MovementPath;
 import pl.raptors.raptorsRobotsApp.repository.movement.MovementMapRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
@@ -15,6 +14,7 @@ import java.util.List;
 
 @Service
 public class MovementMapService implements CRUDService<MovementMap> {
+
     @Autowired
     private MovementMapRepository repository;
 

@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class MovementPathService implements CRUDService<MovementPath> {
+
     @Autowired
     MovementPathRepository repository;
 
