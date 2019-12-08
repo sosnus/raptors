@@ -8,7 +8,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/types/stand-types")
+@RequestMapping("/type/stand-types")
 public class StandTypeController {
 
     private StandTypeService service;
