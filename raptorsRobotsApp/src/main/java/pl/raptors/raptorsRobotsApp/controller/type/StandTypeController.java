@@ -2,7 +2,7 @@ package pl.raptors.raptorsRobotsApp.controller.type;
 
 import org.springframework.web.bind.annotation.*;
 import pl.raptors.raptorsRobotsApp.domain.type.StandType;
-import pl.raptors.raptorsRobotsApp.service.StandTypeService;
+import pl.raptors.raptorsRobotsApp.service.type.StandTypeService;
 
 import javax.validation.Valid;
 import java.util.List;
