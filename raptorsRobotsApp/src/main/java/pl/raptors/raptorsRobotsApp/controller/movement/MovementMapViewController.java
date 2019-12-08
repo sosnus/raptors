@@ -25,15 +25,15 @@ public class MovementMapViewController {
     @PostMapping("/add")
     //@PostMapping("/maps/add")
     public String addMovementMap(@RequestParam("name") String name, @RequestParam("mapImage") MultipartFile mapImage, Model model) throws IOException {
-        String id = movementMapService.addMovementMap(name, mapImage);
-        return "redirect:/movement/maps/" + id;
+        MovementMap map = movementMapService.addMovementMap(name, mapImage);
+        return "redirect:/movement/maps/" + map.getId();
         /* return "redirect:/maps/"+id;*/
     }
 
     @GetMapping("/{id}")
     //@GetMapping("/maps/{id}")
     public String getMovementMap(@PathVariable String id, Model model) throws IOException{
-        MovementMap movementMap = movementMapService.getMovementMap(id);
+        MovementMap movementMap = movementMapService.getOne(id);
         model.addAttribute("name", movementMap.getName());
         model.addAttribute("mapImage", Base64.getEncoder().encodeToString(PGMIO.pgm2jpg(movementMap.getMapImage().getData())));
         return "movementMap";
