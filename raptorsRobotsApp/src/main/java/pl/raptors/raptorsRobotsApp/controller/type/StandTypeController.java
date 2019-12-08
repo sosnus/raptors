@@ -22,6 +22,11 @@ public class StandTypeController {
         return service.getAll();
     }
 
+    @GetMapping("/{id}")
+    public StandType getOne(@PathVariable String id){
+        return service.getOne(id);
+    }
+
     @PostMapping("/add")
     public StandType add(@RequestBody @Valid StandType standType) {
         return service.addOne(standType);
