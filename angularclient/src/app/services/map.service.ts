@@ -11,7 +11,7 @@ export class MapService {
   private readonly usersUrl: string;
 
   constructor(private http: HttpClient) {
-    this.usersUrl = 'http://localhost:8080/movement/maps/';
+    this.usersUrl = 'http://localhost:8080/movement/maps/jpg/';
   }
 
   public getMap(id: string): Observable<any> {
