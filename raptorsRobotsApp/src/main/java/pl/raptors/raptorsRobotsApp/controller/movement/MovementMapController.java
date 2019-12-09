@@ -1,42 +1,50 @@
 package pl.raptors.raptorsRobotsApp.controller.movement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementMap;
 import pl.raptors.raptorsRobotsApp.service.movement.MovementMapService;
+import pl.raptors.raptorsRobotsApp.service.pgm.PGMIO;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Base64;
+import java.util.List;
 
 @Controller
-@RequestMapping(value = "/movement/maps", method = {RequestMethod.GET, RequestMethod.POST})
+@RequestMapping(value = "/movement/maps")
 public class MovementMapController {
+
     @Autowired
-    MovementMapService movementMapService;
+    MovementMapService service;
+
+    @GetMapping("/all")
+    public List<MovementMap> getAll() {
+        return service.getAll();
+    }
 
     @PostMapping("/add")
-    //@PostMapping("/maps/add")
-    public String addMovementMap(@RequestParam("name") String name, @RequestParam("mapImage") MultipartFile mapImage, Model model) throws IOException {
-        String id = movementMapService.addMovementMap(name,mapImage);
-        return "redirect:/movement/maps/"+id;
-       /* return "redirect:/maps/"+id;*/
+    public MovementMap add(@RequestBody @Valid MovementMap movementMap) {
+        return service.addOne(movementMap);
     }
 
     @GetMapping("/{id}")
-    //@GetMapping("/maps/{id}")
-    public String getMovementMap (@PathVariable String id, Model model) {
-        MovementMap movementMap= movementMapService.getMovementMap(id);
-        model.addAttribute("name",movementMap.getName());
-        model.addAttribute("mapImage", Base64.getEncoder().encodeToString(movementMap.getMapImage().getData()));
-        return "movementMap";
+    public MovementMap getOne(@PathVariable String id) {
+        return service.getOne(id);
     }
 
+    @GetMapping(value = "/jpg/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody
+    byte[] getImage(@PathVariable String id, HttpServletResponse response) throws IOException {
+        MovementMap map = service.getOne(id);
+        response.addHeader("map-name",map.getName());
+        return PGMIO.pgm2jpg(map.getMapImage().getData());
+    }
 
-    @GetMapping("/upload")
-    public String uploadMovementMap(Model model) {
-        return "uploadMovementMap";
+    @DeleteMapping("/delete")
+    public void delete(@RequestBody @Valid MovementMap movementMap) {
+        service.deleteOne(movementMap);
     }
 }

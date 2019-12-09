@@ -1,4 +1,4 @@
-package pl.raptors.raptorsRobotsApp.domain;
+package pl.raptors.raptorsRobotsApp.domain.graphs;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,14 +7,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @NoArgsConstructor
 @Data
-@Document(collection = "roles")
-public class Role {
+@Document(collection = "vertices")
+public class Vertex {
 
     @Id
     private String id;
+    private Double posX;
+    private Double posY;
     private String name;
 
-    public Role(String name) {
+    public Vertex(Double posX, Double posY, String name) {
+        this.posX = posX;
+        this.posY = posY;
         this.name = name;
     }
 }
