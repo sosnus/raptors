@@ -65,8 +65,6 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     private MovementPathPointRepository movementPathPointRepository;
     @Autowired
-    private PathPointRepository pathPointRepository;
-    @Autowired
     private RouteRepository routeRepository;
     @Autowired
     private BehaviourRepository behaviourRepository;
@@ -199,8 +197,6 @@ public class DbSeeder implements CommandLineRunner {
 
         MovementPathPoint movementPathPoint = new MovementPathPoint(movementPath, 20, 43.2, 50.2);
 
-        PathPoint pathPoint = new PathPoint(movementPath, 1, 10.05, 355.124);
-
         RoutePriority routePriority = new RoutePriority("ważne", 1);
 
         Route route = new Route(movementMap, movementPath, corridor, "najszybsza główna", stand2, stand, routePriority);
@@ -240,7 +236,6 @@ public class DbSeeder implements CommandLineRunner {
         this.robotRepository.deleteAll();
         this.robotReviewRepository.deleteAll();
         this.movementPathPointRepository.deleteAll();
-        this.pathPointRepository.deleteAll();
         this.routeRepository.deleteAll();
         this.behaviourRepository.deleteAll();
         this.robotTaskRepository.deleteAll();
@@ -272,7 +267,6 @@ public class DbSeeder implements CommandLineRunner {
         this.standRepository.save(stand);
         this.standRepository.save(stand2);
         this.movementPathPointRepository.save(movementPathPoint);
-        this.pathPointRepository.save(pathPoint);
         this.routeRepository.save(route);
         this.behaviourRepository.save(behaviour);
         this.behaviourRepository.save(behaviour2);
