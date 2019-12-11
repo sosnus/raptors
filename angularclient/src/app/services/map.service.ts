@@ -8,13 +8,13 @@ import { Map } from '../model/Map';
 })
 export class MapService {
 
-  private readonly usersUrl: string;
+  private readonly mapURL: string;
 
   constructor(private http: HttpClient) {
-    this.usersUrl = 'http://localhost:8080/movement/maps/jpg/';
+    this.mapURL = 'http://localhost:8080/movement/maps/jpg/';
   }
 
   public getMap(id: string): Observable<any> {
-    return this.http.get<Map>(this.usersUrl + id);
+    return this.http.get(this.mapURL + id,{responseType: 'text'})
   }
 }

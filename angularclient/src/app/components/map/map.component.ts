@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet-rotatedmarker';
+import {MapService} from "../../services/map.service";
 
 
 @Component({
@@ -21,38 +22,34 @@ export class MapComponent implements OnInit {
   private map;
   private imageURL = './assets/maps/sim_map.jpg';
 
-  constructor() {
+  constructor(private mapService: MapService) {
   }
 
   ngOnInit() {
-    // this.mapService.getMap('1').subscribe(
-    //   data => {
-    //     this.imageURL = this.parseToJpeg(data);
-    //     this.getImageSize(this.imageURL).then(
-    //       (imageSize: number[]) => {
-    //         this.imageResolution = imageSize[0];
-    //
-    //       }
-    //     );
-    //   }
-    // );
-    this.initMap();
-    const robotsArray = [this.robotPosXY];
-    this.createRobotMarkers(robotsArray, 0.01);
+
+    this.mapService.getMap('5de6d25552cace719bf775cf').subscribe(
+      data => {
+        this.dataLoaded = true;
+        this.imageURL = this.parseToJpeg(data);
+
+        this.initMap();
+
+        const img = new Image;
+        img.src =  this.imageURL;
+        img.onload = () => {
+          this.imageResolution = img.width;
+          console.log(this.imageResolution)
+          const robotsArray = [this.robotPosXY];
+          this.createRobotMarkers(robotsArray, 0.01);
+        }
+
+      }
+    );
     //setTimeout(() => this.updateRobotMarkerPositions([[100, 992]], 0.01), 3000);
   }
 
   private parseToJpeg(image: any): string {
-    const base64Data = btoa(image);
-    return 'data:image/jpg;base64,' + base64Data;
-  }
-
-  private getImageSize(fileURL: string): Promise<number[]> {
-    const img = new Image;
-    img.src = fileURL;
-    return new Promise(img.onload = () => {
-      return [img.width, img.height];
-    });
+    return 'data:image/jpg;base64,' + image;
   }
 
   private initMap(): void {
