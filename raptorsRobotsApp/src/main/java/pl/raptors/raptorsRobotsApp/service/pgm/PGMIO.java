@@ -1,4 +1,4 @@
-package pl.raptors.raptorsRobotsApp.service.movement;
+package pl.raptors.raptorsRobotsApp.service.pgm;
 /*
  * The MIT License (MIT)
  *
@@ -23,6 +23,8 @@ package pl.raptors.raptorsRobotsApp.service.movement;
  * SOFTWARE.
  */
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +64,7 @@ public class PGMIO {
      * @return two-dimensional byte array representation of the image
      * @throws IOException
      */
-    public static int[][] read(final byte[] bytes) throws IOException {
+    private static int[][] read(final byte[] bytes) throws IOException {
         final InputStream stream = new ByteArrayInputStream(bytes);
         try {
             if (!next(stream).equals(MAGIC))
@@ -144,7 +146,7 @@ public class PGMIO {
      * @throws IllegalArgumentException
      * @throws IOException
      */
-    public static void write(final int[][] image, final File file, final int maxval) throws IOException {
+    private static void write(final int[][] image, final File file, final int maxval) throws IOException {
         if (maxval > MAXVAL)
             throw new IllegalArgumentException("The maximum gray value cannot exceed " + MAXVAL + ".");
         final BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
@@ -168,6 +170,24 @@ public class PGMIO {
         } finally {
             stream.close();
         }
+    }
+
+    public static byte[] pgm2jpg(byte[] bytes) throws IOException {
+        int[][] pixels = PGMIO.read(bytes);
+
+        BufferedImage image = new BufferedImage(pixels.length, pixels[0].length, BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < pixels.length; y++) {
+            for (int x = 0; x < pixels[0].length; x++) {
+                int value = pixels[y][x] << 16 | pixels[y][x] << 8 | pixels[y][x];
+                image.setRGB(x, y, value);
+            }
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write( image, "jpg", baos );
+        baos.flush();
+        byte[] imageInByte = baos.toByteArray();
+        baos.close();
+        return imageInByte;
     }
 
 }

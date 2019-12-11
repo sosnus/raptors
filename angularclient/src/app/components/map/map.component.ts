@@ -10,6 +10,7 @@ import 'leaflet-rotatedmarker';
 })
 export class MapComponent implements OnInit {
 
+  dataLoaded = false;
 
   //Example data
   //Leaflet accepts coordinates in [y,x]
