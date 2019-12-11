@@ -11,10 +11,12 @@ import pl.raptors.raptorsRobotsApp.service.pgm.PGMIO;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = "/movement/maps")
+@CrossOrigin
 public class MovementMapController {
 
     @Autowired
@@ -35,12 +37,12 @@ public class MovementMapController {
         return service.getOne(id);
     }
 
-    @GetMapping(value = "/jpg/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/jpg/{id}")
     public @ResponseBody
-    byte[] getImage(@PathVariable String id, HttpServletResponse response) throws IOException {
+    String getImage(@PathVariable String id, HttpServletResponse response) throws IOException {
         MovementMap map = service.getOne(id);
         response.addHeader("map-name",map.getName());
-        return PGMIO.pgm2jpg(map.getMapImage().getData());
+        return Base64.getEncoder().encodeToString(PGMIO.pgm2jpg(map.getMapImage().getData()));
     }
 
     @DeleteMapping("/delete")
