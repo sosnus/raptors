@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Arrays;
+import java.util.List;
+
 @NoArgsConstructor
 @Data
 @Document(collection = "edges")
@@ -20,5 +23,9 @@ public class Edge {
         this.vertexA = vertexA;
         this.vertexB = vertexB;
         this.biDirected = bidirected;
+    }
+
+    public List<Vertex> getVerticesList(){
+        return  Arrays.asList(this.vertexA, this.vertexB);
     }
 }

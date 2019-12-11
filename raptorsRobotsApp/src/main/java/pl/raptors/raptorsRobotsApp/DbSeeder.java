@@ -21,6 +21,7 @@ import pl.raptors.raptorsRobotsApp.repository.graphs.VertexRepository;
 import pl.raptors.raptorsRobotsApp.repository.movement.*;
 import pl.raptors.raptorsRobotsApp.repository.robots.*;
 import pl.raptors.raptorsRobotsApp.repository.type.*;
+import pl.raptors.raptorsRobotsApp.service.graphs.GraphService;
 
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-//bedzie to klasa wstawiająca do bazy przykladowego uzytkownika
+//klasa wstawiająca do bazy wstepne przykladowe dane
 @Component
 public class DbSeeder implements CommandLineRunner {
     @Autowired
@@ -96,6 +97,9 @@ public class DbSeeder implements CommandLineRunner {
     private StandTypeRepository standTypeRepository;
     @Autowired
     private TaskPriorityRepository taskPriorityRepository;
+
+    @Autowired
+    private GraphService graphService;
 
 
     @Autowired
@@ -284,6 +288,7 @@ public class DbSeeder implements CommandLineRunner {
         this.standTypeRepository.save(standType);
         this.taskPriorityRepository.save(taskPriority);
 
+        //this.graphService.deleteOne(graph); //just for testing purpose - keep commented
     }
 
 }
