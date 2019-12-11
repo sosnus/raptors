@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/robots/robots")
+@RequestMapping("/robots")
 public class RobotController {
 
     @Autowired
