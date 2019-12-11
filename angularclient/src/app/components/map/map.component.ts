@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
+/*
 import 'leaflet-rotatedmarker';
+*/
 import {MapService} from "../../services/map.service";
 
 
@@ -69,6 +71,7 @@ export class MapComponent implements OnInit {
         robot[0] * (1 / resolution) * (800 / this.imageResolution)];
       this.robotMarkers.push(
         L.marker(position, {icon: markerIcon}).addTo(this.map)
+        /*L.marker(position, {icon: markerIcon}).on('click', this.markerOnClick.bind(this)).addTo(this.map));*/
       )
     })
   }
@@ -81,4 +84,29 @@ export class MapComponent implements OnInit {
       this.robotMarkers[i].setLatLng(position);
     }
   }
+
+  /*private markerOnClick(e) {
+    this.robotOptions([[this.robotPosXY[0]+1, this.robotPosXY[1]+1]], 0.01);
+    this.robotOptions([[this.robotPosXY[0]+1, this.robotPosXY[1]]], 0.01);
+    this.robotOptions([[this.robotPosXY[0]+1, this.robotPosXY[1]-1]], 0.01);
+  }
+
+  private robotOptions(robots: number[][], resolution: number) {
+    if(this.clickMarker < 3){
+      const markerIcon = L.icon({iconUrl: '/assets/icons/drone.png', iconSize: [35,35]});
+      for (let i = 0; i < robots.length; i++) {
+        const position = [
+          robots[i][1] * (1 / resolution) * (800 / this.imageResolution),
+          robots[i][0] * (1 / resolution) * (800 / this.imageResolution)];
+        this.robotMarkers.push(
+          L.marker(position, {icon: markerIcon}).bindPopup('Uruchom opcje').openPopup().addTo(this.map));
+      }
+      this.clickMarker = this.clickMarker + 1;
+    }
+
+    if(this.clickMarker >= 3){
+      //remove additional markers (options icon)
+    }
+  }*/
+
 }
