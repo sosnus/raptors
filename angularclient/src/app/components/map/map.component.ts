@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 /*
 import 'leaflet-rotatedmarker';
@@ -16,33 +16,54 @@ export class MapComponent implements OnInit {
   dataLoaded = false;
 
   //Example data
+  private robots = [
+    {
+      'id': 'SomeID1',
+      'x': '3.05336356163',
+      'y': '2.6747405529',
+      'rot':'-90.2808007761'
+    },
+    {
+      'id': 'SomeID2',
+      'x': '2.99178433418',
+      'y': '-2.6739563942',
+      'rot':'179.770314899'
+    },
+    {
+      'id': 'SomeID3',
+      'x': '-1.70923388004',
+      'y': '-2.60913944244',
+      'rot':'88.1495543791'
+    },
+    {
+      'id': 'SomeID4',
+      'x': '-1.43146789074',
+      'y': '2.68175768852',
+      'rot':'0.183157256614'
+    }
+  ];
   //Leaflet accepts coordinates in [y,x]
-  private robotPosXY = [19.84/2, 19.84/2];
   private robotMarkers = [];
-  private imageResolution = 1984; //temp, should be 1;
+  private imageResolution;
 
   private map;
-  private imageURL = './assets/maps/sim_map.jpg';
+  private imageURL = '';
 
   constructor(private mapService: MapService) {
   }
 
   ngOnInit() {
-
-    this.mapService.getMap('5de6d25552cace719bf775cf').subscribe(
+        this.mapService.getMap('5de6d25552cace719bf775cf').subscribe(
       data => {
         this.dataLoaded = true;
         this.imageURL = this.parseToJpeg(data);
-
         this.initMap();
 
         const img = new Image;
-        img.src =  this.imageURL;
+        img.src = this.imageURL;
         img.onload = () => {
           this.imageResolution = img.width;
-          console.log(this.imageResolution)
-          const robotsArray = [this.robotPosXY];
-          this.createRobotMarkers(robotsArray, 0.01);
+          this.createRobotMarkers(this.robots, 0.01);
         }
 
       }
@@ -63,24 +84,33 @@ export class MapComponent implements OnInit {
     this.map.fitBounds(imageBounds);
   }
 
-  private createRobotMarkers(robots: number[][], resolution: number) {
+  private createRobotMarkers(robots, resolution: number) {
     robots.forEach(robot => {
-      const markerIcon = L.icon({iconUrl: '/assets/icons/drone.png', iconSize: [35,35]});
+      const markerIcon = L.icon({iconUrl: '/assets/icons/robot_icon.png', iconSize: [36, 36], iconAnchor: [0, 0]});
       const position = [
-        robot[1] * (1 / resolution) * (800 / this.imageResolution),
-        robot[0] * (1 / resolution) * (800 / this.imageResolution)];
-      this.robotMarkers.push(
-        L.marker(position, {icon: markerIcon}).addTo(this.map)
+        (Number(robot.y)+(this.imageResolution*resolution)/2) * (1 / resolution) * (800 / this.imageResolution),
+        (Number(robot.x)+(this.imageResolution*resolution)/2) * (1 / resolution) * (800 / this.imageResolution),
+       ];
+      const marker = L.circle(position, {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5,
+        radius: 10
+      }).addTo(this.map);
+      marker.bindPopup("Placeholder:\n Robot Details");
+      this.robotMarkers.push(marker);
+
+      // L.marker(position, {icon: markerIcon}).addTo(this.map)
         /*L.marker(position, {icon: markerIcon}).on('click', this.markerOnClick.bind(this)).addTo(this.map));*/
-      )
+
     })
   }
 
   private updateRobotMarkerPositions(robots: number[][], resolution: number) {
     for (let i = 0; i < robots.length; i++) {
       const position = [
-        robots[i][1] * (1 / resolution) * (800 / this.imageResolution),
-        robots[i][0] * (1 / resolution) * (800 / this.imageResolution)];
+        (robots[i][1]+(this.imageResolution*resolution)/2) * (1 / resolution) * (800 / this.imageResolution),
+        (robots[i][0]+(this.imageResolution*resolution)/2) * (1 / resolution) * (800 / this.imageResolution)];
       this.robotMarkers[i].setLatLng(position);
     }
   }
