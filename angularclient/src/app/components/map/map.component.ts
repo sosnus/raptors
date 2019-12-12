@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 /*
 import 'leaflet-rotatedmarker';
@@ -17,7 +17,7 @@ export class MapComponent implements OnInit {
 
   //Example data
   //Leaflet accepts coordinates in [y,x]
-  private robotPosXY = [19.84/2, 19.84/2];
+  private robotPosXY = [9.92, 9.92];
   private robotMarkers = [];
   private imageResolution = 1984; //temp, should be 1;
 
@@ -28,6 +28,7 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getRobotPosition(3.05336356163, 2.6747405529);
 
     this.mapService.getMap('5de6d25552cace719bf775cf').subscribe(
       data => {
@@ -37,7 +38,7 @@ export class MapComponent implements OnInit {
         this.initMap();
 
         const img = new Image;
-        img.src =  this.imageURL;
+        img.src = this.imageURL;
         img.onload = () => {
           this.imageResolution = img.width;
           console.log(this.imageResolution)
@@ -65,7 +66,7 @@ export class MapComponent implements OnInit {
 
   private createRobotMarkers(robots: number[][], resolution: number) {
     robots.forEach(robot => {
-      const markerIcon = L.icon({iconUrl: '/assets/icons/drone.png', iconSize: [35,35]});
+      const markerIcon = L.icon({iconUrl: '/assets/icons/drone.png', iconSize: [35, 35], iconAnchor: [0.0]});
       const position = [
         robot[1] * (1 / resolution) * (800 / this.imageResolution),
         robot[0] * (1 / resolution) * (800 / this.imageResolution)];
@@ -83,6 +84,10 @@ export class MapComponent implements OnInit {
         robots[i][0] * (1 / resolution) * (800 / this.imageResolution)];
       this.robotMarkers[i].setLatLng(position);
     }
+  }
+
+  private getRobotPosition(posX: number, posY: number) {
+    this.robotPosXY = [9.92 + posY, 9.92 + posX];
   }
 
   /*private markerOnClick(e) {
