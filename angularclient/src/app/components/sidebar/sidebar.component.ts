@@ -34,4 +34,5 @@ export class SidebarComponent implements OnInit {
   rotateIcon(elementID: string): void {
     document.getElementById(elementID).classList.toggle('down');
   }
+
 }

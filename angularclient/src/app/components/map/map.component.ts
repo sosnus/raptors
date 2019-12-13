@@ -15,22 +15,24 @@ export class MapComponent implements OnInit {
 
   dataLoaded = false;
 
+  private robotStatusLayer = L.featureGroup();
+
   //Example data
   private robots = [
     {
-      'id': 'SomeID1',
+      'id': '0',
       'x': '3.05336356163',
       'y': '2.6747405529',
       'rot':'-90.2808007761'
     },
     {
-      'id': 'SomeID2',
+      'id': '1',
       'x': '2.99178433418',
       'y': '-2.6739563942',
       'rot':'179.770314899'
     },
     {
-      'id': 'SomeID3',
+      'id': '2',
       'x': '-1.70923388004',
       'y': '-2.60913944244',
       'rot':'88.1495543791'
@@ -42,6 +44,16 @@ export class MapComponent implements OnInit {
       'rot':'0.183157256614'
     }
   ];
+
+  //filters for the map
+  private robotStatus = {
+    Online: this.robotStatusLayer,
+
+    'Warning!': L.tileLayer.wms(),
+
+    'Error!': L.tileLayer.wms(),
+  };
+
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
   private imageResolution;
@@ -76,12 +88,14 @@ export class MapComponent implements OnInit {
   }
 
   private initMap(): void {
+
     const imageBounds = [[0, 0], [800, 800]];
     this.map = L.map('map', {
       crs: L.CRS.Simple
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
     this.map.fitBounds(imageBounds);
+    L.control.layers(this.robotStatus).addTo(this.map);
   }
 
   private createRobotMarkers(robots, resolution: number) {
@@ -96,9 +110,12 @@ export class MapComponent implements OnInit {
         fillColor: '#f03',
         fillOpacity: 0.5,
         radius: 10
-      }).addTo(this.map);
+      })/*.addTo(this.map)*/;
+      var currentShelter = marker;
+      currentShelter.addTo(this.robotStatusLayer);
       marker.bindPopup("Placeholder:\n Robot Details");
       this.robotMarkers.push(marker);
+      this.robotStatusLayer.addTo(this.map);
 
       // L.marker(position, {icon: markerIcon}).addTo(this.map)
         /*L.marker(position, {icon: markerIcon}).on('click', this.markerOnClick.bind(this)).addTo(this.map));*/
@@ -114,29 +131,4 @@ export class MapComponent implements OnInit {
       this.robotMarkers[i].setLatLng(position);
     }
   }
-
-  /*private markerOnClick(e) {
-    this.robotOptions([[this.robotPosXY[0]+1, this.robotPosXY[1]+1]], 0.01);
-    this.robotOptions([[this.robotPosXY[0]+1, this.robotPosXY[1]]], 0.01);
-    this.robotOptions([[this.robotPosXY[0]+1, this.robotPosXY[1]-1]], 0.01);
-  }
-
-  private robotOptions(robots: number[][], resolution: number) {
-    if(this.clickMarker < 3){
-      const markerIcon = L.icon({iconUrl: '/assets/icons/drone.png', iconSize: [35,35]});
-      for (let i = 0; i < robots.length; i++) {
-        const position = [
-          robots[i][1] * (1 / resolution) * (800 / this.imageResolution),
-          robots[i][0] * (1 / resolution) * (800 / this.imageResolution)];
-        this.robotMarkers.push(
-          L.marker(position, {icon: markerIcon}).bindPopup('Uruchom opcje').openPopup().addTo(this.map));
-      }
-      this.clickMarker = this.clickMarker + 1;
-    }
-
-    if(this.clickMarker >= 3){
-      //remove additional markers (options icon)
-    }
-  }*/
-
 }
