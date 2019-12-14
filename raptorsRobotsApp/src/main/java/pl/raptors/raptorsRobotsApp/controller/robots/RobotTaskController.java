@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/robots/tasks")
+@CrossOrigin
 public class RobotTaskController {
 
     @Autowired

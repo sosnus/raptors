@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/robots/models")
+@CrossOrigin
 public class RobotModelController {
 
     @Autowired

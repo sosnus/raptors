@@ -6,11 +6,15 @@ import org.springframework.web.bind.annotation.*;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
 import pl.raptors.raptorsRobotsApp.service.robots.RobotService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
 @RequestMapping("/robots/robots")
+@CrossOrigin
 public class RobotController {
 
     @Autowired
@@ -29,6 +33,14 @@ public class RobotController {
     @GetMapping("/{id}")
     public Robot getOne(@PathVariable String id) {
         return robotService.getOne(id);
+    }
+
+    @GetMapping("/ip/{id}")
+    public @ResponseBody
+    String getIP(@PathVariable String id, HttpServletResponse response) throws IOException {
+        Robot robot = robotService.getOne(id);
+        response.addHeader("robot-name",robot.getRobotIp());
+        return robot.getRobotIp();
     }
 
     @DeleteMapping("/delete")
