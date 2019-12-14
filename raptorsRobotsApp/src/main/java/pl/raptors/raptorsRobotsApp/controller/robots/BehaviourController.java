@@ -27,7 +27,7 @@ public class BehaviourController {
     }
 
     @GetMapping("/{id}")
-    public Behaviour getOne(@PathVariable String id) {
+        public Behaviour getOne(@PathVariable String id) {
         return behaviourService.getOne(id);
     }
 

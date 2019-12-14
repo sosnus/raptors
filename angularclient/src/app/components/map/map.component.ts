@@ -15,7 +15,7 @@ import {RobotService} from "../../services/robot.service";
 export class MapComponent implements OnInit {
 
   dataLoaded = false;
-  robotDataloaded=false;
+  robotDataloaded = false;
 
   private robotStatusLayer = L.featureGroup();
 
@@ -25,27 +25,28 @@ export class MapComponent implements OnInit {
       'id': '0',
       'x': '3.05336356163',
       'y': '2.6747405529',
-      'rot':'-90.2808007761'
+      'rot': '-90.2808007761'
     },
     {
       'id': '1',
       'x': '2.99178433418',
       'y': '-2.6739563942',
-      'rot':'179.770314899'
+      'rot': '179.770314899'
     },
     {
       'id': '2',
       'x': '-1.70923388004',
       'y': '-2.60913944244',
-      'rot':'88.1495543791'
+      'rot': '88.1495543791'
     },
     {
       'id': 'SomeID4',
       'x': '-1.43146789074',
       'y': '2.68175768852',
-      'rot':'0.183157256614'
+      'rot': '0.183157256614'
     }
   ];
+  private mapID = '5de6d25552cace719bf775cf';
 
   //filters for the map
   private robotStatus = {
@@ -62,38 +63,45 @@ export class MapComponent implements OnInit {
 
   private map;
   private imageURL = '';
-  private robotIP ='';
+  private robotIP = '';
 
   constructor(private mapService: MapService, private robotService: RobotService) {
   }
 
   ngOnInit() {
-        this.mapService.getMap('5de6d25552cace719bf775cf').subscribe(
-      data => {
-        this.dataLoaded = true;
-        this.imageURL = this.parseToJpeg(data);
-        this.initMap();
-
-
-        this.robotService.getRobot('5df4e2a7e5d50b005169f8fd').subscribe(
-          rob => {
-            this.robotDataloaded = true;
-            this.robotIP = rob;
-            console.log("Pobieram IP robota: "+this.robotIP);
-          }
-        );
-
-        const img = new Image;
-        img.src = this.imageURL;
-        img.onload = () => {
-          this.imageResolution = img.width;
-          this.createRobotMarkers(this.robots, 0.01);
+    if (localStorage.getItem(this.mapID) !== null) {
+      this.afterMapLoaded(localStorage.getItem(this.mapID))
+    } else {
+      this.mapService.getMap(this.mapID).subscribe(
+        data => {
+          this.afterMapLoaded(data);
+          localStorage.setItem(this.mapID, data)
         }
+      );
+    }
+    //setTimeout(() => this.updateRobotMarkerPositions([[100, 992]], 0.01), 3000);
+  }
 
+  private afterMapLoaded(data: String) {
+    this.dataLoaded = true;
+    this.imageURL = this.parseToJpeg(data);
+    this.initMap();
+
+
+    this.robotService.getRobot('5df4d91c68dd00790d601671').subscribe(
+      rob => {
+        this.robotDataloaded = true;
+        this.robotIP = rob;
+        console.log("Pobieram IP robota: " + this.robotIP);
       }
     );
 
-    //setTimeout(() => this.updateRobotMarkerPositions([[100, 992]], 0.01), 3000);
+    const img = new Image;
+    img.src = this.imageURL;
+    img.onload = () => {
+      this.imageResolution = img.width;
+      this.createRobotMarkers(this.robots, 0.01);
+    }
   }
 
   private parseToJpeg(image: any): string {
@@ -115,9 +123,9 @@ export class MapComponent implements OnInit {
     robots.forEach(robot => {
       const markerIcon = L.icon({iconUrl: '/assets/icons/robot_icon.png', iconSize: [36, 36], iconAnchor: [0, 0]});
       const position = [
-        (Number(robot.y)+(this.imageResolution*resolution)/2) * (1 / resolution) * (800 / this.imageResolution),
-        (Number(robot.x)+(this.imageResolution*resolution)/2) * (1 / resolution) * (800 / this.imageResolution),
-       ];
+        (Number(robot.y) + (this.imageResolution * resolution) / 2) * (1 / resolution) * (800 / this.imageResolution),
+        (Number(robot.x) + (this.imageResolution * resolution) / 2) * (1 / resolution) * (800 / this.imageResolution),
+      ];
       const marker = L.circle(position, {
         color: 'red',
         fillColor: '#f03',
@@ -131,7 +139,7 @@ export class MapComponent implements OnInit {
       this.robotStatusLayer.addTo(this.map);
 
       // L.marker(position, {icon: markerIcon}).addTo(this.map)
-        /*L.marker(position, {icon: markerIcon}).on('click', this.markerOnClick.bind(this)).addTo(this.map));*/
+      /*L.marker(position, {icon: markerIcon}).on('click', this.markerOnClick.bind(this)).addTo(this.map));*/
 
     })
   }
@@ -139,8 +147,8 @@ export class MapComponent implements OnInit {
   private updateRobotMarkerPositions(robots: number[][], resolution: number) {
     for (let i = 0; i < robots.length; i++) {
       const position = [
-        (robots[i][1]+(this.imageResolution*resolution)/2) * (1 / resolution) * (800 / this.imageResolution),
-        (robots[i][0]+(this.imageResolution*resolution)/2) * (1 / resolution) * (800 / this.imageResolution)];
+        (robots[i][1] + (this.imageResolution * resolution) / 2) * (1 / resolution) * (800 / this.imageResolution),
+        (robots[i][0] + (this.imageResolution * resolution) / 2) * (1 / resolution) * (800 / this.imageResolution)];
       this.robotMarkers[i].setLatLng(position);
     }
   }
