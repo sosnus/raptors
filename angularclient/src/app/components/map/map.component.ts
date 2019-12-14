@@ -78,7 +78,7 @@ export class MapComponent implements OnInit {
         this.robotService.getRobot('5df4d91c68dd00790d601671').subscribe(
           rob => {
             this.robotDataloaded = true;
-            this.robotIP = rob.toString();
+            this.robotIP = rob;
             console.log("Pobieram IP robota: "+this.robotIP);
           }
         );
