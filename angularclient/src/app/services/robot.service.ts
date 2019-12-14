@@ -12,7 +12,7 @@ export class RobotService {
   private readonly robotIP: string;
 
   constructor(private http: HttpClient) {
-    this.robotIP = 'http://localhost:8080/robots/models/ip/';
+    this.robotIP = 'http://localhost:8080/robots/robots/ip';
   }
 
   public getRobot(id: string): Observable<any> {

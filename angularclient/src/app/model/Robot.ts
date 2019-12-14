@@ -1,6 +1,7 @@
 export class Robot{
   id: string;
   name: string;
+  ip: string
   //maxLiftingCapacity: string;
   //maxVelocity: string;
   //length: string;
