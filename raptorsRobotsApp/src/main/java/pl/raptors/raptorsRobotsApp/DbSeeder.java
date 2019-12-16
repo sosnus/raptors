@@ -153,9 +153,11 @@ public class DbSeeder implements CommandLineRunner {
         this.edgeRepository.deleteAll();
         this.graphRepository.deleteAll();
 
-        this.vertexRepository.saveAll(verticesToAdd);
-        this.edgeRepository.saveAll(edgesToAdd);
-        this.graphRepository.save(graph);
+        //this.vertexRepository.saveAll(verticesToAdd);
+        //this.edgeRepository.saveAll(edgesToAdd);
+        //this.graphRepository.save(graph);
+        this.graphService.addOne(graph);
+
 
         //KOLEJNOSC JEST WAZNA
 

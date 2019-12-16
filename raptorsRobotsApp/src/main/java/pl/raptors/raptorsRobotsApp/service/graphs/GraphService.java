@@ -24,6 +24,12 @@ public class GraphService implements CRUDService<Graph> {
 
     @Override
     public Graph addOne(Graph graph) {
+        List<Edge> edgesList = graph.getEdges();
+        for (Edge e:edgesList) {
+            List<Vertex> vertexList = e.getVerticesList();
+            vertexRepository.saveAll(vertexList);
+        }
+        edgeRepository.saveAll(edgesList);
         return graphRepository.save(graph);
     }
 
@@ -39,6 +45,12 @@ public class GraphService implements CRUDService<Graph> {
 
     @Override
     public Graph updateOne(Graph graph) {
+        List<Edge> edgesList = graph.getEdges();
+        for (Edge e:edgesList) {
+            List<Vertex> vertexList = e.getVerticesList();
+            vertexRepository.saveAll(vertexList);
+        }
+        edgeRepository.saveAll(edgesList);
         return graphRepository.save(graph);
     }
 
