@@ -5,13 +5,13 @@ Dotychczas stworzone modele i i ch aktualizacja (update: 28.11.2019):
 3. Punkty korytarza CorridorPoints
 4. korytarz Corridor
 5. Obszar na mapie MapArea
-6.Typ obszaru AreaType
-7.Punkty obszarów AreaPoint
-8. Punkty POI (stanowisko) Stand
-9.Rodzaj stanowiska StandType
-10. Rodzaj parkowania ParkingType
+6. Typ obszaru AreaType 
+7. Punkty obszarów AreaPoint 
+8. Punkty POI (stanowisko) Stand 
+9. Rodzaj stanowiska StandType 
+10. Rodzaj parkowania ParkingType 
 11. Status stanowiska StandStatus
-12.Robot Robot
+12. Robot Robot
 13. Przegląd robota RobotReview
 14. Typ przeglądu robota ReviewType
 15. Model robota RobotModel
