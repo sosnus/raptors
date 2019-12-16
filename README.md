@@ -1,5 +1,5 @@
 # raptors
-Dotychczas stworzone modele i i ch aktualizacja (update: 28.11.2019):
+Dotychczas stworzone modele i ich aktualizacja (update: 16.12.2019):
 1. Mapa MovementMap
 2. Ścieżka MovementPath
 3. Punkty korytarza CorridorPoints
@@ -27,9 +27,7 @@ Dotychczas stworzone modele i i ch aktualizacja (update: 28.11.2019):
 25. Parametry chwilowe TempParameters
 26. Status Robota RobotStatus
 27. Funkcjonalność dostawki ElementFunctionality
-
-Nie zrobione jeszcze:
-1. Grafy skierowane
+28. Grafy skierowane
 
 
 https://docs.google.com/document/d/1azNiKCFECVn4nAy_8C6J_ObEU7AOi97-0pJg3HP3HlQ/edit?fbclid=IwAR1v6IZoWfMdsUzyIedKYHfppfNDE46HLA17zJqCu5n6YuN9Fg6gD2ffOl8#
