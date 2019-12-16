@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/robots/temp-parameters")
 public class TempParametersController {
 

@@ -16,6 +16,7 @@ import java.util.Base64;
  */
 
 @Controller
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(value = "/movement-view/maps", method = {RequestMethod.GET, RequestMethod.POST})
 public class MovementMapViewController {
 
