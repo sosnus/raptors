@@ -21,9 +21,9 @@ public class RobotModel {
     private String height;
     private String turningRadius;
     private PropulsionType propulsionType;
+    private BatteryType batteryType;
 
-    public RobotModel(String name, String maxLiftingCapacity, String maxVelocity, String length, String width, String height, String turningRadius, PropulsionType propulsionType)
-    {
+    public RobotModel(String name, String maxLiftingCapacity, String maxVelocity, String length, String width, String height, String turningRadius, PropulsionType propulsionType, BatteryType batteryType) {
         this.name = name;
         this.maxLiftingCapacity = maxLiftingCapacity;
         this.maxVelocity = maxVelocity;
@@ -32,5 +32,6 @@ public class RobotModel {
         this.height = height;
         this.turningRadius = turningRadius;
         this.propulsionType = propulsionType;
+        this.batteryType = batteryType;
     }
 }

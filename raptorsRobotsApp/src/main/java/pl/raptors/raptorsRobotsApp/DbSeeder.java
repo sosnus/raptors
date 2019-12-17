@@ -21,6 +21,7 @@ import pl.raptors.raptorsRobotsApp.repository.graphs.VertexRepository;
 import pl.raptors.raptorsRobotsApp.repository.movement.*;
 import pl.raptors.raptorsRobotsApp.repository.robots.*;
 import pl.raptors.raptorsRobotsApp.repository.type.*;
+import pl.raptors.raptorsRobotsApp.service.graphs.GraphService;
 
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-//bedzie to klasa wstawiająca do bazy przykladowego uzytkownika
+//klasa wstawiająca do bazy wstepne przykladowe dane
 @Component
 public class DbSeeder implements CommandLineRunner {
     @Autowired
@@ -97,6 +98,9 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     private TaskPriorityRepository taskPriorityRepository;
 
+    @Autowired
+    private GraphService graphService;
+
 
     @Autowired
     private GridFsOperations gridFsOperations;
@@ -149,9 +153,11 @@ public class DbSeeder implements CommandLineRunner {
         this.edgeRepository.deleteAll();
         this.graphRepository.deleteAll();
 
-        this.vertexRepository.saveAll(verticesToAdd);
-        this.edgeRepository.saveAll(edgesToAdd);
-        this.graphRepository.save(graph);
+        //this.vertexRepository.saveAll(verticesToAdd);
+        //this.edgeRepository.saveAll(edgesToAdd);
+        //this.graphRepository.save(graph);
+        this.graphService.addOne(graph);
+
 
         //KOLEJNOSC JEST WAZNA
 
@@ -174,12 +180,11 @@ public class DbSeeder implements CommandLineRunner {
 
         PropulsionType propulsionType = new PropulsionType("mechaniczny");
 
-        RobotModel robotmModel = new RobotModel("CP-300", "500kg", "30km/h", "200cm", "120cm", "200cm", "30 deg", propulsionType);
-
-        Robot robot = new Robot("192.15.0.1", true, extraRobotElement, robotmModel);
-
         BatteryType batteryType = new BatteryType("litowo-jonowa", "3200", "2.1", "9.0");
 
+        RobotModel robotmModel = new RobotModel("CP-300", "500kg", "30km/h", "200cm", "120cm", "200cm", "30 deg", propulsionType, batteryType);
+
+        Robot robot = new Robot("192.15.0.1", true, extraRobotElement, robotmModel, new TempParameters());
 
         RobotBattery robotBattery = new RobotBattery("2016-9-22", batteryType);
 
@@ -191,9 +196,15 @@ public class DbSeeder implements CommandLineRunner {
         ParkingType parkingType = new ParkingType("parking 1");
         StandType standType = new StandType("stanowisko 1");
 
-        Stand stand = new Stand("miejsce ładowania baterii", 33.21, 123.54, 0.0, 98.0, 76.4, 34.34, 11.0, standStatus, parkingType, standType);
+        Pose pose1=new Pose();
+        pose1.setOrientation(new Pose.Orientation(98.0, 76.4, 34.34, 11.0));
+        pose1.setPosition(new Pose.Position(33.21, 123.54, 0.0));
+        Stand stand = new Stand("miejsce ładowania baterii", pose1, parkingType, standType);
 
-        Stand stand2 = new Stand("mnagazyn", 55.21, 133.54, 1.0, 88.0, 72.4, 86.34, 33.0, standStatus, parkingType, standType);
+        Pose pose2=new Pose();
+        pose2.setOrientation(new Pose.Orientation(88.0, 72.4, 86.34, 33.0));
+        pose2.setPosition(new Pose.Position(55.21, 133.54, 1.0));
+        Stand stand2 = new Stand("mnagazyn",pose2, parkingType, standType);
 
         MovementPathPoint movementPathPoint = new MovementPathPoint(movementPath, 20, 43.2, 50.2);
 
@@ -217,8 +228,11 @@ public class DbSeeder implements CommandLineRunner {
 
         RobotTask robotTask = new RobotTask("transport tools", behaviours, "2019-6-21 16:00", taskPriority);
         RobotStatus robotStatus = new RobotStatus("zajety");
-
-        TempParameters tempParameters = new TempParameters("magazyn-hala C3", 77.4, robotStatus);
+        RobotStatus robotStatus1=new RobotStatus("potrzezbuje ladownia");
+        List<RobotStatus> robotStatuses=new ArrayList<>();
+        robotStatuses.add(robotStatus);
+        robotStatuses.add(robotStatus1);
+        TempParameters tempParameters = new TempParameters(pose1, 77.4, robotStatuses);
 
 
         //czyść baze
@@ -284,6 +298,7 @@ public class DbSeeder implements CommandLineRunner {
         this.standTypeRepository.save(standType);
         this.taskPriorityRepository.save(taskPriority);
 
+        //this.graphService.deleteOne(graph); //just for testing purpose - keep commented
     }
 
 }
