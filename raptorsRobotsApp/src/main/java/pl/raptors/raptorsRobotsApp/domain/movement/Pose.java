@@ -7,22 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Pose {
 
-    private Position position;
+    private UniversalPoint position;
     private Orientation orientation;
-
-    @Data
-    @NoArgsConstructor
-    public static class Position {
-        double x;
-        double y;
-        double z;
-
-        public Position(double x, double y, double z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-    }
 
     @Data
     @NoArgsConstructor

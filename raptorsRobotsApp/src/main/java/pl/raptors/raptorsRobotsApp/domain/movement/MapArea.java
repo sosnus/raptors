@@ -6,6 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.raptors.raptorsRobotsApp.domain.type.AreaType;
 
+import java.util.List;
+
 @NoArgsConstructor
 @Data
 @Document(collection = "map_areas")
@@ -16,6 +18,7 @@ public class MapArea {
     private String name;
     private MovementMap map;
     private AreaType type;
+    private List<UniversalPoint> points;
 
     public MapArea(String name, MovementMap map, AreaType type)
     {

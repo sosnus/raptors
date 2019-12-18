@@ -24,6 +24,11 @@ public class RobotController {
         return robotService.getAll();
     }
 
+    @GetMapping("/allById")
+    public List<String> getAllById() {
+        return robotService.getAllById();
+    }
+
     @PostMapping("/add")
     public Robot add(@RequestBody @Valid Robot robot) {
         return robotService.addOne(robot);

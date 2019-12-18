@@ -25,10 +25,8 @@ import pl.raptors.raptorsRobotsApp.service.graphs.GraphService;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 //klasa wstawiająca do bazy wstepne przykladowe dane
 @Component
@@ -72,8 +70,6 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     private RobotTaskRepository robotTaskRepository;
     @Autowired
-    private TempParametersRepository tempParametersRepository;
-    @Autowired
     private GraphRepository graphRepository;
     @Autowired
     private EdgeRepository edgeRepository;
@@ -97,6 +93,8 @@ public class DbSeeder implements CommandLineRunner {
     private StandTypeRepository standTypeRepository;
     @Autowired
     private TaskPriorityRepository taskPriorityRepository;
+    @Autowired
+    private LogRepository logRepository;
 
     @Autowired
     private GraphService graphService;
@@ -161,7 +159,7 @@ public class DbSeeder implements CommandLineRunner {
 
         //KOLEJNOSC JEST WAZNA
 
-        MovementMap movementMap = new MovementMap("mapkaNazwa", null);
+        MovementMap movementMap = new MovementMap("mapkaNazwa",null, null);
 
         AreaType areaType = new AreaType("magazyn");
 
@@ -184,15 +182,6 @@ public class DbSeeder implements CommandLineRunner {
 
         RobotModel robotmModel = new RobotModel("CP-300", "500kg", "30km/h", "200cm", "120cm", "200cm", "30 deg", propulsionType, batteryType);
 
-        Robot robot = new Robot("192.15.0.1", true, extraRobotElement, robotmModel, new TempParameters());
-
-        RobotBattery robotBattery = new RobotBattery("2016-9-22", batteryType);
-
-        ReviewType reviewType = new ReviewType("service call");
-
-        RobotReview robotReview = new RobotReview(robot, "2019-3-30", "2016-4-25", reviewType);
-
-        StandStatus standStatus = new StandStatus("free");
         ParkingType parkingType = new ParkingType("parking 1");
         StandType standType = new StandType("stanowisko 1");
 
@@ -205,6 +194,28 @@ public class DbSeeder implements CommandLineRunner {
         pose2.setOrientation(new Pose.Orientation(88.0, 72.4, 86.34, 33.0));
         pose2.setPosition(new Pose.Position(55.21, 133.54, 1.0));
         Stand stand2 = new Stand("mnagazyn",pose2, parkingType, standType);
+
+        RobotStatus robotStatus = new RobotStatus("zajety");
+        RobotStatus robotStatus1=new RobotStatus("potrzezbuje ladownia");
+        List<RobotStatus> robotStatuses=new ArrayList<>();
+        robotStatuses.add(robotStatus);
+        robotStatuses.add(robotStatus1);
+
+        //format czasu
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        Robot robot = new Robot("192.15.0.1", true, extraRobotElement, robotmModel, pose1, formatter.format(new Date()), 77.4, robotStatuses);
+
+        Log log= new Log(robot,formatter.format(new Date()),robotStatus);
+
+        RobotBattery robotBattery = new RobotBattery("2016-9-22", batteryType);
+
+        ReviewType reviewType = new ReviewType("service call");
+
+        RobotReview robotReview = new RobotReview(robot, "2019-3-30", "2016-4-25", reviewType);
+
+        StandStatus standStatus = new StandStatus("free");
+
 
         MovementPathPoint movementPathPoint = new MovementPathPoint(movementPath, 20, 43.2, 50.2);
 
@@ -227,16 +238,12 @@ public class DbSeeder implements CommandLineRunner {
         TaskPriority taskPriority = new TaskPriority("wazne", 1);
 
         RobotTask robotTask = new RobotTask("transport tools", behaviours, "2019-6-21 16:00", taskPriority);
-        RobotStatus robotStatus = new RobotStatus("zajety");
-        RobotStatus robotStatus1=new RobotStatus("potrzezbuje ladownia");
-        List<RobotStatus> robotStatuses=new ArrayList<>();
-        robotStatuses.add(robotStatus);
-        robotStatuses.add(robotStatus1);
-        TempParameters tempParameters = new TempParameters(pose1, 77.4, robotStatuses);
+
+       // TempParameters tempParameters = new TempParameters(pose1, 77.4, robotStatuses);
 
 
         //czyść baze
-        this.areaPointRepository.deleteAll();
+/*        this.areaPointRepository.deleteAll();
         this.corridorRepository.deleteAll();
         this.corridorPointRepository.deleteAll();
         this.mapAreaRepository.deleteAll();
@@ -254,6 +261,7 @@ public class DbSeeder implements CommandLineRunner {
         this.behaviourRepository.deleteAll();
         this.robotTaskRepository.deleteAll();
         this.tempParametersRepository.deleteAll();
+        this.logRepository.deleteAll();
         //type
         this.areaTypeRepository.deleteAll();
         this.parkingTypeRepository.deleteAll();
@@ -263,10 +271,10 @@ public class DbSeeder implements CommandLineRunner {
         this.routePriorityRepository.deleteAll();
         this.standStatusRepository.deleteAll();
         this.standTypeRepository.deleteAll();
-        this.taskPriorityRepository.deleteAll();
+        this.taskPriorityRepository.deleteAll();*/
 
         //dodaj do bazy dane
-        //this.movementMapRepository.save(movementMap);
+       /* this.movementMapRepository.save(movementMap);
         this.mapAreaRepository.save(mapArea);
         this.areaPointRepository.save(areaPoint);
         this.movementPathRepository.save(movementPath);
@@ -275,6 +283,7 @@ public class DbSeeder implements CommandLineRunner {
         this.extraRobotElementRepository.save(extraRobotElement);
         this.robotModelRepository.save(robotmModel);
         this.robotRepository.save(robot);
+        this.logRepository.save(log);
         this.batteryTypeRepository.save(batteryType);
         this.robotBatteryRepository.save(robotBattery);
         this.robotReviewRepository.save(robotReview);
@@ -286,7 +295,6 @@ public class DbSeeder implements CommandLineRunner {
         this.behaviourRepository.save(behaviour2);
         this.behaviourRepository.save(behaviour3);
         this.robotTaskRepository.save(robotTask);
-        this.tempParametersRepository.save(tempParameters);
         //type
         this.areaTypeRepository.save(areaType);
         this.parkingTypeRepository.save(parkingType);
@@ -296,7 +304,7 @@ public class DbSeeder implements CommandLineRunner {
         this.routePriorityRepository.save(routePriority);
         this.standStatusRepository.save(standStatus);
         this.standTypeRepository.save(standType);
-        this.taskPriorityRepository.save(taskPriority);
+        this.taskPriorityRepository.save(taskPriority);*/
 
         //this.graphService.deleteOne(graph); //just for testing purpose - keep commented
     }
