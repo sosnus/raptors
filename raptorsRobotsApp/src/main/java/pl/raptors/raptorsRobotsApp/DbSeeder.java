@@ -159,7 +159,7 @@ public class DbSeeder implements CommandLineRunner {
 
         //KOLEJNOSC JEST WAZNA
 
-        MovementMap movementMap = new MovementMap("mapkaNazwa", null);
+        MovementMap movementMap = new MovementMap("mapkaNazwa",null, null);
 
         AreaType areaType = new AreaType("magazyn");
 
