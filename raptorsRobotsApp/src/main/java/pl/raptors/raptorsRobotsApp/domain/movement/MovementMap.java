@@ -14,9 +14,11 @@ public class MovementMap {
     private String id;
     private String name;
     private Binary mapImage;
+    private Binary yaml;
 
-    public MovementMap(String name, Binary mapImage) {
+    public MovementMap(String name, Binary mapImage, Binary yaml) {
         this.name = name;
         this.mapImage = mapImage;
+        this.yaml=yaml;
     }
 }
