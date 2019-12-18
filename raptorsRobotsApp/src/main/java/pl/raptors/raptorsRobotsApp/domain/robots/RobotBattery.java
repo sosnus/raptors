@@ -14,7 +14,7 @@ public class RobotBattery {
     @Id
     private String id;
     //private Date productionDate;
-    private String productionDate; //na potrzeby przykładowych danych zmieniam na stringa todo
+    private String productionDate; //w stringu będzie to zapisywane ze wględu na możliwość czytelniejszego przechoywywania i formatowania daty
     private BatteryType type;
 
     public RobotBattery(String productionDate, BatteryType type)
