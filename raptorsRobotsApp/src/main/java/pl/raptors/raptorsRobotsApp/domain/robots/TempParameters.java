@@ -4,7 +4,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
 import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
+
+import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @Data
@@ -13,14 +17,15 @@ public class TempParameters {
 
     @Id
     private String id;
-    private String position;
+    private Pose pose;
     private Double batteryLevel;
-    private RobotStatus status;
+    private List<RobotStatus> status;
+    private Date date=new Date();
 
-    public TempParameters(String position, Double batteryLevel, RobotStatus status) {
-        this.position = position;
+
+    public TempParameters(Pose pose, Double batteryLevel, List<RobotStatus> status) {
+        this.pose = pose;
         this.batteryLevel = batteryLevel;
         this.status = status;
     }
-
 }

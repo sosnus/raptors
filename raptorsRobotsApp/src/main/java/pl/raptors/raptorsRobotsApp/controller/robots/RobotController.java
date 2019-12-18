@@ -1,7 +1,6 @@
 package pl.raptors.raptorsRobotsApp.controller.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
 import pl.raptors.raptorsRobotsApp.service.robots.RobotService;
@@ -13,8 +12,8 @@ import java.util.Base64;
 import java.util.List;
 
 @RestController
-@RequestMapping("/robots/robots")
-@CrossOrigin(value = "local")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/robots")
 public class RobotController {
 
     @Autowired

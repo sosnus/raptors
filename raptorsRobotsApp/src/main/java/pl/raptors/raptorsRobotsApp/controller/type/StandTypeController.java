@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/type/stand-types")
 public class StandTypeController {
 

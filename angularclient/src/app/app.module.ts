@@ -8,6 +8,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { MapService } from './services/map.service';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {RobotService} from "./services/robot.service";
+import { GraphcreatorComponent } from './components/map/graphcreator/graphcreator.component';
 
 // @ts-ignore
 @NgModule({
@@ -15,7 +16,8 @@ import {RobotService} from "./services/robot.service";
     AppComponent,
     HomeComponent,
     MapComponent,
-    SidebarComponent
+    SidebarComponent,
+    GraphcreatorComponent,
   ],
   imports: [
     BrowserModule,

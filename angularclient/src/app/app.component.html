@@ -12,17 +12,24 @@
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" [routerLink]="['']">
           <i class="fas fa-home"></i>
           Strona główna
           <span class="sr-only">(current)</span>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fas fa-cogs"></i>
-          Ustawienia</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false"> <i class="fas fa-cogs"></i>Zarządzaj</a>
+        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" [routerLink]="['graphcreator']">Dodaj graf</a>
+        </div>
       </li>
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" href="#">-->
+<!--         -->
+<!--          Zarządzanie</a>-->
+<!--      </li>-->
     </ul>
     <!-- Links -->
     <ul class="navbar-nav">
