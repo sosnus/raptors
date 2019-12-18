@@ -36,8 +36,6 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    private AreaPointRepository areaPointRepository;
-    @Autowired
     private CorridorPointRepository corridorPointRepository;
     @Autowired
     private CorridorRepository corridorRepository;
@@ -165,9 +163,6 @@ public class DbSeeder implements CommandLineRunner {
 
         MapArea mapArea = new MapArea("hala A", movementMap, areaType);
 
-
-        AreaPoint areaPoint = new AreaPoint(mapArea, 3, 221.40, -30.67);
-
         MovementPath movementPath = new MovementPath("droga glówna B");
 
         Corridor corridor = new Corridor("pomost", movementPath);
@@ -185,15 +180,19 @@ public class DbSeeder implements CommandLineRunner {
         ParkingType parkingType = new ParkingType("parking 1");
         StandType standType = new StandType("stanowisko 1");
 
+        StandStatus standStatus = new StandStatus("free");
+
+        StandStatus standStatus1 = new StandStatus("occupied");
+
         Pose pose1=new Pose();
-        pose1.setOrientation(new Pose.Orientation(98.0, 76.4, 34.34, 11.0));
-        pose1.setPosition(new Pose.Position(33.21, 123.54, 0.0));
-        Stand stand = new Stand("miejsce ładowania baterii", pose1, parkingType, standType);
+        pose1.setOrientation(new Pose.Orientation(33.21, 123.54, 0.0,1));
+        pose1.setPosition(new UniversalPoint(98.0, 76.4, 34.34));
+        Stand stand = new Stand("miejsce ładowania baterii", pose1, parkingType, standType,standStatus);
 
         Pose pose2=new Pose();
         pose2.setOrientation(new Pose.Orientation(88.0, 72.4, 86.34, 33.0));
-        pose2.setPosition(new Pose.Position(55.21, 133.54, 1.0));
-        Stand stand2 = new Stand("mnagazyn",pose2, parkingType, standType);
+        pose2.setPosition(new UniversalPoint(98.0, 76.4, 34.34));
+        Stand stand2 = new Stand("mnagazyn",pose2, parkingType, standType,standStatus1);
 
         RobotStatus robotStatus = new RobotStatus("zajety");
         RobotStatus robotStatus1=new RobotStatus("potrzezbuje ladownia");
@@ -214,7 +213,7 @@ public class DbSeeder implements CommandLineRunner {
 
         RobotReview robotReview = new RobotReview(robot, "2019-3-30", "2016-4-25", reviewType);
 
-        StandStatus standStatus = new StandStatus("free");
+
 
 
         MovementPathPoint movementPathPoint = new MovementPathPoint(movementPath, 20, 43.2, 50.2);
