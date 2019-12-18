@@ -17,7 +17,7 @@ import { GraphcreatorComponent } from './components/map/graphcreator/graphcreato
     HomeComponent,
     MapComponent,
     SidebarComponent,
-    GraphcreatorComponent
+    GraphcreatorComponent,
   ],
   imports: [
     BrowserModule,

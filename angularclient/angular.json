@@ -24,7 +24,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.css"
             ],
             "scripts": [
 
