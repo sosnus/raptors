@@ -19,11 +19,13 @@ public class Stand {
     private Pose pose;
     private ParkingType parkingType;
     private StandType standType;
+    private StandStatus standStatus;
 
-    public Stand(String name, Pose pose, ParkingType parkingType, StandType standType) {
+    public Stand(String name, Pose pose, ParkingType parkingType, StandType standType, StandStatus standStatus) {
         this.name = name;
         this.pose = pose;
         this.parkingType = parkingType;
         this.standType = standType;
+        this.standStatus = standStatus;
     }
 }

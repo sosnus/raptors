@@ -7,6 +7,7 @@ import pl.raptors.raptorsRobotsApp.repository.robots.RobotRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RobotService implements CRUDService<Robot> {
@@ -37,5 +38,9 @@ public class RobotService implements CRUDService<Robot> {
     @Override
     public void deleteOne(Robot robot) {
         robotRepository.delete(robot);
+    }
+
+    public List<String> getAllById() {
+        return robotRepository.findAll().stream().map(Robot::getId).collect(Collectors.toList());
     }
 }
