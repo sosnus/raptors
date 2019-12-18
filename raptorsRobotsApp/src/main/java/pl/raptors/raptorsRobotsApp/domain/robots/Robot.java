@@ -4,6 +4,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
+import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
+
+import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @Data
@@ -16,14 +21,20 @@ public class Robot {
     private Boolean available;
     private ExtraRobotElement extraRobotElement;
     private RobotModel model;
-    private TempParameters parameters;
     private RobotBattery battery;
+    private Pose pose;
+    private Double batteryLevel;
+    private List<RobotStatus> status;
+    private String timestamp;
 
-    public Robot(String robotIp, Boolean available, ExtraRobotElement extraRobotElement, RobotModel model, TempParameters parameters) {
+    public Robot(String robotIp, Boolean available, ExtraRobotElement extraRobotElement, RobotModel model, Pose pose, String timestamp, Double batteryLevel, List<RobotStatus> status) {
         this.robotIp = robotIp;
         this.available = available;
         this.extraRobotElement = extraRobotElement;
         this.model = model;
-        this.parameters = parameters;
+        this.pose = pose;
+        this.timestamp=timestamp;
+        this.batteryLevel = batteryLevel;
+        this.status = status;
     }
 }

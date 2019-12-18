@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @NoArgsConstructor
 @Data
-@Document(collection = "extra_robot_elements_functionality")
+@Document(collection = "element_functionality")
 public class ElementFunctionality {
 
     @Id
