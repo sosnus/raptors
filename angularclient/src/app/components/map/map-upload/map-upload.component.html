@@ -16,7 +16,7 @@
               (change)="yamlSelected = true">
   </input-file>
   <button class="btn btn-light"
-          [disabled]="!mapSelected&&!yamlSelected&&mapName.length>0"
+          [disabled]="(!mapSelected)&&(!yamlSelected)&&(mapName.length<1)"
           (click)="submitFiles()">
     Zapisz
   </button>
