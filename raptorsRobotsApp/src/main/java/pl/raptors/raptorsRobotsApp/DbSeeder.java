@@ -271,18 +271,23 @@ public class DbSeeder implements CommandLineRunner {
         List<Behaviour> behaviours1 = new ArrayList();
         behaviours.add(behaviour);
 
+        List<Behaviour> behaviours2 = new ArrayList();
+        behaviours.add(behaviour);
+        behaviours.add(behaviour2);
+        behaviours.add(behaviour3);
 
 
         TaskPriority taskPriority = new TaskPriority("critical", 1);
         TaskPriority taskPriority1 = new TaskPriority("important", 2);
+        TaskPriority taskPriority2 = new TaskPriority("medium", 3);
 
 
-        RobotTask robotTask = new RobotTask("transport tools", behaviours, formatter.format(new Date()), taskPriority);
-        RobotTask robotTask1 = new RobotTask("wait for task", behaviours1, formatter.format(new Date()), taskPriority1);
-
+        RobotTask robotTask = new RobotTask(robot,"transport tools", behaviours, formatter.format(new Date()), taskPriority,"done");
+        RobotTask robotTask1 = new RobotTask(null,"deliver package", behaviours1, formatter.format(new Date()), taskPriority1,"waiting");
+        RobotTask robotTask2 = new RobotTask(robot2,"receive package", behaviours2, formatter.format(new Date()), taskPriority2,"on going");
 
         //czyść baze
-    /*    this.corridorRepository.deleteAll();
+      /* this.corridorRepository.deleteAll();
         this.corridorPointRepository.deleteAll();
         this.mapAreaRepository.deleteAll();
         //this.movementMapRepository.deleteAll();
@@ -348,7 +353,8 @@ public class DbSeeder implements CommandLineRunner {
         this.behaviourRepository.save(behaviour2);
         this.behaviourRepository.save(behaviour3);
         this.robotTaskRepository.save(robotTask);
-        this.robotTaskRepository.save(robotTask1);
+       this.robotTaskRepository.save(robotTask1);
+        this.robotTaskRepository.save(robotTask2);
         //type
         this.areaTypeRepository.save(areaType);
         this.areaTypeRepository.save(areaType1);
@@ -371,8 +377,8 @@ public class DbSeeder implements CommandLineRunner {
         this.standTypeRepository.save(standType4);
         this.standTypeRepository.save(standType5);
         this.taskPriorityRepository.save(taskPriority);
-        this.taskPriorityRepository.save(taskPriority1);
-*/
+        this.taskPriorityRepository.save(taskPriority1);*/
+
         //this.graphService.deleteOne(graph); //just for testing purpose - keep commented
     }
 
