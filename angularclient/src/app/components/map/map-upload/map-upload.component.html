@@ -1,0 +1,23 @@
+<div class="card" style="padding: 30px 100px 30px 100px">
+  <div class="md-form">
+    <input type="text" id="inputIconEx2" class="form-control"
+           [(ngModel)]="mapName">
+    <label for="inputIconEx2">Nazwa mapy</label>
+  </div>
+  <input-file fileAccept=".jpg" fileLimit="1"
+              acceptedFile='console.log("lol")'
+              placeholder="Dodaj mapę(.pgm)"
+              #mapInput
+              (change)="mapSelected = true">
+  </input-file>
+  <input-file fileAccept=".yaml" fileLimit="1"
+              placeholder="Dodaj plik .yaml"
+              #yamlInput
+              (change)="yamlSelected = true">
+  </input-file>
+  <button class="btn btn-light"
+          [disabled]="!mapSelected&&!yamlSelected&&mapName.length>0"
+          (click)="submitFiles()">
+    Zapisz
+  </button>
+</div>

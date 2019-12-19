@@ -25,4 +25,10 @@ html,body{
   height:100%;
 }
 
+.wrapper{
+  position: absolute;
+  margin: 20px;
+  display: inline
+}
+
 

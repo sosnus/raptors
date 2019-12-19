@@ -11,10 +11,14 @@ export class MapService {
   private readonly mapURL: string;
 
   constructor(private http: HttpClient) {
-    this.mapURL = 'http://localhost:8080/movement/maps/jpg/';
+    this.mapURL = 'http://localhost:8080/movement/maps/';
   }
 
   public getMap(id: string): Observable<any> {
-    return this.http.get(this.mapURL + id,{responseType: 'text'})
+    return this.http.get(this.mapURL + 'jpg/' + id, {responseType: 'text'})
+  }
+
+  public save(map: Map) {
+    return this.http.post<Map>(this.mapURL + 'add', map);
   }
 }

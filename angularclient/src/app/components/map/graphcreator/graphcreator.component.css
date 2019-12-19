@@ -1,11 +1,5 @@
 @import url("../map.component.css");
 
-.wrapper{
-  position: absolute;
-  margin: 20px;
-  display: inline
-}
-
 .switch{
   width: 14rem;
 }

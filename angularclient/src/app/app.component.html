@@ -23,18 +23,19 @@
            aria-haspopup="true" aria-expanded="false"> <i class="fas fa-cogs"></i>Zarządzaj</a>
         <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" [routerLink]="['graphcreator']">Dodaj graf</a>
+          <a class="dropdown-item" [routerLink]="['mapupload']">Dodaj mapę</a>
         </div>
       </li>
-<!--      <li class="nav-item">-->
-<!--        <a class="nav-link" href="#">-->
-<!--         -->
-<!--          Zarządzanie</a>-->
-<!--      </li>-->
+      <!--      <li class="nav-item">-->
+      <!--        <a class="nav-link" href="#">-->
+      <!--         -->
+      <!--          Zarządzanie</a>-->
+      <!--      </li>-->
     </ul>
     <!-- Links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="#" style="display: flex;">Wyloguj  &nbsp; <i class="material-icons">exit_to_app</i></a>
+        <a class="nav-link" href="#" style="display: flex;">Wyloguj &nbsp; <i class="material-icons">exit_to_app</i></a>
       </li>
     </ul>
   </div>
@@ -42,7 +43,10 @@
 </nav>
 <app-sidebar></app-sidebar>
 <!--/.Navbar-->
-<router-outlet></router-outlet>
+<div class="wrapper">
+  <router-outlet></router-outlet>
+</div>
+
 
 <!--&lt;!&ndash; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * &ndash;&gt;-->
 <!--&lt;!&ndash; * * * * * * * * * * * The content below * * * * * * * * * * * &ndash;&gt;-->
