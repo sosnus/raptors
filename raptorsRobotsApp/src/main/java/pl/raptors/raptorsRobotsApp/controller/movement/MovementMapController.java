@@ -32,6 +32,15 @@ public class MovementMapController {
         return service.addOne(movementMap);
     }
 
+    @PostMapping("/upload")
+    public MovementMap upload(@RequestParam("name") String name, @RequestParam("mapImage") String base64String) throws IOException {
+
+        byte[] actualByte= Base64.getDecoder().decode(base64String);
+
+        MovementMap movementMap = service.addMovementMap(name, actualByte, null);
+        return service.addOne(movementMap);
+    }
+
     @GetMapping("/{id}")
     public MovementMap getOne(@PathVariable String id) {
         return service.getOne(id);
