@@ -1,8 +1,8 @@
 export class Map{
   id: string;
   name: string;
-  mapImage: any;
-  yamlFile: any;
+  mapImage: string;
+  yamlFile: string;
 
   constructor(name: string, mapImage: any, yamlFile: any) {
     this.name = name;

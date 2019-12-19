@@ -13,7 +13,7 @@ export class MapUploadComponent implements OnInit {
 
   mapSelected = false;
   yamlSelected = false;
-  mapName: string="";
+  mapName: string = '';
 
   constructor(private mapService: MapService) {
 
@@ -30,12 +30,10 @@ export class MapUploadComponent implements OnInit {
   private yamlInput: InputFileComponent;
 
   submitFiles() {
-    console.log(this.mapName)
     const outerContext = this;
     const mapReader = new FileReader();
     mapReader.readAsDataURL(this.mapInputComponent.files[0].file);
     mapReader.onload = function () {
-      console.log(mapReader.result);
       const yamlReader = new FileReader();
       yamlReader.readAsDataURL(outerContext.yamlInput.files[0].file);
       yamlReader.onload = function () {
