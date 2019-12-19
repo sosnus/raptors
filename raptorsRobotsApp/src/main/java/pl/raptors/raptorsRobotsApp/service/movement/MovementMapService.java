@@ -18,12 +18,12 @@ public class MovementMapService implements CRUDService<MovementMap> {
     @Autowired
     private MovementMapRepository repository;
 
-//    public MovementMap addMovementMap(String name, MultipartFile file) throws IOException {
-//        Binary binaryMapImage = new Binary(BsonBinarySubType.BINARY, file.getBytes());
-//        MovementMap movementMap = new MovementMap(name, binaryMapImage);
-//        movementMap = repository.save(movementMap);
-//        return movementMap;
-//    }
+    public MovementMap addMovementMap(String name, MultipartFile file) throws IOException {
+        Binary binaryMapImage = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+        MovementMap movementMap = new MovementMap(name, binaryMapImage);
+        movementMap = repository.save(movementMap);
+        return movementMap;
+    }
 
     @Override
     public MovementMap addOne(MovementMap movementMap) {
