@@ -11,6 +11,8 @@ import {RobotService} from "./services/robot.service";
 import { GraphcreatorComponent } from './components/map/graphcreator/graphcreator.component';
 import {GraphService} from "./services/graph.service";
 import {StoreService} from "./services/store.service";
+import { PolygonsComponent } from './components/map/polygons/polygons.component';
+import {PolygonService} from "./services/polygon.service";
 
 // @ts-ignore
 @NgModule({
@@ -20,13 +22,14 @@ import {StoreService} from "./services/store.service";
     MapComponent,
     SidebarComponent,
     GraphcreatorComponent,
+    PolygonsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [MapService,HttpClient, RobotService, GraphService, StoreService],
+  providers: [MapService,HttpClient, RobotService, GraphService, StoreService, PolygonService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
