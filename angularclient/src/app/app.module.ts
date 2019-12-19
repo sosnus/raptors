@@ -15,6 +15,8 @@ import { MapUploadComponent } from './components/map/map-upload/map-upload.compo
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputFileConfig, InputFileModule } from 'ngx-input-file';
 import {StoreService} from "./services/store.service";
+import { PolygonsComponent } from './components/map/polygons/polygons.component';
+import {PolygonService} from "./services/polygon.service";
 
 const config: InputFileConfig = {};
 
@@ -27,6 +29,8 @@ const config: InputFileConfig = {};
     MapComponent,
     MapUploadComponent,
     SidebarComponent,
+    GraphcreatorComponent,
+    PolygonsComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,7 @@ const config: InputFileConfig = {};
     InputFileModule.forRoot(config),
     FormsModule,
   ],
-  providers: [MapService,HttpClient, RobotService, GraphService, StoreService],
+  providers: [MapService,HttpClient, RobotService, GraphService, StoreService, PolygonService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

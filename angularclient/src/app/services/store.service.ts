@@ -43,7 +43,7 @@ export class StoreService {
     return this.http.get(this.robotIP + id + '/ip/',{responseType: 'text'})
   }
 
-  public getRobotIPfromList(id: string): Observable<any> {
-    return this.http.get(this.robotIP + id + '/ip/',{responseType: 'text'})
-  }
+/*  public getRobotIPfromList(id: string): Observable<any> {
+    return this.http.get(this.robotIP + id + '/ip/' + ... ,{responseType: 'text'})
+  }*/
 }
