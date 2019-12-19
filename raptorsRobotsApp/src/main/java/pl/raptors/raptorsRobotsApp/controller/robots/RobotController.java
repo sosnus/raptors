@@ -2,6 +2,7 @@ package pl.raptors.raptorsRobotsApp.controller.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
 import pl.raptors.raptorsRobotsApp.service.robots.RobotService;
 
@@ -34,6 +35,11 @@ public class RobotController {
     @GetMapping("/{id}")
     public Robot getOne(@PathVariable String id) {
         return robotService.getOne(id);
+    }
+
+    @GetMapping("/pose/{id}")
+    public Pose getOneRobotPose(@PathVariable String id) {
+        return robotService.getOneRobotPose(id);
     }
 
     @DeleteMapping("/delete")
