@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {RobotService} from "../../services/robot.service";
+import {StoreService} from "../../services/store.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -7,32 +9,40 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  robots: Object[] = [
-    {
-      id: '0',
-      robotIP: '10.21.129.22',
-      available: true
-    },
-    {
-      id: '1',
-      robotIP: '10.21.129.23',
-      available: true
-    },
-    {
-      id: '2',
-      robotIP: '10.21.128.10',
-      available: true
-    }
-  ];
+  robotDataloaded = false;
+  private robotIDlist = [];
 
-  constructor() {
+  private i=0;
+  private j=0;
+  constructor(private storeService: StoreService) {
   }
 
   ngOnInit() {
+    //console.log("test: " + this.storeService.robotsObjects[1].robotIP);
+    this.storeService.getRobotIDlist().subscribe(
+      rob => {
+        this.robotDataloaded = true;
+        this.robotIDlist = rob;
+        console.log("Pobieram listę id robotów: " + this.robotIDlist);
+      }
+    );
+
+
   }
 
   rotateIcon(elementID: string): void {
     document.getElementById(elementID).classList.toggle('down');
   }
+
+  showRobotOnMap(){
+    /* for(this.i=0;this.i<=this.robotIDlist.length;this.i++){
+       for(this.j=0; this.j<=this.storeService.robotsObjects.length;this.j++){
+         if(this.robotIDlist[this.i]===this.storeService.robotsObjects[0].id){
+           console.log("IP robota o id "+this.robotIDlist[this.i] + " to: " + this.storeService.robotsObjects[this.j].robotIP)
+         }
+       }
+     }*/
+  }
+
 
 }

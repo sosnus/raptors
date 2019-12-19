@@ -5,6 +5,7 @@ import 'leaflet-rotatedmarker';
 */
 import {MapService} from "../../services/map.service";
 import {RobotService} from "../../services/robot.service";
+import {StoreService} from "../../services/store.service";
 
 
 @Component({
@@ -65,7 +66,7 @@ export class MapComponent implements OnInit {
   private imageURL = '';
   private robotIP = '';
 
-  constructor(private mapService: MapService, private robotService: RobotService) {
+  constructor(private mapService: MapService, private robotService: RobotService, private storeService: StoreService) {
   }
 
   ngOnInit() {
@@ -88,7 +89,7 @@ export class MapComponent implements OnInit {
     this.initMap();
 
 
-    this.robotService.getRobot('5df4d91c68dd00790d601671').subscribe(
+    this.storeService.getRobotIP('5dfb452fd9068433d5983610').subscribe(
       rob => {
         this.robotDataloaded = true;
         this.robotIP = rob;
@@ -134,7 +135,7 @@ export class MapComponent implements OnInit {
       })/*.addTo(this.map)*/;
       var currentShelter = marker;
       currentShelter.addTo(this.robotStatusLayer);
-      marker.bindPopup("Placeholder:\n Robot Details");
+      marker.bindPopup("Placeholder:\n Robot Details\n");
       this.robotMarkers.push(marker);
       this.robotStatusLayer.addTo(this.map);
 

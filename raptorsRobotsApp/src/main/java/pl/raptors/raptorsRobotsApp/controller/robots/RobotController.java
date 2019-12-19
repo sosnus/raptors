@@ -39,7 +39,7 @@ public class RobotController {
         return robotService.getOne(id);
     }
 
-    @GetMapping("/ip/{id}")
+    @GetMapping("/{id}/ip")
     public @ResponseBody
     String getIP(@PathVariable String id, HttpServletResponse response) throws IOException {
         Robot robot = robotService.getOne(id);

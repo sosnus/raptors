@@ -10,6 +10,7 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {RobotService} from "./services/robot.service";
 import { GraphcreatorComponent } from './components/map/graphcreator/graphcreator.component';
 import {GraphService} from "./services/graph.service";
+import {StoreService} from "./services/store.service";
 
 // @ts-ignore
 @NgModule({
@@ -25,7 +26,7 @@ import {GraphService} from "./services/graph.service";
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [MapService,HttpClient, RobotService, GraphService],
+  providers: [MapService,HttpClient, RobotService, GraphService, StoreService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
