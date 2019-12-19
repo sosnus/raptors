@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/robots/reviews")
-@CrossOrigin
 public class RobotReviewController {
 
     @Autowired

@@ -1,4 +1,17 @@
 <div class="wrapper">
+  <div class="btn-group btn-group-toggle switch-container" data-toggle="buttons">
+    <label class="btn btn-light form-check-label active switch" (click)="editEdges = false">
+      <input class="form-check-input" type="radio">
+      Węzły
+    </label>
+    <label class="btn btn-light form-check-label switch" (click)="editEdges = true">
+      <input class="form-check-input" type="radio">
+      Krawędzie
+    </label>
+  </div>
+
+  <button type="button" class="btn btn-light switch-container" (click)="saveGraph()">Zapisz</button>
+
   <div class="map-container">
     <div class="map-frame">
       <div class="lds-dual-ring" [hidden]="dataLoaded"></div>

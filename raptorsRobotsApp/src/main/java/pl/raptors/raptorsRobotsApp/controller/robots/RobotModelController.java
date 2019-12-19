@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/robots/models")
-@CrossOrigin
 public class RobotModelController {
 
     @Autowired

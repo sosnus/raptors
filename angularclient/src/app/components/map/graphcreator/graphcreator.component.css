@@ -5,3 +5,11 @@
   margin: 20px;
   display: inline
 }
+
+.switch{
+  width: 14rem;
+}
+
+.switch-container{
+  margin-bottom: 10px;
+}

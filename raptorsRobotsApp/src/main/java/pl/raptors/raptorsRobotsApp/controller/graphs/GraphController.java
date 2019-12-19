@@ -23,6 +23,7 @@ public class GraphController {
 
     @PostMapping("/add")
     public Graph add(@RequestBody @Valid Graph graph) {
+        System.out.println(graph);
         return graphService.addOne(graph);
     }
 

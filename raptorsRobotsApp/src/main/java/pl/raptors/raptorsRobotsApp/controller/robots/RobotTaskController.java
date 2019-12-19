@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/robots/tasks")
-@CrossOrigin
 public class RobotTaskController {
 
     @Autowired

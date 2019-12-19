@@ -25,11 +25,11 @@ public class MovementMapViewController {
 
     @PostMapping("/add")
     //@PostMapping("/maps/add")
-    public String addMovementMap(@RequestParam("name") String name, @RequestParam("mapImage") MultipartFile mapImage, Model model) throws IOException {
-        MovementMap map = movementMapService.addMovementMap(name, mapImage);
-        return "redirect:/movement/maps/" + map.getId();
-        /* return "redirect:/maps/"+id;*/
-    }
+//    public String addMovementMap(@RequestParam("name") String name, @RequestParam("mapImage") MultipartFile mapImage, Model model) throws IOException {
+//        MovementMap map = movementMapService.addMovementMap(name, mapImage);
+//        return "redirect:/movement/maps/" + map.getId();
+//        /* return "redirect:/maps/"+id;*/
+//    }
 
     @GetMapping("/{id}")
     //@GetMapping("/maps/{id}")

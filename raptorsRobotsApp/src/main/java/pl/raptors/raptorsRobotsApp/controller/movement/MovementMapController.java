@@ -17,7 +17,6 @@ import java.util.List;
 @Controller
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(value = "/movement/maps")
-@CrossOrigin
 public class MovementMapController {
 
     @Autowired
