@@ -18,7 +18,11 @@ export class MapService {
     return this.http.get(this.mapURL + 'jpg/' + id, {responseType: 'text'})
   }
 
-  public save(map: Map) {
-    return this.http.post<Map>(this.mapURL + 'add', map);
+  public save(name: string,map: File, yaml: File) {
+    const formData = new FormData();
+    formData.append('name', map);
+    formData.append('mapImage', map);
+    formData.append('yamlFile', yaml);
+    return this.http.post<Map>(this.mapURL + 'add', formData);
   }
 }

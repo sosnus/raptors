@@ -30,20 +30,6 @@ export class MapUploadComponent implements OnInit {
   private yamlInput: InputFileComponent;
 
   submitFiles() {
-    const outerContext = this;
-    const mapReader = new FileReader();
-    mapReader.readAsDataURL(this.mapInputComponent.files[0].file);
-    mapReader.onload = function () {
-      const yamlReader = new FileReader();
-      yamlReader.readAsDataURL(outerContext.yamlInput.files[0].file);
-      yamlReader.onload = function () {
-        const map = new Map(
-          outerContext.mapName,
-          mapReader.result,
-          yamlReader.result
-        );
-        outerContext.mapService.save(map).subscribe();
-      };
-    };
+   this.mapService.save(this.mapName, this.mapInputComponent.files[0].file,this.yamlInput.files[0].file);
   }
 }
