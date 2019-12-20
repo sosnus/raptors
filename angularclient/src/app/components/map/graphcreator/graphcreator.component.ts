@@ -110,6 +110,19 @@ export class GraphcreatorComponent implements OnInit {
 
   private updateEdge(e) {
     let markerPos = this.vertices.filter(marker => marker._leaflet_id === e.target._leaflet_id)[0];
+    let newEdges = [];
+    this.edges.forEach(edge => {
+      if (edge.markerIDs[0] === e.target._leaflet_id) {
+        edge.setLatLngs([markerPos._latlng, edge._latlngs[1]]);
+        edge.redraw()
+      }
+      if (edge.markerIDs[1] === e.target._leaflet_id) {
+        edge.setLatLngs([edge._latlngs[0], markerPos._latlng]);
+        edge.redraw()
+      }
+      newEdges.push(edge);
+    });
+    this.edges = newEdges;
   }
 
   private addContextMenuShowHandler() {
@@ -122,8 +135,9 @@ export class GraphcreatorComponent implements OnInit {
 
   private createEdge(marker) {
     if (this.editEdges) {
-      if (this.selectedVert != null && this.selectedVert !== marker.latlng) {
-        const polyLine = new L.polyline([this.selectedVert, marker.latlng], {
+      if (this.selectedVert != null
+        && this.selectedVert._leaflet_id !== marker.sourceTarget._leaflet_id) {
+        const polyLine = new L.polyline([this.selectedVert._latlng, marker.sourceTarget._latlng], {
           color: 'red',
           weight: 7,
           opacity: 0.5,
@@ -138,10 +152,11 @@ export class GraphcreatorComponent implements OnInit {
           ]
         });
         polyLine.addTo(this.map);
+        polyLine.markerIDs = [this.selectedVert._leaflet_id, marker.sourceTarget._leaflet_id]
         this.edges.push(polyLine);
         this.selectedVert = null;
       } else {
-        this.selectedVert = marker.latlng;
+        this.selectedVert = marker.sourceTarget;
       }
     }
   }
