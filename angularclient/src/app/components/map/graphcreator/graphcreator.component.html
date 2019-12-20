@@ -1,15 +1,17 @@
 <div class="btn-group btn-group-toggle switch-container" data-toggle="buttons">
   <label class="btn btn-light form-check-label active switch" (click)="editEdges = false">
     <input class="form-check-input" type="radio">
-    Węzły
+    <i class="fas fa-crosshairs"></i>
+      Węzły
   </label>
   <label class="btn btn-light form-check-label switch" (click)="editEdges = true">
     <input class="form-check-input" type="radio">
-    Krawędzie
+    <i class="fas fa-draw-polygon"></i>
+      Krawędzie
   </label>
 </div>
 
-<button type="button" class="btn btn-light switch-container" (click)="saveGraph()">Zapisz</button>
+<button type="button" class="btn btn-light switch-container" (click)="saveGraph()"><i class="far fa-save"></i>   Zapisz</button>
 
 <div class="map-container">
   <div class="map-frame">
