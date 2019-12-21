@@ -18,8 +18,16 @@ public class MovementMapService implements CRUDService<MovementMap> {
     @Autowired
     private MovementMapRepository repository;
 
-    public MovementMap addMovementMap(String name, MultipartFile fileMap, MultipartFile fileYaml) throws IOException {
+    /*public MovementMap addMovementMap(String name, MultipartFile fileMap, MultipartFile fileYaml) throws IOException {
         Binary binaryMapImage = new Binary(BsonBinarySubType.BINARY, fileMap.getBytes());
+        Binary binaryYaml = new Binary(BsonBinarySubType.BINARY, fileYaml.getBytes());
+        MovementMap movementMap = new MovementMap(name, binaryMapImage,binaryYaml);
+        movementMap = repository.save(movementMap);
+        return movementMap;
+    }*/
+
+    public MovementMap addMovementMap(String name, byte[] fileMap, MultipartFile fileYaml) throws IOException {
+        Binary binaryMapImage = new Binary(BsonBinarySubType.BINARY, fileMap);
         Binary binaryYaml = new Binary(BsonBinarySubType.BINARY, fileYaml.getBytes());
         MovementMap movementMap = new MovementMap(name, binaryMapImage,binaryYaml);
         movementMap = repository.save(movementMap);

@@ -15,16 +15,19 @@ public class RobotTask {
 
     @Id
     private String id;
+    private Robot robot;
     private String name;
     private List<Behaviour> behaviours;
-    //private Date startTime; //zamiana dla łatwiejszej implementacji przykłądowych danych
     private String startTime;
     private TaskPriority priority;
+    private  String status;
 
-    public RobotTask(String name, List<Behaviour> behaviours, String startTime, TaskPriority priority) {
+    public RobotTask(Robot robot, String name, List<Behaviour> behaviours, String startTime, TaskPriority priority, String status) {
+        this.robot = robot;
         this.name = name;
         this.behaviours = behaviours;
         this.startTime = startTime;
         this.priority = priority;
+        this.status = status;
     }
 }

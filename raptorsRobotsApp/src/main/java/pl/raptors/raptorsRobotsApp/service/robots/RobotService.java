@@ -2,11 +2,13 @@ package pl.raptors.raptorsRobotsApp.service.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,5 +44,9 @@ public class RobotService implements CRUDService<Robot> {
 
     public List<String> getAllById() {
         return robotRepository.findAll().stream().map(Robot::getId).collect(Collectors.toList());
+    }
+
+    public Pose getOneRobotPose (String id){
+        return Objects.requireNonNull(robotRepository.findById(id).orElse(null)).getPose();
     }
 }

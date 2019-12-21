@@ -158,92 +158,136 @@ public class DbSeeder implements CommandLineRunner {
         //KOLEJNOSC JEST WAZNA
 
         MovementMap movementMap = new MovementMap("mapkaNazwa",null, null);
+        MovementMap movementMap1 = new MovementMap("drugaMapa",null, null);
 
-        AreaType areaType = new AreaType("magazyn");
+        AreaType areaType = new AreaType("warehouse");
+        AreaType areaType1 = new AreaType("outside");
 
-        MapArea mapArea = new MapArea("hala A", movementMap, areaType);
+        MapArea mapArea = new MapArea("hall A2", movementMap, areaType);
+        MapArea mapArea1 = new MapArea("area B13", movementMap1, areaType1);
 
-        MovementPath movementPath = new MovementPath("droga glówna B");
+        MovementPath movementPath = new MovementPath("the fastest");
+        MovementPath movementPath1 = new MovementPath("the shortest");
 
-        Corridor corridor = new Corridor("pomost", movementPath);
+        Corridor corridor = new Corridor("bridge", movementPath);
+        Corridor corridor1 = new Corridor("main hall", movementPath1);
 
         CorridorPoint corridorPoint = new CorridorPoint(corridor, 11, 99.8, 111.2);
+        CorridorPoint corridorPoint1 = new CorridorPoint(corridor1, 50, 19.2, 75.7);
 
         ExtraRobotElement extraRobotElement = new ExtraRobotElement("jakas dostawka", "100cm x 350cm");
+        ExtraRobotElement extraRobotElement1 = new ExtraRobotElement("pliers", "300cm x 250cm");
 
-        PropulsionType propulsionType = new PropulsionType("mechaniczny");
+        PropulsionType propulsionType = new PropulsionType("mechanical drive");
+        PropulsionType propulsionType1 = new PropulsionType("electric drive");
 
-        BatteryType batteryType = new BatteryType("litowo-jonowa", "3200", "2.1", "9.0");
+        BatteryType batteryType = new BatteryType("Lithium Ion", "3200", "2.1", "9.0");
+        BatteryType batteryType1 = new BatteryType("Solar", "5200", "2.1", "5.0");
 
-        RobotModel robotmModel = new RobotModel("CP-300", "500kg", "30km/h", "200cm", "120cm", "200cm", "30 deg", propulsionType, batteryType);
+        RobotModel robotmModel = new RobotModel("C3P0", "300kg", "40km/h", "70cm", "120cm", "150cm", "45 deg", propulsionType1, batteryType1);
+        RobotModel robotmModel1 = new RobotModel("R2D2", "500kg", "20km/h", "200cm", "250cm", "200cm", "30 deg", propulsionType, batteryType);
 
-        ParkingType parkingType = new ParkingType("parking 1");
-        StandType standType = new StandType("stanowisko 1");
+        ParkingType parkingType = new ParkingType("rough parking");
+        ParkingType parkingType1 = new ParkingType("exact parking");
+
+        StandType standType = new StandType("receiving");
+        StandType standType1 = new StandType("loading");
+
+        StandType standType3 = new StandType("charger");
+        StandType standType4 = new StandType("receiving-loading");
+        StandType standType5 = new StandType("parking");
 
         StandStatus standStatus = new StandStatus("free");
-
         StandStatus standStatus1 = new StandStatus("occupied");
 
+
+        Pose pose=new Pose();
+        pose.setOrientation(new Pose.Orientation(0.15, 0.54, 0.0,1));
+        pose.setPosition(new UniversalPoint(13.0, 66.6, 22.3));
+        Stand stand = new Stand("charging station", pose, parkingType1, standType3,standStatus1);
+
         Pose pose1=new Pose();
-        pose1.setOrientation(new Pose.Orientation(33.21, 123.54, 0.0,1));
-        pose1.setPosition(new UniversalPoint(98.0, 76.4, 34.34));
-        Stand stand = new Stand("miejsce ładowania baterii", pose1, parkingType, standType,standStatus);
+        pose1.setOrientation(new Pose.Orientation(1.0, 0.4, 0.0,1));
+        pose1.setPosition(new UniversalPoint(135.0, 8.6, 28.8));
+        Stand stand1 = new Stand("warehouse", pose1, parkingType1, standType1,standStatus1);
 
         Pose pose2=new Pose();
-        pose2.setOrientation(new Pose.Orientation(88.0, 72.4, 86.34, 33.0));
+        pose2.setOrientation(new Pose.Orientation(0.8, 1.0, 0.0, 1.0));
         pose2.setPosition(new UniversalPoint(98.0, 76.4, 34.34));
-        Stand stand2 = new Stand("mnagazyn",pose2, parkingType, standType,standStatus1);
+        Stand stand2 = new Stand("parking B",pose2, parkingType, standType5,standStatus);
 
-        RobotStatus robotStatus = new RobotStatus("zajety");
-        RobotStatus robotStatus1=new RobotStatus("potrzezbuje ladownia");
+
+        RobotStatus robotStatus = new RobotStatus("on the way");
+        RobotStatus robotStatus1=new RobotStatus("charging needed");
+        RobotStatus robotStatus2=new RobotStatus("free");
+
         List<RobotStatus> robotStatuses=new ArrayList<>();
         robotStatuses.add(robotStatus);
-        robotStatuses.add(robotStatus1);
+
+
+        List<RobotStatus> robotStatuses1=new ArrayList<>();
+        robotStatuses1.add(robotStatus1);
+        robotStatuses1.add(robotStatus2);
 
         //format czasu
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        Robot robot = new Robot("192.15.0.1", true, extraRobotElement, robotmModel, pose1, formatter.format(new Date()), 77.4, robotStatuses);
+        Robot robot = new Robot("192.15.0.1", false, extraRobotElement1, robotmModel, pose1, formatter.format(new Date()), 77.4, robotStatuses1);
+        Robot robot1 = new Robot("192.15.0.2", true, extraRobotElement1, robotmModel1, pose2, formatter.format(new Date()), 16.9, robotStatuses1);
+        Robot robot2 = new Robot("192.15.0.3", true, extraRobotElement, robotmModel, pose, formatter.format(new Date()), 99.8, robotStatuses);
 
         Log log= new Log(robot,formatter.format(new Date()),robotStatus);
+        Log log1= new Log(robot1,formatter.format(new Date()),robotStatus1);
+        Log log2= new Log(robot2,formatter.format(new Date()),robotStatus2);
 
         RobotBattery robotBattery = new RobotBattery("2016-9-22", batteryType);
+        RobotBattery robotBattery1 = new RobotBattery("2013-4-15", batteryType1);
 
         ReviewType reviewType = new ReviewType("service call");
+        ReviewType reviewType1 = new ReviewType("periodic");
 
         RobotReview robotReview = new RobotReview(robot, "2019-3-30", "2016-4-25", reviewType);
-
-
-
+        RobotReview robotReview1 = new RobotReview(robot1, "2020-5-10", "2018-7-17", reviewType1);
+        RobotReview robotReview2 = new RobotReview(robot2, "2020-12-11", "2018-12-12", reviewType1);
 
         MovementPathPoint movementPathPoint = new MovementPathPoint(movementPath, 20, 43.2, 50.2);
+        MovementPathPoint movementPathPoint1 = new MovementPathPoint(movementPath1, 40, 22.2, 30.5);
 
-        RoutePriority routePriority = new RoutePriority("ważne", 1);
+        RoutePriority routePriority = new RoutePriority("critical", 1);
+        RoutePriority routePriority1 = new RoutePriority("important", 2);
 
-        Route route = new Route(movementMap, movementPath, corridor, "najszybsza główna", stand2, stand, routePriority);
+        Route route = new Route(movementMap, movementPath, corridor, "red route", stand2, stand, routePriority);
+        Route route1 = new Route(movementMap1, movementPath1, corridor1, "yellow route", stand1, stand, routePriority1);
 
         Behaviour behaviour = new Behaviour("WAIT", "* WILL BE JSON *");
-
         Behaviour behaviour2 = new Behaviour("GO_TO", "* WILL BE JSON *");
-
-        Behaviour behaviour3 = new Behaviour("DOCKAGE", "* WILL BE JSON *");
+        Behaviour behaviour3 = new Behaviour("DOCKING", "* WILL BE JSON *");
 
 
         List<Behaviour> behaviours = new ArrayList();
+        behaviours.add(behaviour2);
+        behaviours.add(behaviour3);
+
+        List<Behaviour> behaviours1 = new ArrayList();
+        behaviours.add(behaviour);
+
+        List<Behaviour> behaviours2 = new ArrayList();
         behaviours.add(behaviour);
         behaviours.add(behaviour2);
         behaviours.add(behaviour3);
 
-        TaskPriority taskPriority = new TaskPriority("wazne", 1);
 
-        RobotTask robotTask = new RobotTask("transport tools", behaviours, "2019-6-21 16:00", taskPriority);
+        TaskPriority taskPriority = new TaskPriority("critical", 1);
+        TaskPriority taskPriority1 = new TaskPriority("important", 2);
+        TaskPriority taskPriority2 = new TaskPriority("medium", 3);
 
-       // TempParameters tempParameters = new TempParameters(pose1, 77.4, robotStatuses);
 
+        RobotTask robotTask = new RobotTask(robot,"transport tools", behaviours, formatter.format(new Date()), taskPriority,"done");
+        RobotTask robotTask1 = new RobotTask(null,"deliver package", behaviours1, formatter.format(new Date()), taskPriority1,"waiting");
+        RobotTask robotTask2 = new RobotTask(robot2,"receive package", behaviours2, formatter.format(new Date()), taskPriority2,"on going");
 
         //czyść baze
-/*        this.areaPointRepository.deleteAll();
-        this.corridorRepository.deleteAll();
+      /* this.corridorRepository.deleteAll();
         this.corridorPointRepository.deleteAll();
         this.mapAreaRepository.deleteAll();
         //this.movementMapRepository.deleteAll();
@@ -259,7 +303,6 @@ public class DbSeeder implements CommandLineRunner {
         this.routeRepository.deleteAll();
         this.behaviourRepository.deleteAll();
         this.robotTaskRepository.deleteAll();
-        this.tempParametersRepository.deleteAll();
         this.logRepository.deleteAll();
         //type
         this.areaTypeRepository.deleteAll();
@@ -270,40 +313,71 @@ public class DbSeeder implements CommandLineRunner {
         this.routePriorityRepository.deleteAll();
         this.standStatusRepository.deleteAll();
         this.standTypeRepository.deleteAll();
-        this.taskPriorityRepository.deleteAll();*/
+        this.taskPriorityRepository.deleteAll();
 
         //dodaj do bazy dane
-       /* this.movementMapRepository.save(movementMap);
+       //this.movementMapRepository.save(movementMap);
         this.mapAreaRepository.save(mapArea);
-        this.areaPointRepository.save(areaPoint);
+        this.mapAreaRepository.save(mapArea1);
         this.movementPathRepository.save(movementPath);
+        this.movementPathRepository.save(movementPath1);
         this.corridorRepository.save(corridor);
+        this.corridorRepository.save(corridor1);
         this.corridorPointRepository.save(corridorPoint);
+        this.corridorPointRepository.save(corridorPoint1);
         this.extraRobotElementRepository.save(extraRobotElement);
+        this.extraRobotElementRepository.save(extraRobotElement1);
         this.robotModelRepository.save(robotmModel);
+        this.robotModelRepository.save(robotmModel1);
         this.robotRepository.save(robot);
+        this.robotRepository.save(robot1);
+        this.robotRepository.save(robot2);
         this.logRepository.save(log);
+        this.logRepository.save(log1);
+        this.logRepository.save(log2);
         this.batteryTypeRepository.save(batteryType);
+        this.batteryTypeRepository.save(batteryType1);
         this.robotBatteryRepository.save(robotBattery);
+        this.robotBatteryRepository.save(robotBattery1);
         this.robotReviewRepository.save(robotReview);
+        this.robotReviewRepository.save(robotReview1);
+        this.robotReviewRepository.save(robotReview2);
         this.standRepository.save(stand);
+        this.standRepository.save(stand1);
         this.standRepository.save(stand2);
         this.movementPathPointRepository.save(movementPathPoint);
+        this.movementPathPointRepository.save(movementPathPoint1);
         this.routeRepository.save(route);
+        this.routeRepository.save(route1);
         this.behaviourRepository.save(behaviour);
         this.behaviourRepository.save(behaviour2);
         this.behaviourRepository.save(behaviour3);
         this.robotTaskRepository.save(robotTask);
+       this.robotTaskRepository.save(robotTask1);
+        this.robotTaskRepository.save(robotTask2);
         //type
         this.areaTypeRepository.save(areaType);
+        this.areaTypeRepository.save(areaType1);
         this.parkingTypeRepository.save(parkingType);
+        this.parkingTypeRepository.save(parkingType1);
         this.propulsionTypeRepository.save(propulsionType);
+        this.propulsionTypeRepository.save(propulsionType1);
         this.reviewTypeRepository.save(reviewType);
+        this.reviewTypeRepository.save(reviewType1);
         this.robotStatusRepository.save(robotStatus);
+        this.robotStatusRepository.save(robotStatus1);
+        this.robotStatusRepository.save(robotStatus2);
         this.routePriorityRepository.save(routePriority);
+        this.routePriorityRepository.save(routePriority1);
         this.standStatusRepository.save(standStatus);
+        this.standStatusRepository.save(standStatus1);
         this.standTypeRepository.save(standType);
-        this.taskPriorityRepository.save(taskPriority);*/
+        this.standTypeRepository.save(standType1);
+        this.standTypeRepository.save(standType3);
+        this.standTypeRepository.save(standType4);
+        this.standTypeRepository.save(standType5);
+        this.taskPriorityRepository.save(taskPriority);
+        this.taskPriorityRepository.save(taskPriority1);*/
 
         //this.graphService.deleteOne(graph); //just for testing purpose - keep commented
     }
