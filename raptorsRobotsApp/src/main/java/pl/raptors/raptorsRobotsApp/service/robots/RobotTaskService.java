@@ -2,7 +2,10 @@ package pl.raptors.raptorsRobotsApp.service.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.raptors.raptorsRobotsApp.domain.robots.Behaviour;
+import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
 import pl.raptors.raptorsRobotsApp.domain.robots.RobotTask;
+import pl.raptors.raptorsRobotsApp.domain.type.TaskPriority;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotTaskRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
@@ -37,5 +40,17 @@ public class RobotTaskService implements CRUDService<RobotTask> {
     @Override
     public void deleteOne(RobotTask robotTask) {
         robotTaskRepository.delete(robotTask);
+    }
+
+    List<RobotTask> getByRobot(Robot robot) {
+        return robotTaskRepository.findAllByRobot(robot);
+    }
+
+    List<RobotTask> getByBehaviour(Behaviour behaviour) {
+        return robotTaskRepository.findAllByBehavioursContaining(behaviour);
+    }
+
+    public List<RobotTask> getByPriority(TaskPriority priority) {
+        return robotTaskRepository.findAllByPriority(priority);
     }
 }

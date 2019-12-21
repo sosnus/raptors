@@ -2,17 +2,22 @@ package pl.raptors.raptorsRobotsApp.service.type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.raptors.raptorsRobotsApp.domain.robots.RobotModel;
 import pl.raptors.raptorsRobotsApp.domain.type.PropulsionType;
 import pl.raptors.raptorsRobotsApp.repository.type.PropulsionTypeRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
+import pl.raptors.raptorsRobotsApp.service.robots.RobotModelService;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
 public class PropulsionTypeService implements CRUDService<PropulsionType> {
+
     @Autowired
     PropulsionTypeRepository propulsionTypeRepository;
+    @Autowired
+    RobotModelService robotModelService;
 
     @Override
     public PropulsionType addOne(PropulsionType PropulsionType) {
@@ -35,8 +40,13 @@ public class PropulsionTypeService implements CRUDService<PropulsionType> {
     }
 
     @Override
-    public PropulsionType updateOne(PropulsionType PropulsionType) {
-        return propulsionTypeRepository.save(PropulsionType);
+    public PropulsionType updateOne(PropulsionType propulsionType) {
+        List<RobotModel> modelList = robotModelService.getByPropulsionType(this.getOne(propulsionType.getId()));
+        for (RobotModel model : modelList) {
+            model.setPropulsionType(propulsionType);
+            robotModelService.updateOne(model);
+        }
+        return propulsionTypeRepository.save(propulsionType);
     }
 
     @Override

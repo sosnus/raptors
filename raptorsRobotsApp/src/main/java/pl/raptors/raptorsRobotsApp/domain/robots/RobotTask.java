@@ -1,12 +1,12 @@
 package pl.raptors.raptorsRobotsApp.domain.robots;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import pl.raptors.raptorsRobotsApp.domain.type.TaskPriority;
+        import lombok.Data;
+        import lombok.NoArgsConstructor;
+        import org.springframework.data.annotation.Id;
+        import org.springframework.data.mongodb.core.mapping.Document;
+        import pl.raptors.raptorsRobotsApp.domain.type.TaskPriority;
 
-import java.util.List;
+        import java.util.List;
 
 @NoArgsConstructor
 @Data

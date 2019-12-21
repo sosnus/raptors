@@ -25,6 +25,7 @@ import pl.raptors.raptorsRobotsApp.service.graphs.GraphService;
 import pl.raptors.raptorsRobotsApp.service.movement.CorridorService;
 import pl.raptors.raptorsRobotsApp.service.movement.MovementMapService;
 import pl.raptors.raptorsRobotsApp.service.movement.MovementPathService;
+import pl.raptors.raptorsRobotsApp.service.robots.*;
 import pl.raptors.raptorsRobotsApp.service.type.*;
 
 
@@ -55,6 +56,8 @@ public class DbSeeder implements CommandLineRunner {
     private StandRepository standRepository;
     @Autowired
     private BatteryTypeRepository batteryTypeRepository;
+    @Autowired
+    private ElementFunctionalityRepository elementFunctionalityRepository;
     @Autowired
     private ExtraRobotElementRepository extraRobotElementRepository;
     @Autowired
@@ -119,6 +122,28 @@ public class DbSeeder implements CommandLineRunner {
     private StandTypeService standTypeService;
     @Autowired
     private StandStatusService standStatusService;
+    @Autowired
+    private ElementFunctionalityService elementFunctionalityService;
+    @Autowired
+    private ExtraRobotElementService extraRobotElementService;
+    @Autowired
+    private RobotModelService robotModelService;
+    @Autowired
+    private RobotBatteryService robotBatteryService;
+    @Autowired
+    private RobotStatusService robotStatusService;
+    @Autowired
+    private BatteryTypeService batteryTypeService;
+    @Autowired
+    private PropulsionTypeService propulsionTypeService;
+    @Autowired
+    private RobotService robotService;
+    @Autowired
+    private ReviewTypeService reviewTypeService;
+    @Autowired
+    private BehaviourService behaviourService;
+    @Autowired
+    private TaskPriorityService taskPriorityService;
 
 
     @Autowired
@@ -180,8 +205,8 @@ public class DbSeeder implements CommandLineRunner {
 
         //KOLEJNOSC JEST WAZNA
 
-        MovementMap movementMap = new MovementMap("mapkaNazwa",null, null);
-        MovementMap movementMap1 = new MovementMap("drugaMapa",null, null);
+        MovementMap movementMap = new MovementMap("mapkaNazwa", null, null);
+        MovementMap movementMap1 = new MovementMap("drugaMapa", null, null);
 
         AreaType areaType = new AreaType("warehouse");
         AreaType areaType1 = new AreaType("outside");
@@ -225,31 +250,31 @@ public class DbSeeder implements CommandLineRunner {
         StandStatus standStatus1 = new StandStatus("occupied");
 
 
-        Pose pose=new Pose();
-        pose.setOrientation(new Pose.Orientation(0.15, 0.54, 0.0,1));
+        Pose pose = new Pose();
+        pose.setOrientation(new Pose.Orientation(0.15, 0.54, 0.0, 1));
         pose.setPosition(new UniversalPoint(13.0, 66.6, 22.3));
-        Stand stand = new Stand("charging station", pose, parkingType1, standType3,standStatus1);
+        Stand stand = new Stand("charging station", pose, parkingType1, standType3, standStatus1);
 
-        Pose pose1=new Pose();
-        pose1.setOrientation(new Pose.Orientation(1.0, 0.4, 0.0,1));
+        Pose pose1 = new Pose();
+        pose1.setOrientation(new Pose.Orientation(1.0, 0.4, 0.0, 1));
         pose1.setPosition(new UniversalPoint(135.0, 8.6, 28.8));
-        Stand stand1 = new Stand("warehouse", pose1, parkingType1, standType1,standStatus1);
+        Stand stand1 = new Stand("warehouse", pose1, parkingType1, standType1, standStatus1);
 
-        Pose pose2=new Pose();
+        Pose pose2 = new Pose();
         pose2.setOrientation(new Pose.Orientation(0.8, 1.0, 0.0, 1.0));
         pose2.setPosition(new UniversalPoint(98.0, 76.4, 34.34));
-        Stand stand2 = new Stand("parking B",pose2, parkingType, standType5,standStatus);
+        Stand stand2 = new Stand("parking B", pose2, parkingType, standType5, standStatus);
 
 
         RobotStatus robotStatus = new RobotStatus("on the way");
-        RobotStatus robotStatus1=new RobotStatus("charging needed");
-        RobotStatus robotStatus2=new RobotStatus("free");
+        RobotStatus robotStatus1 = new RobotStatus("charging needed");
+        RobotStatus robotStatus2 = new RobotStatus("free");
 
-        List<RobotStatus> robotStatuses=new ArrayList<>();
+        List<RobotStatus> robotStatuses = new ArrayList<>();
         robotStatuses.add(robotStatus);
 
 
-        List<RobotStatus> robotStatuses1=new ArrayList<>();
+        List<RobotStatus> robotStatuses1 = new ArrayList<>();
         robotStatuses1.add(robotStatus1);
         robotStatuses1.add(robotStatus2);
 
@@ -260,9 +285,9 @@ public class DbSeeder implements CommandLineRunner {
         Robot robot1 = new Robot("192.15.0.2", true, extraRobotElement1, robotmModel1, pose2, formatter.format(new Date()), 16.9, robotStatuses1);
         Robot robot2 = new Robot("192.15.0.3", true, extraRobotElement, robotmModel, pose, formatter.format(new Date()), 99.8, robotStatuses);
 
-        Log log= new Log(robot,formatter.format(new Date()),robotStatus);
-        Log log1= new Log(robot1,formatter.format(new Date()),robotStatus1);
-        Log log2= new Log(robot2,formatter.format(new Date()),robotStatus2);
+        Log log = new Log(robot, formatter.format(new Date()), robotStatus);
+        Log log1 = new Log(robot1, formatter.format(new Date()), robotStatus1);
+        Log log2 = new Log(robot2, formatter.format(new Date()), robotStatus2);
 
         RobotBattery robotBattery = new RobotBattery("2016-9-22", batteryType);
         RobotBattery robotBattery1 = new RobotBattery("2013-4-15", batteryType1);
@@ -306,9 +331,9 @@ public class DbSeeder implements CommandLineRunner {
         TaskPriority taskPriority2 = new TaskPriority("medium", 3);
 
 
-        RobotTask robotTask = new RobotTask(robot,"transport tools", behaviours, formatter.format(new Date()), taskPriority,"done");
-        RobotTask robotTask1 = new RobotTask(null,"deliver package", behaviours1, formatter.format(new Date()), taskPriority1,"waiting");
-        RobotTask robotTask2 = new RobotTask(robot2,"receive package", behaviours2, formatter.format(new Date()), taskPriority2,"on going");
+        RobotTask robotTask = new RobotTask(robot, "transport tools", behaviours, formatter.format(new Date()), taskPriority, "done");
+        RobotTask robotTask1 = new RobotTask(null, "deliver package", behaviours1, formatter.format(new Date()), taskPriority1, "waiting");
+        RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, "on going");
 
         //czyść baze
         this.corridorRepository.deleteAll();
@@ -318,6 +343,7 @@ public class DbSeeder implements CommandLineRunner {
         this.movementPathRepository.deleteAll();
         this.standRepository.deleteAll();
         this.batteryTypeRepository.deleteAll();
+        this.elementFunctionalityRepository.deleteAll();
         this.extraRobotElementRepository.deleteAll();
         this.robotBatteryRepository.deleteAll();
         this.robotModelRepository.deleteAll();
@@ -405,10 +431,10 @@ public class DbSeeder implements CommandLineRunner {
         this.robotTaskRepository.save(robotTask1);
         this.robotTaskRepository.save(robotTask2);
 
-        //---TESTING CASCADE UPDATES/DELETES---
+        //KEEP COMMENTED! ---TESTING CASCADE UPDATES/DELETES--- KEEP COMMENTED!
 
         //MOVEMENT
-        movementMap.setName("test1");
+       /* movementMap.setName("test1");
         areaType.setName("test1");
 
         movementPath.setName("test2");
@@ -432,12 +458,54 @@ public class DbSeeder implements CommandLineRunner {
 
         this.parkingTypeService.updateOne(parkingType);
         this.standTypeService.updateOne(standType1);
-        this.standStatusService.updateOne(standStatus);
+        this.standStatusService.updateOne(standStatus);*/
 
         //this.corridorService.deleteOne(corridor);
         //this.movementMapService.deleteOne(movementMap);
 
-        //this.graphService.deleteOne(graph); //just for testing purpose - keep commented
+        //ROBOTS
+        /*ElementFunctionality elementFunctionality = new ElementFunctionality("nazwa1");
+        ElementFunctionality elementFunctionality1 = new ElementFunctionality("nazwa2");
+        ElementFunctionality elementFunctionality2 = new ElementFunctionality("nazwa3");
+        List<ElementFunctionality> functionalitiesToAdd = Arrays.asList(elementFunctionality, elementFunctionality1, elementFunctionality2);
+
+        this.elementFunctionalityRepository.saveAll(functionalitiesToAdd);
+
+        ExtraRobotElement extraRobotElement2 = new ExtraRobotElement("element1", "12 x 340", functionalitiesToAdd);
+        ExtraRobotElement extraRobotElement3 = new ExtraRobotElement("element2", "23 x 439", Arrays.asList(elementFunctionality, elementFunctionality1));
+        this.extraRobotElementRepository.save(extraRobotElement2);
+        this.extraRobotElementRepository.save(extraRobotElement3);
+
+        elementFunctionality1.setName("zmieniona nazwa2");
+        this.elementFunctionalityService.updateOne(elementFunctionality1);
+
+        extraRobotElement.setName("zmieniony");
+        //robotmModel.setName("modelek");
+        robotBattery.setProductionDate("data zmieniona");
+        robotStatus1.setName("test test");
+
+        this.extraRobotElementService.updateOne(extraRobotElement);
+        //this.robotModelService.updateOne(robotmModel);
+        this.robotBatteryService.updateOne(robotBattery);
+        this.robotStatusService.updateOne(robotStatus1);
+
+        batteryType.setName("zmieniona test");
+        this.batteryTypeService.updateOne(batteryType);
+
+        propulsionType.setName("lorem ipsum");
+        this.propulsionTypeService.updateOne(propulsionType);
+
+        robot.setRobotIp("255.255.255.255");
+        reviewType.setName("test zmian");
+        this.robotService.updateOne(robot);
+        this.reviewTypeService.updateOne(reviewType);
+
+        behaviour.setName("tescik");
+        taskPriority.setName("zmiany zmiany");
+        this.behaviourService.updateOne(behaviour);
+        this.taskPriorityService.updateOne(taskPriority);*/
+
+        //this.graphService.deleteOne(graph); //testing graph cascade
     }
 
 }
