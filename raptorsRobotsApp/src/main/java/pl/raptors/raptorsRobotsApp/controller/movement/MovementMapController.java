@@ -1,9 +1,8 @@
 package pl.raptors.raptorsRobotsApp.controller.movement;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementMap;
 import pl.raptors.raptorsRobotsApp.service.movement.MovementMapService;
 import pl.raptors.raptorsRobotsApp.service.pgm.PGMIO;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
-@Controller
+@RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(value = "/movement/maps")
 public class MovementMapController {
@@ -33,12 +32,8 @@ public class MovementMapController {
     }
 
     @PostMapping("/upload")
-    public MovementMap upload(@RequestParam("name") String name, @RequestParam("mapImage") String base64String) throws IOException {
-
-        byte[] actualByte= Base64.getDecoder().decode(base64String);
-
-        MovementMap movementMap = service.addMovementMap(name, actualByte, null);
-        return service.addOne(movementMap);
+    public MovementMap upload(@RequestParam("name") String name,  @RequestParam("mapImage") MultipartFile mapImage,  @RequestParam("yamlFile") MultipartFile yamlFile) throws IOException {
+        return  service.addMovementMap(name, mapImage, yamlFile);
     }
 
     @GetMapping("/{id}")
