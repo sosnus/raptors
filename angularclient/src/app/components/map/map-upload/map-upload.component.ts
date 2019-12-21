@@ -30,6 +30,6 @@ export class MapUploadComponent implements OnInit {
   private yamlInput: InputFileComponent;
 
   submitFiles() {
-   this.mapService.save(this.mapName, this.mapInputComponent.files[0].file,this.yamlInput.files[0].file);
+   this.mapService.save(this.mapName, this.mapInputComponent.files[0].file,this.yamlInput.files[0].file).subscribe(result => console.log(result));
   }
 }

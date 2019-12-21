@@ -194,7 +194,7 @@ export class GraphcreatorComponent implements OnInit {
     });
     graph.edges = graphEdges;
     console.log(graph);
-    this.graphService.save(graph).subscribe(result => alert('Graf dodany do bazy'));
+    this.graphService.save(graph).subscribe(result => console.log(result));
   }
 
 }
