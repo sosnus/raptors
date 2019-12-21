@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.raptors.raptorsRobotsApp.domain.movement.MapArea;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementMap;
 import pl.raptors.raptorsRobotsApp.domain.movement.Route;
-import pl.raptors.raptorsRobotsApp.repository.movement.MapAreaRepository;
 import pl.raptors.raptorsRobotsApp.repository.movement.MovementMapRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
@@ -25,21 +24,20 @@ public class MovementMapService implements CRUDService<MovementMap> {
     @Autowired
     RouteService routeService;
 
-    /*public MovementMap addMovementMap(String name, MultipartFile fileMap, MultipartFile fileYaml) throws IOException {
+    public MovementMap addMovementMap(String name, MultipartFile fileMap, MultipartFile fileYaml) throws IOException {
         Binary binaryMapImage = new Binary(BsonBinarySubType.BINARY, fileMap.getBytes());
-        Binary binaryYaml = new Binary(BsonBinarySubType.BINARY, fileYaml.getBytes());
-        MovementMap movementMap = new MovementMap(name, binaryMapImage,binaryYaml);
-        movementMap = movementMapRepository.save(movementMap);
-        return movementMap;
-    }*/
-
-    public MovementMap addMovementMap(String name, byte[] fileMap, MultipartFile fileYaml) throws IOException {
-        Binary binaryMapImage = new Binary(BsonBinarySubType.BINARY, fileMap);
         Binary binaryYaml = new Binary(BsonBinarySubType.BINARY, fileYaml.getBytes());
         MovementMap movementMap = new MovementMap(name, binaryMapImage, binaryYaml);
         movementMap = movementMapRepository.save(movementMap);
         return movementMap;
     }
+
+//    public String addMovementMapRaw(String name, MultipartFile file) throws IOException {
+//        Binary binaryMapImage = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+//        MovementMap movementMap = new MovementMap(name, binaryMapImage, null);
+//        movementMap = repository.save(movementMap);
+//        return movementMap.getId();
+//    }
 
     @Override
     public MovementMap addOne(MovementMap movementMap) {
