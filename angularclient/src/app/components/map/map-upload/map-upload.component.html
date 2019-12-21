@@ -1,23 +1,59 @@
 <div class="card" style="padding: 30px 100px 30px 100px">
+
   <div class="md-form">
     <input type="text" id="inputIconEx2" class="form-control"
            [(ngModel)]="mapName">
     <label for="inputIconEx2">Nazwa mapy</label>
   </div>
   <input-file fileAccept=".pgm" fileLimit="1"
-              acceptedFile='console.log("lol")'
               placeholder="Dodaj mapę(.pgm)"
-              #mapInput
-              (change)="mapSelected = true">
+              (acceptedFile)="mapSelected = true"
+              (deletedFile)="mapSelected = false"
+              #mapInput>
   </input-file>
   <input-file fileAccept=".yaml" fileLimit="1"
               placeholder="Dodaj plik .yaml"
-              #yamlInput
-              (change)="yamlSelected = true">
+              (acceptedFile)="yamlSelected = true"
+              (deletedFile)="yamlSelected = false"
+              #yamlInput>
   </input-file>
   <button class="btn btn-light"
-          [disabled]="(!mapSelected)&&(!yamlSelected)&&(mapName.length<1)"
+          data-toggle="modal"
+          data-target="#loadingModal"
+          data-backdrop="static"
+          data-keyboard="false"
+          [disabled]="checkForm()"
           (click)="submitFiles()">
     Zapisz
   </button>
+
 </div>
+
+
+
+<!-- Central Modal Small -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <!-- Change class .modal-sm to change the size of the modal -->
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <div class="loader" *ngIf="!error && !success"></div>
+        <i class="fas fa-check-circle success" *ngIf="success"></i>
+        <i class="fas fa-exclamation-circle error" *ngIf="error"></i>
+        <div clas="loader-txt" *ngIf="!error && !success">
+          <p>Trwa zapisywanie mapy w bazie danych<br><br><small>Proszę czekać...</small></p>
+        </div>
+        <div clas="loader-txt" *ngIf="success">
+          <p>Dane zapisane pomyślnie<br><br></p>
+          <button type="button" class="btn btn-light" data-dismiss="modal">OK</button>
+        </div>
+        <div clas="loader-txt" *ngIf="error">
+          <p>Wystąpił błąd podczas apisywania danych<br><br></p>
+          <button type="button" class="btn btn-light" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Central Modal Small -->
