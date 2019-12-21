@@ -22,6 +22,10 @@ import pl.raptors.raptorsRobotsApp.repository.movement.*;
 import pl.raptors.raptorsRobotsApp.repository.robots.*;
 import pl.raptors.raptorsRobotsApp.repository.type.*;
 import pl.raptors.raptorsRobotsApp.service.graphs.GraphService;
+import pl.raptors.raptorsRobotsApp.service.movement.CorridorService;
+import pl.raptors.raptorsRobotsApp.service.movement.MovementMapService;
+import pl.raptors.raptorsRobotsApp.service.movement.MovementPathService;
+import pl.raptors.raptorsRobotsApp.service.type.*;
 
 
 import java.io.IOException;
@@ -31,6 +35,8 @@ import java.util.*;
 //klasa wstawiająca do bazy wstepne przykladowe dane
 @Component
 public class DbSeeder implements CommandLineRunner {
+
+    //REPOS
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -94,8 +100,25 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     private LogRepository logRepository;
 
+    //SERVICES
     @Autowired
     private GraphService graphService;
+    @Autowired
+    private AreaTypeService areaTypeService;
+    @Autowired
+    private MovementMapService movementMapService;
+    @Autowired
+    private MovementPathService movementPathService;
+    @Autowired
+    private CorridorService corridorService;
+    @Autowired
+    private RoutePriorityService routePriorityService;
+    @Autowired
+    private ParkingTypeService parkingTypeService;
+    @Autowired
+    private StandTypeService standTypeService;
+    @Autowired
+    private StandStatusService standStatusService;
 
 
     @Autowired
@@ -174,6 +197,7 @@ public class DbSeeder implements CommandLineRunner {
 
         CorridorPoint corridorPoint = new CorridorPoint(corridor, 11, 99.8, 111.2);
         CorridorPoint corridorPoint1 = new CorridorPoint(corridor1, 50, 19.2, 75.7);
+        CorridorPoint corridorPoint2 = new CorridorPoint(corridor, 13, 19.8, 120.4);
 
         ExtraRobotElement extraRobotElement = new ExtraRobotElement("jakas dostawka", "100cm x 350cm");
         ExtraRobotElement extraRobotElement1 = new ExtraRobotElement("pliers", "300cm x 250cm");
@@ -287,7 +311,7 @@ public class DbSeeder implements CommandLineRunner {
         RobotTask robotTask2 = new RobotTask(robot2,"receive package", behaviours2, formatter.format(new Date()), taskPriority2,"on going");
 
         //czyść baze
-      /* this.corridorRepository.deleteAll();
+        this.corridorRepository.deleteAll();
         this.corridorPointRepository.deleteAll();
         this.mapAreaRepository.deleteAll();
         //this.movementMapRepository.deleteAll();
@@ -316,7 +340,31 @@ public class DbSeeder implements CommandLineRunner {
         this.taskPriorityRepository.deleteAll();
 
         //dodaj do bazy dane
-       //this.movementMapRepository.save(movementMap);
+        //type
+        this.areaTypeRepository.save(areaType);
+        this.areaTypeRepository.save(areaType1);
+        this.parkingTypeRepository.save(parkingType);
+        this.parkingTypeRepository.save(parkingType1);
+        this.propulsionTypeRepository.save(propulsionType);
+        this.propulsionTypeRepository.save(propulsionType1);
+        this.reviewTypeRepository.save(reviewType);
+        this.reviewTypeRepository.save(reviewType1);
+        this.robotStatusRepository.save(robotStatus);
+        this.robotStatusRepository.save(robotStatus1);
+        this.robotStatusRepository.save(robotStatus2);
+        this.routePriorityRepository.save(routePriority);
+        this.routePriorityRepository.save(routePriority1);
+        this.standStatusRepository.save(standStatus);
+        this.standStatusRepository.save(standStatus1);
+        this.standTypeRepository.save(standType);
+        this.standTypeRepository.save(standType1);
+        this.standTypeRepository.save(standType3);
+        this.standTypeRepository.save(standType4);
+        this.standTypeRepository.save(standType5);
+        this.taskPriorityRepository.save(taskPriority);
+        this.taskPriorityRepository.save(taskPriority1);
+
+        //this.movementMapRepository.save(movementMap);//
         this.mapAreaRepository.save(mapArea);
         this.mapAreaRepository.save(mapArea1);
         this.movementPathRepository.save(movementPath);
@@ -325,6 +373,7 @@ public class DbSeeder implements CommandLineRunner {
         this.corridorRepository.save(corridor1);
         this.corridorPointRepository.save(corridorPoint);
         this.corridorPointRepository.save(corridorPoint1);
+        this.corridorPointRepository.save(corridorPoint2);
         this.extraRobotElementRepository.save(extraRobotElement);
         this.extraRobotElementRepository.save(extraRobotElement1);
         this.robotModelRepository.save(robotmModel);
@@ -353,31 +402,40 @@ public class DbSeeder implements CommandLineRunner {
         this.behaviourRepository.save(behaviour2);
         this.behaviourRepository.save(behaviour3);
         this.robotTaskRepository.save(robotTask);
-       this.robotTaskRepository.save(robotTask1);
+        this.robotTaskRepository.save(robotTask1);
         this.robotTaskRepository.save(robotTask2);
-        //type
-        this.areaTypeRepository.save(areaType);
-        this.areaTypeRepository.save(areaType1);
-        this.parkingTypeRepository.save(parkingType);
-        this.parkingTypeRepository.save(parkingType1);
-        this.propulsionTypeRepository.save(propulsionType);
-        this.propulsionTypeRepository.save(propulsionType1);
-        this.reviewTypeRepository.save(reviewType);
-        this.reviewTypeRepository.save(reviewType1);
-        this.robotStatusRepository.save(robotStatus);
-        this.robotStatusRepository.save(robotStatus1);
-        this.robotStatusRepository.save(robotStatus2);
-        this.routePriorityRepository.save(routePriority);
-        this.routePriorityRepository.save(routePriority1);
-        this.standStatusRepository.save(standStatus);
-        this.standStatusRepository.save(standStatus1);
-        this.standTypeRepository.save(standType);
-        this.standTypeRepository.save(standType1);
-        this.standTypeRepository.save(standType3);
-        this.standTypeRepository.save(standType4);
-        this.standTypeRepository.save(standType5);
-        this.taskPriorityRepository.save(taskPriority);
-        this.taskPriorityRepository.save(taskPriority1);*/
+
+        //---TESTING CASCADE UPDATES/DELETES---
+
+        //MOVEMENT
+        movementMap.setName("test1");
+        areaType.setName("test1");
+
+        movementPath.setName("test2");
+
+        corridor.setName("test3");
+
+        routePriority.setName("test4");
+
+        parkingType.setName("test5");
+        standType1.setName("test6");
+        standStatus.setName("test7");
+
+        this.areaTypeService.updateOne(areaType);
+        //this.movementMapService.updateOne(movementMap);
+
+        this.corridorService.updateOne(corridor);
+        this.movementPathService.updateOne(movementPath);
+
+
+        this.routePriorityService.updateOne(routePriority);
+
+        this.parkingTypeService.updateOne(parkingType);
+        this.standTypeService.updateOne(standType1);
+        this.standStatusService.updateOne(standStatus);
+
+        //this.corridorService.deleteOne(corridor);
+        //this.movementMapService.deleteOne(movementMap);
 
         //this.graphService.deleteOne(graph); //just for testing purpose - keep commented
     }

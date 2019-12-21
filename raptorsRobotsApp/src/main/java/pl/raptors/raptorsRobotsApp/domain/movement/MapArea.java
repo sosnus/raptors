@@ -20,8 +20,7 @@ public class MapArea {
     private AreaType type;
     private List<UniversalPoint> points;
 
-    public MapArea(String name, MovementMap map, AreaType type)
-    {
+    public MapArea(String name, MovementMap map, AreaType type) {
         this.name = name;
         this.map = map;
         this.type = type;

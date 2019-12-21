@@ -1,9 +1,9 @@
 package pl.raptors.raptorsRobotsApp.domain.movement;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+        import lombok.Data;
+        import lombok.NoArgsConstructor;
+        import org.springframework.data.annotation.Id;
+        import org.springframework.data.mongodb.core.mapping.Document;
 
 @NoArgsConstructor
 @Data
@@ -17,8 +17,7 @@ public class CorridorPoint {
     private Double xCoordinate;
     private Double yCoordinate;
 
-    public CorridorPoint(Corridor corridor, Integer polygonVertexNumber, Double xCoordinate, Double yCoordinate)
-    {
+    public CorridorPoint(Corridor corridor, Integer polygonVertexNumber, Double xCoordinate, Double yCoordinate) {
         this.corridor = corridor;
         this.polygonVertexNumber = polygonVertexNumber;
         this.xCoordinate = xCoordinate;
