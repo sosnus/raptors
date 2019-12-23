@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { MapService } from '../../../services/map.service';
+import {Component, OnInit} from '@angular/core';
+import {MapService} from '../../../services/map.service';
 import * as L from 'leaflet';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
-import { GraphService } from '../../../services/graph.service';
-import { Graph } from '../../../model/Graphs/Graph';
-import { Edge } from '../../../model/Graphs/Edge';
-import { Vertex } from '../../../model/Graphs/Vertex';
+import {GraphService} from '../../../services/graph.service';
+import {Graph} from '../../../model/Graphs/Graph';
+import {Edge} from '../../../model/Graphs/Edge';
+import {Vertex} from '../../../model/Graphs/Vertex';
 
 
 @Component({
@@ -18,6 +18,7 @@ export class GraphcreatorComponent implements OnInit {
   dataLoaded = false;
   private imageResolution;
   private map;
+  private mapResolution = 0.01;//TODO()
   private imageURL = '';
   private mapID = '5de6d25552cace719bf775cf';//TODO()
   private editEdges = false;
@@ -140,7 +141,7 @@ export class GraphcreatorComponent implements OnInit {
         const polyLine = new L.polyline([this.selectedVert._latlng, marker.sourceTarget._latlng], {
           color: 'red',
           weight: 7,
-          opacity: 0.5,
+          opacity: 0.8,
           smoothFactor: 1,
           contextmenu: true,
           contextmenuItems: [
@@ -148,11 +149,17 @@ export class GraphcreatorComponent implements OnInit {
               text: 'Usuń krawędź grafu',
               callback: this.deleteEdge,
               context: this.context
+            },
+            {
+              text: 'Drukierunkowa: Tak/Nie',
+              callback: this.biDirectEdge,
+              context: this.context
             }
           ]
         });
         polyLine.addTo(this.map);
         polyLine.markerIDs = [this.selectedVert._leaflet_id, marker.sourceTarget._leaflet_id]
+        polyLine.biDirected = false;
         this.edges.push(polyLine);
         this.selectedVert = null;
       } else {
@@ -180,21 +187,40 @@ export class GraphcreatorComponent implements OnInit {
     this.edges = this.edges.filter(edge => edge !== this.selectedElement);
     this.map.removeLayer(this.selectedElement);
   }
+  private biDirectEdge() {
+    const index = this.edges.indexOf(this.selectedElement);
+    if(!this.selectedElement.biDirected){
+      this.selectedElement.biDirected = true;
+      this.selectedElement.setStyle({color: 'yellow'});
+    }else{
+      this.selectedElement.biDirected = false;
+      this.selectedElement.setStyle({color: 'red'});
+    }
+    this.edges[index]=this.selectedElement;
+  }
 
   public saveGraph() {
     let graph: Graph = new Graph();
     let graphEdges: Edge[] = [];
     this.edges.forEach(edge => {
-      let vertexA: Vertex = new Vertex(edge._latlngs[0].lat, edge._latlngs[0].lng);
-      let vertexB: Vertex = new Vertex(edge._latlngs[1].lat, edge._latlngs[1].lng);
-      vertexB.posX = edge._latlngs[1].lat;
-      vertexB.posY = edge._latlngs[1].lng;
-      let graphEdge = new Edge(vertexA, vertexB, false);
+      let vertexA: Vertex = new Vertex(
+        this.getRealCoordinates(edge._latlngs[0].lng),
+        this.getRealCoordinates(edge._latlngs[0].lat)
+      );
+      let vertexB: Vertex = new Vertex(
+        this.getRealCoordinates(edge._latlngs[1].lng),
+        this.getRealCoordinates(edge._latlngs[1].lat)
+      );
+      let graphEdge = new Edge(vertexA, vertexB, edge.biDirected);
       graphEdges.push(graphEdge)
     });
     graph.edges = graphEdges;
     console.log(graph);
     this.graphService.save(graph).subscribe(result => console.log(result));
+  }
+
+  getRealCoordinates(value) {
+    return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
   }
 
 }

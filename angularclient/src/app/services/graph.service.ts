@@ -15,6 +15,10 @@ export class GraphService {
     this.graphURL = 'http://localhost:8080/graphs/';
   }
 
+  public getGraph(id: string): Observable<Graph> {
+    return this.http.get<Graph>(this.graphURL + id, {responseType: 'json'})
+  }
+
   public save(graph: Graph) {
     return this.http.post<Graph>(this.graphURL + 'add', graph);
   }

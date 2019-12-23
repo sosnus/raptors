@@ -6,7 +6,14 @@ import 'leaflet-rotatedmarker';
 import {MapService} from "../../services/map.service";
 import {RobotService} from "../../services/robot.service";
 import {StoreService} from "../../services/store.service";
+import {GraphService} from "../../services/graph.service";
+import {Graph} from "../../model/Graphs/Graph";
 
+export const WAYPOINTICON = L.icon({
+  iconUrl: '/assets/icons/position.png',
+  iconSize: [36, 36],
+  iconAnchor: [36 / 2, 36 / 2]
+});
 
 @Component({
   selector: 'app-map',
@@ -19,6 +26,7 @@ export class MapComponent implements OnInit {
   robotDataloaded = false;
 
   private robotStatusLayer = L.featureGroup();
+  private graphs = L.featureGroup();
 
   //Example data
   private robots = [
@@ -47,26 +55,30 @@ export class MapComponent implements OnInit {
       'rot': '0.183157256614'
     }
   ];
-  private mapID = '5de6d25552cace719bf775cf';
+
 
   //filters for the map
   private robotStatus = {
     Online: this.robotStatusLayer,
-
-    'Warning!': L.tileLayer.wms(),
-
+    Grafy: this.graphs,
     'Error!': L.tileLayer.wms(),
   };
 
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
+  private mapID = '5de6d25552cace719bf775cf';//TODO()
+  private graphID = '5e0010bb0831a2671739f734';//TODO()
+  private graph: Graph;
   private imageResolution;
-
+  private mapResolution = 0.01;//TODO()
   private map;
   private imageURL = '';
   private robotIP = '';
 
-  constructor(private mapService: MapService, private robotService: RobotService, private storeService: StoreService) {
+  constructor(private mapService: MapService,
+              private robotService: RobotService,
+              private storeService: StoreService,
+              private graphService: GraphService) {
   }
 
   ngOnInit() {
@@ -97,12 +109,42 @@ export class MapComponent implements OnInit {
       }
     );
 
+    this.graphService.getGraph(this.graphID).subscribe(
+      graph => {
+        console.log(graph);
+        this.graph = graph;
+        this.drawGraph(graph)
+      }
+    );
+
     const img = new Image;
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
-      this.createRobotMarkers(this.robots, 0.01);
+      this.createRobotMarkers(this.robots);
     }
+  }
+
+  private drawGraph(graph: Graph) {
+    let existingWaypoints = [];
+    graph.edges.forEach(edge => {
+      const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
+      const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+      if (!existingWaypoints.includes(vertPosA)) {
+        const marker = new L.marker(vertPosA, {icon: WAYPOINTICON});
+        marker.addTo(this.graphs);
+        existingWaypoints.push(vertPosA);
+      }
+      if (!existingWaypoints.includes(vertPosB)) {
+        const marker = new L.marker(vertPosB, {icon: WAYPOINTICON});
+        marker.addTo(this.graphs);
+        existingWaypoints.push(vertPosB);
+      }
+      const color = edge.biDirected ? 'yellow' : 'red';
+      const polyLine = new L.polyline([vertPosA, vertPosB],
+        {color: color, weight: 7, opacity: 0.8, smoothFactor: 1});
+      polyLine.addTo(this.graphs);
+    });
   }
 
   private parseToJpeg(image: any): string {
@@ -120,12 +162,12 @@ export class MapComponent implements OnInit {
     L.control.layers(this.robotStatus).addTo(this.map);
   }
 
-  private createRobotMarkers(robots, resolution: number) {
+  private createRobotMarkers(robots) {
     robots.forEach(robot => {
       const markerIcon = L.icon({iconUrl: '/assets/icons/robot_icon.png', iconSize: [36, 36], iconAnchor: [0, 0]});
       const position = [
-        (Number(robot.y) + (this.imageResolution * resolution) / 2) * (1 / resolution) * (800 / this.imageResolution),
-        (Number(robot.x) + (this.imageResolution * resolution) / 2) * (1 / resolution) * (800 / this.imageResolution),
+        this.getMapCoordinates(Number(robot.y)),
+        this.getMapCoordinates(Number(robot.x))
       ];
       const marker = L.circle(position, {
         color: 'red',
@@ -145,12 +187,19 @@ export class MapComponent implements OnInit {
     })
   }
 
-  private updateRobotMarkerPositions(robots: number[][], resolution: number) {
+  getMapCoordinates(value) {
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+  }
+
+  private updateRobotMarkerPositions(robots: number[][]) {
     for (let i = 0; i < robots.length; i++) {
       const position = [
-        (robots[i][1] + (this.imageResolution * resolution) / 2) * (1 / resolution) * (800 / this.imageResolution),
-        (robots[i][0] + (this.imageResolution * resolution) / 2) * (1 / resolution) * (800 / this.imageResolution)];
+        this.getMapCoordinates(robots[i][1]),
+        this.getMapCoordinates(robots[i][1])
+      ];
       this.robotMarkers[i].setLatLng(position);
     }
   }
+
+
 }
