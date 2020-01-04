@@ -13,6 +13,7 @@ import {Vertex} from "../../../model/Graphs/Vertex";
 })
 export class PolygonsComponent implements OnInit {
   dataLoaded = false;
+  private drawPolygon = false;
   private imageResolution;
   private map;
   private imageURL = '';
@@ -69,7 +70,15 @@ export class PolygonsComponent implements OnInit {
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
     this.map.fitBounds(imageBounds);
+
+    this.drawPoly();
+
+  }
+
+  private drawPoly(){
     this.map.on('click', e => {
+      // dodaj wierzcholki do listy
+      if(!this.drawPolygon) {
         console.log("Markec created")
         const markerIcon = L.icon({
           iconUrl: '/assets/icons/position.png',
@@ -89,12 +98,17 @@ export class PolygonsComponent implements OnInit {
         });
         this.polygonPoints[this.i] = e.latlng;
         marker.addTo(this.map);
-        this.i +=1;
-        this.vertices.push(marker)
-        if(this.i ==4){
+        this.i += 1;
+        this.vertices.push(marker);
+      }
+      // rysuj poly
+      if(this.drawPolygon){
+        console.log("Wierzchołki: "+this.polygonPoints);
         var polygon = L.polygon(this.polygonPoints, {color: 'red'}).addTo(this.map);
         this.map.fitBounds(polygon.getBounds());
       }
     });
+
   }
+
   }
