@@ -15,14 +15,13 @@ export class PolygonsComponent implements OnInit {
   dataLoaded = false;
   private drawPolygon = false;
   private imageResolution;
+  private mapResolution = 0.01;//TODO()
   private map;
   private imageURL = '';
   private mapID = '5de6d25552cace719bf775cf';//TODO()
-  private polygonPoints = [
-    [3.05336356163, 2.6747405529],
-    [2.99178433418, 2.6739563942],
-    [-1.70923388004, -2.60913944244],
-    [-1.43146789074, 2.68175768852]];
+  private polygonPoints = [];
+  private polygonsList = [[]];
+  //private markerIDs = [];
   private i=0;
   private vertices = [];
   constructor(private mapService: MapService) {
@@ -35,8 +34,6 @@ export class PolygonsComponent implements OnInit {
   }
 
   private loadMap() {
-    console.log("00: " + this.polygonPoints[0]);
-    console.log("01: " + this.polygonPoints[1]);
     if (localStorage.getItem(this.mapID) !== null) {
       this.afterMapLoaded(localStorage.getItem(this.mapID))
     } else {
@@ -86,7 +83,7 @@ export class PolygonsComponent implements OnInit {
           iconAnchor: [36 / 2, 36 / 2]
         });
         let marker = new L.marker(e.latlng, {
-          draggable: false,
+          draggable: true,
           icon: markerIcon,
           contextmenu: true,
           contextmenuItems: [
@@ -96,19 +93,78 @@ export class PolygonsComponent implements OnInit {
             }
           ]
         });
-        this.polygonPoints[this.i] = e.latlng;
+
+        //this.markerIDs.push(marker.markerIDs);
+        this.polygonPoints.push(e.latlng);
         marker.addTo(this.map);
-        this.i += 1;
+        //console.log("Nierealna wartość: " + e.latlng.lat());
+
+
+        //przemieszczanie vertexów
+       /* marker.on('move', e => {
+          this.updatePoly(e)
+        });*/
+
         this.vertices.push(marker);
-      }
-      // rysuj poly
-      if(this.drawPolygon){
-        console.log("Wierzchołki: "+this.polygonPoints);
-        var polygon = L.polygon(this.polygonPoints, {color: 'red'}).addTo(this.map);
-        this.map.fitBounds(polygon.getBounds());
       }
     });
 
+  }
+
+
+  //przemieszczanie vertexów
+  /*private updatePoly(e) {
+    let markerPos = this.vertices.filter(marker => marker._leaflet_id === e.target._leaflet_id)[0];
+    let newEdges = [];
+    this.polygonPoints.forEach(polygon => {
+      console.log("ID kilkniętego: " + e.target._leaflet_id);
+      //console.log("ID kilkniętego2: " + polygon.markerIDs[0]);
+      //console.log("ID markerów: " + this.markerIDs);
+
+     /!* if (polygon.markerIDs[0] === e.target._leaflet_id) {
+        polygon.setLatLngs([markerPos._latlng, polygon._latlngs[1]]);
+        polygon.redraw()
+      }*!/
+
+      //newEdges.push(polygon);
+    });
+    this.polygonPoints = newEdges;
+
+  }*/
+
+
+  private createPoly(){
+    console.log("Wierzchołki: "+this.polygonPoints);
+
+    if(this.polygonPoints.length<=3){
+      alert("Zbyt mała liczba wierzchołków: " + this.polygonPoints.length);
+    }
+    else{
+      var polygon = L.polygon(this.polygonPoints, {color: 'red'}).addTo(this.map);
+      this.map.fitBounds(polygon.getBounds());
+      this.convertPoints();
+      //dodanie polygonu na listę przed wyczyszczeniem
+      this.polygonsList.push(this.polygonPoints);
+      //console.log("Lista polygonów: "+ this.polygonsList);
+      this.clearVertexList(this.polygonPoints);
+    }
+    //console.log("Wierzchołki po oczyszczeniu: "+this.polygonPoints);
+  }
+
+  private convertPoints(){
+    for(this.i=0; this.i < this.polygonPoints.length; this.i++ ){
+      console.log(this.getRealCoordinates(this.polygonPoints[this.i].lat) + ", " + this.getRealCoordinates(this.polygonPoints[this.i].lng));
+    }
+  }
+
+  private getRealCoordinates(value) {
+    return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
+  }
+
+  private clearVertexList(vertexList: any[]){
+    while (vertexList.length) {
+      vertexList.pop();
+    }
   }
 
   }
