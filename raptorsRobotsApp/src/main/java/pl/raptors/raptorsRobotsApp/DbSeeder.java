@@ -106,7 +106,6 @@ public class DbSeeder implements CommandLineRunner {
     public void run(String... strings) throws IOException {
 
         Role regularUser = new Role("regularUser");
-
         User testowyUser1 = new User("testowy@gmail.com", "test",
                 //jeśli więcej niż 1 rola, to Array.asList()
                 Collections.singletonList(regularUser)
@@ -160,11 +159,15 @@ public class DbSeeder implements CommandLineRunner {
         MovementMap movementMap = new MovementMap("mapkaNazwa",null, null);
         MovementMap movementMap1 = new MovementMap("drugaMapa",null, null);
 
+
+
         AreaType areaType = new AreaType("warehouse");
         AreaType areaType1 = new AreaType("outside");
 
-        MapArea mapArea = new MapArea("hall A2", movementMap, areaType);
-        MapArea mapArea1 = new MapArea("area B13", movementMap1, areaType1);
+        List<UniversalPoint> points = new ArrayList<>();
+
+        MapArea mapArea = new MapArea("hall A2", areaType, points);
+        MapArea mapArea1 = new MapArea("area B13", areaType1, points);
 
         MovementPath movementPath = new MovementPath("the fastest");
         MovementPath movementPath1 = new MovementPath("the shortest");
@@ -223,6 +226,7 @@ public class DbSeeder implements CommandLineRunner {
 
         List<RobotStatus> robotStatuses=new ArrayList<>();
         robotStatuses.add(robotStatus);
+
 
 
         List<RobotStatus> robotStatuses1=new ArrayList<>();
