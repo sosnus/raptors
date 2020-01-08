@@ -16,14 +16,13 @@ public class MapArea {
     @Id
     private String id;
     private String name;
-    private MovementMap map;
     private AreaType type;
     private List<UniversalPoint> points;
 
     public MapArea(String name, AreaType type, List<UniversalPoint> points)
     {
         this.name = name;
-        this.points = points;
         this.type = type;
+        this.points = points;
     }
 }
