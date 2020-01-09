@@ -10,7 +10,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import javax.lang.model.element.Element;
 import java.util.List;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class ElementFunctionalityService implements CRUDService<ElementFunctionality> {
 

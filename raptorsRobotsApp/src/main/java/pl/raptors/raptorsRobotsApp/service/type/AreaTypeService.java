@@ -13,7 +13,7 @@ import pl.raptors.raptorsRobotsApp.service.movement.MovementMapService;
 
 import java.util.List;
 import java.util.Objects;
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class AreaTypeService implements CRUDService<AreaType> {
 

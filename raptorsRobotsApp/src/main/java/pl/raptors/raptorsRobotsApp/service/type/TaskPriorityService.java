@@ -11,7 +11,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.RobotTaskService;
 
 import java.util.List;
 import java.util.Objects;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_REGULAR_USER')")
+//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_REGULAR_USER')")
 @Service
 public class TaskPriorityService implements CRUDService<TaskPriority> {
 

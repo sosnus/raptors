@@ -11,7 +11,7 @@ import pl.raptors.raptorsRobotsApp.service.movement.RouteService;
 
 import java.util.List;
 import java.util.Objects;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_SERVICEMAN')")
+//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_SERVICEMAN')")
 @Service
 public class RoutePriorityService implements CRUDService<RoutePriority> {
 

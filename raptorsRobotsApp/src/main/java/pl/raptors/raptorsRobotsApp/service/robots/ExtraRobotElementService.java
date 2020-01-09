@@ -10,7 +10,7 @@ import pl.raptors.raptorsRobotsApp.repository.robots.ExtraRobotElementRepository
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class ExtraRobotElementService implements CRUDService<ExtraRobotElement> {
 

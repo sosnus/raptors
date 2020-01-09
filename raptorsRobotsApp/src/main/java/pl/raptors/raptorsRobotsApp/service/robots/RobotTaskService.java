@@ -11,7 +11,7 @@ import pl.raptors.raptorsRobotsApp.repository.robots.RobotTaskRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_REGULAR_USER')")
+//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_REGULAR_USER')")
 @Service
 public class RobotTaskService implements CRUDService<RobotTask> {
 
