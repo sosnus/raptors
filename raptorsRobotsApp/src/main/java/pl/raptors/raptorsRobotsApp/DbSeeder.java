@@ -174,14 +174,14 @@ public class DbSeeder implements CommandLineRunner {
         );
 
         //wywalanie wszystkich userów i ról
-        this.roleRepository.deleteAll();
-        this.userRepository.deleteAll();
+/*        this.roleRepository.deleteAll();
+        this.userRepository.deleteAll();*/
 
         //wrzucanie utworzonych userów do bazy
         List<User> usersToAdd = Arrays.asList(testowyUser1, testowyUser2);
-        this.roleService.addOne(regularUser);
+/*        this.roleService.addOne(regularUser);
         this.userService.addOne(testowyUser1);
-        this.userService.addOne(testowyUser2);
+        this.userService.addOne(testowyUser2);*/
 
         //GRAFY
         Vertex vertex1 = new Vertex(17.5, 25.0, "A");
@@ -200,14 +200,14 @@ public class DbSeeder implements CommandLineRunner {
 
         Graph graph = new Graph(edgesToAdd);
 
-        this.vertexRepository.deleteAll();
+/*        this.vertexRepository.deleteAll();
         this.edgeRepository.deleteAll();
-        this.graphRepository.deleteAll();
+        this.graphRepository.deleteAll();*/
 
         //this.vertexRepository.saveAll(verticesToAdd);
         //this.edgeRepository.saveAll(edgesToAdd);
         //this.graphRepository.save(graph);
-        this.graphService.addOne(graph);
+/*        this.graphService.addOne(graph);*/
 
 
         //KOLEJNOSC JEST WAZNA
@@ -343,6 +343,7 @@ public class DbSeeder implements CommandLineRunner {
         RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, "on going", testowyUser2.getId());
 
         //czyść baze
+        /*
         this.corridorRepository.deleteAll();
         this.corridorPointRepository.deleteAll();
         this.mapAreaRepository.deleteAll();
@@ -437,7 +438,7 @@ public class DbSeeder implements CommandLineRunner {
         this.robotTaskRepository.save(robotTask);
         this.robotTaskRepository.save(robotTask1);
         this.robotTaskRepository.save(robotTask2);
-
+*/
         //KEEP COMMENTED! ---TESTING CASCADE UPDATES/DELETES--- KEEP COMMENTED!
 
         //MOVEMENT

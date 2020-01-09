@@ -1,8 +1,10 @@
-/*
+
 package pl.raptors.raptorsRobotsApp.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,6 +20,7 @@ import javax.annotation.Resource;
 
 //import javax.sql.DataSource;
 
+@EnableCaching(proxyTargetClass = true)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -28,18 +31,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("admin").password("{noop}admin").roles("ROLE_ADMIN");
-        auth.inMemoryAuthentication().withUser("serviceman").password("{noop}serviceman").roles("ROLE_SERVICEMAN", "ROLE_REGULAR_USER");
-        auth.inMemoryAuthentication().withUser("super_user").password("{noop}super_user").roles("ROLE_SUPER_USER", "ROLE_REGULAR_USER");
-        auth.inMemoryAuthentication().withUser("regular_user").password("{noop}regular_user").roles("ROLE_REGULAR_USER");
-        auth.inMemoryAuthentication().withUser("robot").password("{noop}robot").roles("ROLE_ROBOT");
+        auth.inMemoryAuthentication().withUser("admin").password("{noop}admin").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("serviceman").password("{noop}serviceman").roles("SERVICEMAN", "REGULAR_USER");
+        auth.inMemoryAuthentication().withUser("super_user").password("{noop}super_user").roles("SUPER_USER", "REGULAR_USER");
+        auth.inMemoryAuthentication().withUser("regular_user").password("{noop}regular_user").roles("REGULAR_USER");
+        auth.inMemoryAuthentication().withUser("robot").password("{noop}robot").roles("ROBOT");
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     //ZAKOEMNTOWANY PRZYKŁAD POD REKACYJNA BAZE DANYCH, W PRZYSZLOSCI DO PRZEROBIENIA POD MONGO
- */
+
 /*   @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -98,6 +101,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers("/webapp/**", "/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
-    }*//*
+    }*/
 
-}*/
+}
