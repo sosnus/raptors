@@ -1,7 +1,6 @@
 package pl.raptors.raptorsRobotsApp.service.accounts;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.accounts.Role;
 import pl.raptors.raptorsRobotsApp.repository.accounts.RoleRepository;
