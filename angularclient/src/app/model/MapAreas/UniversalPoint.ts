@@ -9,6 +9,4 @@ export class UniversalPoint{
     this.y = y;
     this.z = z;
   }
-
-
 }

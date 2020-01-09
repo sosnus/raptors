@@ -8,6 +8,8 @@ import {RobotService} from "../../services/robot.service";
 import {StoreService} from "../../services/store.service";
 import {GraphService} from "../../services/graph.service";
 import {Graph} from "../../model/Graphs/Graph";
+import {PolygonService} from "../../services/polygon.service";
+import {Polygon} from "../../model/MapAreas/Polygons/Polygon";
 
 export const WAYPOINTICON = L.icon({
   iconUrl: '/assets/icons/position.png',
@@ -27,6 +29,7 @@ export class MapComponent implements OnInit {
 
   private robotStatusLayer = L.featureGroup();
   private graphs = L.featureGroup();
+  private polygons = L.featureGroup();
 
   //Example data
   private robots = [
@@ -61,14 +64,16 @@ export class MapComponent implements OnInit {
   private robotStatus = {
     Online: this.robotStatusLayer,
     Grafy: this.graphs,
-    'Error!': L.tileLayer.wms(),
+    Obszary: this.polygons,
   };
 
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
   private mapID = '5de6d25552cace719bf775cf';//TODO()
-  private graphID = '5e0010bb0831a2671739f734';//TODO()
+  private graphID = '5e1710460dc6500812feff60';//TODO()
+  private polygonID = '5e172dd80dc6500812feff69';//TODO()
   private graph: Graph;
+  private polygon: Polygon;
   private imageResolution;
   private mapResolution = 0.01;//TODO()
   private map;
@@ -78,7 +83,8 @@ export class MapComponent implements OnInit {
   constructor(private mapService: MapService,
               private robotService: RobotService,
               private storeService: StoreService,
-              private graphService: GraphService) {
+              private graphService: GraphService,
+              private polygonService: PolygonService) {
   }
 
   ngOnInit() {
@@ -117,6 +123,14 @@ export class MapComponent implements OnInit {
       }
     );
 
+    this.polygonService.getPolygon(this.polygonID).subscribe(
+      polygon => {
+        console.log(polygon);
+        this.polygon = polygon;
+        this.drawPolygon(polygon)
+      }
+    );
+
     const img = new Image;
     img.src = this.imageURL;
     img.onload = () => {
@@ -145,6 +159,19 @@ export class MapComponent implements OnInit {
         {color: color, weight: 7, opacity: 0.8, smoothFactor: 1});
       polyLine.addTo(this.graphs);
     });
+  }
+
+  private drawPolygon(polygon: Polygon){
+    let existingPolygonpoints = [];
+    polygon.points.forEach(point => {
+      const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+      const marker = new L.marker(pointPosition, {icon: WAYPOINTICON});
+      marker.addTo(this.polygons);
+      existingPolygonpoints.push(pointPosition);
+    });
+    var polygonik = L.polygon(existingPolygonpoints, {color: 'red'}).addTo(this.map);
+    polygonik.addTo(this.polygons);
+   // this.map.fitBounds(polygonik.getBounds());
   }
 
   private parseToJpeg(image: any): string {
