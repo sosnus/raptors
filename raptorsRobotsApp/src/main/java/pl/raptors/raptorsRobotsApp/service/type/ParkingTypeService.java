@@ -11,7 +11,7 @@ import pl.raptors.raptorsRobotsApp.service.movement.StandService;
 
 import java.util.List;
 import java.util.Objects;
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class ParkingTypeService implements CRUDService<ParkingType> {
 

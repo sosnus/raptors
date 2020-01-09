@@ -8,7 +8,7 @@ import pl.raptors.raptorsRobotsApp.repository.accounts.RoleRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+/*@PreAuthorize("hasAuthority('ROLE_ADMIN')")*/
 @Service
 public class RoleService implements CRUDService<Role> {
 

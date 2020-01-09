@@ -12,7 +12,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.RobotService;
 
 import java.util.List;
 import java.util.Objects;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class RobotStatusService implements CRUDService<RobotStatus> {
 

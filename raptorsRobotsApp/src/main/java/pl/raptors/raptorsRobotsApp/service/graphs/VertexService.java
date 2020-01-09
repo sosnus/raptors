@@ -9,7 +9,7 @@ import pl.raptors.raptorsRobotsApp.domain.graphs.Vertex;
 
 import java.util.List;
 
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class VertexService implements CRUDService<Vertex> {
 

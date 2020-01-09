@@ -8,7 +8,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import pl.raptors.raptorsRobotsApp.domain.graphs.Edge;
 
 import java.util.List;
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class EdgeService implements CRUDService<Edge> {
 
