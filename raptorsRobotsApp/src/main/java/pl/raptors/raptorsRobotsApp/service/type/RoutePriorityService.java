@@ -1,19 +1,24 @@
 package pl.raptors.raptorsRobotsApp.service.type;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import pl.raptors.raptorsRobotsApp.domain.movement.Route;
 import pl.raptors.raptorsRobotsApp.domain.type.RoutePriority;
 import pl.raptors.raptorsRobotsApp.repository.type.RoutePriorityRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
+import pl.raptors.raptorsRobotsApp.service.movement.RouteService;
 
 import java.util.List;
 import java.util.Objects;
-
+@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_SERVICEMAN')")
 @Service
 public class RoutePriorityService implements CRUDService<RoutePriority> {
 
     @Autowired
     RoutePriorityRepository routePriorityRepository;
+    @Autowired
+    RouteService routeService;
 
     @Override
     public RoutePriority addOne(RoutePriority RoutePriority) {
@@ -36,8 +41,13 @@ public class RoutePriorityService implements CRUDService<RoutePriority> {
     }
 
     @Override
-    public RoutePriority updateOne(RoutePriority RoutePriority) {
-        return routePriorityRepository.save(RoutePriority);
+    public RoutePriority updateOne(RoutePriority routePriority) {
+        List<Route> routeList = routeService.getByPriority(this.getOne(routePriority.getId()));
+        for (Route route : routeList) {
+            route.setPriority(routePriority);
+            routeService.updateOne(route);
+        }
+        return routePriorityRepository.save(routePriority);
     }
 
     @Override

@@ -1,4 +1,5 @@
 package pl.raptors.raptorsRobotsApp.domain.movement;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;

@@ -1,41 +1,54 @@
 package pl.raptors.raptorsRobotsApp.service.movement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.movement.MapArea;
+import pl.raptors.raptorsRobotsApp.domain.movement.MovementMap;
+import pl.raptors.raptorsRobotsApp.domain.movement.UniversalPoint;
+import pl.raptors.raptorsRobotsApp.domain.type.AreaType;
 import pl.raptors.raptorsRobotsApp.repository.movement.MapAreaRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
 
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class MapAreaService implements CRUDService<MapArea> {
 
     @Autowired
-    MapAreaRepository repository;
+    MapAreaRepository mapAreaRepository;
 
     @Override
     public MapArea addOne(MapArea mapArea) {
-        return repository.save(mapArea);
+        return mapAreaRepository.save(mapArea);
     }
 
     @Override
     public MapArea getOne(String id) {
-        return repository.findById(id).orElse(null);
+        return mapAreaRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<MapArea> getAll() {
-        return repository.findAll();
+        return mapAreaRepository.findAll();
     }
 
     @Override
     public MapArea updateOne(MapArea mapArea) {
-        return repository.save(mapArea);
+        return mapAreaRepository.save(mapArea);
     }
 
     @Override
     public void deleteOne(MapArea mapArea) {
-        repository.delete(mapArea);
+        mapAreaRepository.delete(mapArea);
+    }
+
+    List<MapArea> getAreasByMap(MovementMap map) {
+        return mapAreaRepository.findAllByMap(map);
+    }
+
+    public List<MapArea> getAreasByType(AreaType areaType) {
+        return mapAreaRepository.findAllByType(areaType);
     }
 }

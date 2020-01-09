@@ -15,8 +15,7 @@ public class Corridor {
     private String name;
     private MovementPath movementPath;
 
-    public Corridor(String name, MovementPath movementPath)
-    {
+    public Corridor(String name, MovementPath movementPath) {
         this.name = name;
         this.movementPath = movementPath;
     }

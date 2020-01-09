@@ -1,18 +1,23 @@
 package pl.raptors.raptorsRobotsApp.service.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import pl.raptors.raptorsRobotsApp.domain.robots.ElementFunctionality;
 import pl.raptors.raptorsRobotsApp.domain.robots.ExtraRobotElement;
+import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
 import pl.raptors.raptorsRobotsApp.repository.robots.ExtraRobotElementRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
-
+@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class ExtraRobotElementService implements CRUDService<ExtraRobotElement> {
 
     @Autowired
     ExtraRobotElementRepository extraRobotElementRepository;
+    @Autowired
+    RobotService robotService;
 
     @Override
     public ExtraRobotElement addOne(ExtraRobotElement extraRobotElement) {
@@ -31,11 +36,20 @@ public class ExtraRobotElementService implements CRUDService<ExtraRobotElement> 
 
     @Override
     public ExtraRobotElement updateOne(ExtraRobotElement extraRobotElement) {
+        List<Robot> robotList = robotService.getByExtraElement(this.getOne(extraRobotElement.getId()));
+        for (Robot robot : robotList) {
+            robot.setExtraRobotElement(extraRobotElement);
+            robotService.updateOne(robot);
+        }
         return extraRobotElementRepository.save(extraRobotElement);
     }
 
     @Override
     public void deleteOne(ExtraRobotElement extraRobotElement) {
         extraRobotElementRepository.delete(extraRobotElement);
+    }
+
+    List<ExtraRobotElement> getByelementFunctionality(ElementFunctionality elementFunctionality) {
+        return extraRobotElementRepository.findAllByFunctionalityListContaining(elementFunctionality);
     }
 }

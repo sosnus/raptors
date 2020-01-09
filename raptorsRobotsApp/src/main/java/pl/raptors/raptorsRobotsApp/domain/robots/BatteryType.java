@@ -17,8 +17,7 @@ public class BatteryType {
     private String ratedVoltage;
     private String maxCurrent;
 
-    public BatteryType(String name, String capacity, String ratedVoltage, String maxCurrent)
-    {
+    public BatteryType(String name, String capacity, String ratedVoltage, String maxCurrent) {
         this.name = name;
         this.capacity = capacity;
         this.ratedVoltage = ratedVoltage;

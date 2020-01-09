@@ -19,6 +19,6 @@ public class MovementMap {
     public MovementMap(String name, Binary mapImage, Binary yamlFile) {
         this.name = name;
         this.mapImage = mapImage;
-        this.yamlFile=yamlFile;
+        this.yamlFile = yamlFile;
     }
 }
