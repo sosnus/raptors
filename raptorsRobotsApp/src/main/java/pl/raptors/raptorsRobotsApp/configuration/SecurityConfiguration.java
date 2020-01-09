@@ -1,3 +1,4 @@
+/*
 
 package pl.raptors.raptorsRobotsApp.configuration;
 
@@ -43,6 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     //ZAKOEMNTOWANY PRZYKŁAD POD REKACYJNA BAZE DANYCH, W PRZYSZLOSCI DO PRZEROBIENIA POD MONGO
 
+*/
 /*   @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -94,13 +96,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/").and().exceptionHandling()
                 .accessDeniedPage("/access-denied");
     }*//*
+*/
+/*
 
- */
+ *//*
+
+*/
 /*   @Override
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
                 .antMatchers("/webapp/**", "/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
-    }*/
+    }*//*
+
 
 }
+*/
