@@ -331,9 +331,9 @@ public class DbSeeder implements CommandLineRunner {
         TaskPriority taskPriority2 = new TaskPriority("medium", 3);
 
 
-        RobotTask robotTask = new RobotTask(robot, "transport tools", behaviours, formatter.format(new Date()), taskPriority, "done");
-        RobotTask robotTask1 = new RobotTask(null, "deliver package", behaviours1, formatter.format(new Date()), taskPriority1, "waiting");
-        RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, "on going");
+        RobotTask robotTask = new RobotTask(robot, "transport tools", behaviours, formatter.format(new Date()), taskPriority, "done",testowyUser1.getId());
+        RobotTask robotTask1 = new RobotTask(null, "deliver package", behaviours1, formatter.format(new Date()), taskPriority1, "waiting",testowyUser1.getId());
+        RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, "on going",testowyUser2.getId());
 
         //czyść baze
         this.corridorRepository.deleteAll();

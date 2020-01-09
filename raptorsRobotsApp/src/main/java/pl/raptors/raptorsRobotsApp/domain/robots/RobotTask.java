@@ -21,13 +21,15 @@ public class RobotTask {
     private String startTime;
     private TaskPriority priority;
     private  String status;
+    private  String userID;
 
-    public RobotTask(Robot robot, String name, List<Behaviour> behaviours, String startTime, TaskPriority priority, String status) {
+    public RobotTask(Robot robot, String name, List<Behaviour> behaviours, String startTime, TaskPriority priority, String status, String userID) {
         this.robot = robot;
         this.name = name;
         this.behaviours = behaviours;
         this.startTime = startTime;
         this.priority = priority;
         this.status = status;
+        this.userID = userID;
     }
 }
