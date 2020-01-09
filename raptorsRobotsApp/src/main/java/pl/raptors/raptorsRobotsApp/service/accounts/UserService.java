@@ -10,6 +10,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
+
 @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
 @Service
 public class UserService implements CRUDService<User> {
@@ -28,6 +29,9 @@ public class UserService implements CRUDService<User> {
         return userRepository.save(user);
     }
 
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
     @Override
     public User getOne(String id) {
