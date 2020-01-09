@@ -1,3 +1,4 @@
+/*
 package pl.raptors.raptorsRobotsApp.configuration;
 
 import org.springframework.context.annotation.Bean;
@@ -15,4 +16,4 @@ public class WebConfig implements WebMvcConfigurer {
         return bCryptPasswordEncoder;
     }
 
-}
+}*/

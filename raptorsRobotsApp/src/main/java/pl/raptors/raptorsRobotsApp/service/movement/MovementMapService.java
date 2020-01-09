@@ -3,7 +3,6 @@ package pl.raptors.raptorsRobotsApp.service.movement;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.raptors.raptorsRobotsApp.domain.movement.MapArea;

@@ -1,7 +1,6 @@
 package pl.raptors.raptorsRobotsApp.service.graphs;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.repository.graphs.EdgeRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
