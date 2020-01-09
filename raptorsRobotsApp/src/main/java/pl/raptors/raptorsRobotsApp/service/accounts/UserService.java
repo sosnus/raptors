@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.service.accounts;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.accounts.User;
 import pl.raptors.raptorsRobotsApp.repository.accounts.RoleRepository;
@@ -9,7 +10,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
-
+@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
 @Service
 public class UserService implements CRUDService<User> {
 

@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.service.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.ElementFunctionality;
 import pl.raptors.raptorsRobotsApp.domain.robots.ExtraRobotElement;
@@ -9,7 +10,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import javax.lang.model.element.Element;
 import java.util.List;
-
+@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class ElementFunctionalityService implements CRUDService<ElementFunctionality> {
 

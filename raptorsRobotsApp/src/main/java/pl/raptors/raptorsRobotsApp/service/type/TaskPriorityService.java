@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.service.type;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.RobotTask;
 import pl.raptors.raptorsRobotsApp.domain.type.TaskPriority;
@@ -10,7 +11,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.RobotTaskService;
 
 import java.util.List;
 import java.util.Objects;
-
+@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_REGULAR_USER')")
 @Service
 public class TaskPriorityService implements CRUDService<TaskPriority> {
 

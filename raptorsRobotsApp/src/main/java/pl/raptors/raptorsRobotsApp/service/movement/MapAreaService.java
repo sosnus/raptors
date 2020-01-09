@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.service.movement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.movement.MapArea;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementMap;
@@ -11,6 +12,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
 
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class MapAreaService implements CRUDService<MapArea> {
 
