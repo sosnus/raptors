@@ -1,4 +1,4 @@
-package pl.raptors.raptorsRobotsApp.service.accounts;
+/*package pl.raptors.raptorsRobotsApp.service.accounts;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,4 +47,4 @@ public class MyUserDetailsService implements UserDetailsService {
         return result;
     }
 
-}
+}*/
