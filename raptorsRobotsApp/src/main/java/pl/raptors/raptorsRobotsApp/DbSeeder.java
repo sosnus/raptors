@@ -21,6 +21,8 @@ import pl.raptors.raptorsRobotsApp.repository.graphs.VertexRepository;
 import pl.raptors.raptorsRobotsApp.repository.movement.*;
 import pl.raptors.raptorsRobotsApp.repository.robots.*;
 import pl.raptors.raptorsRobotsApp.repository.type.*;
+import pl.raptors.raptorsRobotsApp.service.accounts.RoleService;
+import pl.raptors.raptorsRobotsApp.service.accounts.UserService;
 import pl.raptors.raptorsRobotsApp.service.graphs.GraphService;
 import pl.raptors.raptorsRobotsApp.service.movement.CorridorService;
 import pl.raptors.raptorsRobotsApp.service.movement.MovementMapService;
@@ -144,6 +146,10 @@ public class DbSeeder implements CommandLineRunner {
     private BehaviourService behaviourService;
     @Autowired
     private TaskPriorityService taskPriorityService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoleService roleService;
 
 
     @Autowired
@@ -173,8 +179,9 @@ public class DbSeeder implements CommandLineRunner {
 
         //wrzucanie utworzonych userów do bazy
         List<User> usersToAdd = Arrays.asList(testowyUser1, testowyUser2);
-        this.roleRepository.save(regularUser);
-        this.userRepository.saveAll(usersToAdd);
+        this.roleService.addOne(regularUser);
+        this.userService.addOne(testowyUser1);
+        this.userService.addOne(testowyUser2);
 
         //GRAFY
         Vertex vertex1 = new Vertex(17.5, 25.0, "A");
@@ -331,9 +338,9 @@ public class DbSeeder implements CommandLineRunner {
         TaskPriority taskPriority2 = new TaskPriority("medium", 3);
 
 
-        RobotTask robotTask = new RobotTask(robot, "transport tools", behaviours, formatter.format(new Date()), taskPriority, "done",testowyUser1.getId());
-        RobotTask robotTask1 = new RobotTask(null, "deliver package", behaviours1, formatter.format(new Date()), taskPriority1, "waiting",testowyUser1.getId());
-        RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, "on going",testowyUser2.getId());
+        RobotTask robotTask = new RobotTask(robot, "transport tools", behaviours, formatter.format(new Date()), taskPriority, "done", testowyUser1.getId());
+        RobotTask robotTask1 = new RobotTask(null, "deliver package", behaviours1, formatter.format(new Date()), taskPriority1, "waiting", testowyUser1.getId());
+        RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, "on going", testowyUser2.getId());
 
         //czyść baze
         this.corridorRepository.deleteAll();
