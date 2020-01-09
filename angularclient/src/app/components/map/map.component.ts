@@ -71,9 +71,9 @@ export class MapComponent implements OnInit {
   private robotMarkers = [];
   private mapID = '5de6d25552cace719bf775cf';//TODO()
   private graphID = '5e1710460dc6500812feff60';//TODO()
-  private polygonID = '5e172dd80dc6500812feff69';//TODO()
   private graph: Graph;
   private polygon: Polygon;
+  private allpolygons: Polygon[];
   private imageResolution;
   private mapResolution = 0.01;//TODO()
   private map;
@@ -106,7 +106,6 @@ export class MapComponent implements OnInit {
     this.imageURL = this.parseToJpeg(data);
     this.initMap();
 
-
     this.storeService.getRobotIP('5dfb452fd9068433d5983610').subscribe(
       rob => {
         this.robotDataloaded = true;
@@ -123,11 +122,11 @@ export class MapComponent implements OnInit {
       }
     );
 
-    this.polygonService.getPolygon(this.polygonID).subscribe(
-      polygon => {
-        console.log(polygon);
-        this.polygon = polygon;
-        this.drawPolygon(polygon)
+    this.polygonService.getPolygons().subscribe(
+      polygons => {
+        console.log(polygons);
+        this.allpolygons = polygons;
+        this.drawPolygons(this.allpolygons);
       }
     );
 
@@ -165,13 +164,17 @@ export class MapComponent implements OnInit {
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
-      const marker = new L.marker(pointPosition, {icon: WAYPOINTICON});
-      marker.addTo(this.polygons);
       existingPolygonpoints.push(pointPosition);
     });
     var polygonik = L.polygon(existingPolygonpoints, {color: 'red'}).addTo(this.map);
     polygonik.addTo(this.polygons);
-   // this.map.fitBounds(polygonik.getBounds());
+  }
+
+
+  private drawPolygons(polygon: Polygon[]){
+    polygon.forEach(object=> {
+      this.drawPolygon(object);
+    });
   }
 
   private parseToJpeg(image: any): string {
@@ -201,16 +204,12 @@ export class MapComponent implements OnInit {
         fillColor: '#f03',
         fillOpacity: 0.5,
         radius: 10
-      })/*.addTo(this.map)*/;
+      });
       var currentShelter = marker;
       currentShelter.addTo(this.robotStatusLayer);
       marker.bindPopup("Placeholder:\n Robot Details\n");
       this.robotMarkers.push(marker);
       this.robotStatusLayer.addTo(this.map);
-
-      // L.marker(position, {icon: markerIcon}).addTo(this.map)
-      /*L.marker(position, {icon: markerIcon}).on('click', this.markerOnClick.bind(this)).addTo(this.map));*/
-
     })
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {Polygon} from "../model/MapAreas/Polygons/Polygon";
 
@@ -13,8 +13,8 @@ export class PolygonService {
     this.polygonURL = 'http://localhost:8080//movement/map-areas/';
   }
 
-  public getPolygons(): Observable<Polygon> {
-    return this.http.get<Polygon>(this.polygonURL + 'all', {responseType: 'json'})
+  public getPolygons(): Observable<Polygon[]> {
+    return this.http.get<Polygon[]>(this.polygonURL + 'all', {responseType: 'json'})
   }
 
   public getPolygon(id: string): Observable<Polygon> {
