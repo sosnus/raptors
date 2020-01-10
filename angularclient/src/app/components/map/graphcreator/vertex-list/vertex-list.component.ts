@@ -29,7 +29,6 @@ export class VertexListComponent implements OnInit, OnChanges {
 
 
   getMarkerPos(marker: Marker) {
-    console.log(marker.getLatLng());
     return {
       x: this.getRealCoordinates(marker.getLatLng().lng),
       y: this.getRealCoordinates(marker.getLatLng().lat)

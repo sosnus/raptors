@@ -118,7 +118,7 @@ export class MapComponent implements OnInit {
 
     this.graphService.getGraph(this.graphID).subscribe(
       graph => {
-        console.log(graph);
+        //console.log(graph);
         this.graph = graph;
         this.drawGraph(graph)
       }
@@ -126,7 +126,7 @@ export class MapComponent implements OnInit {
 
     this.polygonService.getPolygon(this.polygonID).subscribe(
       polygon => {
-        console.log(polygon);
+        //console.log(polygon);
         this.polygon = polygon;
         this.drawPolygon(polygon)
       }

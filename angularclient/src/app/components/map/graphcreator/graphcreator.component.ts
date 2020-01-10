@@ -220,7 +220,6 @@ export class GraphcreatorComponent implements OnInit {
       graphEdges.push(graphEdge)
     });
     graph.edges = graphEdges;
-    console.log(graph);
     this.graphService.save(graph).subscribe(result => console.log(result));
   }
 
