@@ -17,6 +17,7 @@ import { InputFileConfig, InputFileModule } from 'ngx-input-file';
 import {StoreService} from "./services/store.service";
 import { PolygonsComponent } from './components/map/polygons/polygons.component';
 import {PolygonService} from "./services/polygon.service";
+import { VertexListComponent } from './components/map/graphcreator/vertex-list/vertex-list.component';
 
 const config: InputFileConfig = {};
 
@@ -31,6 +32,7 @@ const config: InputFileConfig = {};
     SidebarComponent,
     GraphcreatorComponent,
     PolygonsComponent,
+    VertexListComponent,
   ],
   imports: [
     BrowserModule,

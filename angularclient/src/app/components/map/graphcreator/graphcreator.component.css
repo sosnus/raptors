@@ -7,3 +7,16 @@
 .switch-container{
   margin-bottom: 10px;
 }
+
+.inline-container{
+  display: flex;
+}
+
+.map{
+  display: inline-block;
+}
+.list{
+  display: inline-block;
+  padding-left: 1rem;
+  padding-top: 3.9rem;
+}

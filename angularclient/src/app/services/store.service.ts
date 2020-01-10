@@ -12,6 +12,9 @@ export class StoreService {
   public robotIDlist: any;
   public readonly robotIP: string;
 
+  public mapResolution=0.01;
+  public imageResolution=1984;
+
 /*  public robotsObjects = [
     {
       id: '5dfb452fd9068433d5983610',

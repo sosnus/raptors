@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {MapService} from '../../../services/map.service';
 import * as L from 'leaflet';
+import {Marker} from 'leaflet/src/layer/marker/Marker.js';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
-import {GraphService} from '../../../services/graph.service';
 import {Graph} from '../../../model/Graphs/Graph';
 import {Edge} from '../../../model/Graphs/Edge';
 import {Vertex} from '../../../model/Graphs/Vertex';
+import {GraphService} from "../../../services/graph.service";
 
 
 @Component({
@@ -23,7 +24,7 @@ export class GraphcreatorComponent implements OnInit {
   private mapID = '5de6d25552cace719bf775cf';//TODO()
   private editEdges = false;
 
-  private vertices = [];
+  private vertices: Marker[] = [];
   private selectedVert = null;
   selectedElement = null;
   private edges = [];
@@ -107,6 +108,10 @@ export class GraphcreatorComponent implements OnInit {
         this.vertices.push(marker)
       }
     });
+  }
+
+  updateMarkers(){
+
   }
 
   private updateEdge(e) {
@@ -219,7 +224,7 @@ export class GraphcreatorComponent implements OnInit {
     this.graphService.save(graph).subscribe(result => console.log(result));
   }
 
-  getRealCoordinates(value) {
+  getRealCoordinates(value: number) {
     return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
   }
 

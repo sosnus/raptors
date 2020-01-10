@@ -70,12 +70,13 @@ export class MapComponent implements OnInit {
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
   private mapID = '5de6d25552cace719bf775cf';//TODO()
-  private graphID = '5e1710460dc6500812feff60';//TODO()
+  private graphID = '5e177dc681c34611534d8c79';//TODO()
   private polygonID = '5e172dd80dc6500812feff69';//TODO()
+  private mapResolution = 0.01;//TODO()
   private graph: Graph;
   private polygon: Polygon;
   private imageResolution;
-  private mapResolution = 0.01;//TODO()
+
   private map;
   private imageURL = '';
   private robotIP = '';
@@ -111,7 +112,7 @@ export class MapComponent implements OnInit {
       rob => {
         this.robotDataloaded = true;
         this.robotIP = rob;
-        console.log("Pobieram IP robota: " + this.robotIP);
+        //console.log("Pobieram IP robota: " + this.robotIP);
       }
     );
 
