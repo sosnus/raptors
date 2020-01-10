@@ -20,7 +20,7 @@ export class StandService {
     return this.http.get<Stand>(this.standURL + id, {responseType: 'json'})
   }
 
-  public getAll(id: string): Observable<Stand[]> {
+  public getAll(): Observable<Stand[]> {
     return this.http.get<Stand[]>(this.standURL + "all", {responseType: 'json'})
   }
 

@@ -10,6 +10,8 @@ import {GraphService} from "../../services/graph.service";
 import {Graph} from "../../model/Graphs/Graph";
 import {PolygonService} from "../../services/polygon.service";
 import {Polygon} from "../../model/MapAreas/Polygons/Polygon";
+import {StandService} from "../../services/stand.service";
+import {Stand} from "../../model/Stand/Stand";
 
 export const WAYPOINTICON = L.icon({
   iconUrl: '/assets/icons/position.png',
@@ -38,6 +40,7 @@ export class MapComponent implements OnInit {
   robotDataloaded = false;
 
   private robotStatusLayer = L.featureGroup();
+  private standLayer = L.featureGroup();
   private graphs = L.featureGroup();
   private polygons = L.featureGroup();
 
@@ -75,6 +78,7 @@ export class MapComponent implements OnInit {
     Online: this.robotStatusLayer,
     Grafy: this.graphs,
     Obszary: this.polygons,
+    Stanowiska: this.standLayer,
   };
 
   //Leaflet accepts coordinates in [y,x]
@@ -95,7 +99,8 @@ export class MapComponent implements OnInit {
               private robotService: RobotService,
               private storeService: StoreService,
               private graphService: GraphService,
-              private polygonService: PolygonService) {
+              private polygonService: PolygonService,
+              private standService: StandService) {
   }
 
   ngOnInit() {
@@ -152,12 +157,43 @@ export class MapComponent implements OnInit {
       }
     );
 
+    this.standService.getAll().subscribe(
+      stands =>{
+        this.drawStand(stands);
+      }
+    );
+
     const img = new Image;
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
       this.drawRobots(this.robots);
     }
+  }
+
+  private drawStand(stands: Stand[]) {
+    stands.forEach( stand =>{
+      console.log(stand);
+      const position = [
+        this.getMapCoordinates(Number(stand.pose.position.y)),
+        this.getMapCoordinates(Number(stand.pose.position.x))
+      ];
+      let marker = L.marker(position, {icon: STANDICON});
+      marker.addTo(this.standLayer);
+      marker.bindPopup(
+        "Stand Details<br />Position x: "
+        + stand.pose.position.x
+        + "<br />Position y: " +
+        + stand.pose.position.y
+        + "<br />Orientation: " +
+        + stand.pose.position.z
+        + "<br />Status: " +
+        + stand.standStatus.name
+        + "<br />Parking type: " +
+        + stand.parkingType.name
+        + "<br />Stand type: " +
+        + stand.standType.name);
+    })
   }
 
   private drawGraph(graph: Graph) {
