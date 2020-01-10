@@ -16,6 +16,16 @@ export const WAYPOINTICON = L.icon({
   iconSize: [36, 36],
   iconAnchor: [36 / 2, 36 / 2]
 });
+export const STANDICON = L.icon({
+  iconUrl: '/assets/icons/stand.png',
+  iconSize: [36, 36],
+  iconAnchor: [36 / 2, 36 / 2]
+});
+export const ROBOTICON = L.icon({
+  iconUrl: '/assets/icons/robot.png',
+  iconSize: [40, 40],
+  iconAnchor: [40 / 2, 40 / 2]
+});
 
 @Component({
   selector: 'app-map',
@@ -102,11 +112,21 @@ export class MapComponent implements OnInit {
     //setTimeout(() => this.updateRobotMarkerPositions([[100, 992]], 0.01), 3000);
   }
 
+  private initMap(): void {
+
+    const imageBounds = [[0, 0], [800, 800]];
+    this.map = L.map('map', {
+      crs: L.CRS.Simple
+    });
+    L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
+    this.map.fitBounds(imageBounds);
+    L.control.layers(this.robotStatus).addTo(this.map);
+  }
+
   private afterMapLoaded(data: String) {
     this.dataLoaded = true;
     this.imageURL = this.parseToJpeg(data);
     this.initMap();
-
 
     this.storeService.getRobotIP('5dfb452fd9068433d5983610').subscribe(
       rob => {
@@ -136,7 +156,7 @@ export class MapComponent implements OnInit {
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
-      this.createRobotMarkers(this.robots);
+      this.drawRobots(this.robots);
     }
   }
 
@@ -163,48 +183,26 @@ export class MapComponent implements OnInit {
   }
 
   private drawPolygon(polygon: Polygon){
-    let existingPolygonpoints = [];
+    let existingPolygonPoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
       const marker = new L.marker(pointPosition, {icon: WAYPOINTICON});
       marker.addTo(this.polygons);
-      existingPolygonpoints.push(pointPosition);
+      existingPolygonPoints.push(pointPosition);
     });
-    var polygonik = L.polygon(existingPolygonpoints, {color: 'red'}).addTo(this.map);
+    let polygonik = L.polygon(existingPolygonPoints, {color: 'red'}).addTo(this.map);
     polygonik.addTo(this.polygons);
    // this.map.fitBounds(polygonik.getBounds());
   }
 
-  private parseToJpeg(image: any): string {
-    return 'data:image/jpg;base64,' + image;
-  }
-
-  private initMap(): void {
-
-    const imageBounds = [[0, 0], [800, 800]];
-    this.map = L.map('map', {
-      crs: L.CRS.Simple
-    });
-    L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
-    this.map.fitBounds(imageBounds);
-    L.control.layers(this.robotStatus).addTo(this.map);
-  }
-
-  private createRobotMarkers(robots) {
+  private drawRobots(robots) {
     robots.forEach(robot => {
-      const markerIcon = L.icon({iconUrl: '/assets/icons/robot_icon.png', iconSize: [36, 36], iconAnchor: [0, 0]});
       const position = [
         this.getMapCoordinates(Number(robot.y)),
         this.getMapCoordinates(Number(robot.x))
       ];
-      const marker = L.circle(position, {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 10
-      })/*.addTo(this.map)*/;
-      var currentShelter = marker;
-      currentShelter.addTo(this.robotStatusLayer);
+      let marker = L.marker(position, {icon: ROBOTICON});
+      marker.addTo(this.robotStatusLayer);
       marker.bindPopup("Placeholder:\n Robot Details\n");
       this.robotMarkers.push(marker);
       this.robotStatusLayer.addTo(this.map);
@@ -213,6 +211,10 @@ export class MapComponent implements OnInit {
       /*L.marker(position, {icon: markerIcon}).on('click', this.markerOnClick.bind(this)).addTo(this.map));*/
 
     })
+  }
+
+  private parseToJpeg(image: any): string {
+    return 'data:image/jpg;base64,' + image;
   }
 
   getMapCoordinates(value) {
