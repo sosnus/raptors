@@ -4,6 +4,9 @@ import * as L from 'leaflet';
 import {Marker} from 'leaflet/src/layer/marker/Marker.js';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
 import {STANDICON} from "../map.component";
+import {Orientation} from "../../../model/Stand/Orientation";
+import {Stand} from "../../../model/Stand/Stand";
+import {StandService} from "../../../services/stand.service";
 
 
 @Component({
@@ -13,7 +16,7 @@ import {STANDICON} from "../map.component";
 })
 export class StandCreatorComponent implements OnInit {
 
-  dataLoaded = false;
+  public dataLoaded = false;
   private imageResolution;
   private map;
   private mapResolution = 0.01;//TODO()
@@ -21,8 +24,11 @@ export class StandCreatorComponent implements OnInit {
   private imageURL = '';
 
   private stands: Marker[] = [];
+  private selectedMarker: Marker;
+  public stand: Stand = new Stand();
 
-  constructor(private mapService: MapService) {
+  constructor(private mapService: MapService,
+              private standService: StandService) {
   }
 
   ngOnInit() {
@@ -64,7 +70,7 @@ export class StandCreatorComponent implements OnInit {
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
     this.map.fitBounds(imageBounds);
 
-    this.map.on('click', e => {
+    this.map.once('click', e => {
       let marker = new L.marker(e.latlng, {
         draggable: true,
         icon: STANDICON,
@@ -77,10 +83,20 @@ export class StandCreatorComponent implements OnInit {
           }
         ]
       });
-
+      this.selectedMarker = marker;
       marker.addTo(this.map);
       this.stands.push(marker)
     });
+  }
+
+  onSubmit() {
+    this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
+    this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
+    this.stand.pose.orientation = new Orientation(0,0,0,0);
+    this.standService.save(this.stand).subscribe(
+      result=>console.log(result),
+      error => console.log(error)
+    )
   }
 
   getRealCoordinates(value: number) {

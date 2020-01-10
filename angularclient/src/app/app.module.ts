@@ -19,6 +19,7 @@ import { PolygonsComponent } from './components/map/polygons/polygons.component'
 import {PolygonService} from "./services/polygon.service";
 import { VertexListComponent } from './components/map/graphcreator/vertex-list/vertex-list.component';
 import { StandCreatorComponent } from './components/map/stand-creator/stand-creator.component';
+import {StandService} from "./services/stand.service";
 
 const config: InputFileConfig = {};
 
@@ -44,7 +45,7 @@ const config: InputFileConfig = {};
     InputFileModule.forRoot(config),
     FormsModule,
   ],
-  providers: [MapService,HttpClient, RobotService, GraphService, StoreService, PolygonService],
+  providers: [MapService,HttpClient, RobotService, GraphService, StoreService, StandService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
