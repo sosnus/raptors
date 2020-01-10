@@ -1,0 +1,29 @@
+@import url("../map.component.css");
+
+.switch{
+  width: 14rem;
+}
+
+.btn-save{
+  width: 32%;
+  margin: auto;
+}
+
+.inline-container{
+  display: flex;
+}
+
+.map{
+  display: inline-block;
+}
+.list{
+  display: inline-block;
+  padding-left: 1rem;
+}
+.md-form{
+  width: 33%;
+}
+
+.row{
+  margin: 0;
+}

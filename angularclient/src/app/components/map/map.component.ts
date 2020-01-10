@@ -18,8 +18,8 @@ export const WAYPOINTICON = L.icon({
 });
 export const STANDICON = L.icon({
   iconUrl: '/assets/icons/stand.png',
-  iconSize: [36, 36],
-  iconAnchor: [36 / 2, 36 / 2]
+  iconSize: [50, 50],
+  iconAnchor: [50 / 2, 50 / 2]
 });
 export const ROBOTICON = L.icon({
   iconUrl: '/assets/icons/robot.png',
@@ -182,7 +182,7 @@ export class MapComponent implements OnInit {
     });
   }
 
-  private drawPolygon(polygon: Polygon){
+  private drawPolygon(polygon: Polygon) {
     let existingPolygonPoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
@@ -192,7 +192,7 @@ export class MapComponent implements OnInit {
     });
     let polygonik = L.polygon(existingPolygonPoints, {color: 'red'}).addTo(this.map);
     polygonik.addTo(this.polygons);
-   // this.map.fitBounds(polygonik.getBounds());
+    // this.map.fitBounds(polygonik.getBounds());
   }
 
   private drawRobots(robots) {
@@ -203,7 +203,11 @@ export class MapComponent implements OnInit {
       ];
       let marker = L.marker(position, {icon: ROBOTICON});
       marker.addTo(this.robotStatusLayer);
-      marker.bindPopup("Placeholder:\n Robot Details\n");
+      marker.bindPopup(
+        "Robot Details<br />Position x: "
+        + this.getRealCoordinates(marker.getLatLng().lng)
+        + "<br />Position y: " +
+        + this.getRealCoordinates(marker.getLatLng().lat));
       this.robotMarkers.push(marker);
       this.robotStatusLayer.addTo(this.map);
 
@@ -219,6 +223,10 @@ export class MapComponent implements OnInit {
 
   getMapCoordinates(value) {
     return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+  }
+
+  getRealCoordinates(value: number) {
+    return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
   }
 
   private updateRobotMarkerPositions(robots: number[][]) {

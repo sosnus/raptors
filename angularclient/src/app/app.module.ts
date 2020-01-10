@@ -18,6 +18,7 @@ import {StoreService} from "./services/store.service";
 import { PolygonsComponent } from './components/map/polygons/polygons.component';
 import {PolygonService} from "./services/polygon.service";
 import { VertexListComponent } from './components/map/graphcreator/vertex-list/vertex-list.component';
+import { StandCreatorComponent } from './components/map/stand-creator/stand-creator.component';
 
 const config: InputFileConfig = {};
 
@@ -33,6 +34,7 @@ const config: InputFileConfig = {};
     GraphcreatorComponent,
     PolygonsComponent,
     VertexListComponent,
+    StandCreatorComponent,
   ],
   imports: [
     BrowserModule,
