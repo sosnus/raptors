@@ -5,6 +5,7 @@ import { GraphcreatorComponent } from './components/map/graphcreator/graphcreato
 import { PolygonsComponent } from './components/map/polygons/polygons.component';
 import { MapUploadComponent } from './components/map/map-upload/map-upload.component';
 import {StandCreatorComponent} from "./components/map/stand-creator/stand-creator.component";
+import {AdminPanelComponent} from "./components/adminpanel/admin-panel.component";
 
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'polygons', component: PolygonsComponent},
   {path: 'mapupload', component: MapUploadComponent},
   {path: 'stands', component: StandCreatorComponent},
+  {path: 'adminpanel', component: AdminPanelComponent},
 ];
 
 @NgModule({

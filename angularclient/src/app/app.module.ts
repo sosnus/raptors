@@ -20,6 +20,13 @@ import {PolygonService} from "./services/polygon.service";
 import { VertexListComponent } from './components/map/graphcreator/vertex-list/vertex-list.component';
 import { StandCreatorComponent } from './components/map/stand-creator/stand-creator.component';
 import {StandService} from "./services/stand.service";
+import { AdminPanelComponent } from './components/adminpanel/admin-panel.component';
+import { AreaTypesComponent } from './components/adminpanel/area-types/area-types.component';
+import { CollapsetemplateComponent } from './components/adminpanel/collapse-template/collapsetemplate.component';
+import {AreaTypeService} from "./services/type/area-type.service";
+import { FormModalTemplateComponent } from './components/adminpanel/form-modal-template/form-modal-template.component';
+import {ToastrModule} from "ngx-toastr";
+import { ConfirmModalTemplateComponent } from './components/adminpanel/confirm-modal-template/confirm-modal-template.component';
 
 const config: InputFileConfig = {};
 
@@ -36,6 +43,11 @@ const config: InputFileConfig = {};
     PolygonsComponent,
     VertexListComponent,
     StandCreatorComponent,
+    AdminPanelComponent,
+    AreaTypesComponent,
+    CollapsetemplateComponent,
+    FormModalTemplateComponent,
+    ConfirmModalTemplateComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,9 +55,10 @@ const config: InputFileConfig = {};
     HttpClientModule,
     BrowserAnimationsModule,
     InputFileModule.forRoot(config),
+    ToastrModule.forRoot(),
     FormsModule,
   ],
-  providers: [MapService,HttpClient, RobotService, GraphService, StoreService, StandService],
+  providers: [MapService,HttpClient, RobotService, GraphService, StoreService, StandService, AreaTypeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
