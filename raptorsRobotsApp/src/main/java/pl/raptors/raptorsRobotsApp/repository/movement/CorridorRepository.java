@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface CorridorRepository extends MongoRepository<Corridor, String> {
-    List<Corridor> findAllByMovementPath(MovementPath movementPath);
+    List<Corridor> findAllByMovementPathId(String movementPathId);
 }

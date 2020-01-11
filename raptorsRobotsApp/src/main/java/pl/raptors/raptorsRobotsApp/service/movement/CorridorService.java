@@ -45,11 +45,11 @@ public class CorridorService implements CRUDService<Corridor> {
         List<CorridorPoint> cPointsList = corridorPointService.getCorridorPtsByCorridor(this.getOne(corridor.getId()));
         List<Route> routeList = routeService.getByCorridor(this.getOne(corridor.getId()));
         for (CorridorPoint points : cPointsList) {
-            points.setCorridor(corridor);
+            points.setCorridorId(corridor.getId());
             corridorPointService.updateOne(points);
         }
         for (Route route : routeList) {
-            route.setCorridor(corridor);
+            route.setCorridorId(corridor.getId());
             routeService.updateOne(route);
         }
         return corridorRepository.save(corridor);
@@ -67,6 +67,6 @@ public class CorridorService implements CRUDService<Corridor> {
     }
 
     List<Corridor> getCorridorsByMovementPath(MovementPath movementPath) {
-        return corridorRepository.findAllByMovementPath(movementPath);
+        return corridorRepository.findAllByMovementPathId(movementPath.getId());
     }
 }

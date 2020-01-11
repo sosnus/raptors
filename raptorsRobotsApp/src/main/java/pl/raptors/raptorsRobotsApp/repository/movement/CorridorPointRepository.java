@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface CorridorPointRepository extends MongoRepository<CorridorPoint, String> {
-    List<CorridorPoint> findAllByCorridor(Corridor corridor);
+    List<CorridorPoint> findAllByCorridorId(String corridorId);
 }

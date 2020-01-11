@@ -159,6 +159,13 @@ public class DbSeeder implements CommandLineRunner {
     @Override
     public void run(String... strings) throws IOException {
 
+        this.movementPathPointRepository.deleteAll();
+        this.routeRepository.deleteAll();
+        this.corridorRepository.deleteAll();
+        this.corridorPointRepository.deleteAll();
+        this.movementPathRepository.deleteAll();
+        this.routePriorityRepository.deleteAll();
+
         Role regularUser = new Role("regularUser");
 
         User testowyUser1 = new User("testowy@gmail.com", "test",
@@ -207,7 +214,7 @@ public class DbSeeder implements CommandLineRunner {
         //this.vertexRepository.saveAll(verticesToAdd);
         //this.edgeRepository.saveAll(edgesToAdd);
         //this.graphRepository.save(graph);
-/*        this.graphService.addOne(graph);*/
+        /*        this.graphService.addOne(graph);*/
 
 
         //KOLEJNOSC JEST WAZNA
@@ -221,15 +228,87 @@ public class DbSeeder implements CommandLineRunner {
         MapArea mapArea = new MapArea("hall A2", movementMap, areaType);
         MapArea mapArea1 = new MapArea("area B13", movementMap1, areaType1);
 
-        MovementPath movementPath = new MovementPath("the fastest");
-        MovementPath movementPath1 = new MovementPath("the shortest");
+        List<String> movementPathPoints = new ArrayList<>();
+        List<String> movementPathPoints1 = new ArrayList<>();
 
-        Corridor corridor = new Corridor("bridge", movementPath);
-        Corridor corridor1 = new Corridor("main hall", movementPath1);
+        //create movement paths with empty lists
+        MovementPath movementPath = new MovementPath("the fastest", movementPathPoints);
+        MovementPath movementPath1 = new MovementPath("the shortest", movementPathPoints1);
+        //save movement paths
+        movementPath = this.movementPathRepository.save(movementPath);//todo to comment
+        movementPath1 = this.movementPathRepository.save(movementPath1);//todo to comment
 
-        CorridorPoint corridorPoint = new CorridorPoint(corridor, 11, 99.8, 111.2);
-        CorridorPoint corridorPoint1 = new CorridorPoint(corridor1, 50, 19.2, 75.7);
-        CorridorPoint corridorPoint2 = new CorridorPoint(corridor, 13, 19.8, 120.4);
+        UniversalPoint movementPathUniversalPoint = new UniversalPoint(43.2, 50.2, 0);
+        UniversalPoint movementPathUniversalPoint1 = new UniversalPoint(22.2, 30.5, 0);
+
+        UniversalPoint movementPathUniversalPoint2 = new UniversalPoint(22.2, 22.2, 0);
+        UniversalPoint movementPathUniversalPoint3 = new UniversalPoint(30.2, 22, 0);
+        //create movement path points
+        MovementPathPoint movementPathPoint = new MovementPathPoint(movementPath.getId(), 1, movementPathUniversalPoint);
+        MovementPathPoint movementPathPoint1 = new MovementPathPoint(movementPath.getId(), 2, movementPathUniversalPoint1);
+        MovementPathPoint movementPathPoint2 = new MovementPathPoint(movementPath1.getId(), 1, movementPathUniversalPoint2);
+        MovementPathPoint movementPathPoint3 = new MovementPathPoint(movementPath1.getId(), 2, movementPathUniversalPoint3);
+
+        movementPathPoint = this.movementPathPointRepository.save(movementPathPoint);//todo to comment
+        movementPathPoint1 = this.movementPathPointRepository.save(movementPathPoint1);//todo to comment
+        movementPathPoint2 = this.movementPathPointRepository.save(movementPathPoint2);//todo to comment
+        movementPathPoint3 = this.movementPathPointRepository.save(movementPathPoint3);//todo to comment
+
+        //add movement paths points to get ids
+        movementPathPoints.add(movementPathPoint.getId());
+        movementPathPoints.add(movementPathPoint1.getId());
+        movementPathPoints1.add(movementPathPoint2.getId());
+        movementPathPoints1.add(movementPathPoint3.getId());
+        //update movement path with its points ids
+        movementPath.setMovementPathPointsIds(movementPathPoints);
+        movementPath.setMovementPathPointsIds(movementPathPoints1);
+        movementPath = this.movementPathRepository.save(movementPath);//todo to comment
+        movementPath1 = this.movementPathRepository.save(movementPath1);//todo to comment
+
+        List<String> corridorPathPoints = new ArrayList<>();
+        List<String> corridorPathPoints1 = new ArrayList<>();
+
+        Corridor corridor = new Corridor("bridge", movementPath.getId(), corridorPathPoints);
+        Corridor corridor1 = new Corridor("main hall", movementPath1.getId(), corridorPathPoints1);
+
+        corridor = this.corridorRepository.save(corridor);//todo to comment
+        corridor1 = this.corridorRepository.save(corridor1);//todo to comment
+
+        UniversalPoint corridorUniversalPoint = new UniversalPoint(99.8, 111.2, 0);
+        UniversalPoint corridorUniversalPoint1 = new UniversalPoint(19.2, 75.7, 0);
+        UniversalPoint corridorUniversalPoint2 = new UniversalPoint(19.8, 120.4, 0);
+
+        UniversalPoint corridorUniversalPoint3 = new UniversalPoint(50, 100, 0);
+        UniversalPoint corridorUniversalPoint4 = new UniversalPoint(55, 100, 0);
+        UniversalPoint corridorUniversalPoint5 = new UniversalPoint(60, 100, 0);
+
+        CorridorPoint corridorPoint = new CorridorPoint(corridor.getId(), 11, corridorUniversalPoint);
+        CorridorPoint corridorPoint1 = new CorridorPoint(corridor.getId(), 50, corridorUniversalPoint1);
+        CorridorPoint corridorPoint2 = new CorridorPoint(corridor.getId(), 13, corridorUniversalPoint2);
+
+        CorridorPoint corridorPoint3 = new CorridorPoint(corridor1.getId(), 11, corridorUniversalPoint3);
+        CorridorPoint corridorPoint4 = new CorridorPoint(corridor1.getId(), 50, corridorUniversalPoint4);
+        CorridorPoint corridorPoint5 = new CorridorPoint(corridor1.getId(), 13, corridorUniversalPoint5);
+
+        corridorPoint = this.corridorPointRepository.save(corridorPoint);//todo to comment
+        corridorPoint1 = this.corridorPointRepository.save(corridorPoint1);//todo to comment
+        corridorPoint2 = this.corridorPointRepository.save(corridorPoint2);//todo to comment
+        corridorPoint3 = this.corridorPointRepository.save(corridorPoint3);//todo to comment
+        corridorPoint4 = this.corridorPointRepository.save(corridorPoint4);//todo to comment
+        corridorPoint5 = this.corridorPointRepository.save(corridorPoint5);//todo to comment
+
+        corridorPathPoints.add(corridorPoint.getId());
+        corridorPathPoints.add(corridorPoint1.getId());
+        corridorPathPoints.add(corridorPoint2.getId());
+        corridorPathPoints1.add(corridorPoint3.getId());
+        corridorPathPoints1.add(corridorPoint4.getId());
+        corridorPathPoints1.add(corridorPoint5.getId());
+
+        corridor.setCorridorPointsIds(corridorPathPoints);
+        corridor1.setCorridorPointsIds(corridorPathPoints1);
+
+        this.corridorRepository.save(corridor);//todo to comment
+        this.corridorRepository.save(corridor1);//todo to comment
 
         ExtraRobotElement extraRobotElement = new ExtraRobotElement("jakas dostawka", "100cm x 350cm");
         ExtraRobotElement extraRobotElement1 = new ExtraRobotElement("pliers", "300cm x 250cm");
@@ -306,14 +385,17 @@ public class DbSeeder implements CommandLineRunner {
         RobotReview robotReview1 = new RobotReview(robot1, "2020-5-10", "2018-7-17", reviewType1);
         RobotReview robotReview2 = new RobotReview(robot2, "2020-12-11", "2018-12-12", reviewType1);
 
-        MovementPathPoint movementPathPoint = new MovementPathPoint(movementPath, 20, 43.2, 50.2);
-        MovementPathPoint movementPathPoint1 = new MovementPathPoint(movementPath1, 40, 22.2, 30.5);
-
         RoutePriority routePriority = new RoutePriority("critical", 1);
         RoutePriority routePriority1 = new RoutePriority("important", 2);
 
-        Route route = new Route(movementMap, movementPath, corridor, "red route", stand2, stand, routePriority);
-        Route route1 = new Route(movementMap1, movementPath1, corridor1, "yellow route", stand1, stand, routePriority1);
+        routePriority = routePriorityRepository.save(routePriority);
+        routePriority1 = routePriorityRepository.save(routePriority1);
+
+        Route route = new Route(movementMap.getId(), movementPath.getId(), corridor.getId(), "red route", stand2, stand, routePriority.getId());
+        Route route1 = new Route(movementMap1.getId(), movementPath1.getId(), corridor1.getId(), "yellow route", stand1, stand, routePriority1.getId());
+
+        this.routeRepository.save(route);
+        this.routeRepository.save(route1);
 
         Behaviour behaviour = new Behaviour("WAIT", "* WILL BE JSON *");
         Behaviour behaviour2 = new Behaviour("GO_TO", "* WILL BE JSON *");
@@ -344,11 +426,8 @@ public class DbSeeder implements CommandLineRunner {
 
         //czyść baze
         /*
-        this.corridorRepository.deleteAll();
-        this.corridorPointRepository.deleteAll();
         this.mapAreaRepository.deleteAll();
         //this.movementMapRepository.deleteAll();
-        this.movementPathRepository.deleteAll();
         this.standRepository.deleteAll();
         this.batteryTypeRepository.deleteAll();
         this.elementFunctionalityRepository.deleteAll();
@@ -357,8 +436,6 @@ public class DbSeeder implements CommandLineRunner {
         this.robotModelRepository.deleteAll();
         this.robotRepository.deleteAll();
         this.robotReviewRepository.deleteAll();
-        this.movementPathPointRepository.deleteAll();
-        this.routeRepository.deleteAll();
         this.behaviourRepository.deleteAll();
         this.robotTaskRepository.deleteAll();
         this.logRepository.deleteAll();
@@ -368,7 +445,6 @@ public class DbSeeder implements CommandLineRunner {
         this.propulsionTypeRepository.deleteAll();
         this.reviewTypeRepository.deleteAll();
         this.robotStatusRepository.deleteAll();
-        this.routePriorityRepository.deleteAll();
         this.standStatusRepository.deleteAll();
         this.standTypeRepository.deleteAll();
         this.taskPriorityRepository.deleteAll();
@@ -401,13 +477,6 @@ public class DbSeeder implements CommandLineRunner {
         //this.movementMapRepository.save(movementMap);//
         this.mapAreaRepository.save(mapArea);
         this.mapAreaRepository.save(mapArea1);
-        this.movementPathRepository.save(movementPath);
-        this.movementPathRepository.save(movementPath1);
-        this.corridorRepository.save(corridor);
-        this.corridorRepository.save(corridor1);
-        this.corridorPointRepository.save(corridorPoint);
-        this.corridorPointRepository.save(corridorPoint1);
-        this.corridorPointRepository.save(corridorPoint2);
         this.extraRobotElementRepository.save(extraRobotElement);
         this.extraRobotElementRepository.save(extraRobotElement1);
         this.robotModelRepository.save(robotmModel);
@@ -428,10 +497,6 @@ public class DbSeeder implements CommandLineRunner {
         this.standRepository.save(stand);
         this.standRepository.save(stand1);
         this.standRepository.save(stand2);
-        this.movementPathPointRepository.save(movementPathPoint);
-        this.movementPathPointRepository.save(movementPathPoint1);
-        this.routeRepository.save(route);
-        this.routeRepository.save(route1);
         this.behaviourRepository.save(behaviour);
         this.behaviourRepository.save(behaviour2);
         this.behaviourRepository.save(behaviour3);

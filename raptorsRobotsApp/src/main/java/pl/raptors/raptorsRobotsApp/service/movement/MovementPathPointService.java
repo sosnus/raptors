@@ -42,6 +42,6 @@ public class MovementPathPointService implements CRUDService<MovementPathPoint> 
     }
 
     List<MovementPathPoint> getPtsByMovementPath(MovementPath path) {
-        return repository.findAllByPath(path);
+        return repository.findAllByMovementPathId(path.getId());
     }
 }
