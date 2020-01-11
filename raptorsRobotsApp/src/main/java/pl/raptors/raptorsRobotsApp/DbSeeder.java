@@ -392,7 +392,7 @@ public class DbSeeder implements CommandLineRunner {
         routePriority1 = routePriorityRepository.save(routePriority1);
 
         Route route = new Route(movementMap.getId(), movementPath.getId(), corridor.getId(), "red route", stand2, stand, routePriority.getId());
-        Route route1 = new Route(movementMap1.getId(), movementPath1.getId(), corridor1.getId(), "yellow route", stand1, stand, routePriority1.getId());
+        Route route1 = new Route(movementMap1.getId(), movementPath1.getId(), corridor1.getId(), "yellow route", stand1, stand2, routePriority1.getId());
 
         this.routeRepository.save(route);
         this.routeRepository.save(route1);
