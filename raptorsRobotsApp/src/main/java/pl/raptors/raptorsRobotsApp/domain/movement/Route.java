@@ -13,21 +13,21 @@ public class Route {
 
     @Id
     private String id;
-    private MovementMap map;
-    private MovementPath path;
-    private Corridor corridor;
+    private String mapId;
+    private String movementPathId;
+    private String corridorId;
     private String name;
     private Stand start;
     private Stand end;
-    private RoutePriority priority;
+    private String priorityId;
 
-    public Route(MovementMap map, MovementPath path, Corridor corridor, String name, Stand start, Stand end, RoutePriority priority) {
-        this.map = map;
-        this.path = path;
-        this.corridor = corridor;
+    public Route(String mapId, String movementPathId, String corridorId, String name, Stand start, Stand end, String priorityId) {
+        this.mapId = mapId;
+        this.movementPathId = movementPathId;
+        this.corridorId = corridorId;
         this.name = name;
         this.start = start;
         this.end = end;
-        this.priority = priority;
+        this.priorityId = priorityId;
     }
 }

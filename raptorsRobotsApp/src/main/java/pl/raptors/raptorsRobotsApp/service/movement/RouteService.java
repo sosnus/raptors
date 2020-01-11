@@ -45,18 +45,18 @@ public class RouteService implements CRUDService<Route> {
     }
 
     List<Route> getByMap(MovementMap map) {
-        return routeRepository.findAllByMap(map);
+        return routeRepository.findAllByMapId(map.getId());
     }
 
     List<Route> getByPath(MovementPath path) {
-        return routeRepository.findAllByPath(path);
+        return routeRepository.findAllByMovementPathId(path.getId());
     }
 
     List<Route> getByCorridor(Corridor corridor) {
-        return routeRepository.findAllByCorridor(corridor);
+        return routeRepository.findAllByCorridorId(corridor.getId());
     }
 
     public List<Route> getByPriority(RoutePriority priority) {
-        return routeRepository.findAllByPriority(priority);
+        return routeRepository.findAllByPriorityId(priority.getId());
     }
 }

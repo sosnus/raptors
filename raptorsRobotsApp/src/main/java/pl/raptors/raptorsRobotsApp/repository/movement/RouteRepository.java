@@ -13,11 +13,11 @@ import java.util.List;
 @Repository
 public interface RouteRepository extends MongoRepository<Route, String> {
 
-    List<Route> findAllByMap(MovementMap map);
+    List<Route> findAllByMapId(String mapId);
 
-    List<Route> findAllByPath(MovementPath path);
+    List<Route> findAllByMovementPathId(String pathId);
 
-    List<Route> findAllByCorridor(Corridor corridor);
+    List<Route> findAllByCorridorId(String corridorId);
 
-    List<Route> findAllByPriority(RoutePriority priority);
+    List<Route> findAllByPriorityId(String priorityId);
 }
