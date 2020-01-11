@@ -1,0 +1,48 @@
+<button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalForm">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+<a *ngIf="areaTypes.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+<div *ngIf="areaTypes.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nazwa</th>
+      <th scope="col">Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let type of areaTypes;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{type.name}}</td>
+      <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" data-target="#modalForm"
+                (click)="edit(type)">Edytuj
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" data-target="#confirmModal"
+                (click)="areaType=type">Usuń
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-confirm-modal-template (onConfirm)="delete(areaType)"></app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Tworzenie nowego typu obszaru'"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalClose)="createOrUpdate()">
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <i class="fas fa-file-signature prefix grey-text"></i>
+    <input type="text" id="areaTypeName" class="form-control validate" required [(ngModel)]="areaType.name" name="name">
+    <label for="areaTypeName" [class.active]="areaType.name && areaType.name.length > 0">Nazwa typu obszaru</label>
+  </form>
+</app-form-modal-template>
+
+
+
+
+
