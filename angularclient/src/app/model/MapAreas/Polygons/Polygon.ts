@@ -1,5 +1,5 @@
 import {UniversalPoint} from "../UniversalPoint";
-import {AreaType} from "../AreaType";
+import {AreaType} from "../../type/AreaType";
 
 export class Polygon{
   name: string;

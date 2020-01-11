@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
 import {Polygon} from "../../../model/MapAreas/Polygons/Polygon";
 import {UniversalPoint} from "../../../model/MapAreas/UniversalPoint";
-import {AreaType} from "../../../model/MapAreas/AreaType";
+import {AreaType} from "../../../model/type/AreaType";
 import {PolygonService} from "../../../services/polygon.service";
 
 @Component({
@@ -183,7 +183,7 @@ export class PolygonsComponent implements OnInit {
       );
       polygonPointz.push(universalPoint)
     });
-    let type: AreaType = new AreaType('1', 'Polgon');
+    let type: AreaType = new AreaType('Polgon');
     let polygon = new Polygon('polygon',type, polygonPointz);
     console.log(polygon);
     this.polygonService.save(polygon).subscribe(result => console.log(result));
