@@ -21,12 +21,12 @@ import { VertexListComponent } from './components/map/graphcreator/vertex-list/v
 import { StandCreatorComponent } from './components/map/stand-creator/stand-creator.component';
 import {StandService} from "./services/stand.service";
 import { AdminPanelComponent } from './components/adminpanel/admin-panel.component';
-import { AreaTypesComponent } from './components/adminpanel/area-types/area-types.component';
-import { CollapsetemplateComponent } from './components/adminpanel/collapse-template/collapsetemplate.component';
+import { AreaTypesComponent } from './components/adminpanel/data/area-types/area-types.component';
+import { CollapsetemplateComponent } from './components/adminpanel/shared/collapse-template/collapsetemplate.component';
 import {AreaTypeService} from "./services/type/area-type.service";
-import { FormModalTemplateComponent } from './components/adminpanel/form-modal-template/form-modal-template.component';
+import { FormModalTemplateComponent } from './components/adminpanel/shared/form-modal-template/form-modal-template.component';
 import {ToastrModule} from "ngx-toastr";
-import { ConfirmModalTemplateComponent } from './components/adminpanel/confirm-modal-template/confirm-modal-template.component';
+import { ConfirmModalTemplateComponent } from './components/adminpanel/shared/confirm-modal-template/confirm-modal-template.component';
 
 const config: InputFileConfig = {};
 

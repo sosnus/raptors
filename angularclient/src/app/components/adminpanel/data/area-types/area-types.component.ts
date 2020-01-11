@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AreaType} from "../../../model/type/AreaType";
-import {AreaTypeService} from "../../../services/type/area-type.service";
+import {AreaType} from "../../../../model/type/AreaType";
+import {AreaTypeService} from "../../../../services/type/area-type.service";
 import {ToastrService} from "ngx-toastr";
 
 @Component({
