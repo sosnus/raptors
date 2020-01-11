@@ -8,6 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class FormModalTemplateComponent implements OnInit {
 
   @Input() modalName: string;
+  @Input() modalID: string;
   @Input() disableSubmit: boolean;
   @Output() onModalClose = new EventEmitter();
 

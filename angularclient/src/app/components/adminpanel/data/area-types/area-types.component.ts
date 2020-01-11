@@ -12,6 +12,7 @@ export class AreaTypesComponent implements OnInit {
 
   areaTypes: AreaType[] = [];
   areaType: AreaType = new AreaType(null);
+  modalID = "areaTypeModal";
 
   constructor(private areaTypeService: AreaTypeService,
               private toastr: ToastrService) {
@@ -23,8 +24,7 @@ export class AreaTypesComponent implements OnInit {
 
   getAreaTypes() {
     this.areaTypeService.getAll().subscribe(
-      data => this.areaTypes = data,
-      error => this.toastr.error("Nie można pobrać danych")
+      data => this.areaTypes = data
     )
   }
 

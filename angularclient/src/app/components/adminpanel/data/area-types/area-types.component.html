@@ -1,4 +1,4 @@
-<button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalForm">
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
   <i class="fas fa-plus"></i> Dodaj
 </button>
 <a *ngIf="areaTypes.length<1">
@@ -33,6 +33,7 @@
 <app-confirm-modal-template (onConfirm)="delete(areaType)"></app-confirm-modal-template>
 
 <app-form-modal-template [modalName]="'Tworzenie nowego typu obszaru'"
+                         [modalID]="modalID"
                          [disableSubmit]="!modalForm.form.valid"
                          (onModalClose)="createOrUpdate()">
   <form class="md-form mb-5" #modalForm="ngForm">
