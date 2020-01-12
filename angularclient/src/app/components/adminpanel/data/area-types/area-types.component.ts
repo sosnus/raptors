@@ -28,6 +28,10 @@ export class AreaTypesComponent implements OnInit {
     )
   }
 
+  reset(){
+    this.areaType = new AreaType(null);
+  }
+
   createOrUpdate() {
     this.areaTypeService.save(this.areaType).subscribe(
       result => {

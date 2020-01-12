@@ -43,6 +43,7 @@
 <app-form-modal-template [modalName]="'Tworzenie nowego typu baterii'"
                          [modalID]="modalID"
                          [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
                          (onModalClose)="createOrUpdate()">
   <form class="md-form mb-5" #modalForm="ngForm">
     <div class="md-form">

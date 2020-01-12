@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
 import {BatteryType} from "../../../../model/type/BatteryType";
 import {BatteryTypeService} from "../../../../services/type/battery-type.service";
+import {AreaType} from "../../../../model/type/AreaType";
 
 @Component({
   selector: 'app-battery-types',
@@ -26,6 +27,10 @@ export class BatteryTypesComponent implements OnInit {
     this.batteryTypeService.getAll().subscribe(
       data => this.batteryTypes = data
     )
+  }
+
+  reset(){
+    this.batteryType = new BatteryType();
   }
 
   createOrUpdate() {

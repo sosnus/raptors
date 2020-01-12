@@ -11,6 +11,7 @@ export class FormModalTemplateComponent implements OnInit {
   @Input() modalID: string;
   @Input() disableSubmit: boolean;
   @Output() onModalClose = new EventEmitter();
+  @Output() onModalCancel = new EventEmitter();
 
   constructor() { }
 
@@ -19,6 +20,10 @@ export class FormModalTemplateComponent implements OnInit {
 
   modalClose(){
     this.onModalClose.emit();
+  }
+
+  modalCancel(){
+    this.onModalCancel.emit();
   }
 
 }
