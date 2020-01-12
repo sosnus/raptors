@@ -89,6 +89,7 @@ export class MapComponent implements OnInit {
   private mapResolution = 0.01;//TODO()
   private graph: Graph;
   private polygon: Polygon;
+  private allpolygons: Polygon[];
   private imageResolution;
 
   private map;
@@ -149,11 +150,11 @@ export class MapComponent implements OnInit {
       }
     );
 
-    this.polygonService.getPolygon(this.polygonID).subscribe(
-      polygon => {
-        //console.log(polygon);
-        this.polygon = polygon;
-        this.drawPolygon(polygon)
+    this.polygonService.getPolygons().subscribe(
+      polygons => {
+        console.log(polygons);
+        this.allpolygons = polygons;
+        this.drawPolygons(this.allpolygons);
       }
     );
 
@@ -218,17 +219,21 @@ export class MapComponent implements OnInit {
     });
   }
 
-  private drawPolygon(polygon: Polygon) {
-    let existingPolygonPoints = [];
+  private drawPolygon(polygon: Polygon){
+    let existingPolygonpoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
-      const marker = new L.marker(pointPosition, {icon: WAYPOINTICON});
-      marker.addTo(this.polygons);
-      existingPolygonPoints.push(pointPosition);
+      existingPolygonpoints.push(pointPosition);
     });
-    let polygonik = L.polygon(existingPolygonPoints, {color: 'red'}).addTo(this.map);
+    let polygonik = L.polygon(existingPolygonpoints, {color: 'red'}).addTo(this.map);
     polygonik.addTo(this.polygons);
-    // this.map.fitBounds(polygonik.getBounds());
+  }
+
+
+  private drawPolygons(polygon: Polygon[]){
+    polygon.forEach(object=> {
+      this.drawPolygon(object);
+    });
   }
 
   private drawRobots(robots) {
