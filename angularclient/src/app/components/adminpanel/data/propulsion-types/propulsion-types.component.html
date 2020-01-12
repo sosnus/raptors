@@ -21,7 +21,7 @@
         <button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" [attr.data-target]="'#' + modalID"
                 (click)="edit(type)">Edytuj
         </button>
-        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" data-target="#confirmModal"
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID + 'Confirm'"
                 (click)="propulsionType=type">Usuń
         </button>
       </td>
@@ -29,7 +29,8 @@
     </tbody>
   </table>
 </div>
-<app-confirm-modal-template (onConfirm)="delete(propulsionType)"></app-confirm-modal-template>
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(propulsionType)"></app-confirm-modal-template>
 
 <app-form-modal-template [modalName]="'Tworzenie nowego typu napędu'"
                          [modalID]="modalID"

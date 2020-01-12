@@ -8,6 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class ConfirmModalTemplateComponent implements OnInit {
 
   @Input() modalName: string;
+  @Input() modalID: string;
   @Output() onConfirm = new EventEmitter();
 
   constructor() { }
