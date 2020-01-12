@@ -32,6 +32,9 @@ import {PropulsionTypesComponent} from './components/adminpanel/data/propulsion-
 import {PropulsionTypeService} from "./services/type/propulsion-type.service";
 import {ParkingTypesComponent} from "./components/adminpanel/data/parking-types/parking-types.component";
 import {ParkingTypeService} from "./services/type/parking-type.service";
+import { TaskPrioritiesComponent } from './components/adminpanel/data/task-priorities/task-priorities.component';
+import {TaskPriority} from "./model/type/TaskPriority";
+import {TaskPriorityService} from "./services/type/task-priority.service";
 
 const config: InputFileConfig = {};
 
@@ -56,6 +59,7 @@ const config: InputFileConfig = {};
     BatteryTypesComponent,
     PropulsionTypesComponent,
     ParkingTypesComponent,
+    TaskPrioritiesComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,7 +70,9 @@ const config: InputFileConfig = {};
     ToastrModule.forRoot(),
     FormsModule,
   ],
-  providers: [MapService,HttpClient, RobotService, GraphService, StoreService, StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService, ParkingTypeService],
+  providers: [MapService,HttpClient, RobotService, GraphService, StoreService,
+    StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,
+    ParkingTypeService, TaskPriorityService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
