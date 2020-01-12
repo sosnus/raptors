@@ -151,7 +151,7 @@ export class MapComponent implements OnInit {
     );
 
     this.polygonService.getPolygons().subscribe(
-      polygons => { 
+      polygons => {
         console.log(polygons);
         this.allpolygons = polygons;
         this.drawPolygons(this.allpolygons);
