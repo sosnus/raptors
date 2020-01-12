@@ -27,6 +27,8 @@ import {AreaTypeService} from "./services/type/area-type.service";
 import { FormModalTemplateComponent } from './components/adminpanel/shared/form-modal-template/form-modal-template.component';
 import {ToastrModule} from "ngx-toastr";
 import { ConfirmModalTemplateComponent } from './components/adminpanel/shared/confirm-modal-template/confirm-modal-template.component';
+import { BatteryTypesComponent } from './components/adminpanel/data/battery-types/battery-types.component';
+import {BatteryTypeService} from "./services/type/battery-type.service";
 
 const config: InputFileConfig = {};
 
@@ -48,6 +50,7 @@ const config: InputFileConfig = {};
     CollapsetemplateComponent,
     FormModalTemplateComponent,
     ConfirmModalTemplateComponent,
+    BatteryTypesComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,7 +61,7 @@ const config: InputFileConfig = {};
     ToastrModule.forRoot(),
     FormsModule,
   ],
-  providers: [MapService,HttpClient, RobotService, GraphService, StoreService, StandService, AreaTypeService],
+  providers: [MapService,HttpClient, RobotService, GraphService, StoreService, StandService, AreaTypeService, BatteryTypeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
