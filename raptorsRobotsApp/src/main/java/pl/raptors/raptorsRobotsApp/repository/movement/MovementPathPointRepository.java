@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface MovementPathPointRepository extends MongoRepository<MovementPathPoint, String> {
-    List<MovementPathPoint> findAllByPath(MovementPath path);
+    List<MovementPathPoint> findAllByMovementPathId(String pathId);
 }

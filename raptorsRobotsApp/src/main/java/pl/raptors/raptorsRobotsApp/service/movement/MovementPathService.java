@@ -48,15 +48,15 @@ public class MovementPathService implements CRUDService<MovementPath> {
         List<MovementPathPoint> pathPointsList = movementPathPointService.getPtsByMovementPath(this.getOne(movementPath.getId()));
         List<Route> routeList = routeService.getByPath(this.getOne(movementPath.getId()));
         for (Corridor corridor : corridorList) {
-            corridor.setMovementPath(movementPath);
+            corridor.setMovementPathId(movementPath.getId());
             corridorService.updateOne(corridor);
         }
         for (MovementPathPoint points : pathPointsList) {
-            points.setPath(movementPath);
+            points.setMovementPathId(movementPath.getId());
             movementPathPointService.updateOne(points);
         }
         for (Route route : routeList) {
-            route.setPath(movementPath);
+            route.setMovementPathId(movementPath.getId());
             routeService.updateOne(route);
         }
         return movementPathRepository.save(movementPath);

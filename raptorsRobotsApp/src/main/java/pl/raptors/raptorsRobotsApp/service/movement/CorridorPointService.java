@@ -42,6 +42,6 @@ public class CorridorPointService implements CRUDService<CorridorPoint> {
     }
 
     List<CorridorPoint> getCorridorPtsByCorridor(Corridor corridor) {
-        return corridorPointRepository.findAllByCorridor(corridor);
+        return corridorPointRepository.findAllByCorridorId(corridor.getId());
     }
 }

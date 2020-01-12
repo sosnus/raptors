@@ -64,7 +64,7 @@ public class MovementMapService implements CRUDService<MovementMap> {
             mapAreaService.updateOne(area);
         }
         for (Route route : routeList) {
-            route.setMap(movementMap);
+            route.setMapId(movementMap.getId());
             routeService.updateOne(route);
         }
         return movementMapRepository.save(movementMap);

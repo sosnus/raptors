@@ -43,7 +43,7 @@ public class RoutePriorityService implements CRUDService<RoutePriority> {
     public RoutePriority updateOne(RoutePriority routePriority) {
         List<Route> routeList = routeService.getByPriority(this.getOne(routePriority.getId()));
         for (Route route : routeList) {
-            route.setPriority(routePriority);
+            route.setPriorityId(routePriority.getId());
             routeService.updateOne(route);
         }
         return routePriorityRepository.save(routePriority);
