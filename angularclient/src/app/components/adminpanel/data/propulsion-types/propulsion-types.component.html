@@ -35,6 +35,7 @@
 <app-form-modal-template [modalName]="'Tworzenie nowego typu napędu'"
                          [modalID]="modalID"
                          [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
                          (onModalClose)="createOrUpdate()">
   <form class="md-form mb-5" #modalForm="ngForm">
     <i class="fas fa-file-signature prefix grey-text"></i>

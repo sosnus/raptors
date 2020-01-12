@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {PropulsionType} from "../../../../model/type/PropulsionType";
 import {PropulsionTypeService} from "../../../../services/type/propulsion-type.service";
 import {ToastrService} from "ngx-toastr";
-import {AreaType} from "../../../../model/type/AreaType";
+import {BatteryType} from "../../../../model/type/BatteryType";
 
 @Component({
   selector: 'app-propulsion-types',
@@ -27,6 +27,10 @@ export class PropulsionTypesComponent implements OnInit {
     )
   }
 
+  reset(){
+    this.propulsionType = new PropulsionType(null);
+  }
+
   createOrUpdate() {
     this.propulsionTypeService.save(this.propulsionType).subscribe(
       result => {
@@ -35,7 +39,7 @@ export class PropulsionTypesComponent implements OnInit {
         } else {
           this.propulsionTypes.push(this.propulsionType)
         }
-        this.propulsionType = new AreaType(null);
+        this.propulsionType = new PropulsionType(null);
         this.toastr.success("Dodano lub edytowano pomyślnie");
       },
       error => {
