@@ -35,6 +35,8 @@ import {ParkingTypeService} from "./services/type/parking-type.service";
 import { TaskPrioritiesComponent } from './components/adminpanel/data/task-priorities/task-priorities.component';
 import {TaskPriority} from "./model/type/TaskPriority";
 import {TaskPriorityService} from "./services/type/task-priority.service";
+import {PolygonService} from "./services/polygon.service";
+import { CorridorsComponent } from './components/map/corridors/corridors.component';
 import { StandTypesComponent } from './components/adminpanel/data/stand-types/stand-types.component';
 import {StandTypeService} from "./services/type/stand-type.service";
 import { StandStatusesComponent } from './components/adminpanel/data/stand-statuses/stand-statuses.component';
@@ -64,6 +66,7 @@ const config: InputFileConfig = {};
     PropulsionTypesComponent,
     ParkingTypesComponent,
     TaskPrioritiesComponent,
+    CorridorsComponent,
     StandTypesComponent,
     StandStatusesComponent,
   ],
