@@ -2,18 +2,22 @@ package pl.raptors.raptorsRobotsApp.service.type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.raptors.raptorsRobotsApp.domain.movement.Stand;
 import pl.raptors.raptorsRobotsApp.domain.type.StandType;
 import pl.raptors.raptorsRobotsApp.repository.type.StandTypeRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
+import pl.raptors.raptorsRobotsApp.service.movement.StandService;
 
 import java.util.List;
 import java.util.Objects;
-
+//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_SERVICEMAN')")
 @Service
 public class StandTypeService implements CRUDService<StandType> {
 
     @Autowired
     private StandTypeRepository repository;
+    @Autowired
+    private StandService standService;
 
     @Override
     public List<StandType> getAll() {
@@ -22,6 +26,11 @@ public class StandTypeService implements CRUDService<StandType> {
 
     @Override
     public StandType updateOne(StandType standType) {
+        List<Stand> standList = standService.getByStandType(this.getOne(standType.getId()));
+        for (Stand stand : standList) {
+            stand.setStandType(standType);
+            standService.updateOne(stand);
+        }
         return repository.save(standType);
     }
 

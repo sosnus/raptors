@@ -13,7 +13,6 @@ public class RoutePriority {
     @Id
     private String id;
     private String name;
-    @Indexed(unique=true)
     private Integer weight;
 
     public RoutePriority(String name, Integer weight) {

@@ -12,16 +12,13 @@ public class CorridorPoint {
 
     @Id
     private String id;
-    private Corridor corridor;
+    private String corridorId;
     private Integer polygonVertexNumber;
-    private Double xCoordinate;
-    private Double yCoordinate;
+    private UniversalPoint coordinates;
 
-    public CorridorPoint(Corridor corridor, Integer polygonVertexNumber, Double xCoordinate, Double yCoordinate)
-    {
-        this.corridor = corridor;
+    public CorridorPoint(String corridorId, Integer polygonVertexNumber, UniversalPoint coordinates) {
+        this.corridorId = corridorId;
         this.polygonVertexNumber = polygonVertexNumber;
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        this.coordinates = coordinates;
     }
 }

@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document(collection = "users")//nazwa kolekcji po stronie mongo
+@Document(collection = "users")
 public class User {
 
     @Id
-    private String id; //w mongo musi być stringiem
+    private String id;
     private String email;
-    private String password;//potem trzeba będzie dać jakieś szyfrowanie, póki co przykładowo na sucho
+    private String password;
     private List<Role> roles;
 
     protected User() {

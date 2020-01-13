@@ -1,8 +1,5 @@
 .sideBar{
   position: relative;
-  display: inline-flex;
-  width: 23%;
-  max-width: 340px;
   height: -moz-available;          /* WebKit-based browsers will ignore this. */
   height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
   height: stretch;

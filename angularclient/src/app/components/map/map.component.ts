@@ -10,11 +10,23 @@ import {GraphService} from "../../services/graph.service";
 import {Graph} from "../../model/Graphs/Graph";
 import {PolygonService} from "../../services/polygon.service";
 import {Polygon} from "../../model/MapAreas/Polygons/Polygon";
+import {StandService} from "../../services/stand.service";
+import {Stand} from "../../model/Stand/Stand";
 
 export const WAYPOINTICON = L.icon({
   iconUrl: '/assets/icons/position.png',
   iconSize: [36, 36],
   iconAnchor: [36 / 2, 36 / 2]
+});
+export const STANDICON = L.icon({
+  iconUrl: '/assets/icons/stand.png',
+  iconSize: [50, 50],
+  iconAnchor: [50 / 2, 50 / 2]
+});
+export const ROBOTICON = L.icon({
+  iconUrl: '/assets/icons/robot.png',
+  iconSize: [40, 40],
+  iconAnchor: [40 / 2, 40 / 2]
 });
 
 @Component({
@@ -28,6 +40,7 @@ export class MapComponent implements OnInit {
   robotDataloaded = false;
 
   private robotStatusLayer = L.featureGroup();
+  private standLayer = L.featureGroup();
   private graphs = L.featureGroup();
   private polygons = L.featureGroup();
 
@@ -65,17 +78,20 @@ export class MapComponent implements OnInit {
     Online: this.robotStatusLayer,
     Grafy: this.graphs,
     Obszary: this.polygons,
+    Stanowiska: this.standLayer,
   };
 
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
   private mapID = '5de6d25552cace719bf775cf';//TODO()
-  private graphID = '5e1710460dc6500812feff60';//TODO()
+  private graphID = '5e177dc681c34611534d8c79';//TODO()
+  private polygonID = '5e172dd80dc6500812feff69';//TODO()
+  private mapResolution = 0.01;//TODO()
   private graph: Graph;
   private polygon: Polygon;
   private allpolygons: Polygon[];
   private imageResolution;
-  private mapResolution = 0.01;//TODO()
+
   private map;
   private imageURL = '';
   private robotIP = '';
@@ -84,7 +100,8 @@ export class MapComponent implements OnInit {
               private robotService: RobotService,
               private storeService: StoreService,
               private graphService: GraphService,
-              private polygonService: PolygonService) {
+              private polygonService: PolygonService,
+              private standService: StandService) {
   }
 
   ngOnInit() {
@@ -101,6 +118,17 @@ export class MapComponent implements OnInit {
     //setTimeout(() => this.updateRobotMarkerPositions([[100, 992]], 0.01), 3000);
   }
 
+  private initMap(): void {
+
+    const imageBounds = [[0, 0], [800, 800]];
+    this.map = L.map('map', {
+      crs: L.CRS.Simple
+    });
+    L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
+    this.map.fitBounds(imageBounds);
+    L.control.layers(this.robotStatus).addTo(this.map);
+  }
+
   private afterMapLoaded(data: String) {
     this.dataLoaded = true;
     this.imageURL = this.parseToJpeg(data);
@@ -110,13 +138,13 @@ export class MapComponent implements OnInit {
       rob => {
         this.robotDataloaded = true;
         this.robotIP = rob;
-        console.log("Pobieram IP robota: " + this.robotIP);
+        //console.log("Pobieram IP robota: " + this.robotIP);
       }
     );
 
     this.graphService.getGraph(this.graphID).subscribe(
       graph => {
-        console.log(graph);
+        //console.log(graph);
         this.graph = graph;
         this.drawGraph(graph)
       }
@@ -130,12 +158,43 @@ export class MapComponent implements OnInit {
       }
     );
 
+    this.standService.getAll().subscribe(
+      stands =>{
+        this.drawStand(stands);
+      }
+    );
+
     const img = new Image;
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
-      this.createRobotMarkers(this.robots);
+      this.drawRobots(this.robots);
     }
+  }
+
+  private drawStand(stands: Stand[]) {
+    stands.forEach( stand =>{
+      console.log(stand);
+      const position = [
+        this.getMapCoordinates(Number(stand.pose.position.y)),
+        this.getMapCoordinates(Number(stand.pose.position.x))
+      ];
+      let marker = L.marker(position, {icon: STANDICON});
+      marker.addTo(this.standLayer);
+      marker.bindPopup(
+        "Stand Details<br />Position x: "
+        + stand.pose.position.x
+        + "<br />Position y: " +
+        + stand.pose.position.y
+        + "<br />Orientation: " +
+        + stand.pose.position.z
+        + "<br />Status: " +
+        + stand.standStatus.name
+        + "<br />Parking type: " +
+        + stand.parkingType.name
+        + "<br />Stand type: " +
+        + stand.standType.name);
+    })
   }
 
   private drawGraph(graph: Graph) {
@@ -166,7 +225,7 @@ export class MapComponent implements OnInit {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
       existingPolygonpoints.push(pointPosition);
     });
-    var polygonik = L.polygon(existingPolygonpoints, {color: 'red'}).addTo(this.map);
+    let polygonik = L.polygon(existingPolygonpoints, {color: 'red'}).addTo(this.map);
     polygonik.addTo(this.polygons);
   }
 
@@ -177,44 +236,38 @@ export class MapComponent implements OnInit {
     });
   }
 
-  private parseToJpeg(image: any): string {
-    return 'data:image/jpg;base64,' + image;
-  }
-
-  private initMap(): void {
-
-    const imageBounds = [[0, 0], [800, 800]];
-    this.map = L.map('map', {
-      crs: L.CRS.Simple
-    });
-    L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
-    this.map.fitBounds(imageBounds);
-    L.control.layers(this.robotStatus).addTo(this.map);
-  }
-
-  private createRobotMarkers(robots) {
+  private drawRobots(robots) {
     robots.forEach(robot => {
-      const markerIcon = L.icon({iconUrl: '/assets/icons/robot_icon.png', iconSize: [36, 36], iconAnchor: [0, 0]});
       const position = [
         this.getMapCoordinates(Number(robot.y)),
         this.getMapCoordinates(Number(robot.x))
       ];
-      const marker = L.circle(position, {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 10
-      });
-      var currentShelter = marker;
-      currentShelter.addTo(this.robotStatusLayer);
-      marker.bindPopup("Placeholder:\n Robot Details\n");
+      let marker = L.marker(position, {icon: ROBOTICON});
+      marker.addTo(this.robotStatusLayer);
+      marker.bindPopup(
+        "Robot Details<br />Position x: "
+        + this.getRealCoordinates(marker.getLatLng().lng)
+        + "<br />Position y: " +
+        + this.getRealCoordinates(marker.getLatLng().lat));
       this.robotMarkers.push(marker);
       this.robotStatusLayer.addTo(this.map);
+
+      // L.marker(position, {icon: markerIcon}).addTo(this.map)
+      /*L.marker(position, {icon: markerIcon}).on('click', this.markerOnClick.bind(this)).addTo(this.map));*/
+
     })
+  }
+
+  private parseToJpeg(image: any): string {
+    return 'data:image/jpg;base64,' + image;
   }
 
   getMapCoordinates(value) {
     return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+  }
+
+  getRealCoordinates(value: number) {
+    return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
   }
 
   private updateRobotMarkerPositions(robots: number[][]) {

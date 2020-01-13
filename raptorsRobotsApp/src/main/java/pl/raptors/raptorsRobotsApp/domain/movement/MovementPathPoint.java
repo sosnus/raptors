@@ -12,15 +12,13 @@ public class MovementPathPoint {
 
     @Id
     private String id;
-    private MovementPath path;
+    private String movementPathId;
     private Integer polygonVertexNumber;
-    private Double xCoordinate;
-    private Double yCoordinate;
+    private UniversalPoint coordinates;
 
-    public MovementPathPoint(MovementPath path, Integer polygonVertexNumber, Double xCoordinate, Double yCoordinate) {
-        this.path = path;
+    public MovementPathPoint(String movementPathId, Integer polygonVertexNumber, UniversalPoint coordinates) {
+        this.movementPathId = movementPathId;
         this.polygonVertexNumber = polygonVertexNumber;
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        this.coordinates = coordinates;
     }
 }

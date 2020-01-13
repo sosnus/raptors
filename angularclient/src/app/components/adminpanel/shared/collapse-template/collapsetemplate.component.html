@@ -1,0 +1,17 @@
+<!-- Accordion card -->
+<div class="card">
+  <!-- Card header -->
+  <div class="card-header" role="tab">
+    <a data-toggle="collapse" data-parent="#accordionParent" [attr.href]="'#'+templateID" aria-expanded="true" [attr.aria-controls]="templateID" >
+      <h5 class="mt-1 mb-0">
+        <span>{{name}}</span>
+      </h5>
+    </a>
+  </div>
+  <!-- Card body -->
+  <div [attr.id]="templateID" class="collapse" role="tabpanel" data-parent="#accordionParent">
+    <div class="card-body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

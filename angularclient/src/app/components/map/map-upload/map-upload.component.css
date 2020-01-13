@@ -1,5 +1,12 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import url("../map.component.css");
+
+.container{
+  padding: 30px 100px 30px 100px;
+  width: 23%;
+  margin: 0;
+}
+
 .mat-button-base{
   opacity: 0;
 }

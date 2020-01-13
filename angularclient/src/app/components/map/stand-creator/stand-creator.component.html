@@ -1,0 +1,41 @@
+<div class="inline-container">
+  <div class="map">
+    <form class="form" #standForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="md-form">
+          <input type="text" id="inputName" class="form-control form-control-lg" required [(ngModel)]="stand.name" name="name">
+          <label for="inputName">Nazwa stanowiska</label>
+        </div>
+        <div class="md-form">
+          <input type="text" id="parkingType" class="form-control form-control-lg" required [(ngModel)]="stand.parkingType.name" name="parkingType">
+          <label for="parkingType">Typ parkowania</label>
+        </div>
+        <div class="md-form">
+          <input type="text" id="standType" class="form-control form-control-lg" required [(ngModel)]="stand.standType.name" name="standType">
+          <label for="standType">Typ stanowiska</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="md-form">
+          <input type="text" id="standStatus" class="form-control form-control-lg" required [(ngModel)]="stand.standStatus.name" name="standStatus">
+          <label for="standStatus">Status stanowiska</label>
+        </div>
+        <div class="md-form">
+          <input type="number" id="standOrientation" class="form-control form-control-lg" required [(ngModel)]="stand.pose.position.z" name="posePosition">
+          <label for="standOrientation">Orientacja stanowiska</label>
+        </div>
+        <button type="submit" class="btn btn-light btn-save" [disabled]="!standForm.form.valid||!this.selectedMarker"><i class="far fa-save" ></i> Dodaj</button>
+      </div>
+
+    </form>
+    <!-- Material inline form -->
+
+    <div class="map-container">
+      <div class="map-frame">
+        <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+  <app-vertex-list [markers]="stands" class="list"></app-vertex-list>
+</div>

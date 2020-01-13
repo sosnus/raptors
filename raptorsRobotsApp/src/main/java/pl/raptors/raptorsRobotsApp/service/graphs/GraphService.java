@@ -12,6 +12,7 @@ import pl.raptors.raptorsRobotsApp.domain.graphs.Graph;
 
 import java.util.List;
 
+//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class GraphService implements CRUDService<Graph> {
 

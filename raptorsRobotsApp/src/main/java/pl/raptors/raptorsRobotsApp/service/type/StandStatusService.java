@@ -2,25 +2,29 @@ package pl.raptors.raptorsRobotsApp.service.type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.raptors.raptorsRobotsApp.domain.movement.Stand;
 import pl.raptors.raptorsRobotsApp.domain.type.StandStatus;
 import pl.raptors.raptorsRobotsApp.repository.type.StandStatusRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
+import pl.raptors.raptorsRobotsApp.service.movement.StandService;
 
 import java.util.List;
 import java.util.Objects;
-
+//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_SERVICEMAN')")
 @Service
 public class StandStatusService implements CRUDService<StandStatus> {
-    
+
     @Autowired
     StandStatusRepository standStatusRepository;
+    @Autowired
+    StandService standService;
 
     @Override
-    public StandStatus addOne(StandStatus StandStatus) {
-        StandStatus standStatusAlreadyExists = standStatusRepository.findByName(StandStatus.getName());
+    public StandStatus addOne(StandStatus standStatus) {
+        StandStatus standStatusAlreadyExists = standStatusRepository.findByName(standStatus.getName());
         if (Objects.isNull((standStatusAlreadyExists))) {
-            standStatusRepository.save(StandStatus);
-            return StandStatus;
+            standStatusRepository.save(standStatus);
+            return standStatus;
         }
         return standStatusAlreadyExists;
     }
@@ -36,15 +40,20 @@ public class StandStatusService implements CRUDService<StandStatus> {
     }
 
     @Override
-    public StandStatus updateOne(StandStatus StandStatus) {
-        return standStatusRepository.save(StandStatus);
+    public StandStatus updateOne(StandStatus standStatus) {
+        List<Stand> standList = standService.getByStandStatus(this.getOne(standStatus.getId()));
+        for (Stand stand : standList) {
+            stand.setStandStatus(standStatus);
+            standService.updateOne(stand);
+        }
+        return standStatusRepository.save(standStatus);
     }
 
     @Override
-    public void deleteOne(StandStatus StandStatus) {
-        StandStatus StandStatusToDelete = standStatusRepository.findByName(StandStatus.getName());
-        if (!Objects.isNull((StandStatusToDelete))) {
-            standStatusRepository.delete(StandStatusToDelete);
+    public void deleteOne(StandStatus standStatus) {
+        StandStatus standStatusToDelete = standStatusRepository.findByName(standStatus.getName());
+        if (!Objects.isNull((standStatusToDelete))) {
+            standStatusRepository.delete(standStatusToDelete);
         }
     }
 }

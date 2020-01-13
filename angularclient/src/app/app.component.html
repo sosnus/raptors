@@ -25,7 +25,15 @@
           <a class="dropdown-item" [routerLink]="['graphcreator']">Dodaj graf</a>
           <a class="dropdown-item" [routerLink]="['mapupload']">Dodaj mapę</a>
           <a class="dropdown-item" [routerLink]="['polygons']">Dodaj obszar</a>
+          <a class="dropdown-item" [routerLink]="['stands']">Dodaj stanowisko</a>
         </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['adminpanel']">
+          <i class="fas fa-home"></i>
+          Panel administracyjny
+          <span class="sr-only">(current)</span>
+        </a>
       </li>
       <!--      <li class="nav-item">-->
       <!--        <a class="nav-link" href="#">-->
@@ -42,11 +50,14 @@
   </div>
   <!-- Collapsible content -->
 </nav>
-<app-sidebar></app-sidebar>
-<!--/.Navbar-->
-<div class="wrapper">
-  <router-outlet></router-outlet>
+<div class="main">
+  <app-sidebar class="sidebar"></app-sidebar>
+  <!--/.Navbar-->
+  <div class="wrapper">
+    <router-outlet></router-outlet>
+  </div>
 </div>
+
 
 
 <!--&lt;!&ndash; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * &ndash;&gt;-->

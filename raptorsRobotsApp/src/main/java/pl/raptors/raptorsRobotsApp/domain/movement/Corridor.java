@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @NoArgsConstructor
 @Data
 @Document(collection = "corridors")
@@ -13,11 +15,12 @@ public class Corridor {
     @Id
     private String id;
     private String name;
-    private MovementPath movementPath;
+    private String movementPathId;
+    private List<String> corridorPointsIds;
 
-    public Corridor(String name, MovementPath movementPath)
-    {
+    public Corridor(String name, String movementPathId, List<String> corridorPointsIds) {
         this.name = name;
-        this.movementPath = movementPath;
+        this.movementPathId = movementPathId;
+        this.corridorPointsIds = corridorPointsIds;
     }
 }

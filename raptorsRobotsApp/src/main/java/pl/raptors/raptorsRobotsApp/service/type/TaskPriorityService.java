@@ -2,18 +2,22 @@ package pl.raptors.raptorsRobotsApp.service.type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.raptors.raptorsRobotsApp.domain.robots.RobotTask;
 import pl.raptors.raptorsRobotsApp.domain.type.TaskPriority;
 import pl.raptors.raptorsRobotsApp.repository.type.TaskPriorityRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
+import pl.raptors.raptorsRobotsApp.service.robots.RobotTaskService;
 
 import java.util.List;
 import java.util.Objects;
-
+//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_REGULAR_USER')")
 @Service
 public class TaskPriorityService implements CRUDService<TaskPriority> {
-    
+
     @Autowired
     TaskPriorityRepository taskPriorityRepository;
+    @Autowired
+    RobotTaskService robotTaskService;
 
     @Override
     public TaskPriority addOne(TaskPriority TaskPriority) {
@@ -36,16 +40,21 @@ public class TaskPriorityService implements CRUDService<TaskPriority> {
     }
 
     @Override
-    public TaskPriority updateOne(TaskPriority TaskPriority) {
-        return taskPriorityRepository.save(TaskPriority);
+    public TaskPriority updateOne(TaskPriority taskPriority) {
+        List<RobotTask> taskList = robotTaskService.getByPriority(this.getOne(taskPriority.getId()));
+        for (RobotTask task : taskList) {
+            task.setPriority(taskPriority);
+            robotTaskService.updateOne(task);
+        }
+        return taskPriorityRepository.save(taskPriority);
     }
 
     @Override
-    public void deleteOne(TaskPriority TaskPriority) {
-        TaskPriority TaskPriorityToDelete = taskPriorityRepository.findByName(TaskPriority.getName());
-        if (!Objects.isNull((TaskPriorityToDelete))) {
-            taskPriorityRepository.delete(TaskPriorityToDelete);
+    public void deleteOne(TaskPriority taskPriority) {
+        TaskPriority taskPriorityToDelete = taskPriorityRepository.findByName(taskPriority.getName());
+        if (!Objects.isNull((taskPriorityToDelete))) {
+            taskPriorityRepository.delete(taskPriorityToDelete);
         }
     }
-    
+
 }
