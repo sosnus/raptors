@@ -35,6 +35,10 @@ import {ParkingTypeService} from "./services/type/parking-type.service";
 import { TaskPrioritiesComponent } from './components/adminpanel/data/task-priorities/task-priorities.component';
 import {TaskPriority} from "./model/type/TaskPriority";
 import {TaskPriorityService} from "./services/type/task-priority.service";
+import { StandTypesComponent } from './components/adminpanel/data/stand-types/stand-types.component';
+import {StandTypeService} from "./services/type/stand-type.service";
+import { StandStatusesComponent } from './components/adminpanel/data/stand-statuses/stand-statuses.component';
+import {StandStatusService} from "./services/type/stand-status.service";
 
 const config: InputFileConfig = {};
 
@@ -60,6 +64,8 @@ const config: InputFileConfig = {};
     PropulsionTypesComponent,
     ParkingTypesComponent,
     TaskPrioritiesComponent,
+    StandTypesComponent,
+    StandStatusesComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +78,7 @@ const config: InputFileConfig = {};
   ],
   providers: [MapService,HttpClient, RobotService, GraphService, StoreService,
     StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,
-    ParkingTypeService, TaskPriorityService],
+    ParkingTypeService, TaskPriorityService, StandTypeService, StandStatusService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
