@@ -35,6 +35,8 @@ import {ParkingTypeService} from "./services/type/parking-type.service";
 import { TaskPrioritiesComponent } from './components/adminpanel/data/task-priorities/task-priorities.component';
 import {TaskPriority} from "./model/type/TaskPriority";
 import {TaskPriorityService} from "./services/type/task-priority.service";
+import {PolygonService} from "./services/polygon.service";
+import { CorridorsComponent } from './components/map/corridors/corridors.component';
 
 const config: InputFileConfig = {};
 
@@ -60,6 +62,7 @@ const config: InputFileConfig = {};
     PropulsionTypesComponent,
     ParkingTypesComponent,
     TaskPrioritiesComponent,
+    CorridorsComponent,
   ],
   imports: [
     BrowserModule,
