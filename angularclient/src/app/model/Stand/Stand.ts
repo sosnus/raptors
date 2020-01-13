@@ -9,5 +9,5 @@ export class Stand{
   pose: Pose = new Pose();
   parkingType: ParkingType = new ParkingType(null);
   standType: StandType = new StandType(null);
-  standStatus: StandStatus = new StandStatus();
+  standStatus: StandStatus = new StandStatus(null);
 }
