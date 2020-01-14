@@ -1,0 +1,46 @@
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+<a *ngIf="reviewTypes.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+
+<div *ngIf="reviewTypes.length>0">
+<table class="table table-sm table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Nazwa</th>
+    <th scope="col">Akcja</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let type of reviewTypes;let i = index;">
+    <th scope="row">{{i + 1}}</th>
+    <td>{{type.name}}</td>
+    <td>
+      <button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" [attr.data-target]="'#' + modalID"
+              (click)="edit(type)">Edytuj
+      </button>
+      <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID + 'Confirm'"
+              (click)="reviewType=type">Usuń
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</div>
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(reviewType)"></app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Adding new review type'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <i class="fas fa-file-signature prefix grey-text"></i>
+    <input type="text" id="reviewTypeName" class="form-control validate" required [(ngModel)]="reviewType.name" name="name">
+    <label for="reviewTypeName" [class.active]="reviewType.name && reviewType.name.length > 0">Review type name</label>
+  </form>
+</app-form-modal-template>

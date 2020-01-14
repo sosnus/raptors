@@ -41,6 +41,8 @@ import { StandTypesComponent } from './components/adminpanel/data/stand-types/st
 import {StandTypeService} from "./services/type/stand-type.service";
 import { StandStatusesComponent } from './components/adminpanel/data/stand-statuses/stand-statuses.component';
 import {StandStatusService} from "./services/type/stand-status.service";
+import { ReviewTypesComponent } from './components/adminpanel/data/review-types/review-types.component';
+import {ReviewTypeService} from "./services/type/review-type.service";
 
 const config: InputFileConfig = {};
 
@@ -69,6 +71,7 @@ const config: InputFileConfig = {};
     CorridorsComponent,
     StandTypesComponent,
     StandStatusesComponent,
+    ReviewTypesComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,7 +84,8 @@ const config: InputFileConfig = {};
   ],
   providers: [MapService,HttpClient, RobotService, GraphService, StoreService,
     StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,
-    ParkingTypeService, TaskPriorityService, StandTypeService, StandStatusService],
+    ParkingTypeService, TaskPriorityService, StandTypeService, StandStatusService,
+    ReviewTypeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
