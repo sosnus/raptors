@@ -3,6 +3,8 @@ import {MapService} from '../../../services/map.service';
 import * as L from 'leaflet';
 import {Marker} from 'leaflet/src/layer/marker/Marker.js';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
+import '../../../../lib/leaflet-easybutton/src/easy-button';
+import '../../../../lib/leaflet-easybutton/src/easy-button.css';
 import {STANDICON} from "../map.component";
 import {Orientation} from "../../../model/Stand/Orientation";
 import {Stand} from "../../../model/Stand/Stand";
@@ -68,6 +70,9 @@ export class StandCreatorComponent implements OnInit {
       contextmenu: true,
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
+    L.easyButton( 'fa-crosshairs', function(btn, map){
+      map.setView([400,400],0);
+    }).addTo(this.map);
     this.map.fitBounds(imageBounds);
 
     this.map.once('click', e => {

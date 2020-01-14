@@ -3,6 +3,8 @@ import {MapService} from '../../../services/map.service';
 import * as L from 'leaflet';
 import {Marker} from 'leaflet/src/layer/marker/Marker.js';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
+import '../../../../lib/leaflet-easybutton/src/easy-button';
+import '../../../../lib/leaflet-easybutton/src/easy-button.css';
 import {Graph} from '../../../model/Graphs/Graph';
 import {Edge} from '../../../model/Graphs/Edge';
 import {Vertex} from '../../../model/Graphs/Vertex';
@@ -73,10 +75,12 @@ export class GraphcreatorComponent implements OnInit {
       contextmenu: true,
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
+    L.easyButton( 'fa-crosshairs', function(btn, map){
+      map.setView([400,400],0);
+    }).addTo(this.map);
     this.map.fitBounds(imageBounds);
 
     this.addContextMenuShowHandler();
-
     this.map.on('click', e => {
       if (!this.editEdges) {
         const markerIcon = L.icon({

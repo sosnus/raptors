@@ -23,6 +23,7 @@
     "@angular/router": "~8.2.14",
     "leaflet": "1.6.0",
     "leaflet-contextmenu": "^1.4.0",
+    "leaflet-easybutton": "^2.4.0",
     "leaflet-rotatedmarker": "^0.2.0",
     "material-design-icons": "^3.0.1",
     "ngx-input-file": "^8.0.1",

@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
+import '../../../lib/leaflet-easybutton/src/easy-button';
+import '../../../lib/leaflet-easybutton/src/easy-button.css';
 /*
 import 'leaflet-rotatedmarker';
 */
@@ -125,6 +127,9 @@ export class MapComponent implements OnInit {
       crs: L.CRS.Simple
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
+    L.easyButton( 'fa-crosshairs', function(btn, map){
+      map.setView([400,400],0);
+    }).addTo(this.map);
     this.map.fitBounds(imageBounds);
     L.control.layers(this.robotStatus).addTo(this.map);
   }

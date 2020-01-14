@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {MapService} from "../../../services/map.service";
 import * as L from 'leaflet';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
+import '../../../../lib/leaflet-easybutton/src/easy-button';
+import '../../../../lib/leaflet-easybutton/src/easy-button.css';
 import {Polygon} from "../../../model/MapAreas/Polygons/Polygon";
 import {UniversalPoint} from "../../../model/MapAreas/UniversalPoint";
 import {AreaType} from "../../../model/type/AreaType";
@@ -69,6 +71,9 @@ export class PolygonsComponent implements OnInit {
       contextmenu: true,
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
+    L.easyButton( 'fa-crosshairs', function(btn, map){
+      map.setView([400,400],0);
+    }).addTo(this.map);
     this.map.fitBounds(imageBounds);
 
     this.drawPoly();
