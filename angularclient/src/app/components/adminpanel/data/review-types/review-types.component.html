@@ -33,7 +33,7 @@
 <app-confirm-modal-template [modalID]="modalID+'Confirm'"
                             (onConfirm)="delete(reviewType)"></app-confirm-modal-template>
 
-<app-form-modal-template [modalName]="'Adding new review type'"
+<app-form-modal-template [modalName]="'Dodawanie nowego typu przeglądu'"
                          [modalID]="modalID"
                          [disableSubmit]="!modalForm.form.valid"
                          (onModalCancel)="reset()"
@@ -41,6 +41,6 @@
   <form class="md-form mb-5" #modalForm="ngForm">
     <i class="fas fa-file-signature prefix grey-text"></i>
     <input type="text" id="reviewTypeName" class="form-control validate" required [(ngModel)]="reviewType.name" name="name">
-    <label for="reviewTypeName" [class.active]="reviewType.name && reviewType.name.length > 0">Review type name</label>
+    <label for="reviewTypeName" [class.active]="reviewType.name && reviewType.name.length > 0">Nazwa typu przeglądu</label>
   </form>
 </app-form-modal-template>

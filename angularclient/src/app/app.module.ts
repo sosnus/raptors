@@ -45,6 +45,8 @@ import { ReviewTypesComponent } from './components/adminpanel/data/review-types/
 import {ReviewTypeService} from "./services/type/review-type.service";
 import { BehaviourComponent } from './components/adminpanel/data/behaviour/behaviour.component';
 import { RobotStatusesComponent } from './components/adminpanel/data/robot-statuses/robot-statuses.component';
+import { RobotModelsComponent } from './components/adminpanel/data/robot-models/robot-models.component';
+import {MatSelectModule} from "@angular/material/select";
 
 const config: InputFileConfig = {};
 
@@ -76,6 +78,7 @@ const config: InputFileConfig = {};
     ReviewTypesComponent,
     BehaviourComponent,
     RobotStatusesComponent,
+    RobotModelsComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +88,7 @@ const config: InputFileConfig = {};
     InputFileModule.forRoot(config),
     ToastrModule.forRoot(),
     FormsModule,
+    MatSelectModule,
   ],
   providers: [MapService,HttpClient, RobotService, GraphService, StoreService,
     StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,
