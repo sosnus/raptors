@@ -97,7 +97,7 @@
         id="robotModelpropulsionType"
         class="form-control validate"
         required [(ngModel)]="robotModel.propulsionType">
-        <option *ngFor="let propulsion of propulsionTypes" [value]="robotModel.propulsionType" [ngValue]="propulsion">{{ propulsion.name }}</option>
+        <option *ngFor="let propulsion of propulsionTypes" [ngValue]="propulsion">{{ propulsion.name }}</option>
       </select>
       <label for="robotModelpropulsionType" [class.active]="robotModel.propulsionType">Typ napędu</label>
     </div>
@@ -107,7 +107,7 @@
         id="robotModelbatteryType"
         class="form-control validate"
         required [(ngModel)]="robotModel.batteryType">
-        <option *ngFor="let battery of batteryTypes" [value]="robotModel.batteryType" [ngValue]="battery">{{ battery.name }}</option>
+        <option *ngFor="let battery of batteryTypes" [ngValue]="battery">{{ battery.name }}</option>
       </select>
       <label for="robotModelbatteryType" [class.active]="robotModel.batteryType">Typ baterii</label>
     </div>

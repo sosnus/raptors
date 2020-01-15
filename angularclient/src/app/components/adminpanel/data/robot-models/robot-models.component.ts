@@ -54,9 +54,9 @@ export class RobotModelsComponent implements OnInit {
     this.robotModelService.save(this.robotModel).subscribe(
       result => {
         if (this.typeExists(this.robotModel.id)) {
-          this.robotModels[this.robotModels.findIndex(item => item.id == result.id)] = this.robotModel;
+          this.robotModels[this.robotModels.findIndex(item => item.id == result.id)] = result;
         } else {
-          this.robotModels.push(this.robotModel)
+          this.robotModels.push(result)
         }
         this.robotModel = new RobotModel(null,null,null,null,null,null,null,null,null);
 
