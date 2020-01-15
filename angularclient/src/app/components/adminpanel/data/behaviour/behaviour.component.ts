@@ -34,9 +34,9 @@ modalID="behaviourModal";
     this.behaviourService.save(this.behaviour).subscribe(
       result=>{
         if(this.typeExists(this.behaviour.id)){
-          this.behaviours[this.behaviours.findIndex(item=>item.id==result.id)]=this.behaviour;
+          this.behaviours[this.behaviours.findIndex(item=>item.id==result.id)]=result;
         } else {
-          this.behaviours.push(this.behaviour)
+          this.behaviours.push(result)
         }
         this.behaviour=new Behaviour(null,null);
         this.toastr.success("Dodano lub edytowano pomyślnie");

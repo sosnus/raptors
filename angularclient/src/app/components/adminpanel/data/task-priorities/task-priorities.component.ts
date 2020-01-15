@@ -34,9 +34,9 @@ export class TaskPrioritiesComponent implements OnInit {
     this.taskPriorityService.save(this.taskPriority).subscribe(
       result => {
         if (this.typeExists(this.taskPriority.id)) {
-          this.taskPriorities[this.taskPriorities.findIndex(item => item.id == result.id)] = this.taskPriority;
+          this.taskPriorities[this.taskPriorities.findIndex(item => item.id == result.id)] = result;
         } else {
-          this.taskPriorities.push(this.taskPriority)
+          this.taskPriorities.push(result)
         }
         this.taskPriority = new TaskPriority(null, null);
         this.toastr.success("Dodano lub edytowano pomyślnie");

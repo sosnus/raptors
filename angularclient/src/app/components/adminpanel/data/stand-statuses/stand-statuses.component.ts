@@ -34,9 +34,9 @@ export class StandStatusesComponent implements OnInit {
     this.standStatusService.save(this.standStatus).subscribe(
       result => {
         if (this.typeExists(this.standStatus.id)) {
-          this.standStatuses[this.standStatuses.findIndex(item => item.id == result.id)] = this.standStatus;
+          this.standStatuses[this.standStatuses.findIndex(item => item.id == result.id)] = result;
         } else {
-          this.standStatuses.push(this.standStatus)
+          this.standStatuses.push(result)
         }
         this.standStatus = new StandStatus(null);
         this.toastr.success("Dodano lub edytowano pomyślnie");
