@@ -43,6 +43,8 @@ import { StandStatusesComponent } from './components/adminpanel/data/stand-statu
 import {StandStatusService} from "./services/type/stand-status.service";
 import { ReviewTypesComponent } from './components/adminpanel/data/review-types/review-types.component';
 import {ReviewTypeService} from "./services/type/review-type.service";
+import { BehaviourComponent } from './components/adminpanel/data/behaviour/behaviour.component';
+import { RobotStatusesComponent } from './components/adminpanel/data/robot-statuses/robot-statuses.component';
 
 const config: InputFileConfig = {};
 
@@ -72,6 +74,8 @@ const config: InputFileConfig = {};
     StandTypesComponent,
     StandStatusesComponent,
     ReviewTypesComponent,
+    BehaviourComponent,
+    RobotStatusesComponent,
   ],
   imports: [
     BrowserModule,

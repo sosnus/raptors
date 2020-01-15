@@ -1,0 +1,58 @@
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+<a *ngIf="behaviours.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+
+<div *ngIf="behaviours.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nazwa</th>
+      <th scope="col">Parametry</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let type of behaviours;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{type.name}}</td>
+      <td>{{type.parameters}}</td>
+      <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID"
+                (click)="edit(type)">Edytuj
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal"
+                [attr.data-target]="'#' + modalID + 'Confirm'"
+                (click)="behaviour=type">Usuń
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(behaviour)"></app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Dodawanie nowego zachowania'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="behaviourName" class="form-control validate" required [(ngModel)]="behaviour.name"
+             name="name">
+      <label for="behaviourName" [class.active]="behaviour.name && behaviour.name.length > 0">Nazwa zachowania</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="behaviourParameters" class="form-control validate" required
+             [(ngModel)]="behaviour.parameters" name="parameters">
+      <label for="behaviourParameters" [class.active]="behaviour.parameters && behaviour.parameters.length > 0">Parametry
+        zachowania</label>
+    </div>
+  </form>
+</app-form-modal-template>
