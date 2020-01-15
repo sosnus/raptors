@@ -36,9 +36,9 @@ export class ParkingTypesComponent implements OnInit {
     this.parkingTypeService.save(this.parkingType).subscribe(
       result => {
         if (this.typeExists(this.parkingType.id)) {
-          this.parkingTypes[this.parkingTypes.findIndex(item => item.id == result.id)] = this.parkingType;
+          this.parkingTypes[this.parkingTypes.findIndex(item => item.id == result.id)] = result;
         } else {
-          this.parkingTypes.push(this.parkingType)
+          this.parkingTypes.push(result)
         }
         this.parkingType = new ParkingType(null);
         this.toastr.success("Dodano lub edytowano pomyślnie");

@@ -35,9 +35,9 @@ export class PropulsionTypesComponent implements OnInit {
     this.propulsionTypeService.save(this.propulsionType).subscribe(
       result => {
         if (this.typeExists(this.propulsionType.id)) {
-          this.propulsionTypes[this.propulsionTypes.findIndex(item => item.id == result.id)] = this.propulsionType;
+          this.propulsionTypes[this.propulsionTypes.findIndex(item => item.id == result.id)] = result;
         } else {
-          this.propulsionTypes.push(this.propulsionType)
+          this.propulsionTypes.push(result)
         }
         this.propulsionType = new PropulsionType(null);
         this.toastr.success("Dodano lub edytowano pomyślnie");

@@ -36,9 +36,9 @@ export class AreaTypesComponent implements OnInit {
     this.areaTypeService.save(this.areaType).subscribe(
       result => {
         if (this.typeExists(this.areaType.id)) {
-          this.areaTypes[this.areaTypes.findIndex(item => item.id == result.id)] = this.areaType;
+          this.areaTypes[this.areaTypes.findIndex(item => item.id == result.id)] = result;
         } else {
-          this.areaTypes.push(this.areaType)
+          this.areaTypes.push(result)
         }
         this.areaType = new AreaType(null);
         this.toastr.success("Dodano lub edytowano pomyślnie");

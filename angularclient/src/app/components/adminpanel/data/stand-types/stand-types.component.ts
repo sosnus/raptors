@@ -34,9 +34,9 @@ export class StandTypesComponent implements OnInit {
     this.standTypeService.save(this.standType).subscribe(
       result => {
         if (this.typeExists(this.standType.id)) {
-          this.standTypes[this.standTypes.findIndex(item => item.id == result.id)] = this.standType;
+          this.standTypes[this.standTypes.findIndex(item => item.id == result.id)] = result;
         } else {
-          this.standTypes.push(this.standType)
+          this.standTypes.push(result)
         }
         this.standType = new StandType(null);
         this.toastr.success("Dodano lub edytowano pomyślnie");

@@ -34,9 +34,9 @@ export class RobotStatusesComponent implements OnInit {
     this.robotStatusService.save(this.robotStatus).subscribe(
       result => {
         if (this.typeExists(this.robotStatus.id)) {
-          this.robotStatuses[this.robotStatuses.findIndex(item => item.id == result.id)] = this.robotStatus;
+          this.robotStatuses[this.robotStatuses.findIndex(item => item.id == result.id)] = result;
         } else {
-          this.robotStatuses.push(this.robotStatus)
+          this.robotStatuses.push(result)
         }
         this.robotStatus = new RobotStatus(null);
         this.toastr.success("Dodano lub edytowano pomyślnie");

@@ -33,9 +33,9 @@ export class ReviewTypesComponent implements OnInit {
     this.reviewTypeService.save(this.reviewType).subscribe(
       result => {
         if (this.typeExists(this.reviewType.id)) {
-          this.reviewTypes[this.reviewTypes.findIndex(item => item.id == result.id)] = this.reviewType;
+          this.reviewTypes[this.reviewTypes.findIndex(item => item.id == result.id)] = result;
         } else {
-          this.reviewTypes.push(this.reviewType)
+          this.reviewTypes.push(result)
         }
         this.reviewType = new ReviewType(null);
         this.toastr.success("Dodano lub edytowano pomyślnie");

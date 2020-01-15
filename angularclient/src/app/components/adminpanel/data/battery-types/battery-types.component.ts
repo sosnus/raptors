@@ -37,9 +37,9 @@ export class BatteryTypesComponent implements OnInit {
     this.batteryTypeService.save(this.batteryType).subscribe(
       result => {
         if (this.typeExists(this.batteryType.id)) {
-          this.batteryTypes[this.batteryTypes.findIndex(item => item.id == result.id)] = this.batteryType;
+          this.batteryTypes[this.batteryTypes.findIndex(item => item.id == result.id)] = result;
         } else {
-          this.batteryTypes.push(this.batteryType)
+          this.batteryTypes.push(result)
         }
         this.batteryType = new BatteryType();
         this.toastr.success("Dodano lub edytowano pomyślnie");
