@@ -21,37 +21,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeRequests().anyRequest().authenticated()
-                .and().httpBasic()
-                .and().sessionManagement().disable();
+                .authorizeRequests()
+                .anyRequest().authenticated().and().csrf().disable().formLogin()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/login").and().exceptionHandling();
+
     }
-
-   /* @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        http.
-                authorizeRequests()
-                .antMatchers("/manage/**").hasAnyAuthority("ADMIN","MANAGER")
-                .antMatchers("/tenant/**").hasAuthority("TENANT")
-                .antMatchers("/users").hasAuthority("ADMIN")
-                .antMatchers("/login").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/registrationConfirm*").permitAll()
-                .antMatchers("/successRegister").permitAll()
-                .antMatchers("/emailError*").permitAll()
-                .antMatchers("/favicon.ico").permitAll()
-                .anyRequest()
-                .authenticated().and().csrf().disable().formLogin()
-                .loginPage("/login").failureUrl("/login?error=true")
-                .successHandler(customSuccessHandler)
-                .usernameParameter("login")
-                .passwordParameter("password")
-                .and().logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/").and().exceptionHandling()
-                .accessDeniedPage("/access-denied");
-    }*/
 
     @Bean
     public PasswordEncoder passwordEncoder() {
