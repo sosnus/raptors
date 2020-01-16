@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.service.accounts;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class UserService implements CRUDService<User> {
     @Override
     public User addOne(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(user.getRoles());
+        user.setRolesIDs(user.getRolesIDs());
         return userRepository.save(user);
     }
 

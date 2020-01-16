@@ -166,33 +166,41 @@ public class DbSeeder implements CommandLineRunner {
         // this.movementPathRepository.deleteAll();
         // this.routePriorityRepository.deleteAll();
 
-        Role regularUser = new Role("regularUser");
-        Role admin = new Role("admin");
+        Role regularUserRole = new Role("ROLE_REGULAR_USER");
+        Role superUserRole = new Role("ROLE_SUPER_USER");
+        Role adminRole = new Role("ROLE_ADMIN");
+        Role servicemanRole = new Role("ROLE_SERVICEMAN");
+        Role robotRole = new Role("ROLE_ROBOT");
 
-        User testowyUser1 = new User("testowy@gmail.com", "test",
-                //jeśli więcej niż 1 rola, to Array.asList()
-                Collections.singletonList(regularUser)
-
-        );
-
-        User testowyUser2 = new User("kowalski@gmail.com", "test2",
-                //jeśli więcej niż 1 rola, to Array.asList()
-                Collections.singletonList(regularUser)
-
-        );
-
-        User testowyAdmin1 = new User("admin@mail.com", "admin", Collections.singletonList(admin));
-
-        //wywalanie wszystkich userów i ról
 /*        this.roleRepository.deleteAll();
-        this.userRepository.deleteAll();*/
+        this.roleService.addOne(regularUserRole);
+        this.roleService.addOne(superUserRole);
+        this.roleService.addOne(adminRole);
+        this.roleService.addOne(servicemanRole);
+        this.roleService.addOne(robotRole);*/
 
-        //wrzucanie utworzonych userów do bazy
-        List<User> usersToAdd = Arrays.asList(testowyUser1, testowyUser2, testowyAdmin1);
-        /*this.roleService.addOne(regularUser);
-        this.roleService.addOne(admin);
+        User testowyUser1 = new User("user@mail.com", "user",
+                //jeśli więcej niż 1 rola, to Array.asList()
+                Collections.singletonList(regularUserRole.getId())
+
+        );
+
+        User testowyServiceman1 = new User("serviceman@mail.com", "serviceman",
+                //jeśli więcej niż 1 rola, to Array.asList()
+                Arrays.asList(servicemanRole.getId(),regularUserRole.getId())
+
+        );
+        User testowySuperUser1 = new User("superuser@mail.com", "superuser", Arrays.asList(superUserRole.getId(),regularUserRole.getId()));
+        User testowyAdmin1 = new User("admin@mail.com", "admin", Collections.singletonList(adminRole.getId()));
+        User testowyRobot1 = new User("robot@mail.com", "robot", Collections.singletonList(robotRole.getId()));
+
+        List<User> usersToAdd = Arrays.asList(testowyUser1,testowySuperUser1, testowyServiceman1, testowyRobot1,testowyAdmin1);
+
+/*        this.userRepository.deleteAll();
         this.userService.addOne(testowyUser1);
-        this.userService.addOne(testowyUser2);
+        this.userService.addOne(testowySuperUser1);
+        this.userService.addOne(testowyServiceman1);
+        this.userService.addOne(testowyRobot1);
         this.userService.addOne(testowyAdmin1);*/
 
         //GRAFY
@@ -426,10 +434,15 @@ public class DbSeeder implements CommandLineRunner {
 
 
         RobotTask robotTask = new RobotTask(robot, "transport tools", behaviours, formatter.format(new Date()), taskPriority, "done", testowyUser1.getId());
-        RobotTask robotTask1 = new RobotTask(null, "deliver package", behaviours1, formatter.format(new Date()), taskPriority1, "waiting", testowyUser1.getId());
-        RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, "on going", testowyUser2.getId());
+        RobotTask robotTask1 = new RobotTask(null, "deliver package", behaviours1, formatter.format(new Date()), taskPriority1, "waiting", testowySuperUser1.getId());
+        RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, "on going", testowyServiceman1.getId());
         RobotTask robotTask3 = new RobotTask(robot1, "receive package", behaviours1, formatter.format(new Date()), taskPriority2, "on going", testowyAdmin1.getId());
 
+/*        this.robotTaskRepository.deleteAll();
+        this.robotTaskRepository.save(robotTask);
+        this.robotTaskRepository.save(robotTask1);
+        this.robotTaskRepository.save(robotTask2);
+        this.robotTaskRepository.save(robotTask3);*/
 
         //czyść baze
         /*
@@ -508,8 +521,10 @@ public class DbSeeder implements CommandLineRunner {
         this.behaviourRepository.save(behaviour2);
         this.behaviourRepository.save(behaviour3);
         this.robotTaskRepository.save(robotTask);
+        this.robotTaskRepository.save(robotTask);
         this.robotTaskRepository.save(robotTask1);
         this.robotTaskRepository.save(robotTask2);
+        this.robotTaskRepository.save(robotTask3);
 */
         //KEEP COMMENTED! ---TESTING CASCADE UPDATES/DELETES--- KEEP COMMENTED!
 
