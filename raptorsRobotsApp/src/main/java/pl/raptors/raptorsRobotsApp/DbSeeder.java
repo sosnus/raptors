@@ -163,8 +163,8 @@ public class DbSeeder implements CommandLineRunner {
         //this.routeRepository.deleteAll();
         //this.corridorRepository.deleteAll();
         //this.corridorPointRepository.deleteAll();
-       // this.movementPathRepository.deleteAll();
-       // this.routePriorityRepository.deleteAll();
+        // this.movementPathRepository.deleteAll();
+        // this.routePriorityRepository.deleteAll();
 
         Role regularUser = new Role("regularUser");
         Role admin = new Role("admin");
@@ -181,15 +181,15 @@ public class DbSeeder implements CommandLineRunner {
 
         );
 
-        User testowyAdmin1= new User("admin@mail.com", "admin", Collections.singletonList(admin));
+        User testowyAdmin1 = new User("admin@mail.com", "admin", Collections.singletonList(admin));
 
         //wywalanie wszystkich userów i ról
 /*        this.roleRepository.deleteAll();
         this.userRepository.deleteAll();*/
 
         //wrzucanie utworzonych userów do bazy
-        List<User> usersToAdd = Arrays.asList(testowyUser1, testowyUser2,testowyAdmin1);
-/*        this.roleService.addOne(regularUser);
+        List<User> usersToAdd = Arrays.asList(testowyUser1, testowyUser2, testowyAdmin1);
+        /*this.roleService.addOne(regularUser);
         this.roleService.addOne(admin);
         this.userService.addOne(testowyUser1);
         this.userService.addOne(testowyUser2);
@@ -256,8 +256,8 @@ public class DbSeeder implements CommandLineRunner {
 
         //movementPathPoint = this.movementPathPointRepository.save(movementPathPoint);
         //movementPathPoint1 = this.movementPathPointRepository.save(movementPathPoint1);
-       // movementPathPoint2 = this.movementPathPointRepository.save(movementPathPoint2);
-       // movementPathPoint3 = this.movementPathPointRepository.save(movementPathPoint3);
+        // movementPathPoint2 = this.movementPathPointRepository.save(movementPathPoint2);
+        // movementPathPoint3 = this.movementPathPointRepository.save(movementPathPoint3);
 
         //add movement paths points to get ids
         movementPathPoints.add(movementPathPoint.getId());
@@ -267,7 +267,7 @@ public class DbSeeder implements CommandLineRunner {
         //update movement path with its points ids
         movementPath.setMovementPathPointsIds(movementPathPoints);
         movementPath.setMovementPathPointsIds(movementPathPoints1);
-       // movementPath = this.movementPathRepository.save(movementPath);
+        // movementPath = this.movementPathRepository.save(movementPath);
         //movementPath1 = this.movementPathRepository.save(movementPath1);
 
         List<String> corridorPathPoints = new ArrayList<>();
@@ -295,12 +295,12 @@ public class DbSeeder implements CommandLineRunner {
         CorridorPoint corridorPoint4 = new CorridorPoint(corridor1.getId(), 50, corridorUniversalPoint4);
         CorridorPoint corridorPoint5 = new CorridorPoint(corridor1.getId(), 13, corridorUniversalPoint5);
 
-       // corridorPoint = this.corridorPointRepository.save(corridorPoint);
-       // corridorPoint1 = this.corridorPointRepository.save(corridorPoint1);
-       // corridorPoint2 = this.corridorPointRepository.save(corridorPoint2);
-       // corridorPoint3 = this.corridorPointRepository.save(corridorPoint3);
-       // corridorPoint4 = this.corridorPointRepository.save(corridorPoint4);
-       // corridorPoint5 = this.corridorPointRepository.save(corridorPoint5);
+        // corridorPoint = this.corridorPointRepository.save(corridorPoint);
+        // corridorPoint1 = this.corridorPointRepository.save(corridorPoint1);
+        // corridorPoint2 = this.corridorPointRepository.save(corridorPoint2);
+        // corridorPoint3 = this.corridorPointRepository.save(corridorPoint3);
+        // corridorPoint4 = this.corridorPointRepository.save(corridorPoint4);
+        // corridorPoint5 = this.corridorPointRepository.save(corridorPoint5);
 
         corridorPathPoints.add(corridorPoint.getId());
         corridorPathPoints.add(corridorPoint1.getId());
@@ -393,8 +393,8 @@ public class DbSeeder implements CommandLineRunner {
         RoutePriority routePriority = new RoutePriority("critical", 1);
         RoutePriority routePriority1 = new RoutePriority("important", 2);
 
-       // routePriority = routePriorityRepository.save(routePriority);
-       // routePriority1 = routePriorityRepository.save(routePriority1);
+        // routePriority = routePriorityRepository.save(routePriority);
+        // routePriority1 = routePriorityRepository.save(routePriority1);
 
         Route route = new Route(movementMap.getId(), movementPath.getId(), corridor.getId(), "red route", stand2, stand, routePriority.getId());
         Route route1 = new Route(movementMap1.getId(), movementPath1.getId(), corridor1.getId(), "yellow route", stand1, stand2, routePriority1.getId());

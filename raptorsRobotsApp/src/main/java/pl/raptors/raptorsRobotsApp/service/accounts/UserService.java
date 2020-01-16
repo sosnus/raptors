@@ -1,6 +1,8 @@
 package pl.raptors.raptorsRobotsApp.service.accounts;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.accounts.User;
 import pl.raptors.raptorsRobotsApp.repository.accounts.RoleRepository;
@@ -18,13 +20,13 @@ public class UserService implements CRUDService<User> {
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
-/*    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;*/
+    @Autowired
+    PasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public User addOne(User user) {
-      /*  user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(user.getRoles());*/
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setRoles(user.getRoles());
         return userRepository.save(user);
     }
 
