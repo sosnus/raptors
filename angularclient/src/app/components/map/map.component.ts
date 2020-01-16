@@ -85,7 +85,7 @@ export class MapComponent implements OnInit {
 
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
-  private mapID = '5de6d25552cace719bf775cf';//TODO()
+  private mapID = '5e19f1fa9b1eab79e9a58e08';//TODO()
   private graphID = '5e177dc681c34611534d8c79';//TODO()
   private polygonID = '5e172dd80dc6500812feff69';//TODO()
   private mapResolution = 0.01;//TODO()
