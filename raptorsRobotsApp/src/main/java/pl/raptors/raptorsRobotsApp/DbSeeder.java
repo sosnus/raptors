@@ -167,6 +167,7 @@ public class DbSeeder implements CommandLineRunner {
        // this.routePriorityRepository.deleteAll();
 
         Role regularUser = new Role("regularUser");
+        Role admin = new Role("admin");
 
         User testowyUser1 = new User("testowy@gmail.com", "test",
                 //jeśli więcej niż 1 rola, to Array.asList()
@@ -180,15 +181,19 @@ public class DbSeeder implements CommandLineRunner {
 
         );
 
+        User testowyAdmin1= new User("admin@mail.com", "admin", Collections.singletonList(admin));
+
         //wywalanie wszystkich userów i ról
 /*        this.roleRepository.deleteAll();
         this.userRepository.deleteAll();*/
 
         //wrzucanie utworzonych userów do bazy
-        List<User> usersToAdd = Arrays.asList(testowyUser1, testowyUser2);
+        List<User> usersToAdd = Arrays.asList(testowyUser1, testowyUser2,testowyAdmin1);
 /*        this.roleService.addOne(regularUser);
+        this.roleService.addOne(admin);
         this.userService.addOne(testowyUser1);
-        this.userService.addOne(testowyUser2);*/
+        this.userService.addOne(testowyUser2);
+        this.userService.addOne(testowyAdmin1);*/
 
         //GRAFY
         Vertex vertex1 = new Vertex(17.5, 25.0, "A");
@@ -423,6 +428,8 @@ public class DbSeeder implements CommandLineRunner {
         RobotTask robotTask = new RobotTask(robot, "transport tools", behaviours, formatter.format(new Date()), taskPriority, "done", testowyUser1.getId());
         RobotTask robotTask1 = new RobotTask(null, "deliver package", behaviours1, formatter.format(new Date()), taskPriority1, "waiting", testowyUser1.getId());
         RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, "on going", testowyUser2.getId());
+        RobotTask robotTask3 = new RobotTask(robot1, "receive package", behaviours1, formatter.format(new Date()), taskPriority2, "on going", testowyAdmin1.getId());
+
 
         //czyść baze
         /*
