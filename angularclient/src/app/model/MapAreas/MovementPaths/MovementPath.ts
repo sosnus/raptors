@@ -1,9 +1,14 @@
+
+import {Graph} from "../../Graphs/Graph";
+
 export class MovementPath {
   id: string;
   name: string;
+  graph:Graph;
 
-  constructor(id: string, name: string) {
+
+  constructor(name: string, graph: Graph) {
     this.name = name;
-    this.id = id;
+    this.graph = graph;
   }
 }

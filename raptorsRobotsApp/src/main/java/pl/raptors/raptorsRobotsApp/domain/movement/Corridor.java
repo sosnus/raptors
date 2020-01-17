@@ -15,7 +15,7 @@ public class Corridor {
     @Id
     private String id;
     private String name;
-    private String movementPathId;
+    private String movementPathId;//moze zostac puste
     private List<String> corridorPointsIds;
 
     public Corridor(String name, String movementPathId, List<String> corridorPointsIds) {

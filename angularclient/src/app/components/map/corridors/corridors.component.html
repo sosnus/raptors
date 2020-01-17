@@ -1,1 +1,22 @@
-<p>corridors works!</p>
+<div class="btn-group btn-group-toggle switch-container" data-toggle="buttons">
+  <label class="btn btn-light form-check-label active switch" (click)="drawCorridor = false">
+    <input class="form-check-input" type="radio">
+    <i class="fas fa-crosshairs"></i>
+    Rysuj
+  </label>
+  <label class="btn btn-light form-check-label switch" (click)="createCorridor()">
+    <input class="form-check-input" type="radio">
+    <i class="fas fa-draw-polygon"></i>
+    Zakończ
+  </label>
+</div>
+<button type="button" class="btn btn-light switch-container" (click)="cancelCorridor()"><i class="far fa-window-close"></i>   Anuluj</button>
+<button type="button" class="btn btn-light switch-container" (click)="saveCorridor()"><i class="far fa-save"></i>   Zapisz</button>
+
+
+<div class="map-container">
+  <div class="map-frame">
+    <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
+    <div id="map"></div>
+  </div>
+</div>
