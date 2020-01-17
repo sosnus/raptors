@@ -3,10 +3,8 @@ package pl.raptors.raptorsRobotsApp.service.movement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.movement.Corridor;
-import pl.raptors.raptorsRobotsApp.domain.movement.CorridorPoint;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementPath;
 import pl.raptors.raptorsRobotsApp.domain.movement.Route;
-import pl.raptors.raptorsRobotsApp.repository.movement.CorridorPointRepository;
 import pl.raptors.raptorsRobotsApp.repository.movement.CorridorRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
@@ -18,10 +16,6 @@ public class CorridorService implements CRUDService<Corridor> {
 
     @Autowired
     CorridorRepository corridorRepository;
-    @Autowired
-    CorridorPointService corridorPointService;
-    @Autowired
-    CorridorPointRepository corridorPointRepository;
     @Autowired
     RouteService routeService;
 
@@ -42,12 +36,7 @@ public class CorridorService implements CRUDService<Corridor> {
 
     @Override
     public Corridor updateOne(Corridor corridor) {
-        List<CorridorPoint> cPointsList = corridorPointService.getCorridorPtsByCorridor(this.getOne(corridor.getId()));
         List<Route> routeList = routeService.getByCorridor(this.getOne(corridor.getId()));
-        for (CorridorPoint points : cPointsList) {
-            points.setCorridorId(corridor.getId());
-            corridorPointService.updateOne(points);
-        }
         for (Route route : routeList) {
             route.setCorridorId(corridor.getId());
             routeService.updateOne(route);
@@ -57,9 +46,7 @@ public class CorridorService implements CRUDService<Corridor> {
 
     @Override
     public void deleteOne(Corridor corridor) {
-        List<CorridorPoint> cPointsList = corridorPointService.getCorridorPtsByCorridor(this.getOne(corridor.getId()));
         List<Route> routeList = routeService.getByCorridor(this.getOne(corridor.getId()));
-        corridorPointRepository.deleteAll(cPointsList);
         for (Route route : routeList) {
             routeService.deleteOne(route);
         }

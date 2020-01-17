@@ -10,7 +10,6 @@ import pl.raptors.raptorsRobotsApp.domain.graphs.Edge;
 import pl.raptors.raptorsRobotsApp.domain.graphs.Graph;
 import pl.raptors.raptorsRobotsApp.domain.graphs.Vertex;
 import pl.raptors.raptorsRobotsApp.domain.movement.*;
-import pl.raptors.raptorsRobotsApp.domain.movement.MovementPathPoint;
 import pl.raptors.raptorsRobotsApp.domain.robots.*;
 import pl.raptors.raptorsRobotsApp.domain.type.*;
 import pl.raptors.raptorsRobotsApp.repository.accounts.RoleRepository;
@@ -45,8 +44,6 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    private CorridorPointRepository corridorPointRepository;
-    @Autowired
     private CorridorRepository corridorRepository;
     @Autowired
     private MapAreaRepository mapAreaRepository;
@@ -70,8 +67,6 @@ public class DbSeeder implements CommandLineRunner {
     private RobotRepository robotRepository;
     @Autowired
     private RobotReviewRepository robotReviewRepository;
-    @Autowired
-    private MovementPathPointRepository movementPathPointRepository;
     @Autowired
     private RouteRepository routeRepository;
     @Autowired
@@ -163,8 +158,8 @@ public class DbSeeder implements CommandLineRunner {
         //this.routeRepository.deleteAll();
         //this.corridorRepository.deleteAll();
         //this.corridorPointRepository.deleteAll();
-       // this.movementPathRepository.deleteAll();
-       // this.routePriorityRepository.deleteAll();
+        // this.movementPathRepository.deleteAll();
+        // this.routePriorityRepository.deleteAll();
 
         Role regularUser = new Role("regularUser");
 
@@ -228,84 +223,30 @@ public class DbSeeder implements CommandLineRunner {
         MapArea mapArea = new MapArea("hall A2", movementMap, areaType);
         MapArea mapArea1 = new MapArea("area B13", movementMap1, areaType1);
 
-        List<String> movementPathPoints = new ArrayList<>();
-        List<String> movementPathPoints1 = new ArrayList<>();
-
-        //create movement paths with empty lists
-        MovementPath movementPath = new MovementPath("the fastest", movementPathPoints);
-        MovementPath movementPath1 = new MovementPath("the shortest", movementPathPoints1);
-        //save movement paths
-        //movementPath = this.movementPathRepository.save(movementPath);
-        //movementPath1 = this.movementPathRepository.save(movementPath1);
-
         UniversalPoint movementPathUniversalPoint = new UniversalPoint(43.2, 50.2, 0);
         UniversalPoint movementPathUniversalPoint1 = new UniversalPoint(22.2, 30.5, 0);
+        List<UniversalPoint> universalPoints = new ArrayList<>();
+        universalPoints.add(movementPathUniversalPoint);
+        universalPoints.add(movementPathUniversalPoint1);
 
         UniversalPoint movementPathUniversalPoint2 = new UniversalPoint(22.2, 22.2, 0);
         UniversalPoint movementPathUniversalPoint3 = new UniversalPoint(30.2, 22, 0);
-        //create movement path points
-        MovementPathPoint movementPathPoint = new MovementPathPoint(movementPath.getId(), 1, movementPathUniversalPoint);
-        MovementPathPoint movementPathPoint1 = new MovementPathPoint(movementPath.getId(), 2, movementPathUniversalPoint1);
-        MovementPathPoint movementPathPoint2 = new MovementPathPoint(movementPath1.getId(), 1, movementPathUniversalPoint2);
-        MovementPathPoint movementPathPoint3 = new MovementPathPoint(movementPath1.getId(), 2, movementPathUniversalPoint3);
+        List<UniversalPoint> universalPoints1 = new ArrayList<>();
+        universalPoints1.add(movementPathUniversalPoint2);
+        universalPoints1.add(movementPathUniversalPoint3);
 
-        //movementPathPoint = this.movementPathPointRepository.save(movementPathPoint);
-        //movementPathPoint1 = this.movementPathPointRepository.save(movementPathPoint1);
-       // movementPathPoint2 = this.movementPathPointRepository.save(movementPathPoint2);
-       // movementPathPoint3 = this.movementPathPointRepository.save(movementPathPoint3);
-
-        //add movement paths points to get ids
-        movementPathPoints.add(movementPathPoint.getId());
-        movementPathPoints.add(movementPathPoint1.getId());
-        movementPathPoints1.add(movementPathPoint2.getId());
-        movementPathPoints1.add(movementPathPoint3.getId());
-        //update movement path with its points ids
-        movementPath.setMovementPathPointsIds(movementPathPoints);
-        movementPath.setMovementPathPointsIds(movementPathPoints1);
-       // movementPath = this.movementPathRepository.save(movementPath);
+        //create movement paths with empty lists
+        MovementPath movementPath = new MovementPath("the fastest", universalPoints);
+        MovementPath movementPath1 = new MovementPath("the shortest", universalPoints1);
+        //save movement paths
+        //movementPath = this.movementPathRepository.save(movementPath);
         //movementPath1 = this.movementPathRepository.save(movementPath1);
 
         List<String> corridorPathPoints = new ArrayList<>();
         List<String> corridorPathPoints1 = new ArrayList<>();
 
-        Corridor corridor = new Corridor("bridge", movementPath.getId(), corridorPathPoints);
-        Corridor corridor1 = new Corridor("main hall", movementPath1.getId(), corridorPathPoints1);
-
-        //corridor = this.corridorRepository.save(corridor);
-        //corridor1 = this.corridorRepository.save(corridor1);
-
-        UniversalPoint corridorUniversalPoint = new UniversalPoint(99.8, 111.2, 0);
-        UniversalPoint corridorUniversalPoint1 = new UniversalPoint(19.2, 75.7, 0);
-        UniversalPoint corridorUniversalPoint2 = new UniversalPoint(19.8, 120.4, 0);
-
-        UniversalPoint corridorUniversalPoint3 = new UniversalPoint(50, 100, 0);
-        UniversalPoint corridorUniversalPoint4 = new UniversalPoint(55, 100, 0);
-        UniversalPoint corridorUniversalPoint5 = new UniversalPoint(60, 100, 0);
-
-        CorridorPoint corridorPoint = new CorridorPoint(corridor.getId(), 11, corridorUniversalPoint);
-        CorridorPoint corridorPoint1 = new CorridorPoint(corridor.getId(), 50, corridorUniversalPoint1);
-        CorridorPoint corridorPoint2 = new CorridorPoint(corridor.getId(), 13, corridorUniversalPoint2);
-
-        CorridorPoint corridorPoint3 = new CorridorPoint(corridor1.getId(), 11, corridorUniversalPoint3);
-        CorridorPoint corridorPoint4 = new CorridorPoint(corridor1.getId(), 50, corridorUniversalPoint4);
-        CorridorPoint corridorPoint5 = new CorridorPoint(corridor1.getId(), 13, corridorUniversalPoint5);
-
-       // corridorPoint = this.corridorPointRepository.save(corridorPoint);
-       // corridorPoint1 = this.corridorPointRepository.save(corridorPoint1);
-       // corridorPoint2 = this.corridorPointRepository.save(corridorPoint2);
-       // corridorPoint3 = this.corridorPointRepository.save(corridorPoint3);
-       // corridorPoint4 = this.corridorPointRepository.save(corridorPoint4);
-       // corridorPoint5 = this.corridorPointRepository.save(corridorPoint5);
-
-        corridorPathPoints.add(corridorPoint.getId());
-        corridorPathPoints.add(corridorPoint1.getId());
-        corridorPathPoints.add(corridorPoint2.getId());
-        corridorPathPoints1.add(corridorPoint3.getId());
-        corridorPathPoints1.add(corridorPoint4.getId());
-        corridorPathPoints1.add(corridorPoint5.getId());
-
-        corridor.setCorridorPointsIds(corridorPathPoints);
-        corridor1.setCorridorPointsIds(corridorPathPoints1);
+        Corridor corridor = new Corridor("bridge", movementPath.getId(), universalPoints);
+        Corridor corridor1 = new Corridor("main hall", movementPath1.getId(), universalPoints1);
 
         //this.corridorRepository.save(corridor);
         //this.corridorRepository.save(corridor1);
@@ -388,8 +329,8 @@ public class DbSeeder implements CommandLineRunner {
         RoutePriority routePriority = new RoutePriority("critical", 1);
         RoutePriority routePriority1 = new RoutePriority("important", 2);
 
-       // routePriority = routePriorityRepository.save(routePriority);
-       // routePriority1 = routePriorityRepository.save(routePriority1);
+        // routePriority = routePriorityRepository.save(routePriority);
+        // routePriority1 = routePriorityRepository.save(routePriority1);
 
         Route route = new Route(movementMap.getId(), movementPath.getId(), corridor.getId(), "red route", stand2, stand, routePriority.getId());
         Route route1 = new Route(movementMap1.getId(), movementPath1.getId(), corridor1.getId(), "yellow route", stand1, stand2, routePriority1.getId());

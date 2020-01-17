@@ -15,11 +15,11 @@ public class MovementPath {
     @Id
     private String id;
     private String name;
-    private List<String> movementPathPointsIds;
+    private List<UniversalPoint> points;
 
 
-    public MovementPath(String name, List<String> movementPathPointsIds) {
+    public MovementPath(String name, List<UniversalPoint> points) {
         this.name = name;
-        this.movementPathPointsIds = movementPathPointsIds;
+        this.points = points;
     }
 }
