@@ -154,12 +154,8 @@ public class DbSeeder implements CommandLineRunner {
     @Override
     public void run(String... strings) throws IOException {
 
-        //this.movementPathPointRepository.deleteAll();
-        //this.routeRepository.deleteAll();
-        //this.corridorRepository.deleteAll();
-        //this.corridorPointRepository.deleteAll();
-        // this.movementPathRepository.deleteAll();
-        // this.routePriorityRepository.deleteAll();
+        // this.corridorRepository.deleteAll();
+        //this.movementPathRepository.deleteAll();
 
         Role regularUser = new Role("regularUser");
 
@@ -236,14 +232,11 @@ public class DbSeeder implements CommandLineRunner {
         universalPoints1.add(movementPathUniversalPoint3);
 
         //create movement paths with empty lists
-        MovementPath movementPath = new MovementPath("the fastest", universalPoints);
-        MovementPath movementPath1 = new MovementPath("the shortest", universalPoints1);
+        MovementPath movementPath = new MovementPath("do magazynu", universalPoints);
+        MovementPath movementPath1 = new MovementPath("do taśmy produkcyjnej", universalPoints1);
         //save movement paths
-        //movementPath = this.movementPathRepository.save(movementPath);
-        //movementPath1 = this.movementPathRepository.save(movementPath1);
-
-        List<String> corridorPathPoints = new ArrayList<>();
-        List<String> corridorPathPoints1 = new ArrayList<>();
+        // movementPath = this.movementPathRepository.save(movementPath);
+        // movementPath1 = this.movementPathRepository.save(movementPath1);
 
         Corridor corridor = new Corridor("bridge", movementPath.getId(), universalPoints);
         Corridor corridor1 = new Corridor("main hall", movementPath1.getId(), universalPoints1);
