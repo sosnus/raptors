@@ -1,14 +1,14 @@
 
-import {Graph} from "../../Graphs/Graph";
+import {UniversalPoint} from "../UniversalPoint";
 
 export class MovementPath {
   id: string;
   name: string;
-  graph:Graph;
+  points:UniversalPoint[];
 
 
-  constructor(name: string, graph: Graph) {
+  constructor(name: string, points: UniversalPoint[]) {
     this.name = name;
-    this.graph = graph;
+    this.points = points;
   }
 }
