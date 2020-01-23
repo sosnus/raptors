@@ -49,6 +49,7 @@ import { RobotModelsComponent } from './components/adminpanel/data/robot-models/
 import {MatSelectModule} from "@angular/material/select";
 import { LoginComponent } from './components/login/login.component';
 import {MovementPathComponent} from "./components/map/movement-path/movement-path.component";
+import { TaskpanelComponent } from './components/taskpanel/taskpanel.component';
 
 const config: InputFileConfig = {};
 
@@ -83,6 +84,7 @@ const config: InputFileConfig = {};
     RobotModelsComponent,
     LoginComponent,
     MovementPathComponent,
+    TaskpanelComponent,
   ],
   imports: [
     BrowserModule,
