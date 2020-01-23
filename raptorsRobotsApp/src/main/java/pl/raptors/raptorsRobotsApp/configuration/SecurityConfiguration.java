@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import pl.raptors.raptorsRobotsApp.service.accounts.MongoUserDetailsService;
@@ -29,14 +30,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class);
         http
                 .authorizeRequests()
-                .anyRequest().authenticated().and().csrf().disable().formLogin()
-                .and()
+                .anyRequest().authenticated().and().csrf().disable()
                 .logout()
                 .logoutUrl("/logout")
                 .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/users/login").and().exceptionHandling();
+                .logoutSuccessUrl("/login").and().exceptionHandling()
+                .and().httpBasic()
+                .and().formLogin();
+
 
     }
 
