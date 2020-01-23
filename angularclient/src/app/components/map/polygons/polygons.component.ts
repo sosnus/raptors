@@ -26,6 +26,7 @@ export class PolygonsComponent implements OnInit {
   private polygonPoints = [];
   private convertedPoints = [];
   private polygonsList = [[]];
+  private getPolygonsFromDB : Polygon[];
   private vertices: Marker[] = [];
   private polygon = L.polygon;
   constructor(private mapService: MapService, private polygonService: PolygonService) {
@@ -61,6 +62,16 @@ export class PolygonsComponent implements OnInit {
       this.imageResolution = img.width;
       //
     }
+
+    this.polygonService.getPolygons().subscribe(polygons=>{
+      console.log(polygons);
+      this.getPolygonsFromDB = polygons;
+/*
+        this.drawPolygons(this.getPolygonsFromDB);
+*/
+        //console.log(this.getPolygonsFromDB);
+      }
+    );
   }
 
   private initMap(): void {
@@ -82,7 +93,7 @@ export class PolygonsComponent implements OnInit {
   private drawPoly(){
     this.map.on('click', e => {
       // dodaj wierzcholki do listy
-      if(!this.drawPolygon) {
+      if(this.drawPolygon) {
         console.log("Markec created")
         const markerIcon = L.icon({
           iconUrl: '/assets/icons/position.png',
@@ -123,19 +134,14 @@ export class PolygonsComponent implements OnInit {
 
   }
 
-
   //przemieszczanie vertexów
   private updatePoly(e) {
     let markerPos = this.vertices.filter(marker => marker._leaflet_id === e.target._leaflet_id)[0];
     let newEdges = [];
-    console.log("ID kilkniętego markera: " + e.target._leaflet_id);
-    console.log("Pozycja kilkniętego markera: " + e.target._latlng);
     newEdges = this.vertices;
-    //console.log("DRUKUJ:" + markerPos._latlng);
     newEdges.forEach(vertice=>{
       if(vertice._leaflet_id===markerPos._leaflet_id){
         vertice._latlng = markerPos._latlng;
-        //console.log("Wykryto id: " + vertice._leaflet_id);
       }
       //newEdges = this.vertices;
     });
@@ -146,17 +152,8 @@ export class PolygonsComponent implements OnInit {
     newEdges = [];
   }
 
-/*  private updatePolygons(e){
-    let markerPos = this.polygonPoints.filter(marker => marker._leaflet_id === e.target._leaflet_id)[0];
-  }*/
-
   private createPoly(){
-    console.log("Vertices: " + this.vertices);
-    console.log("polygonPoints: " + this.polygonPoints);
     this.polygonPoints = [];
-    console.log("polygonPoints clear: " + this.polygonPoints);
-    console.log("Vertices: " + this.vertices);
-
     this.vertices.forEach(marker=>{
       this.polygonPoints.push(marker._latlng);
     });
@@ -174,12 +171,6 @@ export class PolygonsComponent implements OnInit {
 
   private getRealCoordinates(value) {
     return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
-  }
-
-  private clearVertexList(vertexList: any[]){
-    while (vertexList.length) {
-      vertexList.pop();
-    }
   }
 
   private savePoly(){
@@ -213,13 +204,76 @@ export class PolygonsComponent implements OnInit {
     this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
     this.map.removeLayer(e.relatedTarget);
   }
- /* private getPoly(){
-    this.polygonService.getPolygon().subscribe(
-      polygon => {
-        this.createPoly();
 
-      }
-    );
-  }*/
+  private onPolyClick(event){
+    //callFancyboxIframe('flrs.html')
 
+    alert("Clicked on polygon with label:" +event);
+  };
+
+  private drawPol(polygon: Polygon){
+    let existingPolygonpoints = [];
+    polygon.points.forEach(point => {
+      const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+      const markerIcon = L.icon({
+        iconUrl: '/assets/icons/position.png',
+        iconSize: [36, 36],
+        iconAnchor: [36 / 2, 36 / 2]
+      });
+      let marker = new L.marker(pointPosition, {
+        draggable: true,
+        icon: markerIcon,
+        contextmenu: true,
+        contextmenuItems: [
+          {
+            text: 'Usuń punkt trasy',
+            callback: this.deleteMarker,
+            context: this
+          }
+        ]
+      });
+      this.vertices.push(marker);
+      marker.addTo(this.map);
+      existingPolygonpoints.push(pointPosition);
+      marker.on('move', e => {
+        this.updatePoly(e)
+      });
+    });
+
+    /*let polygonik = L.polygon(existingPolygonpoints, {color: 'red'}).on('click', this.onPolyClick);
+    polygonik.addTo(this.map);*/
+    console.log("vertices: " + this.vertices);
+    //polygonik.addTo(this.polygons);
   }
+
+  private drawPolygons(polygon: Polygon[]){
+    this.drawPolygon = false;
+    polygon.forEach(object=> {
+      this.drawPol(object);
+    });
+  }
+
+  getMapCoordinates(value) {
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+  }
+
+  delete(polygon: Polygon) {
+    this.polygonService.delete(polygon).subscribe(
+      result => {
+        this.getPolygonsFromDB = this.getPolygonsFromDB.filter(item => item !== polygon)
+        //this.polygon = new Polygon();
+      },
+      error => {
+/*
+        this.toastr.error("Wystąpił błąd podczas usuwania");
+*/
+      }
+    )
+  }
+
+  draw(polygon:Polygon){
+    this.delete(polygon);
+      //this.getPolygonsFromDB = this.getPolygonsFromDB.filter(item => item !== polygon);
+      this.drawPol(polygon);
+  }
+ }
