@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PropulsionType} from "../../model/type/PropulsionType";
@@ -15,15 +15,22 @@ export class PropulsionTypeService {
   }
 
   public getAll(): Observable<PropulsionType[]> {
-    return this.http.get<PropulsionType[]>(this.propulsionTypeURL + "all", {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<PropulsionType[]>(this.propulsionTypeURL + "all", {headers: headers, responseType: 'json'})
   }
 
   public save(propulsionType: PropulsionType) {
-    return this.http.post<PropulsionType>(this.propulsionTypeURL + 'add', propulsionType);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<PropulsionType>(this.propulsionTypeURL + 'add', propulsionType, {headers: headers});
   }
 
   public delete(propulsionType: PropulsionType) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: propulsionType};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + sessionStorage.getItem('token')
+      }), body: propulsionType
+    };
     return this.http.delete(this.propulsionTypeURL + 'delete', httpOptions);
   }
 

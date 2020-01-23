@@ -14,15 +14,18 @@ export class CorridorService {
   }
 
   public getCorridors(): Observable<Corridor[]> {
-    return this.http.get<Corridor[]>(this.corridorURL + 'all', {responseType: 'json'});
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Corridor[]>(this.corridorURL + 'all', {headers: headers, responseType: 'json'});
   }
 
   public getCorridor(id: string): Observable<Corridor> {
-    return this.http.get<Corridor>(this.corridorURL + id, {responseType: 'json'});
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Corridor>(this.corridorURL + id, {headers: headers, responseType: 'json'});
   }
 
   public save(corridor: Corridor) {
-    return this.http.post<Corridor>(this.corridorURL + 'add', corridor);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<Corridor>(this.corridorURL + 'add', corridor, {headers: headers});
   }
 
 }

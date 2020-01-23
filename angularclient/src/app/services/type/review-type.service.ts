@@ -15,19 +15,27 @@ export class ReviewTypeService {
   }
 
   public getByID(id: string): Observable<ReviewType> {
-    return this.http.get<ReviewType>(this.reviewTypeURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<ReviewType>(this.reviewTypeURL + id, {headers: headers, responseType: 'json'})
   }
 
   public getAll(): Observable<ReviewType[]> {
-    return this.http.get<ReviewType[]>(this.reviewTypeURL + "all", {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<ReviewType[]>(this.reviewTypeURL + "all", {headers: headers, responseType: 'json'})
   }
 
   public save(reviewType: ReviewType) {
-    return this.http.post<ReviewType>(this.reviewTypeURL + 'add', reviewType);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<ReviewType>(this.reviewTypeURL + 'add', reviewType, {headers: headers});
   }
 
   public delete(reviewType: ReviewType) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: reviewType};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + sessionStorage.getItem('token')
+      }), body: reviewType
+    };
     return this.http.delete(this.reviewTypeURL + 'delete', httpOptions);
   }
 }

@@ -9,25 +9,29 @@ import {AreaType} from "../../model/type/AreaType";
 export class AreaTypeService {
 
   private readonly areaTypeURL: string;
-
   constructor(private http: HttpClient) {
     this.areaTypeURL = 'http://localhost:8080/type/area-types/';
   }
 
   public getByID(id: string): Observable<AreaType> {
-    return this.http.get<AreaType>(this.areaTypeURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' +  sessionStorage.getItem('token')};
+    return this.http.get<AreaType>(this.areaTypeURL + id, {headers:headers, responseType: 'json'})
   }
 
   public getAll(): Observable<AreaType[]> {
-    return this.http.get<AreaType[]>(this.areaTypeURL + "all", {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' +  sessionStorage.getItem('token')};
+    return this.http.get<AreaType[]>(this.areaTypeURL + "all", {headers:headers, responseType: 'json'})
   }
 
   public save(areaType: AreaType) {
-    return this.http.post<AreaType>(this.areaTypeURL + 'add', areaType);
+    const headers = {'Authorization': 'Basic ' +  sessionStorage.getItem('token')};
+    return this.http.post<AreaType>(this.areaTypeURL + 'add', areaType,{headers:headers});
   }
 
   public delete(areaType: AreaType) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: areaType};
+    const httpOptions = {headers: new HttpHeaders({
+        'Content-Type': 'application/json' ,
+        'Authorization': 'Basic ' +  sessionStorage.getItem('token')}), body: areaType};
     return this.http.delete(this.areaTypeURL + 'delete', httpOptions);
   }
 }

@@ -40,11 +40,13 @@ export class StoreService {
   }
 
   public getRobotIDlist(): Observable<any> {
-    return this.http.get(this.robotIDlist)
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get(this.robotIDlist, {headers: headers})
   }
 
   public getRobotIP(id: string): Observable<any> {
-    return this.http.get(this.robotIP + id + '/ip/',{responseType: 'text'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get(this.robotIP + id + '/ip/',{headers: headers, responseType: 'text'})
   }
 
 /*  public getRobotIPfromList(id: string): Observable<any> {
