@@ -1,11 +1,5 @@
 @import url("../map.component.css");
 
-.wrapper{
-  position: absolute;
-  margin: 20px;
-  display: inline
-}
-
 .switch{
   width: 14rem;
 }
@@ -14,3 +8,15 @@
   margin-bottom: 10px;
 }
 
+.inline-container{
+  display: flex;
+}
+
+.map{
+  display: inline-block;
+}
+.list{
+  display: inline-block;
+  padding-left: 1rem;
+  padding-top: 3.9rem;
+}
