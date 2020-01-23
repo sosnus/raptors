@@ -14,6 +14,7 @@ export class StoreService {
 
   public mapResolution=0.01;
   public imageResolution=1984;
+  public mapID = '5e19f1fa9b1eab79e9a58e08';
 
 /*  public robotsObjects = [
     {
@@ -39,11 +40,13 @@ export class StoreService {
   }
 
   public getRobotIDlist(): Observable<any> {
-    return this.http.get(this.robotIDlist)
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get(this.robotIDlist, {headers: headers})
   }
 
   public getRobotIP(id: string): Observable<any> {
-    return this.http.get(this.robotIP + id + '/ip/',{responseType: 'text'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get(this.robotIP + id + '/ip/',{headers: headers, responseType: 'text'})
   }
 
 /*  public getRobotIPfromList(id: string): Observable<any> {

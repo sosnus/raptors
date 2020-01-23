@@ -15,19 +15,27 @@ export class BatteryTypeService {
   }
 
   public getByID(id: string): Observable<BatteryType> {
-    return this.http.get<BatteryType>(this.batteryTypeURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<BatteryType>(this.batteryTypeURL + id, {headers: headers, responseType: 'json'})
   }
 
   public getAll(): Observable<BatteryType[]> {
-    return this.http.get<BatteryType[]>(this.batteryTypeURL + "all", {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<BatteryType[]>(this.batteryTypeURL + "all", {headers: headers, responseType: 'json'})
   }
 
   public save(batteryType: BatteryType) {
-    return this.http.post<BatteryType>(this.batteryTypeURL + 'add', batteryType);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<BatteryType>(this.batteryTypeURL + 'add', batteryType, {headers: headers});
   }
 
   public delete(batteryType: BatteryType) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: batteryType};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + sessionStorage.getItem('token')
+      }), body: batteryType
+    };
     return this.http.delete(this.batteryTypeURL + 'delete', httpOptions);
   }
 }

@@ -1,22 +1,26 @@
-<div class="btn-group btn-group-toggle switch-container" data-toggle="buttons">
-  <label class="btn btn-light form-check-label active switch" (click)="drawPolygon = false">
-    <input class="form-check-input" type="radio">
-    <i class="fas fa-crosshairs"></i>
-    Rysuj
-  </label>
-  <label class="btn btn-light form-check-label switch" (click)="createPoly()">
-    <input class="form-check-input" type="radio">
-    <i class="fas fa-draw-polygon"></i>
-    Zakończ
-  </label>
-</div>
+<div class="inline-container">
+  <div class="map">
+    <div class="btn-group btn-group-toggle switch-container" data-toggle="buttons">
+      <label class="btn btn-light form-check-label active switch" (click)="drawPolygon = false">
+        <input class="form-check-input" type="radio">
+        <i class="fas fa-crosshairs"></i>
+        Rysuj
+      </label>
+      <label class="btn btn-light form-check-label switch" (click)="createPoly()">
+        <input class="form-check-input" type="radio">
+        <i class="fas fa-draw-polygon"></i>
+        Zakończ
+      </label>
+    </div>
 
-<button type="button" class="btn btn-light switch-container" (click)="savePoly()"><i class="far fa-save"></i>   Zapisz</button>
+    <button type="button" class="btn btn-light switch-container" (click)="savePoly()"><i class="far fa-save"></i> Zapisz</button>
 
-
-  <div class="map-container">
-    <div class="map-frame">
-      <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
-      <div id="map"></div>
+    <div class="map-container">
+      <div class="map-frame">
+        <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
+        <div id="map"></div>
+      </div>
     </div>
   </div>
+  <app-vertex-list [markers]="vertices" class="list"></app-vertex-list>
+</div>

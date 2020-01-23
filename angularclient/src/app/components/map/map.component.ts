@@ -85,7 +85,6 @@ export class MapComponent implements OnInit {
 
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
-  private mapID = '5e19f1fa9b1eab79e9a58e08';//TODO()
   private graphID = '5e177dc681c34611534d8c79';//TODO()
   private polygonID = '5e172dd80dc6500812feff69';//TODO()
   private mapResolution = 0.01;//TODO()
@@ -103,17 +102,18 @@ export class MapComponent implements OnInit {
               private storeService: StoreService,
               private graphService: GraphService,
               private polygonService: PolygonService,
-              private standService: StandService) {
+              private standService: StandService,
+              private store: StoreService) {
   }
 
   ngOnInit() {
-    if (localStorage.getItem(this.mapID) !== null) {
-      this.afterMapLoaded(localStorage.getItem(this.mapID))
+    if (localStorage.getItem(this.store.mapID) !== null) {
+      this.afterMapLoaded(localStorage.getItem(this.store.mapID))
     } else {
-      this.mapService.getMap(this.mapID).subscribe(
+      this.mapService.getMap(this.store.mapID).subscribe(
         data => {
           this.afterMapLoaded(data);
-          localStorage.setItem(this.mapID, data)
+          localStorage.setItem(this.store.mapID, data)
         }
       );
     }

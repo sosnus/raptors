@@ -9,6 +9,7 @@ import {STANDICON} from "../map.component";
 import {Orientation} from "../../../model/Stand/Orientation";
 import {Stand} from "../../../model/Stand/Stand";
 import {StandService} from "../../../services/stand.service";
+import {StoreService} from "../../../services/store.service";
 
 
 @Component({
@@ -22,7 +23,6 @@ export class StandCreatorComponent implements OnInit {
   private imageResolution;
   private map;
   private mapResolution = 0.01;//TODO()
-  private mapID = '5de6d25552cace719bf775cf';//TODO()
   private imageURL = '';
 
   private stands: Marker[] = [];
@@ -30,7 +30,8 @@ export class StandCreatorComponent implements OnInit {
   public stand: Stand = new Stand();
 
   constructor(private mapService: MapService,
-              private standService: StandService) {
+              private standService: StandService,
+              private store: StoreService) {
   }
 
   ngOnInit() {
@@ -38,13 +39,13 @@ export class StandCreatorComponent implements OnInit {
   }
 
   private loadMap() {
-    if (localStorage.getItem(this.mapID) !== null) {
-      this.afterMapLoaded(localStorage.getItem(this.mapID))
+    if (localStorage.getItem(this.store.mapID) !== null) {
+      this.afterMapLoaded(localStorage.getItem(this.store.mapID))
     } else {
-      this.mapService.getMap(this.mapID).subscribe(
+      this.mapService.getMap(this.store.mapID).subscribe(
         data => {
           this.afterMapLoaded(data);
-          localStorage.setItem(this.mapID, data)
+          localStorage.setItem(this.store.mapID, data)
         }
       );
     }
