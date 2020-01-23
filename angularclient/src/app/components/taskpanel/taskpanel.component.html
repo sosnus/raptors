@@ -1,5 +1,31 @@
 <form class="text-center border border-light p-5 register-form">
   <p class="h4 mb-4">Dodaj zadanie</p>
+  <div class="card container">
+
+  <div class="md-form">
+    <input type="text" class="form-control"
+           [(ngModel)]="robotTask.name"
+           name="robotTask"
+           placeholder="Task name">
+  </div>
+
+    <div class="md-form">
+      <select class="browser-default custom-select" (change)="selectRobot($event.target.value)"
+              [(ngModel)]="selectedRobot"
+              [ngModelOptions]="{standalone: true}">
+        <option [value]="item.id" *ngFor="let item of availableRobots">IP:{{item.robotIp}} Nazwa Modelu: {{item.model.name}} ...</option>
+      </select>
+    </div>
+
+    <div class="md-form">
+      <select class="browser-default custom-select" (change)="selectBehaviour($event.target.value)"
+              [(ngModel)]="selectedBehaviour"
+              [ngModelOptions]="{standalone: true}">
+        <option [value]="item.id" *ngFor="let item of behaviours">{{item.name}} {{item.parameters}}</option>
+      </select>
+    </div>
 
 
+  </div>
 </form>
+
