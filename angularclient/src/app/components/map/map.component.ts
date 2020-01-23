@@ -147,11 +147,10 @@ export class MapComponent implements OnInit {
       }
     );
 
-    this.graphService.getGraph(this.graphID).subscribe(
-      graph => {
-        //console.log(graph);
-        this.graph = graph;
-        this.drawGraph(graph)
+    this.graphService.getAll().subscribe(
+      graphs => {
+        graphs.map(graph => this.drawGraph(graph))
+
       }
     );
 
