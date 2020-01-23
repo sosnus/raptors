@@ -33,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class);
         http
                 .authorizeRequests()
+                .antMatchers("/users/login").permitAll()
                 .anyRequest().authenticated().and().csrf().disable()
                 .logout()
                 .logoutUrl("/logout")

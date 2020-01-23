@@ -36,18 +36,14 @@ public class UserController {
         return mongoUserDetailsService.loadUserByUsername(user.getEmail());
     }*/
 
+//TODO pobrac usera na podstawie maila i porównaj hasła
     @RequestMapping("/login")
     public boolean login(@RequestBody User user) {
-        return user.getEmail().equals("user@mail.com") && user.getPassword().equals(passwordEncoder.encode("user"));
+        System.out.println(user.getEmail() +" "+ user.getPassword());
+        return user.getEmail().equals("user@mail.com") ;
     }
 
-    @RequestMapping("/user")
-    public Principal user(HttpServletRequest request) {
-        String authToken = request.getHeader("Authorization")
-                .substring("Basic".length()).trim();
-        return () ->  new String(Base64.getDecoder()
-                .decode(authToken)).split(":")[0];
-    }
+
     @GetMapping("/all")
     public List<User> getAll() {
 
