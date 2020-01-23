@@ -1,0 +1,10 @@
+
+<button type="button" class="btn btn-light switch-container" (click)="saveMovementPath()"><i class="far fa-save"></i>Zapisz</button>
+<button type="button" class="btn btn-light switch-container" (click)="cancelMovementPath()"><i class="far fa-window-close"></i>   Anuluj</button>
+
+<div class="map-container">
+  <div class="map-frame">
+    <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
+    <div id="map"></div>
+  </div>
+</div>

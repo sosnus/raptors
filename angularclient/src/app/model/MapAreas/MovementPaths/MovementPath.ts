@@ -1,9 +1,14 @@
+
+import {UniversalPoint} from "../UniversalPoint";
+
 export class MovementPath {
   id: string;
   name: string;
+  points:UniversalPoint[];
 
-  constructor(id: string, name: string) {
+
+  constructor(name: string, points: UniversalPoint[]) {
     this.name = name;
-    this.id = id;
+    this.points = points;
   }
 }

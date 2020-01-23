@@ -7,6 +7,8 @@ import { MapUploadComponent } from './components/map/map-upload/map-upload.compo
 import {StandCreatorComponent} from "./components/map/stand-creator/stand-creator.component";
 import {AdminPanelComponent} from "./components/adminpanel/admin-panel.component";
 import {LoginComponent} from "./components/login/login.component";
+import {MovementPathComponent} from "./components/map/movement-path/movement-path.component";
+import {CorridorsComponent} from "./components/map/corridors/corridors.component";
 
 
 const routes: Routes = [
@@ -17,6 +19,8 @@ const routes: Routes = [
   {path: 'stands', component: StandCreatorComponent},
   {path: 'adminpanel', component: AdminPanelComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'movementPaths', component: MovementPathComponent},
+  {path: 'corridors', component: CorridorsComponent}
 ];
 
 @NgModule({

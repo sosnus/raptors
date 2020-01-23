@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.movement.Corridor;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementPath;
-import pl.raptors.raptorsRobotsApp.domain.movement.MovementPathPoint;
 import pl.raptors.raptorsRobotsApp.domain.movement.Route;
-import pl.raptors.raptorsRobotsApp.repository.movement.MovementPathPointRepository;
 import pl.raptors.raptorsRobotsApp.repository.movement.MovementPathRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
@@ -20,10 +18,6 @@ public class MovementPathService implements CRUDService<MovementPath> {
     MovementPathRepository movementPathRepository;
     @Autowired
     CorridorService corridorService;
-    @Autowired
-    MovementPathPointService movementPathPointService;
-    @Autowired
-    MovementPathPointRepository movementPathPointRepository;
     @Autowired
     RouteService routeService;
 
@@ -45,16 +39,12 @@ public class MovementPathService implements CRUDService<MovementPath> {
     @Override
     public MovementPath updateOne(MovementPath movementPath) {
         List<Corridor> corridorList = corridorService.getCorridorsByMovementPath(this.getOne(movementPath.getId()));
-        List<MovementPathPoint> pathPointsList = movementPathPointService.getPtsByMovementPath(this.getOne(movementPath.getId()));
         List<Route> routeList = routeService.getByPath(this.getOne(movementPath.getId()));
         for (Corridor corridor : corridorList) {
             corridor.setMovementPathId(movementPath.getId());
             corridorService.updateOne(corridor);
         }
-        for (MovementPathPoint points : pathPointsList) {
-            points.setMovementPathId(movementPath.getId());
-            movementPathPointService.updateOne(points);
-        }
+
         for (Route route : routeList) {
             route.setMovementPathId(movementPath.getId());
             routeService.updateOne(route);
@@ -64,8 +54,6 @@ public class MovementPathService implements CRUDService<MovementPath> {
 
     @Override
     public void deleteOne(MovementPath movementPath) {
-        List<MovementPathPoint> pathPointsList = movementPathPointService.getPtsByMovementPath(this.getOne(movementPath.getId()));
-        movementPathPointRepository.deleteAll(pathPointsList);
         movementPathRepository.delete(movementPath);
     }
 }

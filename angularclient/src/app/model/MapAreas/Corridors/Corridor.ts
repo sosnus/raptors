@@ -1,13 +1,13 @@
-import {MovementPath} from '../MovementPaths/MovementPath';
-
 export class Corridor {
-  id: string
+  id: string;
   name: string;
-  movementPath: MovementPath;
+  movementPathId: string;
+  pointsList: [];
 
-  constructor(id: string, name: string, movementPath: MovementPath) {
-    this.id = id;
+
+  constructor(name: string, movementPathId: string, pointsList: []) {
     this.name = name;
-    this.movementPath = movementPath;
+    this.movementPathId = movementPathId;
+    this.pointsList = pointsList;
   }
 }

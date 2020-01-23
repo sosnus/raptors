@@ -48,6 +48,7 @@ import { RobotStatusesComponent } from './components/adminpanel/data/robot-statu
 import { RobotModelsComponent } from './components/adminpanel/data/robot-models/robot-models.component';
 import {MatSelectModule} from "@angular/material/select";
 import { LoginComponent } from './components/login/login.component';
+import {MovementPathComponent} from "./components/map/movement-path/movement-path.component";
 
 const config: InputFileConfig = {};
 
@@ -81,6 +82,7 @@ const config: InputFileConfig = {};
     RobotStatusesComponent,
     RobotModelsComponent,
     LoginComponent,
+    MovementPathComponent,
   ],
   imports: [
     BrowserModule,
