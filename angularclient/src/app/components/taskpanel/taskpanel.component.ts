@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {RobotTask} from "../../model/Robots/RobotTask";
+import {RobotService} from "../../services/robot.service";
 
 @Component({
   selector: 'app-taskpanel',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TaskpanelComponent implements OnInit {
 
-  constructor() { }
+  robotTask: RobotTask;
+  constructor(robotService: RobotService) {
+    this.robotTask = new RobotTask(null, null, null, null, null, null, null);
+  }
 
   ngOnInit() {
+  }
+  
+  getFreeRobot(){
+    
   }
 
 }

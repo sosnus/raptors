@@ -1,4 +1,4 @@
-import {Robot} from "../Robot";
+import {Robot} from "./Robot";
 import {Behaviour} from "./Behaviour";
 import {TaskPriority} from "../type/TaskPriority";
 
