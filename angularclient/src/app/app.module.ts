@@ -32,23 +32,23 @@ import {PropulsionTypesComponent} from './components/adminpanel/data/propulsion-
 import {PropulsionTypeService} from "./services/type/propulsion-type.service";
 import {ParkingTypesComponent} from "./components/adminpanel/data/parking-types/parking-types.component";
 import {ParkingTypeService} from "./services/type/parking-type.service";
-import { TaskPrioritiesComponent } from './components/adminpanel/data/task-priorities/task-priorities.component';
-import {TaskPriority} from "./model/type/TaskPriority";
+import {TaskPrioritiesComponent} from './components/adminpanel/data/task-priorities/task-priorities.component';
 import {TaskPriorityService} from "./services/type/task-priority.service";
-import {PolygonService} from "./services/polygon.service";
-import { CorridorsComponent } from './components/map/corridors/corridors.component';
-import { StandTypesComponent } from './components/adminpanel/data/stand-types/stand-types.component';
+import {CorridorsComponent} from './components/map/corridors/corridors.component';
+import {StandTypesComponent} from './components/adminpanel/data/stand-types/stand-types.component';
 import {StandTypeService} from "./services/type/stand-type.service";
-import { StandStatusesComponent } from './components/adminpanel/data/stand-statuses/stand-statuses.component';
+import {StandStatusesComponent} from './components/adminpanel/data/stand-statuses/stand-statuses.component';
 import {StandStatusService} from "./services/type/stand-status.service";
-import { ReviewTypesComponent } from './components/adminpanel/data/review-types/review-types.component';
+import {ReviewTypesComponent} from './components/adminpanel/data/review-types/review-types.component';
 import {ReviewTypeService} from "./services/type/review-type.service";
-import { BehaviourComponent } from './components/adminpanel/data/behaviour/behaviour.component';
-import { RobotStatusesComponent } from './components/adminpanel/data/robot-statuses/robot-statuses.component';
-import { RobotModelsComponent } from './components/adminpanel/data/robot-models/robot-models.component';
+import {BehaviourComponent} from './components/adminpanel/data/behaviour/behaviour.component';
+import {RobotStatusesComponent} from './components/adminpanel/data/robot-statuses/robot-statuses.component';
+import {RobotModelsComponent} from './components/adminpanel/data/robot-models/robot-models.component';
 import {MatSelectModule} from "@angular/material/select";
-import { LoginComponent } from './components/login/login.component';
+import {LoginComponent} from './components/login/login.component';
 import {MovementPathComponent} from "./components/map/movement-path/movement-path.component";
+import { TaskpanelComponent } from './components/taskpanel/taskpanel.component';
+import {GraphListComponent} from "./components/map/graphcreator/graph-list/graph-list.component";
 
 const config: InputFileConfig = {};
 
@@ -83,6 +83,8 @@ const config: InputFileConfig = {};
     RobotModelsComponent,
     LoginComponent,
     MovementPathComponent,
+    TaskpanelComponent,
+    GraphListComponent,
   ],
   imports: [
     BrowserModule,

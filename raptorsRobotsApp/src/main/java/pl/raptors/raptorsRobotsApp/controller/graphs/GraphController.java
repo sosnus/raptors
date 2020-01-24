@@ -36,4 +36,9 @@ public class GraphController {
     public void delete(@RequestBody @Valid Graph graph) {
         graphService.deleteOne(graph);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteByID(@PathVariable String id) {
+        graphService.deleteByID(id);
+    }
 }

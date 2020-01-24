@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Polygon} from "../model/MapAreas/Polygons/Polygon";
 
 @Injectable({
@@ -26,6 +26,11 @@ export class PolygonService {
   public save(polygon: Polygon) {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
     return this.http.post<Polygon>(this.polygonURL + 'add', polygon, {headers: headers});
+  }
+
+  public delete(polygon: Polygon) {
+    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: polygon};
+    return this.http.delete(this.polygonURL + 'delete', httpOptions);
   }
 
 }
