@@ -15,15 +15,18 @@ export class MovementPathService {
   }
 
   public getMovementPaths(): Observable<MovementPath[]> {
-    return this.http.get<MovementPath[]>(this.movementPathURL + 'all', {responseType: 'json'});
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<MovementPath[]>(this.movementPathURL + 'all', {headers: headers, responseType: 'json'});
   }
 
   public getMovementPath(id: string): Observable<MovementPath> {
-    return this.http.get<MovementPath>(this.movementPathURL + id, {responseType: 'json'});
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<MovementPath>(this.movementPathURL + id, {headers: headers, responseType: 'json'});
   }
 
   public save(movementPath: MovementPath) {
-    return this.http.post<MovementPath>(this.movementPathURL + 'add', movementPath);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<MovementPath>(this.movementPathURL + 'add', movementPath, {headers: headers});
   }
 
 }

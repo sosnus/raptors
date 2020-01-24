@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {StandType} from "../../model/type/StandType";
@@ -15,19 +15,27 @@ export class StandTypeService {
   }
 
   public getByID(id: string): Observable<StandType> {
-    return this.http.get<StandType>(this.standTypeURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<StandType>(this.standTypeURL + id, {headers: headers, responseType: 'json'})
   }
 
   public getAll(): Observable<StandType[]> {
-    return this.http.get<StandType[]>(this.standTypeURL + "all", {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<StandType[]>(this.standTypeURL + "all", {headers: headers, responseType: 'json'})
   }
 
   public save(standType: StandType) {
-    return this.http.post<StandType>(this.standTypeURL + 'add', standType);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<StandType>(this.standTypeURL + 'add', standType, {headers: headers});
   }
 
   public delete(standType: StandType) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: standType};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + sessionStorage.getItem('token')
+      }), body: standType
+    };
     return this.http.delete(this.standTypeURL + 'delete', httpOptions);
   }
 }

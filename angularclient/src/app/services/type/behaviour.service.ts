@@ -15,19 +15,28 @@ export class BehaviourService {
   }
 
   public getByID(id: string): Observable<Behaviour> {
-    return this.http.get<Behaviour>(this.behaviourURL + id, {responseType: 'json'});
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Behaviour>(this.behaviourURL + id, {headers: headers, responseType: 'json'});
   }
 
   public getAll(): Observable<Behaviour[]> {
-    return this.http.get<Behaviour[]>(this.behaviourURL + 'all', {responseType: 'json'});
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Behaviour[]>(this.behaviourURL + 'all', {headers: headers, responseType: 'json'});
   }
 
   public save(behaviour: Behaviour) {
-    return this.http.post<Behaviour>(this.behaviourURL + 'add', behaviour);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<Behaviour>(this.behaviourURL + 'add', behaviour, {headers: headers});
   }
 
   public delete(behaviour: Behaviour) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: behaviour};
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + sessionStorage.getItem('token')
+      }), body: behaviour
+    };
     return this.http.delete(this.behaviourURL + 'delete', httpOptions);
   }
 }

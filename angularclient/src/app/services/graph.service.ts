@@ -16,10 +16,12 @@ export class GraphService {
   }
 
   public getGraph(id: string): Observable<Graph> {
-    return this.http.get<Graph>(this.graphURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Graph>(this.graphURL + id, {headers: headers, responseType: 'json'})
   }
 
   public save(graph: Graph) {
-    return this.http.post<Graph>(this.graphURL + 'add', graph);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<Graph>(this.graphURL + 'add', graph,{headers: headers});
   }
 }

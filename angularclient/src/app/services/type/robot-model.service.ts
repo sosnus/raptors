@@ -15,19 +15,27 @@ export class RobotModelService {
   }
 
   public getByID(id: string): Observable<RobotModel> {
-    return this.http.get<RobotModel>(this.robotModelsURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<RobotModel>(this.robotModelsURL + id, {headers: headers, responseType: 'json'})
   }
 
   public getAll(): Observable<RobotModel[]> {
-    return this.http.get<RobotModel[]>(this.robotModelsURL + "all", {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<RobotModel[]>(this.robotModelsURL + "all", {headers: headers, responseType: 'json'})
   }
 
   public save(robotModel: RobotModel) {
-    return this.http.post<RobotModel>(this.robotModelsURL + 'add', robotModel);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<RobotModel>(this.robotModelsURL + 'add', robotModel,{headers: headers});
   }
 
   public delete(robotModel: RobotModel) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: robotModel};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + sessionStorage.getItem('token')
+      }), body: robotModel
+    };
     return this.http.delete(this.robotModelsURL + 'delete', httpOptions);
   }
 }
