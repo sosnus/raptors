@@ -7,8 +7,6 @@ import {UniversalPoint} from "../../../model/MapAreas/UniversalPoint";
 import {Corridor} from "../../../model/MapAreas/Corridors/Corridor";
 import {StoreService} from "../../../services/store.service";
 import {MovementPath} from "../../../model/MapAreas/MovementPaths/MovementPath";
-import {MovementPathService} from "../../../services/movementPath.service";
-import {BatteryType} from "../../../model/type/BatteryType";
 
 @Component({
   selector: 'app-corridors',

@@ -5,6 +5,8 @@ import * as L from 'leaflet';
 import {MovementPath} from "../../../model/MapAreas/MovementPaths/MovementPath";
 import {UniversalPoint} from "../../../model/MapAreas/UniversalPoint";
 import {StoreService} from "../../../services/store.service";
+import {Marker} from "leaflet/src/layer/marker/Marker";
+
 
 @Component({
   selector: 'app-movement-path',
@@ -20,6 +22,7 @@ export class MovementPathComponent implements OnInit {
   private imageURL = '';
   private readonly context;
   private polyline: L.polyline = null;
+  private vertices: Marker[] = [];
 
   constructor(private mapService: MapService,
               private movementPathService: MovementPathService,
@@ -74,21 +77,27 @@ export class MovementPathComponent implements OnInit {
         iconSize: [36, 36],
         iconAnchor: [36 / 2, 36 / 2]
       });
+
+      let marker = new L.marker(e.latlng, {
+        draggable: true,
+        icon: markerIcon
+      });
       if (this.polyline == null) {
-        var arr = [];
-        this.polyline = new L.polyline(arr, {
-          draggable: true,
-          icon: markerIcon,
-        });
+        this.polyline = new L.Polyline([]).addTo(this.map);
       }
+      marker.addTo(this.map)
+      this.vertices.push(marker);
       this.polyline.addLatLng(e.latlng);
-      this.polyline.addTo(this.map);
     });
   }
 
   cancelMovementPath() {
     this.map.removeLayer(this.polyline);
     this.polyline=null;
+    this.vertices.forEach(e => {
+      this.map.removeLayer(e);
+    })
+    this.vertices = [];
   }
 
   private getRealCoordinates(value) {
