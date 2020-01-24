@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -12,18 +13,14 @@ export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
 
-  constructor(private http: HttpClient) {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
   }
 
   login() {
-    let url = 'http://localhost:8080/users/login';
-    let result = this.http.post(url, {
-      email: this.email,
-      password: this.password
-    }, {responseType: 'text'}).subscribe(isValid => {
+    this.authService.login(this.email, this.password).subscribe(isValid => {
       if (isValid) {
         sessionStorage.setItem(
           'token',
