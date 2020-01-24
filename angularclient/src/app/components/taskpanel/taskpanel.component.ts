@@ -7,6 +7,8 @@ import {Behaviour} from "../../model/Robots/Behaviour";
 import {TaskPriorityService} from "../../services/type/task-priority.service";
 import {TaskPriority} from "../../model/type/TaskPriority";
 import {Task} from "protractor/built/taskScheduler";
+import {RobotTaskService} from "../../services/robotTask.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-taskpanel',
@@ -28,8 +30,11 @@ export class TaskpanelComponent implements OnInit {
 
   taskPriority: TaskPriority;
   taskPriorities: TaskPriority[];
+  selectedTaskPriority: string;
 
-  constructor(private robotService: RobotService, private behaviourService: BehaviourService, private taskPriorityService: TaskPriorityService) {
+  constructor(private robotService: RobotService, private behaviourService: BehaviourService,
+              private taskPriorityService: TaskPriorityService, private robotTaskService: RobotTaskService,
+              private toastr: ToastrService) {
     this.robotTask = new RobotTask(null, null, null, null, null, null, null);
   }
 
@@ -73,4 +78,20 @@ export class TaskpanelComponent implements OnInit {
     this.selectedBehaviour = id;
   }
 
+  selectTaskPriority(id: string) {
+    console.log(id);
+    this.selectedTaskPriority = id;
+  }
+
+  saveRobotTask() {
+    this.robotTask.status = "waiting";
+    this.robotTask.userID = "Uzytkownik";
+    //this.robotTask.behaviours = this.selectedBehaviour; // tu musi być lista
+    //this.robotTask.priority = this.selectedTaskPriority;
+    this.robotTaskService.save(this.robotTask).subscribe(
+      result => console.log('Response' + result),
+      error => console.log('Error' + error));
+    console.log('RobotTask', this.robotTask);
+    this.toastr.success('Dodano pomyślnie');
+  }
 }
