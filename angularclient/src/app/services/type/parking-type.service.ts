@@ -15,15 +15,22 @@ export class ParkingTypeService {
   }
 
   public getAll(): Observable<ParkingType[]> {
-    return this.http.get<ParkingType[]>(this.parkingTypeURL + "all", {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<ParkingType[]>(this.parkingTypeURL + "all", {headers: headers, responseType: 'json'})
   }
 
   public save(parkingType: ParkingType) {
-    return this.http.post<ParkingType>(this.parkingTypeURL + 'add', parkingType);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<ParkingType>(this.parkingTypeURL + 'add', parkingType, {headers: headers});
   }
 
   public delete(parkingType: ParkingType) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: parkingType};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + sessionStorage.getItem('token')
+      }), body: parkingType
+    };
     return this.http.delete(this.parkingTypeURL + 'delete', httpOptions);
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {RobotStatus} from "../../model/Robots/RobotStatus";
@@ -15,19 +15,27 @@ export class RobotStatusService {
   }
 
   public getByID(id: string): Observable<RobotStatus> {
-    return this.http.get<RobotStatus>(this.robotStatusesURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<RobotStatus>(this.robotStatusesURL + id, {headers: headers, responseType: 'json'})
   }
 
   public getAll(): Observable<RobotStatus[]> {
-    return this.http.get<RobotStatus[]>(this.robotStatusesURL + "all", {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<RobotStatus[]>(this.robotStatusesURL + "all", {headers: headers, responseType: 'json'})
   }
 
   public save(robotStatus: RobotStatus) {
-    return this.http.post<RobotStatus>(this.robotStatusesURL + 'add', robotStatus);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<RobotStatus>(this.robotStatusesURL + 'add', robotStatus, {headers: headers});
   }
 
   public delete(robotStatus: RobotStatus) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: robotStatus};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + sessionStorage.getItem('token')
+      }), body: robotStatus
+    };
     return this.http.delete(this.robotStatusesURL + 'delete', httpOptions);
   }
 }

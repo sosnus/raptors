@@ -15,6 +15,8 @@
 
     <button type="button" class="btn btn-light switch-container" (click)="saveGraph()"><i class="far fa-save"></i>   Zapisz</button>
 
+    <button type="button" class="btn btn-light switch-container" (click)="clearMap()"><i class="far fa-save"></i>   Wyczyść</button>
+
     <div class="map-container">
       <div class="map-frame">
         <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
@@ -23,6 +25,9 @@
     </div>
   </div>
   <app-vertex-list [markers]="vertices" class="list"></app-vertex-list>
+  <app-graph-list
+    [graph]="graph"
+    (graphToEdit)="editExistingGraph($event)" class="list"></app-graph-list>
 </div>
 
 

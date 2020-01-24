@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Polygon} from "../model/MapAreas/Polygons/Polygon";
 
@@ -14,15 +15,18 @@ export class PolygonService {
   }
 
   public getPolygons(): Observable<Polygon[]> {
-    return this.http.get<Polygon[]>(this.polygonURL + 'all', {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Polygon[]>(this.polygonURL + 'all', {headers: headers, responseType: 'json'})
   }
 
   public getPolygon(id: string): Observable<Polygon> {
-    return this.http.get<Polygon>(this.polygonURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Polygon>(this.polygonURL + id, {headers: headers, responseType: 'json'})
   }
 
   public save(polygon: Polygon) {
-    return this.http.post<Polygon>(this.polygonURL + 'add', polygon);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<Polygon>(this.polygonURL + 'add', polygon, {headers: headers});
   }
 
   public delete(polygon: Polygon) {

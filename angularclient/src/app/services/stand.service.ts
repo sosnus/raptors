@@ -17,15 +17,18 @@ export class StandService {
   }
 
   public getStand(id: string): Observable<Stand> {
-    return this.http.get<Stand>(this.standURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Stand>(this.standURL + id, {headers: headers, responseType: 'json'})
   }
 
   public getAll(): Observable<Stand[]> {
-    return this.http.get<Stand[]>(this.standURL + "all", {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Stand[]>(this.standURL + "all", {headers: headers, responseType: 'json'})
   }
 
   public save(stand: Stand) {
-    return this.http.post<Stand>(this.standURL + 'add', stand);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<Stand>(this.standURL + 'add', stand, {headers: headers});
   }
 
 }
