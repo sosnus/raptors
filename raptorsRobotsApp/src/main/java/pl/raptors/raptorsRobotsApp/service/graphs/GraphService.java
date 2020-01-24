@@ -11,6 +11,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import pl.raptors.raptorsRobotsApp.domain.graphs.Graph;
 
 import java.util.List;
+import java.util.Optional;
 
 //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
@@ -62,6 +63,19 @@ public class GraphService implements CRUDService<Graph> {
      */
     @Override
     public void deleteOne(Graph graph) {
+        List<Edge> edgesList = graph.getEdges();
+        for (Edge e:edgesList) {
+            List<Vertex> vertexList = e.getVerticesList();
+            vertexRepository.deleteAll(vertexList);
+        }
+        edgeRepository.deleteAll(edgesList);
+        graphRepository.delete(graph);
+    }
+
+
+    public void deleteByID(String id) {
+        Optional<Graph> graphFromDB = graphRepository.findById(id);
+        Graph graph = graphFromDB.get();
         List<Edge> edgesList = graph.getEdges();
         for (Edge e:edgesList) {
             List<Vertex> vertexList = e.getVerticesList();
