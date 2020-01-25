@@ -2,17 +2,12 @@ package pl.raptors.raptorsRobotsApp.controller.accounts;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import pl.raptors.raptorsRobotsApp.configuration.SecurityConfiguration;
 import pl.raptors.raptorsRobotsApp.domain.accounts.User;
 import pl.raptors.raptorsRobotsApp.service.accounts.MongoUserDetailsService;
 import pl.raptors.raptorsRobotsApp.service.accounts.UserService;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
-import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -31,16 +26,17 @@ public class UserController {
         this.userService = userService;
     }
 
-/*    @RequestMapping("/login")
-    public UserDetails login(@RequestBody User user) {
-        return mongoUserDetailsService.loadUserByUsername(user.getEmail());
-    }*/
-
-//TODO pobrac usera na podstawie maila i porównaj hasła
     @RequestMapping("/login")
     public boolean login(@RequestBody User user) {
-        System.out.println(user.getEmail() +" "+ user.getPassword());
-        return user.getEmail().equals("user@mail.com") ;
+
+        //System.out.println(user.getEmail() + " " + user.getPassword());
+        try {
+            User userFromDb = userService.getByEmail(user.getEmail());
+            //System.out.println(user.getEmail().equals(userFromDb.getEmail()) && passwordEncoder.matches(user.getPassword(), userFromDb.getPassword()));
+            return user.getEmail().equals(userFromDb.getEmail()) && passwordEncoder.matches(user.getPassword(), userFromDb.getPassword());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 
