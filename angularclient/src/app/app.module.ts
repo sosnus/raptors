@@ -49,6 +49,7 @@ import {LoginComponent} from './components/login/login.component';
 import {MovementPathComponent} from "./components/map/movement-path/movement-path.component";
 import { TaskpanelComponent } from './components/taskpanel/taskpanel.component';
 import {GraphListComponent} from "./components/map/graphcreator/graph-list/graph-list.component";
+import {StandListComponent} from "./components/map/stand-creator/stand-list/stand-list.component";
 import {CorridorListComponent} from "./components/map/corridors/corridor-list/corridor-list.component";
 import {MovementPathListComponent} from "./components/map/movement-path/movement-path-list/movement-path-list.component";
 
@@ -88,6 +89,7 @@ const config: InputFileConfig = {};
     MovementPathComponent,
     TaskpanelComponent,
     GraphListComponent,
+    StandListComponent,
     CorridorListComponent,
     MovementPathListComponent,
   ],
