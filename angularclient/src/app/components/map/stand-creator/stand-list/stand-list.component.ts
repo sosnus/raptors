@@ -53,10 +53,10 @@ export class StandListComponent implements OnInit, OnChanges {
   }
 
   deleteStand(stand: Stand) {
-    this.stands = this.stands.filter(next => next != stand);
     this.standService.delete(stand.id).subscribe(
       result => {
-        this.toast.success('Usunięto stanowisko')
+        this.toast.success('Usunięto stanowisko');
+        this.stands = this.stands.filter(next => next != stand);
         this.standToEdit.emit(null);
       },
       error => this.toast.error('Błąd podczas łączenia z bazą: ' + error.message)
