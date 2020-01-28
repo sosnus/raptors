@@ -18,16 +18,16 @@
     <button type="button" class="btn btn-light switch-container" (click)="saveCorridor()"><i class="far fa-save"></i>
       Zapisz
     </button>
-<!--    <div class="md-form">-->
-<!--      <select-->
-<!--        name="batteryType"-->
-<!--        id="avaiblePaths"-->
-<!--        class="form-control validate"-->
-<!--        required [(ngModel)]="corridor.movementPathId">-->
-<!--        <option *ngFor="let path of paths" [ngValue]="path">{{ path.name }}</option>-->
-<!--      </select>-->
-<!--      <label for="avaiblePaths">Dostępne ścieżki</label>-->
-<!--    </div>-->
+    <!--    <div class="md-form">-->
+    <!--      <select-->
+    <!--        name="batteryType"-->
+    <!--        id="avaiblePaths"-->
+    <!--        class="form-control validate"-->
+    <!--        required [(ngModel)]="corridor.movementPathId">-->
+    <!--        <option *ngFor="let path of paths" [ngValue]="path">{{ path.name }}</option>-->
+    <!--      </select>-->
+    <!--      <label for="avaiblePaths">Dostępne ścieżki</label>-->
+    <!--    </div>-->
     <div class="map-container">
       <div class="map-frame">
         <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
@@ -36,4 +36,8 @@
     </div>
   </div>
   <app-vertex-list [markers]="vertices" class="list"></app-vertex-list>
+  <app-corridor-list
+    [corridor]="corridor"
+    (pathToEdit)="editExistingCorridor($event)" class="list">
+  </app-corridor-list>
 </div>
