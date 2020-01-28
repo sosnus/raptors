@@ -51,10 +51,12 @@ export class MovementPathListComponent implements OnInit {
 
   deletePath(path: MovementPath) {
     this.movementPathService.deleteByID(path.id).subscribe(
-      result => this.toast.success('Usunięto korytarz '),
+      result => {
+        this.paths = this.paths.filter(next => next != path);
+        this.toast.success('Usunięto ścieżkę ')
+      },
       error => this.toast.error('Błąd podczas łączenia z bazą: ' + error)
     );
     this.pathToEdit.emit(null);
-    this.getPathsFromDb();
   }
 }

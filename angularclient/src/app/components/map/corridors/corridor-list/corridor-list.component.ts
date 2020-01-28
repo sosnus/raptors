@@ -52,11 +52,13 @@ export class CorridorListComponent implements OnInit {
 
   deleteCorridor(corridor: Corridor) {
     this.corridorService.deleteByID(corridor.id).subscribe(
-      result => this.toast.success('Usunięto korytarz '),
+      result => {
+        this.corridors = this.corridors.filter(next => next != corridor);
+        this.toast.success('Usunięto korytarz ')
+      },
       error => this.toast.error('Błąd podczas łączenia z bazą: ' + error)
     );
     this.corridorToEdit.emit(null);
-    this.getCorridorsFromDb();
   }
 
 
