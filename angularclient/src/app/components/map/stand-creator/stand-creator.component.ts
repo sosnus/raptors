@@ -25,9 +25,9 @@ export class StandCreatorComponent implements OnInit {
   private mapResolution = 0.01;//TODO()
   private imageURL = '';
 
-  private stands: Marker[] = [];
   private selectedMarker: Marker;
   public stand: Stand = new Stand();
+  private standID;
 
   constructor(private mapService: MapService,
               private standService: StandService,
@@ -77,22 +77,25 @@ export class StandCreatorComponent implements OnInit {
     this.map.fitBounds(imageBounds);
 
     this.map.once('click', e => {
-      let marker = new L.marker(e.latlng, {
-        draggable: true,
-        icon: STANDICON,
-        contextmenu: true,
-        contextmenuItems: [
-          {
-            text: 'Usuń stanowisko',
-            // callback: this.deleteMarker,
-            context: this
-          }
-        ]
-      });
-      this.selectedMarker = marker;
-      marker.addTo(this.map);
-      this.stands.push(marker)
+      this.createNewMarker(e.latlng);
     });
+  }
+
+  private createNewMarker(position) {
+    let marker = new L.marker(position, {
+      draggable: true,
+      icon: STANDICON,
+      contextmenu: true,
+      contextmenuItems: [
+        {
+          text: 'Usuń stanowisko',
+          // callback: this.deleteMarker,
+          context: this
+        }
+      ]
+    });
+    this.selectedMarker = marker;
+    marker.addTo(this.map);
   }
 
   onSubmit() {
@@ -107,6 +110,23 @@ export class StandCreatorComponent implements OnInit {
 
   getRealCoordinates(value: number) {
     return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
+  }
+
+  getMapCoordinates(value) {
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+  }
+
+  clearMap() {
+    this.map.removeLayer(this.selectedMarker);
+    this.stand = null;
+  }
+
+  editExistingStand(stand: Stand) {
+    this.clearMap();
+    if (!stand) return;
+    this.standID = stand.id;
+    const vertPos = L.latLng([this.getMapCoordinates(stand.pose.position.y), this.getMapCoordinates(stand.pose.position.x)]);
+    this.createNewMarker(vertPos);
   }
 
 }

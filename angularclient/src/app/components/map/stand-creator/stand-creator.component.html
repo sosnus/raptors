@@ -37,5 +37,8 @@
       </div>
     </div>
   </div>
-  <app-vertex-list [markers]="stands" class="list"></app-vertex-list>
+
+  <app-stand-list
+    [stand]="stand"
+    (standToEdit)="editExistingStand($event)" class="list"></app-stand-list>
 </div>

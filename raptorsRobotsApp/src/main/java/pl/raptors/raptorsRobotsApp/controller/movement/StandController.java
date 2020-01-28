@@ -34,4 +34,8 @@ public class StandController {
     public void delete(@RequestBody @Valid Stand stand) {
         service.deleteOne(stand);
     }
+    @DeleteMapping("/delete/{id}")
+    public void deleteByID(@PathVariable String id) {
+        service.deleteByID(id);
+    }
 }
