@@ -35,7 +35,7 @@ public class CorridorController {
         corridorService.deleteOne(corridor);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable String id) {
         corridorService.deleteById(id);
     }

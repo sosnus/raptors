@@ -35,7 +35,7 @@ public class MovementPathController {
         movementPathService.deleteOne(movementPath);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable String id) {
         movementPathService.deleteById(id);
     }
