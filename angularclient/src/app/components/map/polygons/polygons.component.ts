@@ -20,7 +20,7 @@ import {ToastrService} from "ngx-toastr";
 export class PolygonsComponent implements OnInit {
   dataLoaded = false;
   poly = null;
-  private drawPolygon = false;
+  private drawPolygon = true;
   private imageResolution;
   private mapResolution = 0.01;//TODO()
   private map;
@@ -28,8 +28,10 @@ export class PolygonsComponent implements OnInit {
   private polygonPoints = [];
   private convertedPoints = [];
   private polygonsList = [[]];
+  private temppolygonsList = [[]];
   private getPolygonsFromDB: Polygon[];
   private vertices: Marker[] = [];
+  private tempVertices: Marker[] = [];
   private polygon = L.polygon;
 
   constructor(private mapService: MapService,
@@ -157,6 +159,7 @@ export class PolygonsComponent implements OnInit {
   }
 
   private createPoly() {
+    this.drawPolygon = false;
     this.polygonPoints = [];
     this.vertices.forEach(marker => {
       this.polygonPoints.push(marker._latlng);
@@ -177,6 +180,7 @@ export class PolygonsComponent implements OnInit {
   }
 
   private savePoly() {
+    this.drawPolygon = true;
     this.map.removeLayer(this.polygon);
     this.map.removeLayer(this.vertices);
     this.vertices.map(edge => this.map.removeLayer(edge));
@@ -249,6 +253,8 @@ export class PolygonsComponent implements OnInit {
 
     /*let polygonik = L.polygon(existingPolygonpoints, {color: 'red'}).on('click', this.onPolyClick);
     polygonik.addTo(this.map);*/
+    //this.createPoly();
+
     console.log("vertices: " + this.vertices);
     //polygonik.addTo(this.polygons);
   }
@@ -271,13 +277,14 @@ export class PolygonsComponent implements OnInit {
     )
   }
 
-  clearMap() {
-    this.vertices.map(marker => this.map.removeLayer(marker));
-    this.polygonsList.map(edge => this.map.removeLayer(edge));
-    this.polygonPoints.map(edge => this.map.removeLayer(edge));
-    this.polygon = null;
-    //this..map(edge => this.map.removeLayer(edge));
-    this.vertices = [];
-    //this.graphID = null;
+  resetPoly(){
+    this.drawPolygon = true;
+    this.map.removeLayer(this.polygon);
+    this.map.removeLayer(this.vertices);
+    this.vertices.map(edge => this.map.removeLayer(edge));
+    this.vertices = new Array<Marker>();
+    this.polygon = new Polygon(null, null, null);
+    //this.polygonPoints = [];
+    //this.polygonsList = this.temppolygonsList;
   }
 }
