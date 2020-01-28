@@ -39,24 +39,28 @@ export class StandListComponent implements OnInit, OnChanges {
     )
   }
 
-  ngOnChanges(changes: { [property: string]: SimpleChange }) {
+  ngOnChanges(changes: { stand: SimpleChange }) {
     // Extract changes to the input property by its name
-    this.standService.getAll().subscribe(
-      stands => this.stands = stands,
-      error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
-    )
+    if (changes.stand.currentValue)
+      this.standService.getAll().subscribe(
+        stands => this.stands = stands,
+        error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
+      )
   }
 
   editGraph(stand: Stand) {
     this.standToEdit.emit(stand);
   }
 
-  deleteGraph(stand: Stand) {
+  deleteStand(stand: Stand) {
     this.stands = this.stands.filter(next => next != stand);
     this.standService.delete(stand.id).subscribe(
-      result => this.toast.success('Usunięto stanowisko '),
+      result => {
+        this.toast.success('Usunięto stanowisko')
+        this.standToEdit.emit(null);
+      },
       error => this.toast.error('Błąd podczas łączenia z bazą: ' + error.message)
     );
-    this.standToEdit.emit(null);
+
   }
 }

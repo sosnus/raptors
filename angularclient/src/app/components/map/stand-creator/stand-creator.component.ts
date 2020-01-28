@@ -10,6 +10,13 @@ import {Orientation} from "../../../model/Stand/Orientation";
 import {Stand} from "../../../model/Stand/Stand";
 import {StandService} from "../../../services/stand.service";
 import {StoreService} from "../../../services/store.service";
+import {ParkingType} from "../../../model/type/ParkingType";
+import {StandType} from "../../../model/type/StandType";
+import {StandStatus} from "../../../model/type/StandStatus";
+import {ParkingTypeService} from "../../../services/type/parking-type.service";
+import {StandTypeService} from "../../../services/type/stand-type.service";
+import {StandStatusService} from "../../../services/type/stand-status.service";
+import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -29,13 +36,25 @@ export class StandCreatorComponent implements OnInit {
   public stand: Stand = new Stand();
   private standID;
 
+  //data
+  private parkingTypes: ParkingType[];
+  private standTypes: StandType[];
+  private standStatuses: StandStatus[];
+
   constructor(private mapService: MapService,
               private standService: StandService,
-              private store: StoreService) {
+              private parkingTypeService: ParkingTypeService,
+              private standTypeService: StandTypeService,
+              private standStatusService: StandStatusService,
+              private store: StoreService,
+              private toast: ToastrService) {
   }
 
   ngOnInit() {
     this.loadMap();
+    this.parkingTypeService.getAll().subscribe(data => this.parkingTypes = data);
+    this.standTypeService.getAll().subscribe(data => this.standTypes = data);
+    this.standStatusService.getAll().subscribe(data => this.standStatuses = data);
   }
 
   private loadMap() {
@@ -71,8 +90,8 @@ export class StandCreatorComponent implements OnInit {
       contextmenu: true,
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
-    L.easyButton( 'fa-crosshairs', function(btn, map){
-      map.setView([400,400],0);
+    L.easyButton('fa-crosshairs', function (btn, map) {
+      map.setView([400, 400], 0);
     }).addTo(this.map);
     this.map.fitBounds(imageBounds);
 
@@ -101,10 +120,14 @@ export class StandCreatorComponent implements OnInit {
   onSubmit() {
     this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
     this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
-    this.stand.pose.orientation = new Orientation(0,0,0,0);
+    this.stand.pose.orientation = new Orientation(0, 0, 0, 0);
     this.standService.save(this.stand).subscribe(
-      result=>console.log(result),
-      error => console.log(error)
+      result => {
+        this.toast.success("Dodano nowe stanowisko");
+
+        this.clearMap();
+      },
+      error => this.toast.error("Błąd podczas dodawania stanowiska")
     )
   }
 
@@ -117,8 +140,11 @@ export class StandCreatorComponent implements OnInit {
   }
 
   clearMap() {
-    this.map.removeLayer(this.selectedMarker);
-    this.stand = null;
+    if (this.selectedMarker) {
+      this.map.removeLayer(this.selectedMarker);
+    }
+    this.stand = new Stand();
+    this.standID = null;
   }
 
   editExistingStand(stand: Stand) {
@@ -127,6 +153,10 @@ export class StandCreatorComponent implements OnInit {
     this.standID = stand.id;
     const vertPos = L.latLng([this.getMapCoordinates(stand.pose.position.y), this.getMapCoordinates(stand.pose.position.x)]);
     this.createNewMarker(vertPos);
+    this.stand = stand;
   }
 
+  compareItems(id1: any, id2: any): boolean {
+    return id1.id === id2.id;
+  }
 }

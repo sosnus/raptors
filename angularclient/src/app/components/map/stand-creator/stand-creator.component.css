@@ -7,6 +7,7 @@
 .btn-save{
   width: 32%;
   margin: auto;
+  margin-bottom: 3rem;
 }
 
 .inline-container{
@@ -26,4 +27,8 @@
 
 .row{
   margin: 0;
+}
+
+.mat-form-field {
+  width: 98%;
 }

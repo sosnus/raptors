@@ -4,26 +4,41 @@
       <div class="row">
         <div class="md-form">
           <input type="text" id="inputName" class="form-control form-control-lg" required [(ngModel)]="stand.name" name="name">
-          <label for="inputName">Nazwa stanowiska</label>
+          <label for="inputName" [class.active]="stand.name && stand.name.length > 0">Nazwa stanowiska</label>
         </div>
         <div class="md-form">
-          <input type="text" id="parkingType" class="form-control form-control-lg" required [(ngModel)]="stand.parkingType.name" name="parkingType">
-          <label for="parkingType">Typ parkowania</label>
+          <mat-form-field>
+            <mat-label>Typ parkowania</mat-label>
+            <mat-select [(ngModel)]="stand.parkingType" name="parkingType" [compareWith]="compareItems">
+              <mat-option *ngFor="let parkingType of parkingTypes" [value]="parkingType">
+                {{parkingType.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
         <div class="md-form">
-          <input type="text" id="standType" class="form-control form-control-lg" required [(ngModel)]="stand.standType.name" name="standType">
-          <label for="standType">Typ stanowiska</label>
+          <mat-form-field>
+            <mat-label>Typ stanowiska</mat-label>
+            <mat-select [(ngModel)]="stand.standType" name="standType" [compareWith]="compareItems">
+              <mat-option *ngFor="let standType of standTypes" [value]="standType">
+                {{standType.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
       <div class="row">
         <div class="md-form">
-          <input type="text" id="standStatus" class="form-control form-control-lg" required [(ngModel)]="stand.standStatus.name" name="standStatus">
-          <label for="standStatus">Status stanowiska</label>
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="stand.standStatus" name="standStatus" [compareWith]="compareItems">
+              <mat-option *ngFor="let standStatus of standStatuses" [value]="standStatus">
+                {{standStatus.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
-        <div class="md-form">
-          <input type="number" id="standOrientation" class="form-control form-control-lg" required [(ngModel)]="stand.pose.position.z" name="posePosition">
-          <label for="standOrientation">Orientacja stanowiska</label>
-        </div>
+        <button type="button" class="btn btn-light btn-save" (click)="clearMap()"><i class="fas fa-retweet"></i> Nowy</button>
         <button type="submit" class="btn btn-light btn-save" [disabled]="!standForm.form.valid||!this.selectedMarker"><i class="far fa-save" ></i> Dodaj</button>
       </div>
 
