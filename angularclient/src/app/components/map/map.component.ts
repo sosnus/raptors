@@ -14,6 +14,10 @@ import {PolygonService} from "../../services/polygon.service";
 import {Polygon} from "../../model/MapAreas/Polygons/Polygon";
 import {StandService} from "../../services/stand.service";
 import {Stand} from "../../model/Stand/Stand";
+import {CorridorService} from "../../services/corridor.service";
+import {MovementPathService} from "../../services/movementPath.service";
+import {Corridor} from "../../model/MapAreas/Corridors/Corridor";
+import {MovementPath} from "../../model/MapAreas/MovementPaths/MovementPath";
 
 export const WAYPOINTICON = L.icon({
   iconUrl: '/assets/icons/position.png',
@@ -45,6 +49,8 @@ export class MapComponent implements OnInit {
   private standLayer = L.featureGroup();
   private graphs = L.featureGroup();
   private polygons = L.featureGroup();
+  private movementPaths = L.featureGroup();
+  private corridors = L.featureGroup();
 
   //Example data
   private robots = [
@@ -81,6 +87,8 @@ export class MapComponent implements OnInit {
     Grafy: this.graphs,
     Obszary: this.polygons,
     Stanowiska: this.standLayer,
+    Korytarze: this.corridors,
+    Ścieżki: this.movementPaths
   };
 
   //Leaflet accepts coordinates in [y,x]
@@ -103,7 +111,9 @@ export class MapComponent implements OnInit {
               private graphService: GraphService,
               private polygonService: PolygonService,
               private standService: StandService,
-              private store: StoreService) {
+              private store: StoreService,
+              private corridorService: CorridorService,
+              private pathsService: MovementPathService) {
   }
 
   ngOnInit() {
@@ -127,8 +137,8 @@ export class MapComponent implements OnInit {
       crs: L.CRS.Simple
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
-    L.easyButton( 'fa-crosshairs', function(btn, map){
-      map.setView([400,400],0);
+    L.easyButton('fa-crosshairs', function (btn, map) {
+      map.setView([400, 400], 0);
     }).addTo(this.map);
     this.map.fitBounds(imageBounds);
     L.control.layers(this.robotStatus).addTo(this.map);
@@ -163,7 +173,7 @@ export class MapComponent implements OnInit {
     );
 
     this.standService.getAll().subscribe(
-      stands =>{
+      stands => {
         this.drawStand(stands);
       }
     );
@@ -174,10 +184,47 @@ export class MapComponent implements OnInit {
       this.imageResolution = img.width;
       this.drawRobots(this.robots);
     }
+    this.corridorService.getCorridors().subscribe(
+      corridors => {
+        console.log(corridors)
+        this.drawCorridors(corridors);
+      }
+    );
+
+    this.pathsService.getMovementPaths().subscribe(
+      paths => {
+        this.drawPaths(paths);
+      }
+    );
+  }
+
+  private drawCorridors(corridor: Corridor[]) {
+    corridor.forEach(corridor => {
+      let corridorPoints = [];
+      corridor.points.forEach(point => {
+        const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+        corridorPoints.push(pointPosition);
+      })
+      let corridorPolygon = L.polygon(corridorPoints, {color: 'red'}).addTo(this.corridors);
+      console.log(corridorPolygon);
+    })
+
+  }
+
+  private drawPaths(paths: MovementPath[]) {
+    paths.forEach(path => {
+        let polylinePoints = [];
+        path.points.forEach(point => {
+          const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+          polylinePoints.push(pointPosition);
+        })
+        new L.Polyline(polylinePoints).addTo(this.movementPaths);
+      }
+    )
   }
 
   private drawStand(stands: Stand[]) {
-    stands.forEach( stand =>{
+    stands.forEach(stand => {
       console.log(stand);
       const position = [
         this.getMapCoordinates(Number(stand.pose.position.y)),
@@ -189,15 +236,15 @@ export class MapComponent implements OnInit {
         "Stand Details<br />Position x: "
         + stand.pose.position.x
         + "<br />Position y: " +
-        + stand.pose.position.y
+        +stand.pose.position.y
         + "<br />Orientation: " +
-        + stand.pose.position.z
+        +stand.pose.position.z
         + "<br />Status: " +
-        + stand.standStatus.name
+        +stand.standStatus.name
         + "<br />Parking type: " +
-        + stand.parkingType.name
+        +stand.parkingType.name
         + "<br />Stand type: " +
-        + stand.standType.name);
+        +stand.standType.name);
     })
   }
 
@@ -223,19 +270,19 @@ export class MapComponent implements OnInit {
     });
   }
 
-  private drawPolygon(polygon: Polygon){
+  private drawPolygon(polygon: Polygon) {
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
       existingPolygonpoints.push(pointPosition);
     });
-    let polygonik = L.polygon(existingPolygonpoints, {color: 'red'}).addTo(this.map);
+    let polygonik = L.polygon(existingPolygonpoints, {color: 'red'}).addTo(this.map);//todo
     polygonik.addTo(this.polygons);
   }
 
 
-  private drawPolygons(polygon: Polygon[]){
-    polygon.forEach(object=> {
+  private drawPolygons(polygon: Polygon[]) {
+    polygon.forEach(object => {
       this.drawPolygon(object);
     });
   }
@@ -252,7 +299,7 @@ export class MapComponent implements OnInit {
         "Robot Details<br />Position x: "
         + this.getRealCoordinates(marker.getLatLng().lng)
         + "<br />Position y: " +
-        + this.getRealCoordinates(marker.getLatLng().lat));
+        +this.getRealCoordinates(marker.getLatLng().lat));
       this.robotMarkers.push(marker);
       this.robotStatusLayer.addTo(this.map);
 
