@@ -1,4 +1,4 @@
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {MovementPath} from "../model/MapAreas/MovementPaths/MovementPath";
 import {Injectable} from "@angular/core";
@@ -27,6 +27,15 @@ export class MovementPathService {
   public save(movementPath: MovementPath) {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
     return this.http.post<MovementPath>(this.movementPathURL + 'add', movementPath, {headers: headers});
+  }
+
+  public deleteByID(id: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Basic ' + sessionStorage.getItem('token',)
+      })
+    };
+    return this.http.delete(this.movementPathURL + 'delete/'+id, httpOptions);
   }
 
 }

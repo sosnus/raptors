@@ -3,27 +3,27 @@
     <thead>
     <tr>
       <th class="sticky-top" scope="col">#</th>
-      <th class="sticky-top" scope="col">ID grafu</th>
+      <th class="sticky-top" scope="col">Nazwa korytarza</th>
       <th class="sticky-top" scope="col"></th>
       <th class="sticky-top" scope="col"></th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let graph of graphs;let i = index;">
+    <tr *ngFor="let corridor of corridors;let i = index;">
       <th scope="row">{{++i}}</th>
-      <td>{{graph.id}}</td>
+      <td>{{corridor.name}}</td>
       <td>
         <button class="btn btn-primary btn-sm"
-                (click)="editGraph(graph)">
-          Edit
+                (click)="editCorridor(corridor)">
+          Edytuj
         </button>
       </td>
       <td>
         <button class="btn btn-primary btn-sm"
-                (click)="selectedGraph=graph"
+                (click)="selectedCorridor=corridor"
                 data-toggle="modal"
                 [attr.data-target]="'#' + modalID + 'Confirm'">
-          Delete
+          Usuń
         </button>
       </td>
     </tr>
@@ -31,4 +31,4 @@
   </table>
 </div>
 <app-confirm-modal-template [modalID]="modalID+'Confirm'"
-                            (onConfirm)="deleteGraph(selectedGraph)"></app-confirm-modal-template>
+                            (onConfirm)="deleteCorridor(selectedCorridor)"></app-confirm-modal-template>

@@ -11,6 +11,8 @@ import pl.raptors.raptorsRobotsApp.repository.movement.StandRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
+import java.util.Optional;
+
 //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class StandService implements CRUDService<Stand> {
@@ -40,6 +42,13 @@ public class StandService implements CRUDService<Stand> {
 
     @Override
     public void deleteOne(Stand stand) {
+        standrepository.delete(stand);
+    }
+
+
+    public void deleteByID(String id) {
+        Optional<Stand> standDB = standrepository.findById(id);
+        Stand stand = standDB.get();
         standrepository.delete(stand);
     }
 

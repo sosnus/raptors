@@ -13,25 +13,30 @@ import java.util.List;
 @RequestMapping("/movement/corridors")
 public class CorridorController {
     @Autowired
-    CorridorService service;
+    CorridorService corridorService;
 
     @GetMapping("/all")
     public List<Corridor> getAll() {
-        return service.getAll();
+        return corridorService.getAll();
     }
 
     @PostMapping("/add")
     public Corridor add(@RequestBody @Valid Corridor corridor) {
-        return service.addOne(corridor);
+        return corridorService.addOne(corridor);
     }
 
     @GetMapping("/{id}")
     public Corridor getOne(@PathVariable String id) {
-        return service.getOne(id);
+        return corridorService.getOne(id);
     }
 
     @DeleteMapping("/delete")
     public void delete(@RequestBody @Valid Corridor corridor) {
-        service.deleteOne(corridor);
+        corridorService.deleteOne(corridor);
+    }
+
+    @GetMapping("/delete/{id}")
+    public void delete(@PathVariable String id) {
+        corridorService.deleteById(id);
     }
 }
