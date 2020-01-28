@@ -7,6 +7,9 @@ import {UniversalPoint} from "../../../model/MapAreas/UniversalPoint";
 import {Corridor} from "../../../model/MapAreas/Corridors/Corridor";
 import {StoreService} from "../../../services/store.service";
 import {MovementPath} from "../../../model/MapAreas/MovementPaths/MovementPath";
+import {ToastrService} from "ngx-toastr";
+import {MovementPathService} from "../../../services/movementPath.service";
+import {Graph} from "../../../model/Graphs/Graph";
 
 @Component({
   selector: 'app-corridors',
@@ -27,18 +30,25 @@ export class CorridorsComponent implements OnInit {
   private polygon = L.polygon;
   private corridor: Corridor;
   private polygonsList = [[]];
-  paths:MovementPath[]=[];
+  paths: MovementPath[] = [];
+  private corridorID;
 
-  constructor(private mapService: MapService, private corridorService: CorridorService, private store: StoreService) {
+  constructor(private mapService: MapService,
+              private corridorService: CorridorService,
+              private store: StoreService,
+              private toast: ToastrService,
+              private movementPathService: MovementPathService) {
   }
-  getPathsFromDb(){
-    // this.movementPathService.getMovementPaths().subscribe(
-    //   data => this.paths = data
-    // )
+
+  getPathsFromDb() {
+    this.movementPathService.getMovementPaths().subscribe(
+      data => this.paths = data
+    )
   }
+
   ngOnInit() {
     this.loadMap();
-    //this.getPathsFromDb();
+    this.getPathsFromDb();
   }
 
   drawCorridor() {
@@ -82,6 +92,7 @@ export class CorridorsComponent implements OnInit {
       this.map.removeLayer(e);
     })
     this.vertices = [];
+    this.corridor = null;
   }
 
   saveCorridor() {
@@ -98,12 +109,15 @@ export class CorridorsComponent implements OnInit {
       universalPoints.push(universalPoint)
     });
 
-    //this.corridor.points=universalPoints;
     this.corridor = new Corridor("corridor", null, universalPoints);
-    this.corridorService.save(this.corridor).subscribe(result => console.log(result));
-    this.polygonPoints = [];
-    this.vertices = [];
-    this.corridor=null;
+    this.corridorService.save(this.corridor).subscribe(result => {
+      if (result.id != null) {
+        this.toast.success('Korytarz zapisany w bazie')
+      } else {
+        this.toast.error('Nie udało się zapisać do bazy')
+      }
+    });
+    this.cancelCorridor();
   }
 
   private loadMap() {
@@ -199,5 +213,46 @@ export class CorridorsComponent implements OnInit {
     }
   }
 
+  clearMap() {
+    this.cancelCorridor();
+    this.corridorID = null;
+  }
+
+  editExistingCorridor(corridor: Corridor) {
+    this.clearMap();
+    // if (!graph) return;
+    // this.graphID = graph.id;
+    // let existingWaypoints = [];
+    // let marker1;
+    // let marker2;
+    // let markers = [];
+    // graph.edges.forEach(edge => {
+    //   let marker1Temp = marker1;
+    //   let marker2Temp = marker2;
+    //   const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
+    //   const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+    //
+    //   if (!existingWaypoints.includes(vertPosA + '')) {//toString in order to not mind about reference
+    //     marker1 = this.createNewMarker(vertPosA);
+    //     markers.push(marker1);
+    //     existingWaypoints.push(vertPosA + '');
+    //     console.log('NewA')
+    //   }
+    //   if (!existingWaypoints.includes(vertPosB + '')) {
+    //     marker2 = this.createNewMarker(vertPosB);
+    //
+    //     markers.push(marker2);
+    //     existingWaypoints.push(vertPosB + '');
+    //     console.log('NewB')
+    //   }
+    // });
+    // graph.edges.forEach(edge => {
+    //   const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
+    //   const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+    //   marker1 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosA));
+    //   marker2 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosB));
+    //   this.drawEditableEdge(marker1, marker2, edge.biDirected)
+    // })
+  }
 
 }

@@ -1,4 +1,4 @@
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Corridor} from "../model/MapAreas/Corridors/Corridor";
 import {Observable} from "rxjs";
@@ -28,4 +28,12 @@ export class CorridorService {
     return this.http.post<Corridor>(this.corridorURL + 'add', corridor, {headers: headers});
   }
 
+  public deleteByID(id: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Basic ' + sessionStorage.getItem('token',)
+      })
+    };
+    return this.http.delete(this.corridorURL + 'delete/'+id, httpOptions);
+  }
 }
