@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MapService} from "../../../services/map.service";
 import * as L from 'leaflet';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
@@ -28,9 +28,10 @@ export class PolygonsComponent implements OnInit {
   private polygonPoints = [];
   private convertedPoints = [];
   private polygonsList = [[]];
-  private getPolygonsFromDB : Polygon[];
+  private getPolygonsFromDB: Polygon[];
   private vertices: Marker[] = [];
   private polygon = L.polygon;
+
   constructor(private mapService: MapService,
               private polygonService: PolygonService,
               private store: StoreService,
@@ -66,12 +67,12 @@ export class PolygonsComponent implements OnInit {
       //
     }
 
-    this.polygonService.getPolygons().subscribe(polygons=>{
-      console.log(polygons);
-      this.getPolygonsFromDB = polygons;
-/*
-        this.drawPolygons(this.getPolygonsFromDB);
-*/
+    this.polygonService.getPolygons().subscribe(polygons => {
+        console.log(polygons);
+        this.getPolygonsFromDB = polygons;
+        /*
+                this.drawPolygons(this.getPolygonsFromDB);
+        */
         //console.log(this.getPolygonsFromDB);
       }
     );
@@ -84,8 +85,8 @@ export class PolygonsComponent implements OnInit {
       contextmenu: true,
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
-    L.easyButton( 'fa-crosshairs', function(btn, map){
-      map.setView([400,400],0);
+    L.easyButton('fa-crosshairs', function (btn, map) {
+      map.setView([400, 400], 0);
     }).addTo(this.map);
     this.map.fitBounds(imageBounds);
 
@@ -93,10 +94,10 @@ export class PolygonsComponent implements OnInit {
 
   }
 
-  private drawPoly(){
+  private drawPoly() {
     this.map.on('click', e => {
       // dodaj wierzcholki do listy
-      if(this.drawPolygon) {
+      if (this.drawPolygon) {
         console.log("Markec created")
         const markerIcon = L.icon({
           iconUrl: '/assets/icons/position.png',
@@ -142,8 +143,8 @@ export class PolygonsComponent implements OnInit {
     let markerPos = this.vertices.filter(marker => marker._leaflet_id === e.target._leaflet_id)[0];
     let newEdges = [];
     newEdges = this.vertices;
-    newEdges.forEach(vertice=>{
-      if(vertice._leaflet_id===markerPos._leaflet_id){
+    newEdges.forEach(vertice => {
+      if (vertice._leaflet_id === markerPos._leaflet_id) {
         vertice._latlng = markerPos._latlng;
       }
       //newEdges = this.vertices;
@@ -155,16 +156,15 @@ export class PolygonsComponent implements OnInit {
     newEdges = [];
   }
 
-  private createPoly(){
+  private createPoly() {
     this.polygonPoints = [];
-    this.vertices.forEach(marker=>{
+    this.vertices.forEach(marker => {
       this.polygonPoints.push(marker._latlng);
     });
-    console.log("Wierzchołki: "+this.polygonPoints);
-    if(this.polygonPoints.length<=3){
+    console.log("Wierzchołki: " + this.polygonPoints);
+    if (this.polygonPoints.length <= 3) {
       alert("Zbyt mała liczba wierzchołków: " + this.polygonPoints.length);
-    }
-    else{
+    } else {
       this.map.removeLayer(this.polygon);
       this.polygonsList.push(this.polygonPoints);
       this.polygon = L.polygon(this.polygonPoints, {color: 'red'}).addTo(this.map);
@@ -176,7 +176,11 @@ export class PolygonsComponent implements OnInit {
     return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
   }
 
-  private savePoly(){
+  private savePoly() {
+    this.map.removeLayer(this.polygon);
+    this.map.removeLayer(this.vertices);
+    this.vertices.map(edge => this.map.removeLayer(edge));
+
     // konwersja latlng na punkty z mapy
     let polygonPointz: UniversalPoint[] = [];
     this.polygonPoints.forEach(polygonP => {
@@ -191,17 +195,17 @@ export class PolygonsComponent implements OnInit {
       let universalPoint: UniversalPoint = new UniversalPoint(
         polygonP.lat,
         polygonP.lng,
-       0
+        0
       );
       polygonPointz.push(universalPoint)
     });
     let type: AreaType = new AreaType('Polgon');
-    let polygon = new Polygon('polygon',type, polygonPointz);
+    let polygon = new Polygon('polygon', type, polygonPointz);
     console.log(polygon);
     this.polygonService.save(polygon).subscribe(result => {
         this.poly = this.polygon;
         this.toast.success('Graf zapisany w bazie')
-    }
+      }
     );
     this.polygonPoints = [];
     this.vertices = [];
@@ -212,13 +216,8 @@ export class PolygonsComponent implements OnInit {
     this.map.removeLayer(e.relatedTarget);
   }
 
-  private onPolyClick(event){
-    //callFancyboxIframe('flrs.html')
-
-    alert("Clicked on polygon with label:" +event);
-  };
-
-  private editPol(polygon: Polygon){
+  private editPol(polygon: Polygon) {
+    //this.clearMap();
     this.delete(polygon);
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
@@ -254,13 +253,6 @@ export class PolygonsComponent implements OnInit {
     //polygonik.addTo(this.polygons);
   }
 
- /* private drawPolygons(polygon: Polygon[]){
-    this.drawPolygon = false;
-    polygon.forEach(object=> {
-      this.drawPol(object);
-    });
-  }*/
-
   getMapCoordinates(value) {
     return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
   }
@@ -272,18 +264,20 @@ export class PolygonsComponent implements OnInit {
         //this.polygon = new Polygon();
       },
       error => {
-/*
-        this.toastr.error("Wystąpił błąd podczas usuwania");
-*/
+        /*
+                this.toastr.error("Wystąpił błąd podczas usuwania");
+        */
       }
     )
   }
 
-  draw(polygon:Polygon){
-    this.delete(polygon);
-      //this.getPolygonsFromDB = this.getPolygonsFromDB.filter(item => item !== polygon);
-      this.editPol(polygon);
+  clearMap() {
+    this.vertices.map(marker => this.map.removeLayer(marker));
+    this.polygonsList.map(edge => this.map.removeLayer(edge));
+    this.polygonPoints.map(edge => this.map.removeLayer(edge));
+    this.polygon = null;
+    //this..map(edge => this.map.removeLayer(edge));
+    this.vertices = [];
+    //this.graphID = null;
   }
-
-
- }
+}

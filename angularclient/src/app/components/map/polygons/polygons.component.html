@@ -4,16 +4,16 @@
       <label class="btn btn-light form-check-label active switch" (click)="drawPolygon = true">
         <input class="form-check-input" type="radio">
         <i class="fas fa-crosshairs"></i>
-        Rysuj
+        Dodaj wierzchołki
       </label>
       <label class="btn btn-light form-check-label switch" (click)="createPoly()">
         <input class="form-check-input" type="radio">
         <i class="fas fa-draw-polygon"></i>
-        Zakończ
+        Zamknij obszar
       </label>
     </div>
 
-    <button type="button" class="btn btn-light switch-container" (click)="savePoly()"><i class="far fa-save"></i> Zapisz</button>
+    <button type="button" class="btn btn-light switch-container" (click)="savePoly()"><i class="far fa-save"></i>Zapisz obszar</button>
 
     <div class="map-container">
       <div class="map-frame">
@@ -22,35 +22,9 @@
       </div>
     </div>
   </div>
+
   <app-vertex-list [markers]="vertices" class="list"></app-vertex-list>
   <app-polygon-list
     [polygon]="poly"
     (polygonToEdit)="editPol($event)" class="list"></app-polygon-list>
 </div>
-
-<!--
-<form class="text-center border border-light p-5 register-form">
-  <p class="h4 mb-4">Edit/Delete</p>
-
-  <table class="table table-sm table-striped">
-    <thead>
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Edit</th>
-      <th scope="col">Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let type of getPolygonsFromDB;let i = index;">
-      <th scope="row">{{i + 1}}</th>
-      <td>{{type.name}}</td>
-&lt;!&ndash;
-      <td><button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" >Edit</button></td>
-&ndash;&gt;
-      <td><button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" (click)="delete(type)">Usuń</button></td>
-      <td><button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" (click)="draw(type)">Edytuj</button></td>
-    </tr>
-    </tbody>
-  </table>
-</form>
--->
