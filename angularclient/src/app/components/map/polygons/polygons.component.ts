@@ -10,6 +10,7 @@ import {AreaType} from "../../../model/type/AreaType";
 import {PolygonService} from "../../../services/polygon.service";
 import {Marker} from "leaflet/src/layer/marker/Marker";
 import {StoreService} from "../../../services/store.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-polygons',
@@ -18,6 +19,7 @@ import {StoreService} from "../../../services/store.service";
 })
 export class PolygonsComponent implements OnInit {
   dataLoaded = false;
+  poly = null;
   private drawPolygon = false;
   private imageResolution;
   private mapResolution = 0.01;//TODO()
@@ -31,7 +33,8 @@ export class PolygonsComponent implements OnInit {
   private polygon = L.polygon;
   constructor(private mapService: MapService,
               private polygonService: PolygonService,
-              private store: StoreService) {
+              private store: StoreService,
+              private toast: ToastrService) {
   }
 
   ngOnInit() {
@@ -195,7 +198,11 @@ export class PolygonsComponent implements OnInit {
     let type: AreaType = new AreaType('Polgon');
     let polygon = new Polygon('polygon',type, polygonPointz);
     console.log(polygon);
-    this.polygonService.save(polygon).subscribe(result => console.log(result));
+    this.polygonService.save(polygon).subscribe(result => {
+        this.poly = this.polygon;
+        this.toast.success('Graf zapisany w bazie')
+    }
+    );
     this.polygonPoints = [];
     this.vertices = [];
   }
@@ -211,7 +218,8 @@ export class PolygonsComponent implements OnInit {
     alert("Clicked on polygon with label:" +event);
   };
 
-  private drawPol(polygon: Polygon){
+  private editPol(polygon: Polygon){
+    this.delete(polygon);
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
@@ -246,12 +254,12 @@ export class PolygonsComponent implements OnInit {
     //polygonik.addTo(this.polygons);
   }
 
-  private drawPolygons(polygon: Polygon[]){
+ /* private drawPolygons(polygon: Polygon[]){
     this.drawPolygon = false;
     polygon.forEach(object=> {
       this.drawPol(object);
     });
-  }
+  }*/
 
   getMapCoordinates(value) {
     return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
@@ -274,6 +282,8 @@ export class PolygonsComponent implements OnInit {
   draw(polygon:Polygon){
     this.delete(polygon);
       //this.getPolygonsFromDB = this.getPolygonsFromDB.filter(item => item !== polygon);
-      this.drawPol(polygon);
+      this.editPol(polygon);
   }
+
+
  }

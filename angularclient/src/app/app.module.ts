@@ -49,6 +49,7 @@ import {LoginComponent} from './components/login/login.component';
 import {MovementPathComponent} from "./components/map/movement-path/movement-path.component";
 import { TaskpanelComponent } from './components/taskpanel/taskpanel.component';
 import {GraphListComponent} from "./components/map/graphcreator/graph-list/graph-list.component";
+import { PolygonListComponent } from './components/map/polygons/polygon-list/polygon-list.component';
 
 const config: InputFileConfig = {};
 
@@ -85,6 +86,7 @@ const config: InputFileConfig = {};
     MovementPathComponent,
     TaskpanelComponent,
     GraphListComponent,
+    PolygonListComponent,
   ],
   imports: [
     BrowserModule,

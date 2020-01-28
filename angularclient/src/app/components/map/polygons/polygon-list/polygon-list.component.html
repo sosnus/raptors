@@ -1,0 +1,33 @@
+<div class="wrapper mx-auto">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th class="sticky-top" scope="col">#</th>
+      <th class="sticky-top" scope="col">ID polygonu</th>
+      <th class="sticky-top" scope="col"></th>
+      <th class="sticky-top" scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let polygon of polygons;let i = index;">
+      <th scope="row">{{++i}}</th>
+      <td>>{{polygon.id}}</td>
+      <td>
+        <button class="btn btn-primary btn-sm"
+                (click)="editPolygon(polygon)">
+          Edit
+        </button>
+      </td>
+      <td>
+        <button class="btn btn-primary btn-sm"
+                (click)="delete(polygon)">
+          Deleete
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<!--<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="deletePolygon(selectedPolygon)"></app-confirm-modal-template>-->
+
