@@ -8,6 +8,7 @@ import {StoreService} from "../../../services/store.service";
 import {Marker} from "leaflet/src/layer/marker/Marker";
 import {ToastrService} from "ngx-toastr";
 import {WAYPOINTICON} from "../map.component";
+import {Orientation} from "../../../model/Stand/Orientation";
 
 @Component({
   selector: 'app-movement-path',
@@ -25,6 +26,7 @@ export class MovementPathComponent implements OnInit {
   private polyline: L.polyline = null;
   private vertices: Marker[] = [];
   private pathID;
+  private name;
 
   constructor(private mapService: MapService,
               private movementPathService: MovementPathService,
@@ -95,6 +97,7 @@ export class MovementPathComponent implements OnInit {
       })
     }
     this.vertices = [];
+    this.name = "";
   }
 
   private getRealCoordinates(value) {
@@ -111,7 +114,7 @@ export class MovementPathComponent implements OnInit {
       universalPoints.push(universalPoint)
     });
 
-    let movementPath = new MovementPath(this.pathID, 'movement-path-final-test', universalPoints);
+    let movementPath = new MovementPath(this.pathID, this.name, universalPoints);
     this.movementPathService.save(movementPath).subscribe(result => {
       if (result.id != null) {
         this.toast.success('Ścieżka zapisana w bazie')
@@ -128,11 +131,12 @@ export class MovementPathComponent implements OnInit {
   }
 
   editExistingPath(path: MovementPath) {
+
     this.clearMap();
     if (!path) return;
     console.log(path.name)
     this.pathID = path.id;
-
+    this.name = path.name;
     this.polyline = new L.Polyline([]);
     path.points.forEach(e => {
       const translatedPoint = L.latLng([this.getMapCoordinates(e.x), this.getMapCoordinates(e.y)]);
@@ -141,6 +145,13 @@ export class MovementPathComponent implements OnInit {
     })
     this.polyline.addTo(this.map);
 
+  }
+
+  quaternionToAxisAngle(orientation: Orientation) {
+    const halfAngle = Math.acos(orientation.x);
+    const angle = halfAngle / 0.5;
+    const sin = Math.sin(halfAngle);
+    const cos = orientation.x;
   }
 
   getMapCoordinates(value) {
