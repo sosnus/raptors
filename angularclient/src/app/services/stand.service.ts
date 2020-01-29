@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Graph} from "../model/Graphs/Graph";
 import {Stand} from "../model/Stand/Stand";
@@ -31,4 +31,12 @@ export class StandService {
     return this.http.post<Stand>(this.standURL + 'add', stand, {headers: headers});
   }
 
+  public delete(id: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Basic ' + sessionStorage.getItem('token',)
+      })
+    };
+    return this.http.delete(this.standURL + 'delete/'+id, httpOptions);
+  }
 }

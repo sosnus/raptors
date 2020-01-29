@@ -33,9 +33,7 @@ import {PropulsionTypeService} from "./services/type/propulsion-type.service";
 import {ParkingTypesComponent} from "./components/adminpanel/data/parking-types/parking-types.component";
 import {ParkingTypeService} from "./services/type/parking-type.service";
 import {TaskPrioritiesComponent} from './components/adminpanel/data/task-priorities/task-priorities.component';
-import {TaskPriority} from "./model/type/TaskPriority";
 import {TaskPriorityService} from "./services/type/task-priority.service";
-import {PolygonService} from "./services/polygon.service";
 import {CorridorsComponent} from './components/map/corridors/corridors.component';
 import {StandTypesComponent} from './components/adminpanel/data/stand-types/stand-types.component';
 import {StandTypeService} from "./services/type/stand-type.service";
@@ -49,7 +47,13 @@ import {RobotModelsComponent} from './components/adminpanel/data/robot-models/ro
 import {MatSelectModule} from "@angular/material/select";
 import {LoginComponent} from './components/login/login.component';
 import {MovementPathComponent} from "./components/map/movement-path/movement-path.component";
-import {AuthService} from "./services/auth.service";
+import { TaskpanelComponent } from './components/taskpanel/taskpanel.component';
+import {GraphListComponent} from "./components/map/graphcreator/graph-list/graph-list.component";
+import { PolygonListComponent } from './components/map/polygons/polygon-list/polygon-list.component';
+import {StandListComponent} from "./components/map/stand-creator/stand-list/stand-list.component";
+import {CorridorListComponent} from "./components/map/corridors/corridor-list/corridor-list.component";
+import {MovementPathListComponent} from "./components/map/movement-path/movement-path-list/movement-path-list.component";
+
 
 const config: InputFileConfig = {};
 
@@ -84,6 +88,12 @@ const config: InputFileConfig = {};
     RobotModelsComponent,
     LoginComponent,
     MovementPathComponent,
+    TaskpanelComponent,
+    GraphListComponent,
+    PolygonListComponent,
+    StandListComponent,
+    CorridorListComponent,
+    MovementPathListComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,11 +105,10 @@ const config: InputFileConfig = {};
     FormsModule,
     MatSelectModule,
   ],
-  providers: [MapService, HttpClient, RobotService, GraphService, StoreService,
+  providers: [MapService,HttpClient, RobotService, GraphService, StoreService,
     StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,
     ParkingTypeService, TaskPriorityService, StandTypeService, StandStatusService,
-    ReviewTypeService, AuthService],
+    ReviewTypeService],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }

@@ -5,6 +5,8 @@ import * as L from 'leaflet';
 import {MovementPath} from "../../../model/MapAreas/MovementPaths/MovementPath";
 import {UniversalPoint} from "../../../model/MapAreas/UniversalPoint";
 import {StoreService} from "../../../services/store.service";
+import {Marker} from "leaflet/src/layer/marker/Marker";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-movement-path',
@@ -20,11 +22,14 @@ export class MovementPathComponent implements OnInit {
   private imageURL = '';
   private readonly context;
   private polyline: L.polyline = null;
+  private vertices: Marker[] = [];
+  private pathID;
 
   constructor(private mapService: MapService,
               private movementPathService: MovementPathService,
-              private store: StoreService) {
-     this.context = this;
+              private store: StoreService,
+              private toast: ToastrService) {
+    this.context = this;
   }
 
   ngOnInit() {
@@ -74,21 +79,27 @@ export class MovementPathComponent implements OnInit {
         iconSize: [36, 36],
         iconAnchor: [36 / 2, 36 / 2]
       });
+
+      let marker = new L.marker(e.latlng, {
+        draggable: true,
+        icon: markerIcon
+      });
       if (this.polyline == null) {
-        var arr = [];
-        this.polyline = new L.polyline(arr, {
-          draggable: true,
-          icon: markerIcon,
-        });
+        this.polyline = new L.Polyline([]).addTo(this.map);
       }
+      marker.addTo(this.map)
+      this.vertices.push(marker);
       this.polyline.addLatLng(e.latlng);
-      this.polyline.addTo(this.map);
     });
   }
 
   cancelMovementPath() {
     this.map.removeLayer(this.polyline);
-    this.polyline=null;
+    this.polyline = null;
+    this.vertices.forEach(e => {
+      this.map.removeLayer(e);
+    })
+    this.vertices = [];
   }
 
   private getRealCoordinates(value) {
@@ -96,7 +107,6 @@ export class MovementPathComponent implements OnInit {
   }
 
   saveMovementPath() {
-    // konwersja latlng na punkty z mapy
     let universalPoints: UniversalPoint[] = [];
     this.polyline.getLatLngs().forEach(lang => {
       let universalPoint: UniversalPoint = new UniversalPoint(
@@ -106,11 +116,61 @@ export class MovementPathComponent implements OnInit {
       universalPoints.push(universalPoint)
     });
 
-    let movementPath = new MovementPath('movement-path-final-test',universalPoints);
-    console.log("Sent movement path to db");
-    this.movementPathService.save(movementPath).subscribe(result => console.log(result));
+    let movementPath = new MovementPath('movement-path-final-test', universalPoints);
+    this.movementPathService.save(movementPath).subscribe(result => {
+      if (result.id != null) {
+        this.toast.success('Korytarz zapisany w bazie')
+      } else {
+        this.toast.error('Nie udało się zapisać do bazy')
+      }
+    });
     this.cancelMovementPath();
   }
 
+  clearMap() {
+    this.cancelMovementPath();
+    this.pathID = null;
+  }
+
+  editExistingPath(path: MovementPath) {
+    this.clearMap();
+    // if (!path) return;
+    // this.pathID = path.id;
+    // let existingWaypoints = [];
+    // let marker1;
+    // let marker2;
+    // let markers = [];
+    // path.edges.forEach(edge => {
+    //   let marker1Temp = marker1;
+    //   let marker2Temp = marker2;
+    //   const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
+    //   const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+    //
+    //   if (!existingWaypoints.includes(vertPosA + '')) {//toString in order to not mind about reference
+    //     marker1 = this.createNewMarker(vertPosA);
+    //     markers.push(marker1);
+    //     existingWaypoints.push(vertPosA + '');
+    //     console.log('NewA')
+    //   }
+    //   if (!existingWaypoints.includes(vertPosB + '')) {
+    //     marker2 = this.createNewMarker(vertPosB);
+    //
+    //     markers.push(marker2);
+    //     existingWaypoints.push(vertPosB + '');
+    //     console.log('NewB')
+    //   }
+    // });
+    // path.edges.forEach(edge => {
+    //   const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
+    //   const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+    //   marker1 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosA));
+    //   marker2 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosB));
+    //   this.drawEditableEdge(marker1, marker2, edge.biDirected)
+    // })
+  }
+
+  getMapCoordinates(value) {
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+  }
 
 }

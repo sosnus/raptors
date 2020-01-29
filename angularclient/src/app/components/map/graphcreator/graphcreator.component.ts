@@ -10,6 +10,8 @@ import {Edge} from '../../../model/Graphs/Edge';
 import {Vertex} from '../../../model/Graphs/Vertex';
 import {GraphService} from "../../../services/graph.service";
 import {StoreService} from "../../../services/store.service";
+import {WAYPOINTICON} from "../map.component";
+import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -20,11 +22,13 @@ import {StoreService} from "../../../services/store.service";
 export class GraphcreatorComponent implements OnInit {
 
   dataLoaded = false;
+  graph = null;
   private imageResolution;
   private map;
   private mapResolution = 0.01;//TODO()
   private imageURL = '';
   private editEdges = false;
+  private graphID;
 
   private vertices: Marker[] = [];
   private selectedVert = null;
@@ -34,7 +38,8 @@ export class GraphcreatorComponent implements OnInit {
 
   constructor(private mapService: MapService,
               private graphService: GraphService,
-              private store: StoreService) {
+              private store: StoreService,
+              private toast: ToastrService) {
     this.context = this;
   }
 
@@ -75,48 +80,46 @@ export class GraphcreatorComponent implements OnInit {
       contextmenu: true,
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
-    L.easyButton( 'fa-crosshairs', function(btn, map){
-      map.setView([400,400],0);
+    L.easyButton('fa-crosshairs', function (btn, map) {
+      map.setView([400, 400], 0);
     }).addTo(this.map);
     this.map.fitBounds(imageBounds);
 
     this.addContextMenuShowHandler();
     this.map.on('click', e => {
       if (!this.editEdges) {
-        const markerIcon = L.icon({
-          iconUrl: '/assets/icons/position.png',
-          iconSize: [36, 36],
-          iconAnchor: [36 / 2, 36 / 2]
-        });
-        let marker = new L.marker(e.latlng, {
-          draggable: true,
-          icon: markerIcon,
-          contextmenu: true,
-          contextmenuItems: [
-            {
-              text: 'Usuń punkt trasy',
-              callback: this.deleteMarker,
-              context: this
-            }
-          ]
-        });
-
-
-
-        marker.on('click', e => {
-          this.createEdge(e)
-        });
-        marker.on('move', e => {
-          this.updateEdge(e)
-        });
-
-        marker.addTo(this.map);
-        this.vertices.push(marker)
+        this.createNewMarker(e.latlng);
       }
     });
   }
 
-  updateMarkers(){
+  private createNewMarker(position: L.latlng) {
+    let marker = new L.marker(position, {
+      draggable: true,
+      icon: WAYPOINTICON,
+      contextmenu: true,
+      contextmenuItems: [
+        {
+          text: 'Usuń punkt trasy',
+          callback: this.deleteMarker,
+          context: this
+        }
+      ]
+    });
+
+    marker.on('click', e => {
+      this.createEdge(e)
+    });
+    marker.on('move', e => {
+      this.updateEdge(e)
+    });
+
+    marker.addTo(this.map);
+    this.vertices.push(marker);
+    return marker;
+  }
+
+  updateMarkers() {
 
   }
 
@@ -147,9 +150,8 @@ export class GraphcreatorComponent implements OnInit {
 
   private createEdge(marker) {
     if (this.editEdges) {
-      if (this.selectedVert != null
-        && this.selectedVert._leaflet_id !== marker.sourceTarget._leaflet_id) {
-        console.log("inside")
+      if (this.selectedVert != null && this.selectedVert._leaflet_id !== marker.sourceTarget._leaflet_id) {
+
         const polyLine = new L.polyline([this.selectedVert._latlng, marker.sourceTarget._latlng], {
           color: 'red',
           weight: 7,
@@ -199,16 +201,17 @@ export class GraphcreatorComponent implements OnInit {
     this.edges = this.edges.filter(edge => edge !== this.selectedElement);
     this.map.removeLayer(this.selectedElement);
   }
+
   private biDirectEdge() {
     const index = this.edges.indexOf(this.selectedElement);
-    if(!this.selectedElement.biDirected){
+    if (!this.selectedElement.biDirected) {
       this.selectedElement.biDirected = true;
       this.selectedElement.setStyle({color: 'yellow'});
-    }else{
+    } else {
       this.selectedElement.biDirected = false;
       this.selectedElement.setStyle({color: 'red'});
     }
-    this.edges[index]=this.selectedElement;
+    this.edges[index] = this.selectedElement;
   }
 
   public saveGraph() {
@@ -227,11 +230,91 @@ export class GraphcreatorComponent implements OnInit {
       graphEdges.push(graphEdge)
     });
     graph.edges = graphEdges;
-    this.graphService.save(graph).subscribe(result => console.log(result));
+    if (this.graphID) graph.id = this.graphID;
+    this.graphService.save(graph).subscribe(result => {
+      this.graph = graph;
+      this.toast.success('Graf zapisany w bazie')
+    });
   }
 
   getRealCoordinates(value: number) {
     return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
+  }
+
+  getMapCoordinates(value) {
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+  }
+
+  clearMap() {
+    this.vertices.map(marker => this.map.removeLayer(marker));
+    this.edges.map(edge => this.map.removeLayer(edge));
+    this.vertices = [];
+    this.edges = [];
+    this.graphID = null;
+  }
+
+  editExistingGraph(graph: Graph) {
+    this.clearMap();
+    if (!graph) return;
+    this.graphID = graph.id;
+    let existingWaypoints = [];
+    let marker1;
+    let marker2;
+    let markers = [];
+    graph.edges.forEach(edge => {
+      let marker1Temp = marker1;
+      let marker2Temp = marker2;
+      const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
+      const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+
+      if (!existingWaypoints.includes(vertPosA + '')) {//toString in order to not mind about reference
+        marker1 = this.createNewMarker(vertPosA);
+        markers.push(marker1);
+        existingWaypoints.push(vertPosA + '');
+        console.log('NewA')
+      }
+      if (!existingWaypoints.includes(vertPosB + '')) {
+        marker2 = this.createNewMarker(vertPosB);
+
+        markers.push(marker2);
+        existingWaypoints.push(vertPosB + '');
+        console.log('NewB')
+      }
+    });
+    graph.edges.forEach(edge => {
+      const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
+      const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+      marker1 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosA));
+      marker2 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosB));
+      this.drawEditableEdge(marker1, marker2, edge.biDirected)
+    })
+  }
+
+  drawEditableEdge(marker1, marker2, biDirected: boolean) {
+    const color = biDirected ? 'yellow' : 'red';
+    const polyLine = new L.polyline([marker1._latlng, marker2._latlng], {
+      color: color,
+      weight: 7,
+      opacity: 0.8,
+      smoothFactor: 1,
+      contextmenu: true,
+      contextmenuItems: [
+        {
+          text: 'Usuń krawędź grafu',
+          callback: this.deleteEdge,
+          context: this.context
+        },
+        {
+          text: 'Drukierunkowa: Tak/Nie',
+          callback: this.biDirectEdge,
+          context: this.context
+        }
+      ]
+    });
+    polyLine.addTo(this.map);
+    polyLine.markerIDs = [marker1._leaflet_id, marker2._leaflet_id]
+    polyLine.biDirected = biDirected;
+    this.edges.push(polyLine);
   }
 
 }

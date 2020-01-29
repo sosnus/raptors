@@ -13,25 +13,30 @@ import java.util.List;
 @RequestMapping("/movement/movement-paths")
 public class MovementPathController {
     @Autowired
-    MovementPathService service;
+    MovementPathService movementPathService;
 
     @GetMapping("/all")
     public List<MovementPath> getAll() {
-        return service.getAll();
+        return movementPathService.getAll();
     }
 
     @PostMapping("/add")
     public MovementPath add(@RequestBody @Valid MovementPath movementPath) {
-        return service.addOne(movementPath);
+        return movementPathService.addOne(movementPath);
     }
 
     @GetMapping("/{id}")
     public MovementPath getOne(@PathVariable String id) {
-        return service.getOne(id);
+        return movementPathService.getOne(id);
     }
 
     @DeleteMapping("/delete")
     public void delete(@RequestBody @Valid MovementPath movementPath) {
-        service.deleteOne(movementPath);
+        movementPathService.deleteOne(movementPath);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable String id) {
+        movementPathService.deleteById(id);
     }
 }

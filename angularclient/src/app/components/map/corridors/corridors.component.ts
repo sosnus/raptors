@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MapService} from "../../../services/map.service";
 import {CorridorService} from "../../../services/corridor.service";
 import {Marker} from "leaflet/src/layer/marker/Marker";
 import * as L from 'leaflet';
 import {UniversalPoint} from "../../../model/MapAreas/UniversalPoint";
-import {AreaType} from "../../../model/type/AreaType";
-import {Polygon} from "../../../model/MapAreas/Polygons/Polygon";
 import {Corridor} from "../../../model/MapAreas/Corridors/Corridor";
 import {StoreService} from "../../../services/store.service";
+import {MovementPath} from "../../../model/MapAreas/MovementPaths/MovementPath";
+import {ToastrService} from "ngx-toastr";
+import {MovementPathService} from "../../../services/movementPath.service";
+import {Graph} from "../../../model/Graphs/Graph";
 
 @Component({
   selector: 'app-corridors',
@@ -17,94 +19,105 @@ import {StoreService} from "../../../services/store.service";
 export class CorridorsComponent implements OnInit {
 
   dataLoaded = false;
-  // private drawCorridor = false;
+  private drawCorridorBoolean = false;
   private imageResolution;
   private map;
   private mapResolution = 0.01;//TODO()
   private imageURL = '';
-  // private editEdges = false;
-  // private corridorPoints = [];
-  // private convertedPoints = [];
-  // private corridorsList = [[]];
-  // private vertices: Marker[] = [];
-  // private selectedVert = null;
-  // selectedElement = null;
-  // private edges = [];
-  // private readonly context;
+  private mapID = '5de6d25552cace719bf775cf';//TODO()
+  private polygonPoints = [];
+  private vertices: Marker[] = [];
+  private polygon = L.polygon;
+  private corridor: Corridor;
+  private polygonsList = [[]];
+  paths: MovementPath[] = [];
+  private corridorID;
 
-  constructor(private mapService: MapService, private corridorService: CorridorService, private store: StoreService) {
+  constructor(private mapService: MapService,
+              private corridorService: CorridorService,
+              private store: StoreService,
+              private toast: ToastrService,
+              private movementPathService: MovementPathService) {
+  }
+
+  getPathsFromDb() {
+    this.movementPathService.getMovementPaths().subscribe(
+      data => this.paths = data
+    )
   }
 
   ngOnInit() {
     this.loadMap();
+    this.getPathsFromDb();
   }
 
-  // drawCorridorMethod(){
-  //   this.map.on('click', e => {
-  //     // dodaj wierzcholki do listy
-  //     if(!this.drawCorridor) {
-  //       console.log("Markec created")
-  //       const markerIcon = L.icon({
-  //         iconUrl: '/assets/icons/position.png',
-  //         iconSize: [36, 36],
-  //         iconAnchor: [36 / 2, 36 / 2]
-  //       });
-  //       let marker = new L.marker(e.latlng, {
-  //         draggable: true,
-  //         icon: markerIcon,
-  //         contextmenu: true,
-  //         contextmenuItems: [
-  //           {
-  //             text: 'Usuń punkt trasy',
-  //             context: this
-  //           }
-  //         ]
-  //       });
-  //
-  //       this.corridorPoints.push(e.latlng);
-  //       marker.addTo(this.map);
-  //     }
-  //   });
-  // }
+  drawCorridor() {
+    this.map.on('click', e => {
+      if (!this.drawCorridorBoolean) {
+        console.log("Markec created")
+        const markerIcon = L.icon({
+          iconUrl: '/assets/icons/position.png',
+          iconSize: [36, 36],
+          iconAnchor: [36 / 2, 36 / 2]
+        });
+        let marker = new L.marker(e.latlng, {
+          draggable: true,
+          icon: markerIcon,
+          contextmenu: true,
+          contextmenuItems: [
+            {
+              text: 'Usuń punkt trasy',
+              callback: this.deleteMarker,
+              context: this
+            }
+          ]
+        });
+
+        marker.addTo(this.map);
+        console.log(marker._leaflet_id);
+        this.vertices.push(marker);
+
+        marker.on('move', e => {
+          this.updateCorridor(e)
+        });
+      }
+    });
+  }
 
   cancelCorridor() {
+    this.polygonPoints = [];
+    this.map.removeLayer(this.polygon);
+    this.polygon = L.polygon;
+    this.vertices.forEach(e => {
+      this.map.removeLayer(e);
+    })
+    this.vertices = [];
+    this.corridor = null;
   }
 
   saveCorridor() {
-    // // konwersja latlng na punkty z mapy
-    // let corridorPointz: UniversalPoint[] = [];
-    // this.corridorPoints.forEach(corridorP => {
-    //   let coords: L.latLng = new L.latLng([
-    //     this.getRealCoordinates(corridorP.lat),
-    //     this.getRealCoordinates(corridorP.lng)]);
-    //   this.convertedPoints.push(coords)
-    // });
-    //
-    // // tworzenie obiektu corridor, przygotowanie do wysłania na bazę
-    // this.convertedPoints.forEach(corridorP => {
-    //   let universalPoint: UniversalPoint = new UniversalPoint(
-    //     corridor.lat,
-    //     corridor.lng,
-    //     0
-    //   );
-    //   corridorPointz.push(universalPoint)
-    // });
-    // let type: AreaType = new AreaType('Polgon');
-    // let corridor = new Corridor('corrido',null, corridorPointz);
-    // console.log(corridor);
-    // this.corridorService.save(corridor).subscribe(result => console.log(result));
-  }
+    let universalPoints: UniversalPoint[] = [];
+    this.polygonPoints.forEach(corridorP => {
+      let coords: L.latLng = new L.latLng([
+        this.getRealCoordinates(corridorP.lat),
+        this.getRealCoordinates(corridorP.lng)]);
+      let universalPoint: UniversalPoint = new UniversalPoint(
+        coords.lat,
+        coords.lng,
+        0
+      );
+      universalPoints.push(universalPoint)
+    });
 
-  createCorridor() {
-    // if(this.corridorPoints.length<=3){
-    //   alert("Zbyt mała liczba wierzchołków: " + this.corridorPoints.length);
-    // }
-    // else{
-    //   var polygon = L.polygon(this.corridorPoints, {color: 'red'}).addTo(this.map);
-    //   this.map.fitBounds(polygon.getBounds());
-    //   //dodanie polygonu na listę przed wyczyszczeniem
-    //   this.corridorsList.push(this.corridorPoints);
-    // }
+    this.corridor = new Corridor("corridor", null, universalPoints);
+    this.corridorService.save(this.corridor).subscribe(result => {
+      if (result.id != null) {
+        this.toast.success('Korytarz zapisany w bazie')
+      } else {
+        this.toast.error('Nie udało się zapisać do bazy')
+      }
+    });
+    this.cancelCorridor();
   }
 
   private loadMap() {
@@ -120,23 +133,6 @@ export class CorridorsComponent implements OnInit {
     }
   }
 
-  private updateEdge(e) {
-    // let markerPos = this.vertices.filter(marker => marker._leaflet_id === e.target._leaflet_id)[0];
-    // let newEdges = [];
-    // this.edges.forEach(edge => {
-    //   if (edge.markerIDs[0] === e.target._leaflet_id) {
-    //     edge.setLatLngs([markerPos._latlng, edge._latlngs[1]]);
-    //     edge.redraw()
-    //   }
-    //   if (edge.markerIDs[1] === e.target._leaflet_id) {
-    //     edge.setLatLngs([edge._latlngs[0], markerPos._latlng]);
-    //     edge.redraw()
-    //   }
-    //   newEdges.push(edge);
-    // });
-    // this.edges = newEdges;
-  }
-
   private afterMapLoaded(data: String) {
     this.dataLoaded = true;
     this.imageURL = 'data:image/jpg;base64,' + data;
@@ -146,30 +142,26 @@ export class CorridorsComponent implements OnInit {
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
-      //
     }
   }
 
-  private addContextMenuShowHandler() {
-    // this.map.on('contextmenu.show', (event) => {
-    //   if (event.relatedTarget !== null && event.relatedTarget !== undefined) {
-    //     this.selectedElement = event.relatedTarget;
-    //   }
-    // });
-  }
-
   private deleteMarker(e) {
-    // this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
-    // this.map.removeLayer(e.relatedTarget);
-    // //Remove related edges
-    // let tempEdges = this.edges;
-    // this.edges.forEach(edge => {
-    //   if (e.relatedTarget.getLatLng() === edge._latlngs[0] || e.relatedTarget.getLatLng() === edge._latlngs[1]) {
-    //     tempEdges = tempEdges.filter(tempEdge => tempEdge !== edge);
-    //     this.map.removeLayer(edge);
-    //   }
-    // });
-    // this.edges = tempEdges;
+    if (this.polygonPoints.length != 0) {
+      if (this.polygonPoints.length <= 3) {
+        alert("Nie może być mniej niż trzy wierzchołki!");
+      } else {
+        this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
+        console.log("tu1")
+        this.map.removeLayer(e.relatedTarget);
+        this.map.removeLayer(this.polygon);
+        this.polygonPoints = [];
+        this.createCorridor();
+      }
+    } else {
+      console.log("tu2")
+      this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
+      this.map.removeLayer(e.relatedTarget);
+    }
   }
 
   private getRealCoordinates(value) {
@@ -183,64 +175,84 @@ export class CorridorsComponent implements OnInit {
       contextmenu: true,
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
-    L.easyButton( 'fa-crosshairs', function(btn, map){
-      map.setView([400,400],0);
+    L.easyButton('fa-crosshairs', function (btn, map) {
+      map.setView([400, 400], 0);
     }).addTo(this.map);
     this.map.fitBounds(imageBounds);
 
-    // this.addContextMenuShowHandler();
-    // this.map.on('click', e => {
-    //   if (!this.editEdges) {
-    //     const markerIcon = L.icon({
-    //       iconUrl: '/assets/icons/position.png',
-    //       iconSize: [36, 36],
-    //       iconAnchor: [36 / 2, 36 / 2]
-    //     });
-    //     let marker = new L.marker(e.latlng, {
-    //       draggable: true,
-    //       icon: markerIcon,
-    //       contextmenu: true,
-    //       contextmenuItems: [
-    //         {
-    //           text: 'Usuń punkt trasy',
-    //           callback: this.deleteMarker,
-    //           context: this
-    //         }
-    //       ]
-    //     });
-    //
-    //     marker.on('click', e => {
-    //       this.createEdge(e)
-    //     });
-    //     marker.on('move', e => {
-    //       this.updateEdge(e)
-    //     });
-    //
-    //     marker.addTo(this.map);
-    //     this.vertices.push(marker)
-    //   }
-    // });
+    this.drawCorridor();
   }
 
-  // private createEdge(marker) {
-  //   if (this.editEdges) {
-  //     if (this.selectedVert != null
-  //       && this.selectedVert._leaflet_id !== marker.sourceTarget._leaflet_id) {
-  //       const polyLine = new L.polyline([this.selectedVert._latlng, marker.sourceTarget._latlng], {
-  //         color: 'red',
-  //         weight: 7,
-  //         opacity: 0.8,
-  //         smoothFactor: 1,
-  //         contextmenu: true
-  //       });
-  //       polyLine.addTo(this.map);
-  //       polyLine.markerIDs = [this.selectedVert._leaflet_id, marker.sourceTarget._leaflet_id]
-  //       polyLine.biDirected = false;
-  //       this.edges.push(polyLine);
-  //       this.selectedVert = null;
-  //     } else {
-  //       this.selectedVert = marker.sourceTarget;
-  //     }
-  //   }
-  // }
+  private updateCorridor(e) {
+    let markerPos = this.vertices.filter(marker => marker._leaflet_id === e.target._leaflet_id)[0];
+    let newEdges = [];
+    newEdges = this.vertices;
+    newEdges.forEach(vertice => {
+      if (vertice._leaflet_id === markerPos._leaflet_id) {
+        vertice._latlng = markerPos._latlng;
+      }
+    });
+    this.polygonPoints = [];
+    this.vertices = [];
+    this.vertices = newEdges;
+    this.createCorridor();
+  }
+
+  private createCorridor() {
+    this.polygonPoints = [];
+    this.vertices.forEach(marker => {
+      this.polygonPoints.push(marker._latlng);
+    });
+    if (this.polygonPoints.length < 3) {
+      alert("Zbyt mała liczba wierzchołków: " + this.polygonPoints.length);
+    } else {
+      this.map.removeLayer(this.polygon);
+      this.polygonsList.push(this.polygonPoints);
+      this.polygon = L.polygon(this.polygonPoints, {color: 'red'}).addTo(this.map);
+      this.map.fitBounds(this.polygon.getBounds());
+    }
+  }
+
+  clearMap() {
+    this.cancelCorridor();
+    this.corridorID = null;
+  }
+
+  editExistingCorridor(corridor: Corridor) {
+    this.clearMap();
+    // if (!graph) return;
+    // this.graphID = graph.id;
+    // let existingWaypoints = [];
+    // let marker1;
+    // let marker2;
+    // let markers = [];
+    // graph.edges.forEach(edge => {
+    //   let marker1Temp = marker1;
+    //   let marker2Temp = marker2;
+    //   const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
+    //   const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+    //
+    //   if (!existingWaypoints.includes(vertPosA + '')) {//toString in order to not mind about reference
+    //     marker1 = this.createNewMarker(vertPosA);
+    //     markers.push(marker1);
+    //     existingWaypoints.push(vertPosA + '');
+    //     console.log('NewA')
+    //   }
+    //   if (!existingWaypoints.includes(vertPosB + '')) {
+    //     marker2 = this.createNewMarker(vertPosB);
+    //
+    //     markers.push(marker2);
+    //     existingWaypoints.push(vertPosB + '');
+    //     console.log('NewB')
+    //   }
+    // });
+    // graph.edges.forEach(edge => {
+    //   const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
+    //   const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+    //   marker1 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosA));
+    //   marker2 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosB));
+    //   this.drawEditableEdge(marker1, marker2, edge.biDirected)
+    // })
+  }
+
 }

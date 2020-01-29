@@ -2,11 +2,8 @@ package pl.raptors.raptorsRobotsApp.repository.movement;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import pl.raptors.raptorsRobotsApp.domain.movement.Corridor;
-import pl.raptors.raptorsRobotsApp.domain.movement.MovementMap;
-import pl.raptors.raptorsRobotsApp.domain.movement.MovementPath;
 import pl.raptors.raptorsRobotsApp.domain.movement.Route;
-import pl.raptors.raptorsRobotsApp.domain.type.RoutePriority;
+import java.util.List;
 
 import java.util.List;
 

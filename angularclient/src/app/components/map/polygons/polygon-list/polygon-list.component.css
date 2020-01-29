@@ -1,0 +1,36 @@
+.wrapper {
+  width: 400px;
+  height: 100%;
+  border: 1px solid #333;
+  overflow-y: auto;
+}
+
+thead th {
+  background: #fff;
+}
+
+.btn{
+  margin: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+table.table td, table.table th{
+  padding: .75rem;
+  vertical-align: middle;
+}
+
+
+
+.edit {
+  width:100px;
+  height:20px;
+  background:#dcdcdc;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap
+}
+.edit:focus {
+  text-overflow: clip;
+}
+

@@ -4,16 +4,20 @@
       <label class="btn btn-light form-check-label active switch" (click)="drawPolygon = false">
         <input class="form-check-input" type="radio">
         <i class="fas fa-crosshairs"></i>
-        Rysuj
+        Dodaj wierzchołki
       </label>
       <label class="btn btn-light form-check-label switch" (click)="createPoly()">
         <input class="form-check-input" type="radio">
         <i class="fas fa-draw-polygon"></i>
-        Zakończ
+        Zamknij obszar
       </label>
     </div>
 
-    <button type="button" class="btn btn-light switch-container" (click)="savePoly()"><i class="far fa-save"></i> Zapisz</button>
+    <button type="button" class="btn btn-light switch-container" (click)="savePoly()">
+      <i class="far fa-save"></i>Zapisz obszar</button>
+
+    <button type="button" class="btn btn-light switch-container" (click)="resetPoly()">
+      <i class="far fa-save"></i>Resetuj</button>
 
     <div class="map-container">
       <div class="map-frame">
@@ -22,5 +26,9 @@
       </div>
     </div>
   </div>
+
   <app-vertex-list [markers]="vertices" class="list"></app-vertex-list>
+  <app-polygon-list
+    [polygon]="poly"
+    (polygonToEdit)="editPol($event)" class="list"></app-polygon-list>
 </div>

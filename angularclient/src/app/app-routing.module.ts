@@ -9,6 +9,7 @@ import {AdminPanelComponent} from "./components/adminpanel/admin-panel.component
 import {LoginComponent} from "./components/login/login.component";
 import {MovementPathComponent} from "./components/map/movement-path/movement-path.component";
 import {CorridorsComponent} from "./components/map/corridors/corridors.component";
+import {TaskpanelComponent} from "./components/taskpanel/taskpanel.component";
 
 
 const routes: Routes = [
@@ -20,7 +21,9 @@ const routes: Routes = [
   {path: 'adminpanel', component: AdminPanelComponent},
   {path: 'login', component: LoginComponent},
   {path: 'movementPaths', component: MovementPathComponent},
-  {path: 'corridors', component: CorridorsComponent}
+  {path: 'corridors', component: CorridorsComponent},
+  {path: 'taskpanel', component: TaskpanelComponent},
+
 ];
 
 @NgModule({
