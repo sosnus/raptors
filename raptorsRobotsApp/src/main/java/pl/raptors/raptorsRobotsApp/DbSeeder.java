@@ -213,8 +213,8 @@ public class DbSeeder implements CommandLineRunner {
         MovementMap movementMap = new MovementMap("mapkaNazwa", null, null);
         MovementMap movementMap1 = new MovementMap("drugaMapa", null, null);
 
-        AreaType areaType = new AreaType("warehouse");
-        AreaType areaType1 = new AreaType("outside");
+        AreaType areaType = new AreaType("warehouse", "#0000FF");
+        AreaType areaType1 = new AreaType("outside", "#FF0000");
 
         MapArea mapArea = new MapArea("hall A2", movementMap, areaType);
         MapArea mapArea1 = new MapArea("area B13", movementMap1, areaType1);

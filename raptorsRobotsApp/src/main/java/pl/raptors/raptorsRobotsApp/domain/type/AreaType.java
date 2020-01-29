@@ -12,9 +12,11 @@ public class AreaType {
     @Id
     private String id;
     private String name;
+    private String color;
 
-    public AreaType(String name) {
+    public AreaType(String name, String color) {
         this.name = name;
+        this.color = color;
     }
 }
 
