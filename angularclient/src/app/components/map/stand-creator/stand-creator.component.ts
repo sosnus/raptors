@@ -1,15 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {MapService} from '../../../services/map.service';
-import * as L from 'leaflet';
 import {Marker} from 'leaflet/src/layer/marker/Marker.js';
+import {Polygon} from 'leaflet/src/layer/vector/Polygon.js';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
+import '../../../../../node_modules/leaflet-path-transform/dist/L.Path.Transform.js'
+import '../../../../lib/leaflet-circle-to-polygon/leaflet.circle.topolygon-src.js'
 import '../../../../lib/leaflet-easybutton/src/easy-button';
 import '../../../../lib/leaflet-easybutton/src/easy-button.css';
 import {STANDICON} from "../map.component";
-import {Orientation} from "../../../model/Stand/Orientation";
 import {Stand} from "../../../model/Stand/Stand";
 import {StandService} from "../../../services/stand.service";
-import {StoreService} from "../../../services/store.service";
+import {
+  axisAngleFromQuaternion,
+  getCentroid,
+  quaternionFromAxisAngle,
+  StoreService
+} from "../../../services/store.service";
 import {ParkingType} from "../../../model/type/ParkingType";
 import {StandType} from "../../../model/type/StandType";
 import {StandStatus} from "../../../model/type/StandStatus";
@@ -18,6 +24,9 @@ import {StandTypeService} from "../../../services/type/stand-type.service";
 import {StandStatusService} from "../../../services/type/stand-status.service";
 import {ToastrService} from "ngx-toastr";
 
+import 'leaflet-path-transform';
+
+declare var L: any;
 
 @Component({
   selector: 'app-standc-reator',
@@ -35,6 +44,9 @@ export class StandCreatorComponent implements OnInit {
   private selectedMarker: Marker;
   public stand: Stand = new Stand();
   private standID;
+  private orientationAxis: Polygon;
+  private orientationAngle = 0;
+  private tempAngle = 0;
 
   //data
   private parkingTypes: ParkingType[];
@@ -88,6 +100,8 @@ export class StandCreatorComponent implements OnInit {
     this.map = L.map('map', {
       crs: L.CRS.Simple,
       contextmenu: true,
+      minZoom: 0,
+      maxZoom: 10
     });
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
     L.easyButton('fa-crosshairs', function (btn, map) {
@@ -95,32 +109,15 @@ export class StandCreatorComponent implements OnInit {
     }).addTo(this.map);
     this.map.fitBounds(imageBounds);
 
-    this.map.once('click', e => {
+    this.map.on('click', e => {
       this.createNewMarker(e.latlng);
     });
-  }
-
-  private createNewMarker(position) {
-    let marker = new L.marker(position, {
-      draggable: true,
-      icon: STANDICON,
-      contextmenu: true,
-      contextmenuItems: [
-        {
-          text: 'Usuń stanowisko',
-          // callback: this.deleteMarker,
-          context: this
-        }
-      ]
-    });
-    this.selectedMarker = marker;
-    marker.addTo(this.map);
   }
 
   onSubmit() {
     this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
     this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
-    this.stand.pose.orientation = new Orientation(0, 0, 0, 0);
+    this.stand.pose.orientation = quaternionFromAxisAngle([0, 1, 0], this.degToRad(this.orientationAngle));
     this.standService.save(this.stand).subscribe(
       result => {
         this.toast.success("Dodano nowe stanowisko");
@@ -131,6 +128,93 @@ export class StandCreatorComponent implements OnInit {
     )
   }
 
+  private createNewMarker(position) {
+    if (this.selectedMarker) {
+      return;
+    }
+    let marker = new L.marker(position, {
+      icon: STANDICON,
+      contextmenu: true,
+      contextmenuItems: [
+        {
+          text: 'Usuń stanowisko',
+          callback: this.deleteMarker,
+          context: this
+        }
+      ]
+    });
+    this.selectedMarker = marker;
+    this.createOrientationCircle(marker);
+    marker.addTo(this.map);
+  }
+
+  private createOrientationCircle(marker: Marker) {
+    const circle = new L.Circle(marker.getLatLng(), 20).addTo(this.map);
+    this.orientationAxis = L.polygon(
+      circle.toPolygon(),
+      {transform: true, draggable: true,})
+      .addTo(this.map);
+    this.orientationAxis.transform.enable({rotation: true, scaling: false});
+    this.orientationAxis.on('drag', (e) => {
+      this.selectedMarker.setLatLng(getCentroid(e.target.getLatLngs()[0]));
+    });
+    this.orientationAxis.on('rotate', (e) => {
+      this.orientationAngle = this.tempAngle + this.radToDeg(e.rotation);
+    });
+    this.orientationAxis.on('rotateend', (e) => {
+      this.tempAngle = this.orientationAngle;
+    });
+    this.map.removeLayer(circle);
+    if (this.orientationAngle !== 0) {
+      this.orientationAxis.transform.rotate(this.degToRad(this.orientationAngle));
+    }
+  }
+
+  private deleteMarker() {
+    if (this.selectedMarker) {
+      this.map.removeLayer(this.orientationAxis.transform._handlersGroup)
+      this.map.removeLayer(this.selectedMarker);
+      this.map.removeLayer(this.orientationAxis);
+    }
+    this.selectedMarker = null;
+    this.orientationAxis = null;
+    this.orientationAngle = 0;
+    this.tempAngle = 0
+  }
+
+  clearMap() {
+    if (this.selectedMarker) {
+      this.map.removeLayer(this.orientationAxis.transform._handlersGroup)
+      this.map.removeLayer(this.selectedMarker);
+      this.map.removeLayer(this.orientationAxis);
+    }
+    this.selectedMarker = null;
+    this.orientationAxis = null;
+    this.stand = new Stand();
+    this.standID = null;
+    this.orientationAngle = 0;
+    this.tempAngle = 0
+  }
+
+  editExistingStand(stand: Stand) {
+    this.clearMap();
+    if (!stand) return;
+    this.orientationAngle = this.radToDeg(axisAngleFromQuaternion(stand.pose.orientation));
+    this.tempAngle = this.orientationAngle;
+    this.standID = stand.id;
+    const vertPos = L.latLng([this.getMapCoordinates(stand.pose.position.y), this.getMapCoordinates(stand.pose.position.x)]);
+    this.createNewMarker(vertPos);
+    this.stand = stand;
+  }
+
+  updateAngle() {
+    if (this.orientationAxis) {
+      this.orientationAxis.transform.rotate(this.degToRad(-this.tempAngle));
+      this.tempAngle = this.orientationAngle;
+      this.orientationAxis.transform.rotate(this.degToRad(this.orientationAngle));
+    }
+  }
+
   getRealCoordinates(value: number) {
     return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
   }
@@ -139,24 +223,15 @@ export class StandCreatorComponent implements OnInit {
     return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
   }
 
-  clearMap() {
-    if (this.selectedMarker) {
-      this.map.removeLayer(this.selectedMarker);
-    }
-    this.stand = new Stand();
-    this.standID = null;
-  }
-
-  editExistingStand(stand: Stand) {
-    this.clearMap();
-    if (!stand) return;
-    this.standID = stand.id;
-    const vertPos = L.latLng([this.getMapCoordinates(stand.pose.position.y), this.getMapCoordinates(stand.pose.position.x)]);
-    this.createNewMarker(vertPos);
-    this.stand = stand;
-  }
-
   compareItems(id1: any, id2: any): boolean {
     return id1.id === id2.id;
+  }
+
+  radToDeg(radAngle) {
+    return radAngle * 180 / Math.PI;
+  }
+
+  degToRad(degAngle) {
+    return degAngle * Math.PI / 180;
   }
 }

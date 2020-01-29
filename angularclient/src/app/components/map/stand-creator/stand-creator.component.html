@@ -38,8 +38,14 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <button type="button" class="btn btn-light btn-save" (click)="clearMap()"><i class="fas fa-retweet"></i> Nowy</button>
-        <button type="submit" class="btn btn-light btn-save" [disabled]="!standForm.form.valid||!this.selectedMarker"><i class="far fa-save" ></i> Dodaj</button>
+        <div class="md-form">
+          <input type="text" id="orientation" class="form-control form-control-lg" required [(ngModel)]="orientationAngle" name="orientationAngle" (change)="updateAngle()">
+          <label for="orientation" [class.active]="true">Orientacja</label>
+        </div>
+        <div class="md-form">
+          <button type="button" class="btn btn-light btn-save" (click)="clearMap()"><i class="fas fa-retweet"></i> Nowy</button>
+          <button type="submit" class="btn btn-light btn-save" [disabled]="!standForm.form.valid||!this.selectedMarker"><i class="far fa-save" ></i> Dodaj</button>
+        </div>
       </div>
 
     </form>
