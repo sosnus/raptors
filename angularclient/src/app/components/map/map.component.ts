@@ -1,13 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
+import '../../../../node_modules/leaflet-rotatedmarker/leaflet.rotatedMarker.js'
 import '../../../lib/leaflet-easybutton/src/easy-button';
 import '../../../lib/leaflet-easybutton/src/easy-button.css';
-/*
-import 'leaflet-rotatedmarker';
-*/
 import {MapService} from "../../services/map.service";
 import {RobotService} from "../../services/robot.service";
-import {StoreService} from "../../services/store.service";
+import {axisAngleFromQuaternion, StoreService} from "../../services/store.service";
 import {GraphService} from "../../services/graph.service";
 import {Graph} from "../../model/Graphs/Graph";
 import {PolygonService} from "../../services/polygon.service";
@@ -33,6 +31,16 @@ export const ROBOTICON = L.icon({
   iconUrl: '/assets/icons/robot.png',
   iconSize: [40, 40],
   iconAnchor: [40 / 2, 40 / 2]
+});
+export const ARROWICON = L.icon({
+  iconUrl: '/assets/icons/arrow.png',
+  iconSize: [100, 100],
+  iconAnchor: [100 / 2, 100 / 2]
+});
+export const CIRCLEBACK = L.icon({
+  iconUrl: '/assets/icons/circlebackground.png',
+  iconSize: [110, 110],
+  iconAnchor: [110 / 2, 110 / 2]
 });
 
 @Component({
@@ -230,8 +238,15 @@ export class MapComponent implements OnInit {
         this.getMapCoordinates(Number(stand.pose.position.y)),
         this.getMapCoordinates(Number(stand.pose.position.x))
       ];
+      let circleMarker = L.marker(position, {icon: CIRCLEBACK});
+      circleMarker.addTo(this.standLayer);
       let marker = L.marker(position, {icon: STANDICON});
       marker.addTo(this.standLayer);
+      let orientationMarker = L.marker(position, {
+        icon: ARROWICON,
+        rotationAngle: axisAngleFromQuaternion(stand.pose.orientation) * 180 / Math.PI
+      });
+      orientationMarker.addTo(this.standLayer);
       marker.bindPopup(
         "Stand Details<br />Position x: "
         + stand.pose.position.x
