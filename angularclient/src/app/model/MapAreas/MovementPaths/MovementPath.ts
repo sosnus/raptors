@@ -7,7 +7,8 @@ export class MovementPath {
   points:UniversalPoint[];
 
 
-  constructor(name: string, points: UniversalPoint[]) {
+  constructor(id: string, name: string, points: UniversalPoint[]) {
+    this.id = id;
     this.name = name;
     this.points = points;
   }
