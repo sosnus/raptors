@@ -181,41 +181,46 @@ export class PolygonsComponent implements OnInit {
   }
 
   private savePoly() {
-    this.drawPolygon = true;
-    this.map.removeLayer(this.polygon);
-    this.map.removeLayer(this.vertices);
-    this.convertedPoints = [];
-    this.vertices.map(edge => this.map.removeLayer(edge));
-    this.vertices = new Array<Marker>();    // konwersja latlng na punkty z mapy
-    let polygonPointz: UniversalPoint[] = [];
-    this.polygonPoints.forEach(polygonP => {
-      let coords: L.latLng = new L.latLng([
-        this.getRealCoordinates(polygonP.lat),
-        this.getRealCoordinates(polygonP.lng)]);
-      this.convertedPoints.push(coords)
-    });
+    if(this.selectedAreaType!=null){
 
-    // tworzenie obiektu polygon, przygotowanie do wysłania na bazę
-    this.convertedPoints.forEach(polygonP => {
-      let universalPoint: UniversalPoint = new UniversalPoint(
-        polygonP.lat,
-        polygonP.lng,
-        0
+      this.drawPolygon = true;
+      this.map.removeLayer(this.polygon);
+      this.map.removeLayer(this.vertices);
+      this.convertedPoints = [];
+      this.vertices.map(edge => this.map.removeLayer(edge));
+      this.vertices = new Array<Marker>();    // konwersja latlng na punkty z mapy
+      let polygonPointz: UniversalPoint[] = [];
+      this.polygonPoints.forEach(polygonP => {
+        let coords: L.latLng = new L.latLng([
+          this.getRealCoordinates(polygonP.lat),
+          this.getRealCoordinates(polygonP.lng)]);
+        this.convertedPoints.push(coords)
+      });
+
+      // tworzenie obiektu polygon, przygotowanie do wysłania na bazę
+      this.convertedPoints.forEach(polygonP => {
+        let universalPoint: UniversalPoint = new UniversalPoint(
+          polygonP.lat,
+          polygonP.lng,
+          0
+        );
+        polygonPointz.push(universalPoint)
+      });
+      let type: AreaType = new AreaType(this.areaType.name, this.areaType.color);
+      let polygon = new Polygon('polygon', type, polygonPointz);
+      console.log(polygon);
+      this.polygonService.save(polygon).subscribe(result => {
+          this.poly = this.polygon;
+          this.toast.success('Graf zapisany w bazie')
+        }
       );
-      polygonPointz.push(universalPoint)
-    });
-    let type: AreaType = new AreaType(this.areaType.name, this.areaType.color);
-    let polygon = new Polygon('polygon', type, polygonPointz);
-    console.log(polygon);
-    this.polygonService.save(polygon).subscribe(result => {
-        this.poly = this.polygon;
-        this.toast.success('Graf zapisany w bazie')
-      }
-    );
-    this.polygonPoints = [];
-    this.vertices = [];
-    //this.resetPoly();
-    console.log("vertices po zapisaniu " + this.vertices);
+      this.polygonPoints = [];
+      this.vertices = [];
+      //this.resetPoly();
+      console.log("vertices po zapisaniu " + this.vertices);
+    }
+    else this.toast.error('Podaj typ obszaru!')
+
   }
 
   private deleteMarker(e) {
