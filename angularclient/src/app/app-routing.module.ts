@@ -10,6 +10,8 @@ import {LoginComponent} from "./components/login/login.component";
 import {MovementPathComponent} from "./components/map/movement-path/movement-path.component";
 import {CorridorsComponent} from "./components/map/corridors/corridors.component";
 import {TaskpanelComponent} from "./components/taskpanel/taskpanel.component";
+import {AuthGuard} from "./services/auth.guard";
+import {AccessForbiddenComponent} from "./components/access-forbidden/access-forbidden.component";
 
 
 const routes: Routes = [
@@ -18,11 +20,16 @@ const routes: Routes = [
   {path: 'polygons', component: PolygonsComponent},
   {path: 'mapupload', component: MapUploadComponent},
   {path: 'stands', component: StandCreatorComponent},
-  {path: 'adminpanel', component: AdminPanelComponent},
+  {
+    path: 'adminpanel', component: AdminPanelComponent,
+    canActivate: [AuthGuard],
+    data: {roles: ['ROLE_ADMIN']},
+  },
   {path: 'login', component: LoginComponent},
   {path: 'movementPaths', component: MovementPathComponent},
   {path: 'corridors', component: CorridorsComponent},
   {path: 'taskpanel', component: TaskpanelComponent},
+  {path: 'access-denied', component: AccessForbiddenComponent},
 
 ];
 

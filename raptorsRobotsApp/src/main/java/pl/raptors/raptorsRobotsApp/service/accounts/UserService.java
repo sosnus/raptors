@@ -11,6 +11,7 @@ import pl.raptors.raptorsRobotsApp.repository.accounts.UserRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
@@ -33,6 +34,16 @@ public class UserService implements CRUDService<User> {
 
     public User getByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public User getByEmailWithRoleName(String email) {
+        User user=userRepository.findByEmail(email);
+        List<String> roleNames= new ArrayList<>();
+        for (String roleId: user.getRolesIDs()) {
+            roleNames.add(roleRepository.findRoleById(roleId).getName());
+        }
+        user.setRolesIDs(roleNames);
+        return user;
     }
 
     @Override

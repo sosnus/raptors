@@ -37,7 +37,7 @@ public class UserController {
     @GetMapping("/byEmail/{email}")
     public User getUserByEmail(@PathVariable String email){
         try {
-            return userService.getByEmail(email);
+            return userService.getByEmailWithRoleName(email);
         } catch (Exception e) {
             return null;
         }

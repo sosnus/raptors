@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   email: string = '';
   password: string = '';
-  private loggedUser: User;
+  private loggedUser: Observable<User>;
 
   constructor(private authService: AuthService) {
   }
@@ -24,28 +24,13 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    let userRoles : string[];
-
     this.authService.login(this.email, this.password).subscribe(isValid => {
       if (isValid) {
-        sessionStorage.setItem('access_token', btoa(this.email + ':' + this.password));
-
-        this.authService.getUserByEmail(this.email).subscribe(
-          userData => {
-            userData.roles.forEach(function(roleId){
-              userRoles.push(this.getRoleNameById(roleId));
-            });
-            userData.roles=[];
-            userRoles.forEach(function(roleName){
-              userData.roles.push(roleName);
-          });
-
-            localStorage.setItem('userData', JSON.stringify(userData));
-            this.loggedUser = JSON.parse(localStorage.getItem('userData'));
-          },
-          errorData => {
-          }
-        );
+        sessionStorage.setItem('token', btoa(this.email + ':' + this.password));
+        this.authService.getUserByEmail(this.email).subscribe(userData =>{
+          localStorage.setItem('userData', JSON.stringify(userData));
+          this.loggedUser = JSON.parse(localStorage.getItem('userData'));
+        });
         alert("Logged")
       } else {
         alert("Authentication failed.")

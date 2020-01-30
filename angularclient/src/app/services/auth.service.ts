@@ -23,32 +23,26 @@ export class AuthService {
   }
 
   public userLoggedIn(): boolean {
-    return sessionStorage.getItem('access_token') != null;
+    return sessionStorage.getItem('token') != null;
   }
 
   public logOut() {
-    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('token');
+    localStorage.removeItem('userData');
     this.router.navigate(['login']);
     this.http.get<any>(this.logOutUrl);
   }
 
   userCanAccessPageWithRoles(roles:string[]){
-    const userRolesIds: string[] = JSON.parse(localStorage.getItem('userData')).roles;
-    let userRoles : string[];
-    userRolesIds.forEach(function(roleId){
-      userRoles.push(this.getRoleNameById(roleId))
-    });
+    const userRoles: string[] = JSON.parse(localStorage.getItem('userData')).rolesIDs;
     return roles != null && userRoles.some((role) => roles.indexOf(role) !== -1);
   }
 
-
   public getUserByEmail(email: string): Observable<User> {
-    return this.http.get<User>(this.url + 'byEmail/' + email, {responseType: 'json'});
+    const headers = {'Authorization': 'Basic ' +  sessionStorage.getItem('token')};
+    return this.http.get<User>(this.url + 'byEmail/' + email, {headers:headers, responseType: 'json'});
   }
 
-  public getRoleNameById (roleId: string): Observable<String> {
-    return this.http.get<String>(this.url  + roleId, {responseType: 'json'});
-  }
 
   public login(email: string, password: string): Observable<boolean> {
     this.router.navigate(['']);

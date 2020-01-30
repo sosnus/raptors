@@ -15,13 +15,13 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
     const url: string = state.url;
-    const roles = route.data.roles as Array<string>;
-    return this.checkLogin(url, roles);
+    const rolesIDs = route.data.rolesIDs as Array<string>;
+    return this.checkLogin(url, rolesIDs);
   }
 
-  checkLogin(url: string, roles: Array<string>) {
+  checkLogin(url: string, rolesIDs: Array<string>) {
     if (this.authService.userLoggedIn()) {
-      if (this.authService.userCanAccessPageWithRoles(roles)) {
+      if (this.authService.userCanAccessPageWithRoles(rolesIDs)) {
         return true;
       } else {
         this.router.navigate(['/access-denied']);
