@@ -53,6 +53,7 @@ import { PolygonListComponent } from './components/map/polygons/polygon-list/pol
 import {StandListComponent} from "./components/map/stand-creator/stand-list/stand-list.component";
 import {CorridorListComponent} from "./components/map/corridors/corridor-list/corridor-list.component";
 import {MovementPathListComponent} from "./components/map/movement-path/movement-path-list/movement-path-list.component";
+import { AccessForbiddenComponent } from './components/access-forbidden/access-forbidden.component';
 
 
 const config: InputFileConfig = {};
@@ -94,6 +95,7 @@ const config: InputFileConfig = {};
     StandListComponent,
     CorridorListComponent,
     MovementPathListComponent,
+    AccessForbiddenComponent,
   ],
   imports: [
     BrowserModule,

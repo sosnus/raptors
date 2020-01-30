@@ -10,7 +10,7 @@ export class PolygonService {
   private readonly polygonURL: string;
 
   constructor(private http: HttpClient) {
-    this.polygonURL = 'http://localhost:8080//movement/map-areas/';
+    this.polygonURL = 'http://localhost:8080/movement/map-areas/';
   }
 
   public getPolygons(): Observable<Polygon[]> {

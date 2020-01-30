@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.service.graphs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.graphs.Edge;
 import pl.raptors.raptorsRobotsApp.domain.graphs.Vertex;
@@ -13,7 +14,7 @@ import pl.raptors.raptorsRobotsApp.domain.graphs.Graph;
 import java.util.List;
 import java.util.Optional;
 
-//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class GraphService implements CRUDService<Graph> {
 

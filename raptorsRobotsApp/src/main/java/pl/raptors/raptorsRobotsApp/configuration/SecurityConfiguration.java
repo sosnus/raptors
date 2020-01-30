@@ -41,8 +41,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login").and().exceptionHandling()
                 .and().httpBasic()
                 .and().formLogin();
-
-
     }
 
     @Bean
