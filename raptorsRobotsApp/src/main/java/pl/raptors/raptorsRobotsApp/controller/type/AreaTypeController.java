@@ -25,6 +25,10 @@ public class AreaTypeController {
         return areaTypeService.addOne(areaType);
     }
 
+    @PostMapping("/update")
+    public AreaType update(@RequestBody @Valid AreaType areaType) { return areaTypeService.updateOne(areaType);
+    }
+
     @GetMapping("/{id}")
     public AreaType getOne(@PathVariable String id) {
         return areaTypeService.getOne(id);
