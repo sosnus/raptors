@@ -11,14 +11,14 @@
   <div class="collapse navbar-collapse" id="basicExampleNav">
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="authService.userLoggedIn()">
         <a class="nav-link" [routerLink]="['']">
           <i class="fas fa-home"></i>
           Strona główna
           <span class="sr-only">(current)</span>
         </a>
       </li>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown" *ngIf="authService.userLoggedIn()">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false"> <i class="fas fa-cogs"></i>Zarządzaj</a>
         <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
@@ -30,7 +30,7 @@
           <a class="dropdown-item" [routerLink]="['stands']">Dodaj stanowisko</a>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="authService.userLoggedIn()">
         <a class="nav-link" [routerLink]="['adminpanel']">
           <i class="fas fa-home"></i>
           Panel administracyjny
@@ -38,7 +38,7 @@
         </a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="authService.userLoggedIn()">
         <a class="nav-link" [routerLink]="['taskpanel']">
           <i class="fas fa-tasks"></i>
           Panel zadań
@@ -53,8 +53,13 @@
     </ul>
     <!-- Links -->
     <ul class="navbar-nav">
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!authService.userLoggedIn()">
         <a class="nav-link" [routerLink]="['login']" style="display: flex;">Zaloguj &nbsp; <i class="material-icons">exit_to_app</i></a>
+      </li>
+    </ul>
+    <ul class="navbar-nav" *ngIf="authService.userLoggedIn()">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['login']" style="display: flex;" (click)=authService.logOut()>Wyloguj &nbsp; <i class="material-icons">power_settings_new</i></a>
       </li>
     </ul>
   </div>

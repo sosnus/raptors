@@ -22,23 +22,26 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @RequestMapping("/login")
     public boolean login(@RequestBody User user) {
 
-        //System.out.println(user.getEmail() + " " + user.getPassword());
         try {
             User userFromDb = userService.getByEmail(user.getEmail());
-            //System.out.println(user.getEmail().equals(userFromDb.getEmail()) && passwordEncoder.matches(user.getPassword(), userFromDb.getPassword()));
             return user.getEmail().equals(userFromDb.getEmail()) && passwordEncoder.matches(user.getPassword(), userFromDb.getPassword());
         } catch (Exception e) {
             return false;
         }
     }
 
+    @GetMapping("/byEmail/{email}")
+    public User getUserByEmail(@PathVariable String email){
+        try {
+            return userService.getByEmail(email);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     @GetMapping("/all")
     public List<User> getAll() {
