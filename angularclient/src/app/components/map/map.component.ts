@@ -291,7 +291,7 @@ export class MapComponent implements OnInit {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
       existingPolygonpoints.push(pointPosition);
     });
-    let polygonik = L.polygon(existingPolygonpoints, {color: 'red'});//todo
+    let polygonik = L.polygon(existingPolygonpoints, {color: 'red'});
     polygonik.addTo(this.polygons);
   }
 
