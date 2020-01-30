@@ -2,12 +2,15 @@ package pl.raptors.raptorsRobotsApp.controller.accounts;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pl.raptors.raptorsRobotsApp.domain.accounts.User;
 import pl.raptors.raptorsRobotsApp.service.accounts.MongoUserDetailsService;
+import pl.raptors.raptorsRobotsApp.service.accounts.RoleService;
 import pl.raptors.raptorsRobotsApp.service.accounts.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,28 +24,28 @@ public class UserController {
     MongoUserDetailsService mongoUserDetailsService;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    RoleService roleService;
 
 
     @RequestMapping("/login")
-    public boolean login(@RequestBody User user) {
-
-        try {
-            User userFromDb = userService.getByEmail(user.getEmail());
-            return user.getEmail().equals(userFromDb.getEmail()) && passwordEncoder.matches(user.getPassword(), userFromDb.getPassword());
-        } catch (Exception e) {
-            return false;
+    public List<String> login(@RequestBody User user) {
+        User userFromDb = userService.getByEmail(user.getEmail());
+        List<String> roleNames= new ArrayList<>();
+        if(user.getEmail().equals(userFromDb.getEmail()) && passwordEncoder.matches(user.getPassword(), userFromDb.getPassword())){
+            for (String roleId:userFromDb.getRolesIDs()) {
+                roleNames.add(roleService.getOne(roleId).getName());
+            }
+            return roleNames;
         }
-    }
-
-    @GetMapping("/byEmail/{email}")
-    public User getUserByEmail(@PathVariable String email){
-        try {
-            return userService.getByEmailWithRoleName(email);
-        } catch (Exception e) {
+        else{
+            System.out.println("Logowanie nie powiodło się!");
             return null;
         }
     }
 
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
     @GetMapping("/all")
     public List<User> getAll() {
 

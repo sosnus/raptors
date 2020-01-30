@@ -15,7 +15,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import java.io.IOException;
 import java.util.List;
 
-//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class MovementMapService implements CRUDService<MovementMap> {
 

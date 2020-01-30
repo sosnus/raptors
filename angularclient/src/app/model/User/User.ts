@@ -4,11 +4,10 @@ export class User {
   password: string;
   rolesIDs: string[]; //nazwy ról
 
-  constructor(
-    id: string = null,
-    email: string = null,
-    password: string = null,
-    rolesIDs: string[] = ['ROLE_REGULAR_USER']) {
+  constructor(id: string = null,
+              email: string = null,
+              password: string = null,
+              rolesIDs: string[] = ['ROLE_REGULAR_USER']) {
     this.id = id;
     this.email = email;
     this.password = password;

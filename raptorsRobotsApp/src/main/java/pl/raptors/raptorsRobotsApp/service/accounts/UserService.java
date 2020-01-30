@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
+//bezpośredni PreAuthorize na metodach controllera
 @Service
 public class UserService implements CRUDService<User> {
 

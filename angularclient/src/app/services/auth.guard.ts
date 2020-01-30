@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import {log} from "util";
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class AuthGuard implements CanActivate {
 
     // Storing attempted URL for redirecting
     this.authService.redirectURL = url;
-
+    // log("niezalogowany");
     this.router.navigate(['/login']);
     return false;
   }

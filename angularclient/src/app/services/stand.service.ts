@@ -13,7 +13,7 @@ export class StandService {
   private readonly standURL: string;
 
   constructor(private http: HttpClient) {
-    this.standURL = 'http://localhost:8080//movement/stands/';
+    this.standURL = 'http://localhost:8080/movement/stands/';
   }
 
   public getStand(id: string): Observable<Stand> {

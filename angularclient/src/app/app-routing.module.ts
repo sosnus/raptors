@@ -15,7 +15,10 @@ import {AccessForbiddenComponent} from "./components/access-forbidden/access-for
 
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', component: HomeComponent,
+    canActivate: [AuthGuard],
+    data: {rolesIDs: ['ROLE_ADMIN','ROLE_REGULAR_USER','ROLE_SUPER_USER','ROLE_SERVICEMAN']},
+  },
   {path: 'graphcreator', component: GraphcreatorComponent},
   {path: 'polygons', component: PolygonsComponent},
   {path: 'mapupload', component: MapUploadComponent},

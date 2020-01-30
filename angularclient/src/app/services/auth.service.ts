@@ -3,8 +3,6 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {User} from "../model/User/User";
-import {log} from "util";
-import {stringify} from "querystring";
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +11,12 @@ export class AuthService {
 
   private readonly url: string;
   private readonly logOutUrl: string;
-  private readonly rolesUrl: string;
   redirectURL: string;
 
   constructor(private http: HttpClient,
               private router: Router) {
     this.url = 'http://localhost:8080/users/';
     this.logOutUrl = 'http://localhost:8080/logout';
-    this.rolesUrl = 'http://localhost:8080/roles/';
   }
 
   public userLoggedIn(): boolean {
@@ -36,7 +32,7 @@ export class AuthService {
 
   public currentUserRoles() {
     if (!this.userLoggedIn()) return;
-    return JSON.parse(localStorage.getItem('userData')).rolesIDs;
+    return JSON.parse(atob(localStorage.getItem('userData')));
   }
 
   public isAdmin() {
@@ -56,19 +52,14 @@ export class AuthService {
   }
 
   userCanAccessPageWithRoles(roles: string[]) {
-    const userRoles: string[] = JSON.parse(localStorage.getItem('userData')).rolesIDs;
+    const userRoles: string[] = JSON.parse(atob(localStorage.getItem('userData')));
     return roles != null && userRoles.some((role) => roles.indexOf(role) !== -1);
   }
 
-  public getUserByEmail(email: string): Observable<User> {
-    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<User>(this.url + 'byEmail/' + email, {headers: headers, responseType: 'json'});
-  }
 
 
-  public login(email: string, password: string): Observable<boolean> {
-    this.router.navigate(['']);
-    return this.http.post<boolean>(this.url + "login", {
+  public login(email: string, password: string): Observable<string[]> {
+    return this.http.post<string[]>(this.url + "login", {
       email: email,
       password: password
     });
