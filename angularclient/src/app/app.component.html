@@ -31,11 +31,13 @@
         </div>
       </li>
       <li class="nav-item" *ngIf="authService.userLoggedIn()">
+        <div *ngIf="authService.isAdmin()">
         <a class="nav-link" [routerLink]="['adminpanel']">
           <i class="fas fa-home"></i>
           Panel administracyjny
           <span class="sr-only">(current)</span>
         </a>
+        </div>
       </li>
 
       <li class="nav-item" *ngIf="authService.userLoggedIn()">

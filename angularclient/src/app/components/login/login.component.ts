@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('userData', JSON.stringify(userData));
           this.loggedUser = JSON.parse(localStorage.getItem('userData'));
         });
-        alert("Logged")
+        //alert("Logged")
       } else {
         alert("Authentication failed.")
       }
