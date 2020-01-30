@@ -43,6 +43,12 @@
     <input type="text" id="areaTypeName" class="form-control validate" required [(ngModel)]="areaType.name" name="name">
     <label for="areaTypeName" [class.active]="areaType.name && areaType.name.length > 0">Nazwa typu obszaru</label>
   </form>
+
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <i class="fas fa-file-signature prefix grey-text"></i>
+    <input type="text" id="areaTypeColor" class="form-control validate" required [(ngModel)]="areaType.color" name="color">
+    <label for="areaTypeColor" [class.active]="areaType.color">Nadaj kolor obszaru</label>
+  </form>
 </app-form-modal-template>
 
 

@@ -11,7 +11,7 @@ import {ToastrService} from "ngx-toastr";
 export class AreaTypesComponent implements OnInit {
 
   areaTypes: AreaType[] = [];
-  areaType: AreaType = new AreaType(null);
+  areaType: AreaType = new AreaType(null, null);
   modalID = "areaTypeModal";
 
   constructor(private areaTypeService: AreaTypeService,
@@ -29,7 +29,7 @@ export class AreaTypesComponent implements OnInit {
   }
 
   reset(){
-    this.areaType = new AreaType(null);
+    this.areaType = new AreaType(null, null);
   }
 
   createOrUpdate() {
@@ -40,7 +40,7 @@ export class AreaTypesComponent implements OnInit {
         } else {
           this.areaTypes.push(result)
         }
-        this.areaType = new AreaType(null);
+        this.areaType = new AreaType(null, null);
         this.toastr.success("Dodano lub edytowano pomyślnie");
       },
       error => {
@@ -62,7 +62,7 @@ export class AreaTypesComponent implements OnInit {
       result => {
         this.areaTypes = this.areaTypes.filter(item => item != areaType)
         this.toastr.success("Usunięto pomyślnie");
-        this.areaType = new AreaType(null);
+        this.areaType = new AreaType(null, null);
       },
       error => {
         this.toastr.error("Wystąpił błąd podczas usuwania");
