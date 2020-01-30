@@ -10,7 +10,7 @@ export class RobotTaskService {
   private readonlyrobotTaskURL: string;
 
   constructor(private http: HttpClient) {
-    this.readonlyrobotTaskURL = 'http://localhost:8080///robots/tasks/';
+    this.readonlyrobotTaskURL = 'http://localhost:8080/robots/tasks/';
   }
 
   public getRobotTasks(): Observable<RobotTask[]> {
