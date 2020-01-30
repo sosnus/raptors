@@ -54,6 +54,7 @@ import {StandListComponent} from "./components/map/stand-creator/stand-list/stan
 import {CorridorListComponent} from "./components/map/corridors/corridor-list/corridor-list.component";
 import {MovementPathListComponent} from "./components/map/movement-path/movement-path-list/movement-path-list.component";
 import { AccessForbiddenComponent } from './components/access-forbidden/access-forbidden.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 
 const config: InputFileConfig = {};
@@ -106,6 +107,7 @@ const config: InputFileConfig = {};
     ToastrModule.forRoot(),
     FormsModule,
     MatSelectModule,
+    ColorPickerModule
   ],
   providers: [MapService,HttpClient, RobotService, GraphService, StoreService,
     StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,

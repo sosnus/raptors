@@ -17,35 +17,23 @@ import {ToastrService} from "ngx-toastr";
 })
 export class TaskpanelComponent implements OnInit {
 
-  robotTask: RobotTask;
-
-  robots: Robot[];
-  availableRobots: Robot[];
-  robot: Robot;
-  selectedRobot: string;
+  robotTask: RobotTask = new RobotTask(null, null, null, null, null, null, null);
 
   behaviour: Behaviour;
-  behaviours: Behaviour[];
+  behaviours: Behaviour[] = [];
   selectedBehaviour: string;
 
   taskPriority: TaskPriority;
   taskPriorities: TaskPriority[];
   selectedTaskPriority: string;
 
-  constructor(private robotService: RobotService, private behaviourService: BehaviourService,
+  constructor(private behaviourService: BehaviourService,
               private taskPriorityService: TaskPriorityService, private robotTaskService: RobotTaskService,
               private toastr: ToastrService) {
-    this.robotTask = new RobotTask(null, null, null, null, null, null, null);
+    this.robotTask.behaviours = new Array<Behaviour>();
   }
 
   ngOnInit() {
-    this.robotService.getRobots().subscribe(
-      robot => {
-        this.robots = robot;
-        this.getAvailableRobots();
-      }
-    );
-
     this.behaviourService.getAll().subscribe(
       behaviour => {
         this.behaviours = behaviour;
@@ -58,29 +46,24 @@ export class TaskpanelComponent implements OnInit {
     );
   }
 
-  getAvailableRobots() {
-    this.availableRobots = [];
-    this.robots.forEach(robot => {
-      if (robot.available) {
-        this.availableRobots.push(robot);
-      }
-    });
-    console.log(this.availableRobots);
-  }
-
-  selectRobot(id: string) {
-    console.log(id);
-    this.selectedRobot = id;
-  }
-
   selectBehaviour(id: string) {
     console.log(id);
     this.selectedBehaviour = id;
+    this.behaviours.forEach(behaviour=>{
+      if(behaviour.id === this.selectedBehaviour){
+        this.robotTask.behaviours.push(behaviour);
+      }
+    });
   }
 
   selectTaskPriority(id: string) {
     console.log(id);
     this.selectedTaskPriority = id;
+    this.taskPriorities.forEach(taskPriority=>{
+      if(taskPriority.id === this.selectedTaskPriority){
+        this.robotTask.priority = taskPriority;
+      }
+    });
   }
 
   saveRobotTask() {
@@ -93,5 +76,6 @@ export class TaskpanelComponent implements OnInit {
       error => console.log('Error' + error));
     console.log('RobotTask', this.robotTask);
     this.toastr.success('Dodano pomyślnie');
+    this.robotTask = new RobotTask(null, null, null, null, null, null, null);
   }
 }

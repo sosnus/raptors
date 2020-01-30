@@ -9,15 +9,6 @@
            placeholder="Nazwij zadanie">
   </div>
 
-    <p>Wybierz robota</p>
-    <div class="md-form">
-      <select class="browser-default custom-select" (change)="selectRobot($event.target.value)"
-              [(ngModel)]="selectedRobot"
-              [ngModelOptions]="{standalone: true}">
-        <option [value]="item.id" *ngFor="let item of availableRobots">IP:{{item.robotIp}} Nazwa Modelu: {{item.model.name}} ...</option>
-      </select>
-    </div>
-
     <p>Wybierz działanie</p>
     <div class="md-form">
       <select class="browser-default custom-select" (change)="selectBehaviour($event.target.value)"

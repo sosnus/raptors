@@ -12,13 +12,18 @@
         Zamknij obszar
       </label>
     </div>
-
     <button type="button" class="btn btn-light switch-container" (click)="savePoly()">
       <i class="far fa-save"></i>Zapisz obszar</button>
 
     <button type="button" class="btn btn-light switch-container" (click)="resetPoly()">
       <i class="far fa-save"></i>Resetuj</button>
-
+    <div class="md-form">
+      <select class="browser-default custom-select" (change)="selectAreaTypeID($event.target.value)"
+              [(ngModel)]="selectedAreaType"
+              [ngModelOptions]="{standalone: true}">
+        <option [value]="item.id" *ngFor="let item of areaTypes">{{item.name}}</option>
+      </select>
+    </div>
     <div class="map-container">
       <div class="map-frame">
         <div class="lds-dual-ring" [hidden]="dataLoaded"></div>

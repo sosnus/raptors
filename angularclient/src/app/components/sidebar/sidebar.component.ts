@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {RobotService} from "../../services/robot.service";
 import {StoreService} from "../../services/store.service";
+import {RobotTaskService} from "../../services/robotTask.service";
+import {RobotTask} from "../../model/Robots/RobotTask";
 
 @Component({
   selector: 'app-sidebar',
@@ -12,9 +14,12 @@ export class SidebarComponent implements OnInit {
   robotDataloaded = false;
   private robotIDlist = [];
 
+  private robotTasks: RobotTask[];
+  private robotTask: RobotTask;
+
   private i=0;
   private j=0;
-  constructor(private storeService: StoreService) {
+  constructor(private storeService: StoreService, private robotTaskService: RobotTaskService) {
   }
 
   ngOnInit() {
@@ -26,6 +31,10 @@ export class SidebarComponent implements OnInit {
         console.log("Pobieram listę id robotów: " + this.robotIDlist);
       }
     );
+
+    this.robotTaskService.getRobotTasks().subscribe(robotTask=>{
+      this.robotTasks = robotTask;
+    })
 
 
   }
@@ -43,6 +52,5 @@ export class SidebarComponent implements OnInit {
        }
      }*/
   }
-
 
 }

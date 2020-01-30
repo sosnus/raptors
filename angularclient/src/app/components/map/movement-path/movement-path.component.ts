@@ -7,6 +7,8 @@ import {UniversalPoint} from "../../../model/MapAreas/UniversalPoint";
 import {StoreService} from "../../../services/store.service";
 import {Marker} from "leaflet/src/layer/marker/Marker";
 import {ToastrService} from "ngx-toastr";
+import {WAYPOINTICON} from "../map.component";
+import {Orientation} from "../../../model/Stand/Orientation";
 
 @Component({
   selector: 'app-movement-path',
@@ -24,6 +26,7 @@ export class MovementPathComponent implements OnInit {
   private polyline: L.polyline = null;
   private vertices: Marker[] = [];
   private pathID;
+  private name;
 
   constructor(private mapService: MapService,
               private movementPathService: MovementPathService,
@@ -74,32 +77,27 @@ export class MovementPathComponent implements OnInit {
     this.map.fitBounds(imageBounds);
 
     this.map.on('click', e => {
-      const markerIcon = L.icon({
-        iconUrl: '/assets/icons/position.png',
-        iconSize: [36, 36],
-        iconAnchor: [36 / 2, 36 / 2]
-      });
-
-      let marker = new L.marker(e.latlng, {
-        draggable: true,
-        icon: markerIcon
-      });
+      this.createNewMarker(e.latlng);
       if (this.polyline == null) {
         this.polyline = new L.Polyline([]).addTo(this.map);
       }
-      marker.addTo(this.map)
-      this.vertices.push(marker);
       this.polyline.addLatLng(e.latlng);
     });
   }
 
   cancelMovementPath() {
-    this.map.removeLayer(this.polyline);
+    if (this.polyline != null) {
+      this.map.removeLayer(this.polyline);
+    }
     this.polyline = null;
-    this.vertices.forEach(e => {
-      this.map.removeLayer(e);
-    })
+
+    if (this.vertices.length != 0) {
+      this.vertices.forEach(e => {
+        this.map.removeLayer(e);
+      })
+    }
     this.vertices = [];
+    this.name = "";
   }
 
   private getRealCoordinates(value) {
@@ -116,10 +114,10 @@ export class MovementPathComponent implements OnInit {
       universalPoints.push(universalPoint)
     });
 
-    let movementPath = new MovementPath('movement-path-final-test', universalPoints);
+    let movementPath = new MovementPath(this.pathID, this.name, universalPoints);
     this.movementPathService.save(movementPath).subscribe(result => {
       if (result.id != null) {
-        this.toast.success('Korytarz zapisany w bazie')
+        this.toast.success('Ścieżka zapisana w bazie')
       } else {
         this.toast.error('Nie udało się zapisać do bazy')
       }
@@ -133,44 +131,64 @@ export class MovementPathComponent implements OnInit {
   }
 
   editExistingPath(path: MovementPath) {
+
     this.clearMap();
-    // if (!path) return;
-    // this.pathID = path.id;
-    // let existingWaypoints = [];
-    // let marker1;
-    // let marker2;
-    // let markers = [];
-    // path.edges.forEach(edge => {
-    //   let marker1Temp = marker1;
-    //   let marker2Temp = marker2;
-    //   const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
-    //   const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
-    //
-    //   if (!existingWaypoints.includes(vertPosA + '')) {//toString in order to not mind about reference
-    //     marker1 = this.createNewMarker(vertPosA);
-    //     markers.push(marker1);
-    //     existingWaypoints.push(vertPosA + '');
-    //     console.log('NewA')
-    //   }
-    //   if (!existingWaypoints.includes(vertPosB + '')) {
-    //     marker2 = this.createNewMarker(vertPosB);
-    //
-    //     markers.push(marker2);
-    //     existingWaypoints.push(vertPosB + '');
-    //     console.log('NewB')
-    //   }
-    // });
-    // path.edges.forEach(edge => {
-    //   const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
-    //   const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
-    //   marker1 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosA));
-    //   marker2 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosB));
-    //   this.drawEditableEdge(marker1, marker2, edge.biDirected)
-    // })
+    if (!path) return;
+    console.log(path.name)
+    this.pathID = path.id;
+    this.name = path.name;
+    this.polyline = new L.Polyline([]);
+    path.points.forEach(e => {
+      const translatedPoint = L.latLng([this.getMapCoordinates(e.x), this.getMapCoordinates(e.y)]);
+      this.polyline.addLatLng(translatedPoint);
+      this.createNewMarker(translatedPoint);
+    })
+    this.polyline.addTo(this.map);
+
+  }
+
+  quaternionToAxisAngle(orientation: Orientation) {
+    const halfAngle = Math.acos(orientation.x);
+    const angle = halfAngle / 0.5;
+    const sin = Math.sin(halfAngle);
+    const cos = orientation.x;
   }
 
   getMapCoordinates(value) {
     return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
   }
 
+  private createNewMarker(position: L.latlng) {
+    let marker = new L.marker(position, {
+      draggable: true,
+      icon: WAYPOINTICON
+    });
+
+    marker.on('move', e => {
+      this.updatePoints(e)
+    });
+
+    marker.addTo(this.map);
+    this.vertices.push(marker);
+    return marker;
+  }
+
+  private updatePoints(e) {
+    let markerPos = this.vertices.filter(marker => marker._leaflet_id === e.target._leaflet_id)[0];
+
+    this.vertices.forEach(point => {
+      if (point._leaflet_id === markerPos._leaflet_id) {
+        point._latlng = markerPos._latlng;
+      }
+    });
+    this.createPolyline();
+  }
+
+  private createPolyline() {
+    this.map.removeLayer(this.polyline);
+    this.polyline = new L.Polyline([]).addTo(this.map);
+    this.vertices.forEach(marker => {
+      this.polyline.addLatLng(marker._latlng);
+    });
+  }
 }
