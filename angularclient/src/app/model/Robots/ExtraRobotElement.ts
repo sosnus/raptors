@@ -5,7 +5,8 @@ export class ExtraRobotElement{
   name: string;
   functionalityList: ElementFunctionality[];
 
-  constructor(name: string, functionalityList: ElementFunctionality[]) {
+  constructor(name: string = '',
+              functionalityList: ElementFunctionality[] = []) {
     this.name = name;
     this.functionalityList = functionalityList;
   }

@@ -54,6 +54,9 @@ import {StandListComponent} from "./components/map/stand-creator/stand-list/stan
 import {CorridorListComponent} from "./components/map/corridors/corridor-list/corridor-list.component";
 import {MovementPathListComponent} from "./components/map/movement-path/movement-path-list/movement-path-list.component";
 import { ColorPickerModule } from 'ngx-color-picker';
+import { RobotPanelComponent } from './components/robotpanel/robot-panel.component';
+import { RobotDetailsComponent } from './components/robotpanel/robot-details/robot-details.component';
+import {MapScaledComponent} from "./components/robotpanel/map-scaled/map-scaled.component";
 
 
 const config: InputFileConfig = {};
@@ -95,6 +98,9 @@ const config: InputFileConfig = {};
     StandListComponent,
     CorridorListComponent,
     MovementPathListComponent,
+    RobotPanelComponent,
+    RobotDetailsComponent,
+    MapScaledComponent,
 
   ],
   imports: [
