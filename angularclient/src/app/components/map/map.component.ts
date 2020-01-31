@@ -90,13 +90,13 @@ export class MapComponent implements OnInit {
 
 
   //filters for the map
-  private robotStatus = {
+  private overlays = {
     Online: this.robotStatusLayer,
     Grafy: this.graphs,
     Obszary: this.polygons,
-    Stanowiska: this.standLayer,
+    Ścieżki: this.movementPaths,
     Korytarze: this.corridors,
-    Ścieżki: this.movementPaths
+    Stanowiska: this.standLayer
   };
 
   //Leaflet accepts coordinates in [y,x]
@@ -149,7 +149,7 @@ export class MapComponent implements OnInit {
       map.setView([400, 400], 0);
     }).addTo(this.map);
     this.map.fitBounds(imageBounds);
-    L.control.layers(this.robotStatus).addTo(this.map);
+    L.control.layers({}, this.overlays).addTo(this.map);
   }
 
   private afterMapLoaded(data: String) {
@@ -286,12 +286,16 @@ export class MapComponent implements OnInit {
   }
 
   private drawPolygon(polygon: Polygon) {
+
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
       existingPolygonpoints.push(pointPosition);
+
     });
-    let polygonik = L.polygon(existingPolygonpoints, {color: 'red'});
+    let polygonik = L.polygon(existingPolygonpoints, {color: polygon.type.color}).bindTooltip(polygon.type.name, {
+      sticky: true // If true, the tooltip will follow the mouse instead of being fixed at the feature center.
+    });
     polygonik.addTo(this.polygons);
   }
 

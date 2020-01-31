@@ -9,7 +9,7 @@ import {StoreService} from "../../../services/store.service";
 import {MovementPath} from "../../../model/MapAreas/MovementPaths/MovementPath";
 import {ToastrService} from "ngx-toastr";
 import {MovementPathService} from "../../../services/movementPath.service";
-import {Graph} from "../../../model/Graphs/Graph";
+import {WAYPOINTICON} from "../map.component";
 
 @Component({
   selector: 'app-corridors',
@@ -28,10 +28,11 @@ export class CorridorsComponent implements OnInit {
   private polygonPoints = [];
   private vertices: Marker[] = [];
   private polygon = L.polygon;
-  private corridor: Corridor;
+  private corridor = new Corridor();
   private polygonsList = [[]];
-  paths: MovementPath[] = [];
-  private corridorID;
+  private paths: MovementPath[] = [];
+  private pathID;
+  private name;
 
   constructor(private mapService: MapService,
               private corridorService: CorridorService,
@@ -54,7 +55,6 @@ export class CorridorsComponent implements OnInit {
   drawCorridor() {
     this.map.on('click', e => {
       if (!this.drawCorridorBoolean) {
-        console.log("Markec created")
         const markerIcon = L.icon({
           iconUrl: '/assets/icons/position.png',
           iconSize: [36, 36],
@@ -74,7 +74,6 @@ export class CorridorsComponent implements OnInit {
         });
 
         marker.addTo(this.map);
-        console.log(marker._leaflet_id);
         this.vertices.push(marker);
 
         marker.on('move', e => {
@@ -90,12 +89,19 @@ export class CorridorsComponent implements OnInit {
     this.polygon = L.polygon;
     this.vertices.forEach(e => {
       this.map.removeLayer(e);
-    })
+    });
     this.vertices = [];
-    this.corridor = null;
+    this.corridor = new Corridor();
+    this.name = null;
   }
 
   saveCorridor() {
+    this.createCorridor();
+    if (this.polygonPoints.length < 3) {
+      alert("Nie zdefiniowano wierzchołków lub korytarz ma mniej niż trzy wierzchołki!");
+      return;
+    }
+
     let universalPoints: UniversalPoint[] = [];
     this.polygonPoints.forEach(corridorP => {
       let coords: L.latLng = new L.latLng([
@@ -108,16 +114,44 @@ export class CorridorsComponent implements OnInit {
       );
       universalPoints.push(universalPoint)
     });
+    this.corridor.name = this.name;
+    if (this.pathID) {
+      this.corridor.id = this.pathID;
+    } else {
+      this.corridor.id = null;
+    }
+    this.corridor.points = universalPoints;
 
-    this.corridor = new Corridor("corridor", null, universalPoints);
-    this.corridorService.save(this.corridor).subscribe(result => {
-      if (result.id != null) {
-        this.toast.success('Korytarz zapisany w bazie')
-      } else {
-        this.toast.error('Nie udało się zapisać do bazy')
+    let path: MovementPath;
+    path = this.paths.find(e => {
+      if (e.id === this.corridor.movementPathId) {
+        return e;
       }
     });
-    this.cancelCorridor();
+    if (path == null && this.corridor.movementPathId != null) {
+      alert("Taka ścieżka już nie istnieje!")
+      return;
+    }
+
+    if (path != null) {
+      if (!this.checkPathInsidePolygon(path, this.polygon)) {
+        alert("Ta ścieżka nie znajduje się w danym korytarzu!");
+        return;
+      }
+    }
+
+    if (!this.corridor.movementPathId) {
+      this.corridor.movementPathId = null;
+    }
+    this.corridorService.save(this.corridor).subscribe(result => {
+      if (result.id != null) {
+        this.toast.success('Korytarz zapisany w bazie');
+        this.cancelCorridor();
+      } else {
+        this.toast.error('Nie udało się zapisać do bazy');
+      }
+    });
+
   }
 
   private loadMap() {
@@ -147,25 +181,21 @@ export class CorridorsComponent implements OnInit {
 
   private deleteMarker(e) {
     if (this.polygonPoints.length != 0) {
-      if (this.polygonPoints.length <= 3) {
-        alert("Nie może być mniej niż trzy wierzchołki!");
-      } else {
-        this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
-        console.log("tu1")
-        this.map.removeLayer(e.relatedTarget);
-        this.map.removeLayer(this.polygon);
-        this.polygonPoints = [];
-        this.createCorridor();
-      }
+
+      this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
+      this.map.removeLayer(e.relatedTarget);
+      this.map.removeLayer(this.polygon);
+      this.polygonPoints = [];
+      this.createCorridor();
+
     } else {
-      console.log("tu2")
       this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
       this.map.removeLayer(e.relatedTarget);
     }
   }
 
   private getRealCoordinates(value) {
-    return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
+    return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2));
   }
 
   private initMap(): void {
@@ -203,56 +233,75 @@ export class CorridorsComponent implements OnInit {
     this.vertices.forEach(marker => {
       this.polygonPoints.push(marker._latlng);
     });
-    if (this.polygonPoints.length < 3) {
-      alert("Zbyt mała liczba wierzchołków: " + this.polygonPoints.length);
-    } else {
-      this.map.removeLayer(this.polygon);
-      this.polygonsList.push(this.polygonPoints);
-      this.polygon = L.polygon(this.polygonPoints, {color: 'red'}).addTo(this.map);
-      this.map.fitBounds(this.polygon.getBounds());
-    }
+
+    this.map.removeLayer(this.polygon);
+    this.polygonsList.push(this.polygonPoints);
+    this.polygon = L.polygon(this.polygonPoints, {color: 'red'}).addTo(this.map);
   }
 
-  clearMap() {
+  private clearMap() {
     this.cancelCorridor();
-    this.corridorID = null;
+  }
+
+  private getMapCoordinates(value) {
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
   }
 
   editExistingCorridor(corridor: Corridor) {
     this.clearMap();
-    // if (!graph) return;
-    // this.graphID = graph.id;
-    // let existingWaypoints = [];
-    // let marker1;
-    // let marker2;
-    // let markers = [];
-    // graph.edges.forEach(edge => {
-    //   let marker1Temp = marker1;
-    //   let marker2Temp = marker2;
-    //   const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
-    //   const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
-    //
-    //   if (!existingWaypoints.includes(vertPosA + '')) {//toString in order to not mind about reference
-    //     marker1 = this.createNewMarker(vertPosA);
-    //     markers.push(marker1);
-    //     existingWaypoints.push(vertPosA + '');
-    //     console.log('NewA')
-    //   }
-    //   if (!existingWaypoints.includes(vertPosB + '')) {
-    //     marker2 = this.createNewMarker(vertPosB);
-    //
-    //     markers.push(marker2);
-    //     existingWaypoints.push(vertPosB + '');
-    //     console.log('NewB')
-    //   }
-    // });
-    // graph.edges.forEach(edge => {
-    //   const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
-    //   const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
-    //   marker1 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosA));
-    //   marker2 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosB));
-    //   this.drawEditableEdge(marker1, marker2, edge.biDirected)
-    // })
+    if (!corridor) return;
+    this.pathID = corridor.id;
+    this.name = corridor.name;
+    this.polygon = new L.polygon([], {color: 'red'});
+    if (corridor.movementPathId) {
+      this.corridor.movementPathId = corridor.movementPathId;
+    }
+
+    corridor.points.forEach(e => {
+      const translatedPoint = L.latLng([this.getMapCoordinates(e.x), this.getMapCoordinates(e.y)]);
+      this.polygon.addLatLng(translatedPoint);
+      this.createNewMarker(translatedPoint);
+    });
+    this.polygon.addTo(this.map);
+
   }
 
+  private createNewMarker(position: L.latlng) {
+    let marker = new L.marker(position, {
+      draggable: true,
+      icon: WAYPOINTICON
+    });
+
+    marker.on('move', e => {
+      this.updatePoints(e)
+    });
+
+    marker.addTo(this.map);
+    this.vertices.push(marker);
+    return marker;
+  }
+
+  private updatePoints(e) {
+    let markerPos = this.vertices.filter(marker => marker._leaflet_id === e.target._leaflet_id)[0];
+
+    this.vertices.forEach(point => {
+      if (point._leaflet_id === markerPos._leaflet_id) {
+        point._latlng = markerPos._latlng;
+      }
+    });
+    this.createCorridor();
+  }
+
+  private checkPathInsidePolygon(path, polygon) {
+    let points = path.points;
+    let check = true;
+    points.forEach(e => {
+      const translatedPoint = L.latLng([this.getMapCoordinates(e.x), this.getMapCoordinates(e.y)]);
+      let marker = new L.marker(translatedPoint);
+      if (!polygon.getBounds().contains(marker.getLatLng())) {
+        check = false;
+      }
+    });
+    return check;
+  }
 }

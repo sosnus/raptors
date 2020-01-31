@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChange} from '@angular/core';
 import {RobotService} from "../../services/robot.service";
 import {StoreService} from "../../services/store.service";
 import {RobotTaskService} from "../../services/robotTask.service";
@@ -9,7 +9,7 @@ import {RobotTask} from "../../model/Robots/RobotTask";
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnChanges {
 
   robotDataloaded = false;
   private robotIDlist = [];
@@ -38,6 +38,19 @@ export class SidebarComponent implements OnInit {
 
 
   }
+
+  ngOnChanges(changes: { [property: string]: SimpleChange }) {
+    this.robotTaskService.getRobotTasks().subscribe(robotTask =>
+    {
+      this.robotTasks = robotTask;
+
+      this.robotTasks.forEach(task=>{
+        this.robotTasks = this.robotTasks.filter(item => item.id === task.id);
+      })
+    }
+    )
+  }
+
 
   rotateIcon(elementID: string): void {
     document.getElementById(elementID).classList.toggle('down');

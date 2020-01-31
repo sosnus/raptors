@@ -14,7 +14,15 @@ export class RobotModel {
   batteryType: BatteryType;
 
 
-  constructor(name: string, maxLiftingCapacity: string, maxVelocity: string, length: string, width: string, height: string, turningRadius: string, propulsionType: PropulsionType, batteryType: BatteryType) {
+  constructor(name: string = '',
+              maxLiftingCapacity: string ='',
+              maxVelocity: string = '',
+              length: string = '',
+              width: string = '',
+              height: string = '',
+              turningRadius: string = '',
+              propulsionType: PropulsionType = new PropulsionType(),
+              batteryType: BatteryType = new BatteryType()) {
     this.name = name;
     this.maxLiftingCapacity = maxLiftingCapacity;
     this.maxVelocity = maxVelocity;

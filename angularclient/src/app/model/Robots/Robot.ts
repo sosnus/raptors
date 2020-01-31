@@ -16,7 +16,15 @@ export class Robot{
   status: RobotStatus[];
   timestamp: string;
 
-  constructor(robotIp: string, available: boolean, extraRobotElement: ExtraRobotElement, model: RobotModel, battery: RobotBattery, pose: Pose, batteryLevel: number, status: RobotStatus[], timestamp: string) {
+  constructor(robotIp: string = '',
+              available: boolean = false,
+              extraRobotElement: ExtraRobotElement = new ExtraRobotElement(),
+              model: RobotModel = new RobotModel(),
+              battery: RobotBattery = new RobotBattery(),
+              pose: Pose = new Pose(),
+              batteryLevel: number = 0,
+              status: RobotStatus[] = [],
+              timestamp: string = '') {
     this.robotIp = robotIp;
     this.available = available;
     this.extraRobotElement = extraRobotElement;

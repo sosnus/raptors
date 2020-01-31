@@ -55,6 +55,9 @@ import {CorridorListComponent} from "./components/map/corridors/corridor-list/co
 import {MovementPathListComponent} from "./components/map/movement-path/movement-path-list/movement-path-list.component";
 import { AccessForbiddenComponent } from './components/access-forbidden/access-forbidden.component';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { RobotPanelComponent } from './components/robotpanel/robot-panel.component';
+import { RobotDetailsComponent } from './components/robotpanel/robot-details/robot-details.component';
+import {MapScaledComponent} from "./components/robotpanel/map-scaled/map-scaled.component";
 
 
 const config: InputFileConfig = {};
@@ -97,6 +100,9 @@ const config: InputFileConfig = {};
     CorridorListComponent,
     MovementPathListComponent,
     AccessForbiddenComponent,
+    RobotPanelComponent,
+    RobotDetailsComponent,
+    MapScaledComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ import {CorridorsComponent} from "./components/map/corridors/corridors.component
 import {TaskpanelComponent} from "./components/taskpanel/taskpanel.component";
 import {AuthGuard} from "./services/auth.guard";
 import {AccessForbiddenComponent} from "./components/access-forbidden/access-forbidden.component";
+import {RobotPanelComponent} from "./components/robotpanel/robot-panel.component";
 
 
 const routes: Routes = [
@@ -19,6 +20,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: {rolesIDs: ['ROLE_ADMIN','ROLE_REGULAR_USER','ROLE_SUPER_USER','ROLE_SERVICEMAN']},
   },
+  {path: '', component: HomeComponent},
+  {path: 'robotpanel/:id', component: RobotPanelComponent},
   {path: 'graphcreator', component: GraphcreatorComponent},
   {path: 'polygons', component: PolygonsComponent},
   {path: 'mapupload', component: MapUploadComponent},

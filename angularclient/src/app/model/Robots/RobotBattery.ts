@@ -4,7 +4,7 @@ export class RobotBattery{
   name: string;
   type: BatteryType;
 
-  constructor(name: string, type: BatteryType) {
+  constructor(name: string = '', type: BatteryType = new BatteryType()) {
     this.name = name;
     this.type = type;
   }
