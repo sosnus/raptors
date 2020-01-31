@@ -286,12 +286,14 @@ export class MapComponent implements OnInit {
   }
 
   private drawPolygon(polygon: Polygon) {
+
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
       existingPolygonpoints.push(pointPosition);
+
     });
-    let polygonik = L.polygon(existingPolygonpoints, {color: 'red'});
+    let polygonik = L.polygon(existingPolygonpoints, {color: polygon.type.color});
     polygonik.addTo(this.polygons);
   }
 

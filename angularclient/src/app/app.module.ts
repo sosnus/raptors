@@ -101,7 +101,6 @@ const config: InputFileConfig = {};
     RobotPanelComponent,
     RobotDetailsComponent,
     MapScaledComponent,
-
   ],
   imports: [
     BrowserModule,
