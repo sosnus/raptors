@@ -90,18 +90,14 @@ export class MapComponent implements OnInit {
 
 
   //filters for the map
-  private robotStatus = {
+  private overlays = {
     Online: this.robotStatusLayer,
     Grafy: this.graphs,
     Obszary: this.polygons,
-    Stanowiska: this.standLayer,
     Ścieżki: this.movementPaths,
+    Korytarze: this.corridors,
+    Stanowiska: this.standLayer
   };
-  // private standsLayer = {Stanowiska: this.standLayer}
-  // private areaLayer = {Obszary: this.polygons}
-  // private graphLayer = {Grafy: this.graphs};
-  // private onlineLayer = {Online: this.robotStatusLayer};
-  private corridorLayer = {Korytarze: this.corridors,};
 
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
@@ -153,7 +149,7 @@ export class MapComponent implements OnInit {
       map.setView([400, 400], 0);
     }).addTo(this.map);
     this.map.fitBounds(imageBounds);
-    L.control.layers(this.robotStatus, this.corridorLayer).addTo(this.map);
+    L.control.layers({}, this.overlays).addTo(this.map);
   }
 
   private afterMapLoaded(data: String) {
