@@ -293,7 +293,9 @@ export class MapComponent implements OnInit {
       existingPolygonpoints.push(pointPosition);
 
     });
-    let polygonik = L.polygon(existingPolygonpoints, {color: polygon.type.color});
+    let polygonik = L.polygon(existingPolygonpoints, {color: polygon.type.color}).bindTooltip(polygon.type.name, {
+      sticky: true // If true, the tooltip will follow the mouse instead of being fixed at the feature center.
+    });
     polygonik.addTo(this.polygons);
   }
 
