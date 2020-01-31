@@ -1,17 +1,23 @@
 <div class="inline-container">
   <div class="map">
-    <form class="form" #standForm="ngForm" (ngSubmit)="saveMovementPath()">
-      <div class="md-form">
-        <input type="text" id="inputName" class="form-control form-control-lg" required [(ngModel)]="name"
-               name="name">
-        <label for="inputName" [class.active]="name && name.length > 0">Nazwa ścieżki</label>
+    <form class="form" #pathForm="ngForm" (ngSubmit)="saveMovementPath()">
+      <div class="row">
+        <div class="md-form">
+          <input type="text" id="inputName" class="form-control form-control-lg" required [(ngModel)]="name"
+                 name="name">
+          <label for="inputName" [class.active]="name && name.length > 0">Nazwa ścieżki</label>
+        </div>
+        <div class="md-form">
+          <button type="button" class="btn btn-light" (click)="cancelMovementPath()"><i
+            class="far fa-window-close"></i> Anuluj
+          </button>
+        </div>
+        <div class="md-form">
+          <button type="submit" class="btn btn-light" [disabled]="!pathForm.form.valid"><i
+            class="far fa-save"></i>Zapisz
+          </button>
+        </div>
       </div>
-      <button type="submit" class="btn btn-light switch-container"><i
-        class="far fa-save"></i>Zapisz
-      </button>
-      <button type="button" class="btn btn-light switch-container" (click)="cancelMovementPath()"><i
-        class="far fa-window-close"></i> Anuluj
-      </button>
     </form>
     <div class="map-container">
       <div class="map-frame">

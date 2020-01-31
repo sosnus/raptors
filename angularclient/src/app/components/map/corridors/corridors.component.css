@@ -18,5 +18,18 @@
 .list{
   display: inline-block;
   padding-left: 1rem;
-  padding-top: 3.9rem;
+
+}
+
+.md-form{
+  width: 50%;
+}
+.md-form-50{
+  width: 45%;
+}
+.row{
+  margin: 0;
+}
+.mat-form-field {
+  width: 98%;
 }

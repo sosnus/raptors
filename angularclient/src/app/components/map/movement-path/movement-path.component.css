@@ -20,3 +20,21 @@
   padding-left: 1rem;
   padding-top: 3.9rem;
 }
+.md-form{
+  width: 33%;
+}
+
+.btn-save{
+  margin: auto;
+  margin-bottom: 3rem;
+}
+
+.btn{
+  margin: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.btn-light{
+  margin: 10px 0 0 5px;
+  width: 16rem;
+}

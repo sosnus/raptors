@@ -17,7 +17,7 @@ import {Orientation} from "../../../model/Stand/Orientation";
 })
 export class MovementPathComponent implements OnInit {
 
-  dataLoaded = false;//todo ines
+  dataLoaded = false;
   private imageResolution;
   private map;
   private mapResolution = 0.01;//TODO()
@@ -105,6 +105,15 @@ export class MovementPathComponent implements OnInit {
   }
 
   saveMovementPath() {
+    if (this.polyline == null) {
+      alert("Nie wybrano żadnych punktów!");
+      return;
+    }
+    if(this.polyline.getLatLngs().length<2){
+      alert("Zdefiniowano za mało punktów!");
+      return;
+    }
+
     let universalPoints: UniversalPoint[] = [];
     this.polyline.getLatLngs().forEach(lang => {
       let universalPoint: UniversalPoint = new UniversalPoint(
@@ -117,24 +126,23 @@ export class MovementPathComponent implements OnInit {
     let movementPath = new MovementPath(this.pathID, this.name, universalPoints);
     this.movementPathService.save(movementPath).subscribe(result => {
       if (result.id != null) {
-        this.toast.success('Ścieżka zapisana w bazie')
+        this.toast.success('Ścieżka zapisana w bazie');
+        this.cancelMovementPath();
       } else {
-        this.toast.error('Nie udało się zapisać do bazy')
+        this.toast.error('Nie udało się zapisać do bazy');
       }
     });
-    this.cancelMovementPath();
+
   }
 
-  clearMap() {
+  private clearMap() {
     this.cancelMovementPath();
     this.pathID = null;
   }
 
   editExistingPath(path: MovementPath) {
-
     this.clearMap();
     if (!path) return;
-    console.log(path.name)
     this.pathID = path.id;
     this.name = path.name;
     this.polyline = new L.Polyline([]);
@@ -147,14 +155,7 @@ export class MovementPathComponent implements OnInit {
 
   }
 
-  quaternionToAxisAngle(orientation: Orientation) {
-    const halfAngle = Math.acos(orientation.x);
-    const angle = halfAngle / 0.5;
-    const sin = Math.sin(halfAngle);
-    const cos = orientation.x;
-  }
-
-  getMapCoordinates(value) {
+  private getMapCoordinates(value) {
     return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
   }
 
