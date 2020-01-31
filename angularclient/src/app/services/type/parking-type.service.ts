@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ParkingType} from "../../model/type/ParkingType";
+import {StoreService} from "../store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,9 @@ export class ParkingTypeService {
 
   private readonly parkingTypeURL: string;
 
-  constructor(private http: HttpClient) {
-    this.parkingTypeURL = 'http://localhost:8080/type/parking-types/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.parkingTypeURL = store.baseURL + '/type/parking-types/';
   }
 
   public getAll(): Observable<ParkingType[]> {

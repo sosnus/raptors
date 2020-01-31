@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Map} from '../model/Map';
+import {StoreService} from "./store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,9 @@ export class MapService {
 
   private readonly mapURL: string;
 
-  constructor(private http: HttpClient) {
-    this.mapURL = 'http://localhost:8080/movement/maps/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.mapURL = store.baseURL + '/movement/maps/';
   }
 
   public getMap(id: string): Observable<any> {
