@@ -26,6 +26,11 @@ public class VertexController {
         return vertexService.addOne(vertex);
     }
 
+    @PostMapping("/update")
+    public Vertex update(@RequestBody @Valid Vertex vertex) {
+        return vertexService.updateOne(vertex);
+    }
+
     @GetMapping("/{id}")
     public Vertex getOne(@PathVariable String id) {
         return vertexService.getOne(id);

@@ -25,6 +25,11 @@ public class CorridorController {
         return corridorService.addOne(corridor);
     }
 
+    @PostMapping("/update")
+    public Corridor update(@RequestBody @Valid Corridor corridor) {
+        return corridorService.updateOne(corridor);
+    }
+
     @GetMapping("/{id}")
     public Corridor getOne(@PathVariable String id) {
         return corridorService.getOne(id);

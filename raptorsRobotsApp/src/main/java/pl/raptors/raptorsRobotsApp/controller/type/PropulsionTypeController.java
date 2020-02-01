@@ -25,6 +25,11 @@ public class PropulsionTypeController {
         return propulsionTypeService.addOne(propulsionType);
     }
 
+    @PostMapping("/update")
+    public PropulsionType update(@RequestBody @Valid PropulsionType propulsionType) {
+        return propulsionTypeService.updateOne(propulsionType);
+    }
+
     @GetMapping("/{id}")
     public PropulsionType getOne(@PathVariable String id) {
         return propulsionTypeService.getOne(id);

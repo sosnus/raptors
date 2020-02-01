@@ -26,8 +26,13 @@ public class BehaviourController {
         return behaviourService.addOne(behaviour);
     }
 
+    @PostMapping("/update")
+    public Behaviour update(@RequestBody @Valid Behaviour behaviour) {
+        return behaviourService.updateOne(behaviour);
+    }
+
     @GetMapping("/{id}")
-        public Behaviour getOne(@PathVariable String id) {
+    public Behaviour getOne(@PathVariable String id) {
         return behaviourService.getOne(id);
     }
 

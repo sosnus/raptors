@@ -26,6 +26,11 @@ public class ExtraRobotElementController {
         return extraRobotElementService.addOne(extraRobotElement);
     }
 
+    @PostMapping("/update")
+    public ExtraRobotElement update(@RequestBody @Valid ExtraRobotElement extraRobotElement) {
+        return extraRobotElementService.updateOne(extraRobotElement);
+    }
+
     @GetMapping("/{id}")
     public ExtraRobotElement getOne(@PathVariable String id) {
         return extraRobotElementService.getOne(id);

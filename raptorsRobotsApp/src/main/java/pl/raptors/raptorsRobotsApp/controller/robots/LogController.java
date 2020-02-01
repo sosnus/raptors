@@ -27,6 +27,11 @@ public class LogController {
         return logService.addOne(log);
     }
 
+    @PostMapping("/update")
+    public Log update(@RequestBody @Valid Log log) {
+        return logService.updateOne(log);
+    }
+
     @GetMapping("/{id}")
     public Log getOne(@PathVariable String id) {
         return logService.getOne(id);

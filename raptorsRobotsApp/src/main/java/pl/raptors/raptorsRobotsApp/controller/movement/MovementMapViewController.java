@@ -15,6 +15,7 @@ import java.util.Base64;
  * Controller for movementMap.html and uploadMovementMap.html views.
  */
 
+//TODO zbędny controller - do usunięcia?
 @Controller
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(value = "/movement-view/maps", method = {RequestMethod.GET, RequestMethod.POST})

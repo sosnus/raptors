@@ -26,6 +26,11 @@ public class StandStatusController {
         return standStatusService.addOne(standStatus);
     }
 
+    @PostMapping("/update")
+    public StandStatus update(@RequestBody @Valid StandStatus standStatus) {
+        return standStatusService.updateOne(standStatus);
+    }
+
     @GetMapping("/{id}")
     public StandStatus getOne(@PathVariable String id) {
         return standStatusService.getOne(id);

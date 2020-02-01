@@ -13,29 +13,34 @@ import java.util.List;
 @RequestMapping("/movement/stands")
 public class StandController {
     @Autowired
-    StandService service;
+    StandService standService;
 
     @GetMapping("/all")
     public List<Stand> getAll() {
-        return service.getAll();
+        return standService.getAll();
     }
 
     @PostMapping("/add")
     public Stand add(@RequestBody @Valid Stand stand) {
-        return service.addOne(stand);
+        return standService.addOne(stand);
+    }
+
+    @PostMapping("/update")
+    public Stand update(@RequestBody @Valid Stand stand) {
+        return standService.updateOne(stand);
     }
 
     @GetMapping("/{id}")
     public Stand getOne(@PathVariable String id) {
-        return service.getOne(id);
+        return standService.getOne(id);
     }
 
     @DeleteMapping("/delete")
     public void delete(@RequestBody @Valid Stand stand) {
-        service.deleteOne(stand);
+        standService.deleteOne(stand);
     }
     @DeleteMapping("/delete/{id}")
     public void deleteByID(@PathVariable String id) {
-        service.deleteByID(id);
+        standService.deleteByID(id);
     }
 }

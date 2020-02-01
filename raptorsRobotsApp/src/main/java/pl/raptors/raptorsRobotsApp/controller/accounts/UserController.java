@@ -10,6 +10,7 @@ import pl.raptors.raptorsRobotsApp.service.accounts.MongoUserDetailsService;
 import pl.raptors.raptorsRobotsApp.service.accounts.RoleService;
 import pl.raptors.raptorsRobotsApp.service.accounts.UserService;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,10 @@ public class UserController {
         }
     }
 
+    @PostMapping("/update")
+    public User update(@RequestBody @Valid User user) {
+        return userService.updateOne(user);
+    }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
     @GetMapping("/all")

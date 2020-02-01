@@ -26,6 +26,11 @@ public class ReviewTypeController {
         return reviewTypeService.addOne(reviewType);
     }
 
+    @PostMapping("/update")
+    public ReviewType update(@RequestBody @Valid ReviewType reviewType) {
+        return reviewTypeService.updateOne(reviewType);
+    }
+
     @GetMapping("/{id}")
     public ReviewType getOne(@PathVariable String id) {
         return reviewTypeService.getOne(id);

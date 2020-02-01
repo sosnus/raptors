@@ -26,6 +26,11 @@ public class EdgeController {
         return edgeService.addOne(edge);
     }
 
+    @PostMapping("/update")
+    public Edge update(@RequestBody @Valid Edge edge) {
+        return edgeService.updateOne(edge);
+    }
+
     @GetMapping("/{id}")
     public Edge getOne(@PathVariable String id) {
         return edgeService.getOne(id);

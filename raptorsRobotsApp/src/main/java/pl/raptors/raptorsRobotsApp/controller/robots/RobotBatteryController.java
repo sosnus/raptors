@@ -26,6 +26,11 @@ public class RobotBatteryController {
         return robotBatteryService.addOne(robotBattery);
     }
 
+    @PostMapping("/update")
+    public RobotBattery update(@RequestBody @Valid RobotBattery robotBattery) {
+        return robotBatteryService.updateOne(robotBattery);
+    }
+
     @GetMapping("/{id}")
     public RobotBattery getOne(@PathVariable String id) {
         return robotBatteryService.getOne(id);

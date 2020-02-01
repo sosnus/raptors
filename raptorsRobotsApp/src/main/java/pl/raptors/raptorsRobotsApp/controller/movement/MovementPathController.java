@@ -25,6 +25,11 @@ public class MovementPathController {
         return movementPathService.addOne(movementPath);
     }
 
+    @PostMapping("/update")
+    public MovementPath update(@RequestBody @Valid MovementPath movementPath) {
+        return movementPathService.updateOne(movementPath);
+    }
+
     @GetMapping("/{id}")
     public MovementPath getOne(@PathVariable String id) {
         return movementPathService.getOne(id);

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementMap;
+import pl.raptors.raptorsRobotsApp.domain.movement.MovementPath;
 import pl.raptors.raptorsRobotsApp.service.movement.MovementMapService;
 import pl.raptors.raptorsRobotsApp.service.pgm.PGMIO;
 
@@ -19,38 +20,43 @@ import java.util.List;
 public class MovementMapController {
 
     @Autowired
-    MovementMapService service;
+    MovementMapService movementMapService;
 
     @GetMapping("/all")
     public List<MovementMap> getAll() {
-        return service.getAll();
+        return movementMapService.getAll();
     }
 
     @PostMapping("/add")
     public MovementMap add(@RequestBody @Valid MovementMap movementMap) {
-        return service.addOne(movementMap);
+        return movementMapService.addOne(movementMap);
+    }
+
+    @PostMapping("/update")
+    public MovementMap update(@RequestBody @Valid MovementMap movementMap) {
+        return movementMapService.updateOne(movementMap);
     }
 
     @PostMapping("/upload")
-    public MovementMap upload(@RequestParam("name") String name,  @RequestParam("mapImage") MultipartFile mapImage,  @RequestParam("yamlFile") MultipartFile yamlFile) throws IOException {
-        return  service.addMovementMap(name, mapImage, yamlFile);
+    public MovementMap upload(@RequestParam("name") String name, @RequestParam("mapImage") MultipartFile mapImage, @RequestParam("yamlFile") MultipartFile yamlFile) throws IOException {
+        return movementMapService.addMovementMap(name, mapImage, yamlFile);
     }
 
     @GetMapping("/{id}")
     public MovementMap getOne(@PathVariable String id) {
-        return service.getOne(id);
+        return movementMapService.getOne(id);
     }
 
     @GetMapping(value = "/jpg/{id}")
     public @ResponseBody
     String getImage(@PathVariable String id, HttpServletResponse response) throws IOException {
-        MovementMap map = service.getOne(id);
-        response.addHeader("map-name",map.getName());
+        MovementMap map = movementMapService.getOne(id);
+        response.addHeader("map-name", map.getName());
         return Base64.getEncoder().encodeToString(PGMIO.pgm2jpg(map.getMapImage().getData()));
     }
 
     @DeleteMapping("/delete")
     public void delete(@RequestBody @Valid MovementMap movementMap) {
-        service.deleteOne(movementMap);
+        movementMapService.deleteOne(movementMap);
     }
 }

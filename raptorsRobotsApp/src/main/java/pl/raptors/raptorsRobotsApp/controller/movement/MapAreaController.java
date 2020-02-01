@@ -13,25 +13,28 @@ import java.util.List;
 @RequestMapping("/movement/map-areas")
 public class MapAreaController {
     @Autowired
-    MapAreaService service;
+    MapAreaService mapAreaService;
 
     @GetMapping("/all")
     public List<MapArea> getAll() {
-        return service.getAll();
+        return mapAreaService.getAll();
     }
 
     @PostMapping("/add")
     public MapArea add(@RequestBody @Valid MapArea mapArea) {
-        return service.addOne(mapArea);
+        return mapAreaService.addOne(mapArea);
+    }
+
+    @PostMapping("/update")
+    public MapArea update(@RequestBody @Valid MapArea mapArea) {
+        return mapAreaService.updateOne(mapArea);
     }
 
     @GetMapping("/{id}")
     public MapArea getOne(@PathVariable String id) {
-        return service.getOne(id);
+        return mapAreaService.getOne(id);
     }
 
     @DeleteMapping("/delete")
-    public void delete(@RequestBody @Valid MapArea mapArea) {
-        service.deleteOne(mapArea);
-    }
+    public void delete(@RequestBody @Valid MapArea mapArea) { mapAreaService.deleteOne(mapArea); }
 }

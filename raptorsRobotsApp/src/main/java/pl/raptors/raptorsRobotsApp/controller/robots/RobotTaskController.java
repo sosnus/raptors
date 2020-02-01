@@ -26,6 +26,11 @@ public class RobotTaskController {
         return robotTaskService.addOne(robotTask);
     }
 
+    @PostMapping("/update")
+    public RobotTask update(@RequestBody @Valid RobotTask robotTask) {
+        return robotTaskService.updateOne(robotTask);
+    }
+
     @GetMapping("/{id}")
     public RobotTask getOne(@PathVariable String id) {
         return robotTaskService.getOne(id);

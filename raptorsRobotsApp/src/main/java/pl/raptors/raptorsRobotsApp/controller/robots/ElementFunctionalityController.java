@@ -26,6 +26,11 @@ public class ElementFunctionalityController {
         return elementFunctionalityService.addOne(elementFunctionality);
     }
 
+    @PostMapping("/update")
+    public ElementFunctionality update(@RequestBody @Valid ElementFunctionality elementFunctionality) {
+        return elementFunctionalityService.updateOne(elementFunctionality);
+    }
+
     @GetMapping("/{id}")
     public ElementFunctionality getOne(@PathVariable String id) {
         return elementFunctionalityService.getOne(id);

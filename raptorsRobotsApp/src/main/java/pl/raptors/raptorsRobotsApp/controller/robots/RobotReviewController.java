@@ -26,6 +26,11 @@ public class RobotReviewController {
         return robotReviewService.addOne(robotReview);
     }
 
+    @PostMapping("/update")
+    public RobotReview update(@RequestBody @Valid RobotReview robotReview) {
+        return robotReviewService.updateOne(robotReview);
+    }
+
     @GetMapping("/{id}")
     public RobotReview getOne(@PathVariable String id) {
         return robotReviewService.getOne(id);

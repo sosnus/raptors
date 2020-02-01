@@ -27,6 +27,11 @@ public class TaskPriorityController {
         return taskPriorityService.addOne(taskPriority);
     }
 
+    @PostMapping("/update")
+    public TaskPriority update(@RequestBody @Valid TaskPriority taskPriority) {
+        return taskPriorityService.updateOne(taskPriority);
+    }
+
     @GetMapping("/{id}")
     public TaskPriority getOne(@PathVariable String id) {
         return taskPriorityService.getOne(id);

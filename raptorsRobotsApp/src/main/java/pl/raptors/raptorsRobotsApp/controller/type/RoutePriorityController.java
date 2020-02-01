@@ -26,6 +26,11 @@ public class RoutePriorityController {
         return routePriorityService.addOne(routePriority);
     }
 
+    @PostMapping("/update")
+    public RoutePriority update(@RequestBody @Valid RoutePriority routePriority) {
+        return routePriorityService.updateOne(routePriority);
+    }
+
     @GetMapping("/{id}")
     public RoutePriority getOne(@PathVariable String id) {
         return routePriorityService.getOne(id);

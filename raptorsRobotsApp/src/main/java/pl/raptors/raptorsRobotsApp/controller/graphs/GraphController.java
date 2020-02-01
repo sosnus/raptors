@@ -27,6 +27,11 @@ public class GraphController {
         return graphService.addOne(graph);
     }
 
+    @PostMapping("/update")
+    public Graph update(@RequestBody @Valid Graph graph) {
+        return graphService.updateOne(graph);
+    }
+
     @GetMapping("/{id}")
     public Graph getOne(@PathVariable String id) {
         return graphService.getOne(id);
