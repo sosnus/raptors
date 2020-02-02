@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
 import {AuthService} from "../../services/auth.service";
-import {User} from "../../model/User/User";
 import {Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-login',
@@ -15,7 +14,8 @@ export class LoginComponent implements OnInit {
   password: string = '';
 
   constructor(private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private toast: ToastrService) {
   }
 
   ngOnInit() {
@@ -29,10 +29,12 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('userData', btoa(JSON.stringify(rolesNames)));
         this.router.navigate(['']);
         //alert("Logged");
+        this.toast.success("Zalogowano poprawnie")
       } else {
-        alert("Authentication failed.")
+        this.toast.error("Błąd uwierzytelnienia")
       }
-    });
+    },error => this.toast.error("Niepoprawne dane logowania")
+    );
   }
 
 }
