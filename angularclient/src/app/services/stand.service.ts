@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Graph} from "../model/Graphs/Graph";
 import {Stand} from "../model/Stand/Stand";
+import {StoreService} from "./store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,9 @@ export class StandService {
 
   private readonly standURL: string;
 
-  constructor(private http: HttpClient) {
-    this.standURL = 'http://localhost:8080/movement/stands/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.standURL = store.baseURL + '/movement/stands/';
   }
 
   public getStand(id: string): Observable<Stand> {
@@ -37,6 +38,6 @@ export class StandService {
         'Authorization': 'Basic ' + sessionStorage.getItem('token',)
       })
     };
-    return this.http.delete(this.standURL + 'delete/'+id, httpOptions);
+    return this.http.delete(this.standURL + 'delete/' + id, httpOptions);
   }
 }

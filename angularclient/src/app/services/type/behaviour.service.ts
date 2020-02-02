@@ -2,6 +2,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Behaviour} from "../../model/Robots/Behaviour";
+import {StoreService} from "../store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,9 @@ export class BehaviourService {
 
   private readonly behaviourURL: string;
 
-  constructor(private http: HttpClient) {
-    this.behaviourURL = 'http://localhost:8080/robots/behaviours/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.behaviourURL = store.baseURL + '/robots/behaviours/';
   }
 
   public getByID(id: string): Observable<Behaviour> {

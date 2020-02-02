@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {RobotTask} from "../model/Robots/RobotTask";
+import {StoreService} from "./store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,9 @@ import {RobotTask} from "../model/Robots/RobotTask";
 export class RobotTaskService {
   private readonlyrobotTaskURL: string;
 
-  constructor(private http: HttpClient) {
-    this.readonlyrobotTaskURL = 'http://localhost:8080/robots/tasks/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.readonlyrobotTaskURL = store.baseURL + '/robots/tasks/';
   }
 
   public getRobotTasks(): Observable<RobotTask[]> {

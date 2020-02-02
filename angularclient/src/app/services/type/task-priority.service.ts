@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {TaskPriority} from "../../model/type/TaskPriority";
+import {StoreService} from "../store.service";
 
 
 @Injectable({
@@ -11,8 +12,9 @@ export class TaskPriorityService {
 
   private readonly taskPriorityURL: string;
 
-  constructor(private http: HttpClient) {
-    this.taskPriorityURL = 'http://localhost:8080/type/task-priorities/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.taskPriorityURL = store.baseURL + '/type/task-priorities/';
   }
 
   public getAll(): Observable<TaskPriority[]> {

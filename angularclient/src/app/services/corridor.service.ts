@@ -2,6 +2,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Corridor} from "../model/MapAreas/Corridors/Corridor";
 import {Observable} from "rxjs";
+import {StoreService} from "./store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,9 @@ import {Observable} from "rxjs";
 export class CorridorService {
   private readonly corridorURL: string;
 
-  constructor(private http: HttpClient) {
-    this.corridorURL = 'http://localhost:8080/movement/corridors/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.corridorURL = store.baseURL + '/movement/corridors/';
   }
 
   public getCorridors(): Observable<Corridor[]> {
@@ -34,6 +36,6 @@ export class CorridorService {
         'Authorization': 'Basic ' + sessionStorage.getItem('token',)
       })
     };
-    return this.http.delete(this.corridorURL + 'delete/'+id, httpOptions);
+    return this.http.delete(this.corridorURL + 'delete/' + id, httpOptions);
   }
 }

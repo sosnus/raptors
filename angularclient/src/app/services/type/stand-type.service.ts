@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {StandType} from "../../model/type/StandType";
+import {StoreService} from "../store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,9 @@ export class StandTypeService {
 
   private readonly standTypeURL: string;
 
-  constructor(private http: HttpClient) {
-    this.standTypeURL = 'http://localhost:8080/type/stand-types/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.standTypeURL = store.baseURL + '/type/stand-types/';
   }
 
   public getByID(id: string): Observable<StandType> {
