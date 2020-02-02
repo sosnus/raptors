@@ -23,7 +23,11 @@ public class RobotBatteryController {
 
     @PostMapping("/add")
     public RobotBattery add(@RequestBody @Valid RobotBattery robotBattery) {
-        return robotBatteryService.addOne(robotBattery);
+        if (robotBattery.getId() != null) {
+            return robotBatteryService.updateOne(robotBattery);
+        } else {
+            return robotBatteryService.addOne(robotBattery);
+        }
     }
 
     @PostMapping("/update")

@@ -22,7 +22,11 @@ public class CorridorController {
 
     @PostMapping("/add")
     public Corridor add(@RequestBody @Valid Corridor corridor) {
-        return corridorService.addOne(corridor);
+        if (corridor.getId() != null) {
+            return corridorService.updateOne(corridor);
+        } else {
+            return corridorService.addOne(corridor);
+        }
     }
 
     @PostMapping("/update")

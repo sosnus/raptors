@@ -34,7 +34,11 @@ public class MovementMapController {
 
     @PostMapping("/update")
     public MovementMap update(@RequestBody @Valid MovementMap movementMap) {
-        return movementMapService.updateOne(movementMap);
+        if (movementMap.getId() != null) {
+            return movementMapService.updateOne(movementMap);
+        } else {
+            return movementMapService.addOne(movementMap);
+        }
     }
 
     @PostMapping("/upload")

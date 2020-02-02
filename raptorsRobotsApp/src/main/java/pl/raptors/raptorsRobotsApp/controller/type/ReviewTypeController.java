@@ -23,7 +23,11 @@ public class ReviewTypeController {
 
     @PostMapping("/add")
     public ReviewType add(@RequestBody @Valid ReviewType reviewType) {
-        return reviewTypeService.addOne(reviewType);
+        if (reviewType.getId() != null) {
+            return reviewTypeService.updateOne(reviewType);
+        } else {
+            return reviewTypeService.addOne(reviewType);
+        }
     }
 
     @PostMapping("/update")

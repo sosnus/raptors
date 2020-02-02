@@ -22,7 +22,11 @@ public class PropulsionTypeController {
 
     @PostMapping("/add")
     public PropulsionType add(@RequestBody @Valid PropulsionType propulsionType) {
-        return propulsionTypeService.addOne(propulsionType);
+        if (propulsionType.getId() != null) {
+            return propulsionTypeService.updateOne(propulsionType);
+        } else {
+            return propulsionTypeService.addOne(propulsionType);
+        }
     }
 
     @PostMapping("/update")

@@ -23,7 +23,11 @@ public class RobotReviewController {
 
     @PostMapping("/add")
     public RobotReview add(@RequestBody @Valid RobotReview robotReview) {
-        return robotReviewService.addOne(robotReview);
+        if (robotReview.getId() != null) {
+            return robotReviewService.updateOne(robotReview);
+        } else {
+            return robotReviewService.addOne(robotReview);
+        }
     }
 
     @PostMapping("/update")

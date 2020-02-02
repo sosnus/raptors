@@ -23,7 +23,11 @@ public class BehaviourController {
 
     @PostMapping("/add")
     public Behaviour add(@RequestBody @Valid Behaviour behaviour) {
-        return behaviourService.addOne(behaviour);
+        if (behaviour.getId() != null) {
+            return behaviourService.updateOne(behaviour);
+        } else {
+            return behaviourService.addOne(behaviour);
+        }
     }
 
     @PostMapping("/update")

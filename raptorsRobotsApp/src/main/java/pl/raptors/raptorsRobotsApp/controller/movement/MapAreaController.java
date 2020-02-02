@@ -22,7 +22,11 @@ public class MapAreaController {
 
     @PostMapping("/add")
     public MapArea add(@RequestBody @Valid MapArea mapArea) {
-        return mapAreaService.addOne(mapArea);
+        if (mapArea.getId() != null) {
+            return mapAreaService.updateOne(mapArea);
+        } else {
+            return mapAreaService.addOne(mapArea);
+        }
     }
 
     @PostMapping("/update")

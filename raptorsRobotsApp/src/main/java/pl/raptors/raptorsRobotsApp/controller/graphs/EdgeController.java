@@ -23,7 +23,11 @@ public class EdgeController {
 
     @PostMapping("/add")
     public Edge add(@RequestBody @Valid Edge edge) {
-        return edgeService.addOne(edge);
+        if (edge.getId() != null) {
+            return edgeService.updateOne(edge);
+        } else {
+            return edgeService.addOne(edge);
+        }
     }
 
     @PostMapping("/update")

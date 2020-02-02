@@ -23,7 +23,11 @@ public class RobotTaskController {
 
     @PostMapping("/add")
     public RobotTask add(@RequestBody @Valid RobotTask robotTask) {
-        return robotTaskService.addOne(robotTask);
+        if (robotTask.getId() != null) {
+            return robotTaskService.updateOne(robotTask);
+        } else {
+            return robotTaskService.addOne(robotTask);
+        }
     }
 
     @PostMapping("/update")

@@ -23,7 +23,11 @@ public class RoutePriorityController {
 
     @PostMapping("/add")
     public RoutePriority add(@RequestBody @Valid RoutePriority routePriority) {
-        return routePriorityService.addOne(routePriority);
+        if (routePriority.getId() != null) {
+            return routePriorityService.updateOne(routePriority);
+        } else {
+            return routePriorityService.addOne(routePriority);
+        }
     }
 
     @PostMapping("/update")

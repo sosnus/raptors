@@ -22,11 +22,16 @@ public class AreaTypeController {
 
     @PostMapping("/add")
     public AreaType add(@RequestBody @Valid AreaType areaType) {
-        return areaTypeService.addOne(areaType);
+        if (areaType.getId() != null) {
+            return areaTypeService.updateOne(areaType);
+        } else {
+            return areaTypeService.addOne(areaType);
+        }
     }
 
     @PostMapping("/update")
-    public AreaType update(@RequestBody @Valid AreaType areaType) { return areaTypeService.updateOne(areaType);
+    public AreaType update(@RequestBody @Valid AreaType areaType) {
+        return areaTypeService.updateOne(areaType);
     }
 
     @GetMapping("/{id}")

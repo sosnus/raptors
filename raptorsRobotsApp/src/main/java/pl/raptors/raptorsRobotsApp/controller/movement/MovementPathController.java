@@ -22,7 +22,11 @@ public class MovementPathController {
 
     @PostMapping("/add")
     public MovementPath add(@RequestBody @Valid MovementPath movementPath) {
-        return movementPathService.addOne(movementPath);
+        if (movementPath.getId() != null) {
+            return movementPathService.updateOne(movementPath);
+        } else {
+            return movementPathService.addOne(movementPath);
+        }
     }
 
     @PostMapping("/update")

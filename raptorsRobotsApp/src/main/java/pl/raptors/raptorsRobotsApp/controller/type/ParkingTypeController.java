@@ -23,7 +23,11 @@ public class ParkingTypeController {
 
     @PostMapping("/add")
     public ParkingType add(@RequestBody @Valid ParkingType parkingType) {
-        return parkingTypeService.addOne(parkingType);
+        if (parkingType.getId() != null) {
+            return parkingTypeService.updateOne(parkingType);
+        } else {
+            return parkingTypeService.addOne(parkingType);
+        }
     }
 
     @PostMapping("/update")

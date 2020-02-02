@@ -23,7 +23,11 @@ public class ElementFunctionalityController {
 
     @PostMapping("/add")
     public ElementFunctionality add(@RequestBody @Valid ElementFunctionality elementFunctionality) {
-        return elementFunctionalityService.addOne(elementFunctionality);
+        if (elementFunctionality.getId() != null) {
+            return elementFunctionalityService.updateOne(elementFunctionality);
+        } else {
+            return elementFunctionalityService.addOne(elementFunctionality);
+        }
     }
 
     @PostMapping("/update")

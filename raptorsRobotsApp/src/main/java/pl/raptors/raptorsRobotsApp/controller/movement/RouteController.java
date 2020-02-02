@@ -23,7 +23,11 @@ public class RouteController {
 
     @PostMapping("/add")
     public Route add(@RequestBody @Valid Route route) {
-        return routeService.addOne(route);
+        if (route.getId() != null) {
+            return routeService.updateOne(route);
+        } else {
+            return routeService.addOne(route);
+        }
     }
 
     @PostMapping("/update")

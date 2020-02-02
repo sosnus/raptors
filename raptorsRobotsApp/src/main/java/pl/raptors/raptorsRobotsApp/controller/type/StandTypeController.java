@@ -30,7 +30,11 @@ public class StandTypeController {
 
     @PostMapping("/add")
     public StandType add(@RequestBody @Valid StandType standType) {
-        return standTypeService.addOne(standType);
+        if (standType.getId() != null) {
+            return standTypeService.updateOne(standType);
+        } else {
+            return standTypeService.addOne(standType);
+        }
     }
 
     @PostMapping("/update")

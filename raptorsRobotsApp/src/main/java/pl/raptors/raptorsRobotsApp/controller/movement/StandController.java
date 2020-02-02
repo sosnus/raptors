@@ -22,7 +22,11 @@ public class StandController {
 
     @PostMapping("/add")
     public Stand add(@RequestBody @Valid Stand stand) {
-        return standService.addOne(stand);
+        if (stand.getId() != null) {
+            return standService.updateOne(stand);
+        } else {
+            return standService.addOne(stand);
+        }
     }
 
     @PostMapping("/update")

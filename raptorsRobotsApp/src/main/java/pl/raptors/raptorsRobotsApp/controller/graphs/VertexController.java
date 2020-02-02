@@ -23,7 +23,11 @@ public class VertexController {
 
     @PostMapping("/add")
     public Vertex add(@RequestBody @Valid Vertex vertex) {
-        return vertexService.addOne(vertex);
+        if (vertex.getId() != null) {
+            return vertexService.updateOne(vertex);
+        } else {
+            return vertexService.addOne(vertex);
+        }
     }
 
     @PostMapping("/update")
