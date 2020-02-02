@@ -1,0 +1,49 @@
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+
+<a *ngIf="elementFunctionalities.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+
+<div *ngIf="elementFunctionalities.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nazwa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let type of elementFunctionalities;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{type.name}}</td>
+      <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" [attr.data-target]="'#' + modalID"
+                (click)="edit(type)">Edytuj
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID + 'Confirm'"
+                (click)="elementFunctionality=type">Usuń
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(elementFunctionality)"></app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Tworzenie nowej funckjonalności elementu'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="elementFunctionalityName" class="form-control validate" required [(ngModel)]="elementFunctionality.name" name="name">
+      <label for="elementFunctionalityName" [class.active]="elementFunctionality.name && elementFunctionality.name.length > 0">Nazwa funkcjonalności</label>
+    </div>
+  </form>
+</app-form-modal-template>
