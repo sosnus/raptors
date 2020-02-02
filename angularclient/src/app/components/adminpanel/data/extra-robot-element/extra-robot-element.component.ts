@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {ToastrService} from "ngx-toastr";
 import {ExtraRobotElement} from "../../../../model/Robots/ExtraRobotElement";
 import {ExtraRobotElementService} from "../../../../services/type/exra-robot-element.service";
+import {ElementFunctionality} from "../../../../model/Robots/ElementFunctionality";
+import {ElementFunctionalityService} from "../../../../services/type/element-functionality.service";
+import {Behaviour} from "../../../../model/Robots/Behaviour";
 
 @Component({
   selector: 'app-extra-robot-element',
@@ -11,20 +14,38 @@ import {ExtraRobotElementService} from "../../../../services/type/exra-robot-ele
 export class ExtraRobotElementComponent implements OnInit {
 
   extraRobotElements: ExtraRobotElement[]=[];
+
   extraRobotElement: ExtraRobotElement=new ExtraRobotElement(null, null);
   modalID="extraRobotElementModal";
 
-  constructor(private extraRobotElementService: ExtraRobotElementService, private toastr: ToastrService) {
+  selectedFunctionality: string;
+  elementFunctionalities: ElementFunctionality[] = [];
+  elementFunctionality: ElementFunctionality = new ElementFunctionality(null);
+
+
+  constructor(private extraRobotElementService: ExtraRobotElementService,
+              private elementFunctionalityService: ElementFunctionalityService,
+              private toastr: ToastrService) {
+    this.extraRobotElement.functionalityList = new Array<Behaviour>();
   }
 
   ngOnInit() {
     this.getExtraRobotElements();
+    this.getElementFunctionalities();
   }
 
   getExtraRobotElements(){
     this.extraRobotElementService.getAll().subscribe(
       data=>this.extraRobotElements=data
     )
+  }
+
+  getElementFunctionalities(){
+    this.elementFunctionalityService.getAll().subscribe(
+      functionalities => {
+        this.elementFunctionalities = functionalities;
+      }
+    );
   }
 
   reset(){
@@ -70,5 +91,15 @@ export class ExtraRobotElementComponent implements OnInit {
     )
   }
 
+  selectFunctionalities(id: string) {
+    console.log(id);
+    this.selectedFunctionality = id;
+    this.elementFunctionalities.forEach(functionality=>{
+      if(functionality.id === this.selectedFunctionality){
+        console.log("test: " + functionality.name);
+        this.extraRobotElement.functionalityList.push(functionality);
+      }
+    });
+  }
 
 }
