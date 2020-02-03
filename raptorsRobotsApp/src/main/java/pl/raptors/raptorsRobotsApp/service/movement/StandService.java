@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.service.movement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
 import pl.raptors.raptorsRobotsApp.domain.movement.Stand;
@@ -13,7 +14,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import java.util.List;
 import java.util.Optional;
 
-//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+
 @Service
 public class StandService implements CRUDService<Stand> {
 

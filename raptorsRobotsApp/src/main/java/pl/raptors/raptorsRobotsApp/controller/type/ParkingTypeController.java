@@ -15,6 +15,7 @@ public class ParkingTypeController {
 
     @Autowired
     ParkingTypeService parkingTypeService;
+
     @GetMapping("/all")
     public List<ParkingType> getAll() {
         return parkingTypeService.getAll();
@@ -22,7 +23,16 @@ public class ParkingTypeController {
 
     @PostMapping("/add")
     public ParkingType add(@RequestBody @Valid ParkingType parkingType) {
-        return parkingTypeService.addOne(parkingType);
+        if (parkingType.getId() != null) {
+            return parkingTypeService.updateOne(parkingType);
+        } else {
+            return parkingTypeService.addOne(parkingType);
+        }
+    }
+
+    @PostMapping("/update")
+    public ParkingType update(@RequestBody @Valid ParkingType parkingType) {
+        return parkingTypeService.updateOne(parkingType);
     }
 
     @GetMapping("/{id}")

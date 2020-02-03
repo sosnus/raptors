@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PropulsionType} from "../../model/type/PropulsionType";
+import {StoreService} from "../store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,9 @@ export class PropulsionTypeService {
 
   private readonly propulsionTypeURL: string;
 
-  constructor(private http: HttpClient) {
-    this.propulsionTypeURL = 'http://localhost:8080/type/propulsion-types/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.propulsionTypeURL = store.baseURL + '/type/propulsion-types/';
   }
 
   public getAll(): Observable<PropulsionType[]> {

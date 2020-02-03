@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { Robot } from '../model/Robots/Robot';
-import {Polygon} from "../model/MapAreas/Polygons/Polygon";
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {Robot} from '../model/Robots/Robot';
+import {StoreService} from "./store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,9 @@ export class RobotService {
 
   private readonly robotIP: string;
 
-  constructor(private http: HttpClient) {
-    this.robotIP = 'http://localhost:8080//robots/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.robotIP = store.baseURL + '/robots/';
   }
 
   public getRobots(): Observable<Robot[]> {

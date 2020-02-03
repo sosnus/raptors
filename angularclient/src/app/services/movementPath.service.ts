@@ -2,6 +2,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {MovementPath} from "../model/MapAreas/MovementPaths/MovementPath";
 import {Injectable} from "@angular/core";
+import {StoreService} from "./store.service";
 
 
 @Injectable({
@@ -10,8 +11,9 @@ import {Injectable} from "@angular/core";
 export class MovementPathService {
   private readonly movementPathURL: string;
 
-  constructor(private http: HttpClient) {
-    this.movementPathURL = 'http://localhost:8080/movement/movement-paths/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.movementPathURL = store.baseURL + '/movement/movement-paths/';
   }
 
   public getMovementPaths(): Observable<MovementPath[]> {
@@ -35,7 +37,7 @@ export class MovementPathService {
         'Authorization': 'Basic ' + sessionStorage.getItem('token',)
       })
     };
-    return this.http.delete(this.movementPathURL + 'delete/'+id, httpOptions);
+    return this.http.delete(this.movementPathURL + 'delete/' + id, httpOptions);
   }
 
 }

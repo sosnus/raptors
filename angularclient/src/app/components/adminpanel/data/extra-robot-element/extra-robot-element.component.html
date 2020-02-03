@@ -1,0 +1,58 @@
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+
+<a *ngIf="extraRobotElements.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+
+<div *ngIf="extraRobotElements.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nazwa</th>
+      <th scope="col">Funkcjonalności</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let type of extraRobotElements;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{type.name}}</td>
+      <h1><td *ngFor="let f of type.functionalityList">{{f.name}}</td></h1>
+    <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" [attr.data-target]="'#' + modalID"
+                (click)="edit(type)">Edytuj
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID + 'Confirm'"
+                (click)="extraRobotElement=type">Usuń
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(extraRobotElement)"></app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Tworzenie nowego dodatkowego elementu'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="extraRobotElementName" class="form-control validate" required [(ngModel)]="extraRobotElement.name" name="name">
+      <label for="extraRobotElementName" [class.active]="extraRobotElement.name && extraRobotElement.name.length > 0">Nazwa elementu</label>
+    </div>
+    <div class="md-form">
+      <select class="browser-default custom-select" (change)="selectFunctionalities($event.target.value)"
+                [(ngModel)]="selectedFunctionality"
+                [ngModelOptions]="{standalone: true}">
+      <option [value]="item.id" *ngFor="let item of elementFunctionalities">{{item.name}}</option>
+      </select>
+    </div>
+  </form>
+</app-form-modal-template>

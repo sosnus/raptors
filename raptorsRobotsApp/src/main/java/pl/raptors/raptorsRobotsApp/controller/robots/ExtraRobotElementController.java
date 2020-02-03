@@ -23,7 +23,16 @@ public class ExtraRobotElementController {
 
     @PostMapping("/add")
     public ExtraRobotElement add(@RequestBody @Valid ExtraRobotElement extraRobotElement) {
-        return extraRobotElementService.addOne(extraRobotElement);
+        if (extraRobotElement.getId() != null) {
+            return extraRobotElementService.updateOne(extraRobotElement);
+        } else {
+            return extraRobotElementService.addOne(extraRobotElement);
+        }
+    }
+
+    @PostMapping("/update")
+    public ExtraRobotElement update(@RequestBody @Valid ExtraRobotElement extraRobotElement) {
+        return extraRobotElementService.updateOne(extraRobotElement);
     }
 
     @GetMapping("/{id}")

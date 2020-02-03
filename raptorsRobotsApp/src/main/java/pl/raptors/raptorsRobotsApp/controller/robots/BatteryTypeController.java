@@ -23,7 +23,16 @@ public class BatteryTypeController {
 
     @PostMapping("/add")
     public BatteryType add(@RequestBody @Valid BatteryType batteryType) {
-        return batteryTypeService.addOne(batteryType);
+        if (batteryType.getId() != null) {
+            return batteryTypeService.updateOne(batteryType);
+        } else {
+            return batteryTypeService.addOne(batteryType);
+        }
+    }
+
+    @PostMapping("/update")
+    public BatteryType update(@RequestBody @Valid BatteryType batteryType) {
+        return batteryTypeService.updateOne(batteryType);
     }
 
     @GetMapping("/{id}")

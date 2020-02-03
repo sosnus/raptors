@@ -102,10 +102,8 @@ export class MapComponent implements OnInit {
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
   private graphID = '5e177dc681c34611534d8c79';//TODO()
-  private polygonID = '5e172dd80dc6500812feff69';//TODO()
   private mapResolution = 0.01;//TODO()
   private graph: Graph;
-  private polygon: Polygon;
   private allpolygons: Polygon[];
   private imageResolution;
 
@@ -172,13 +170,13 @@ export class MapComponent implements OnInit {
     this.imageURL = this.parseToJpeg(data);
     this.initMap();
 
-    this.storeService.getRobotIP('5dfb452fd9068433d5983610').subscribe(
+/*    this.storeService.getRobotIP('5dfb452fd9068433d5983610').subscribe(
       rob => {
         this.robotDataloaded = true;
         this.robotIP = rob;
         //console.log("Pobieram IP robota: " + this.robotIP);
       }
-    );
+    );*/
 
     this.graphService.getAll().subscribe(
       graphs => {

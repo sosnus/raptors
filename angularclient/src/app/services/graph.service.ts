@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Map} from '../model/Map';
 import {Graph} from '../model/Graphs/Graph';
-import {BatteryType} from "../model/type/BatteryType";
-import {stringify} from "querystring";
+import {StoreService} from "./store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +11,9 @@ export class GraphService {
 
   private readonly graphURL: string;
 
-  constructor(private http: HttpClient) {
-    this.graphURL = 'http://localhost:8080/graphs/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.graphURL = store.baseURL + '/graphs/';
   }
 
   public getGraph(id: string): Observable<Graph> {
@@ -47,6 +46,6 @@ export class GraphService {
         'Authorization': 'Basic ' + sessionStorage.getItem('token',)
       })
     };
-    return this.http.delete(this.graphURL + 'delete/'+id, httpOptions);
+    return this.http.delete(this.graphURL + 'delete/' + id, httpOptions);
   }
 }

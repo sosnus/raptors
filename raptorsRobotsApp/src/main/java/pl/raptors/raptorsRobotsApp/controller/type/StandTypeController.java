@@ -12,30 +12,39 @@ import java.util.List;
 @RequestMapping("/type/stand-types")
 public class StandTypeController {
 
-    private StandTypeService service;
+    private StandTypeService standTypeService;
 
     public StandTypeController(StandTypeService service) {
-        this.service = service;
+        this.standTypeService = service;
     }
 
     @GetMapping("/all")
     public List<StandType> getAll() {
-        return service.getAll();
+        return standTypeService.getAll();
     }
 
     @GetMapping("/{id}")
-    public StandType getOne(@PathVariable String id){
-        return service.getOne(id);
+    public StandType getOne(@PathVariable String id) {
+        return standTypeService.getOne(id);
     }
 
     @PostMapping("/add")
     public StandType add(@RequestBody @Valid StandType standType) {
-        return service.addOne(standType);
+        if (standType.getId() != null) {
+            return standTypeService.updateOne(standType);
+        } else {
+            return standTypeService.addOne(standType);
+        }
+    }
+
+    @PostMapping("/update")
+    public StandType update(@RequestBody @Valid StandType standType) {
+        return standTypeService.updateOne(standType);
     }
 
     @DeleteMapping("/delete")
     public void delete(@RequestBody @Valid StandType standType) {
-        service.deleteOne(standType);
+        standTypeService.deleteOne(standType);
     }
 
 }

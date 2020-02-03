@@ -24,7 +24,16 @@ public class LogController {
 
     @PostMapping("/add")
     public Log add(@RequestBody @Valid Log log) {
-        return logService.addOne(log);
+        if (log.getId() != null) {
+            return logService.updateOne(log);
+        } else {
+            return logService.addOne(log);
+        }
+    }
+
+    @PostMapping("/update")
+    public Log update(@RequestBody @Valid Log log) {
+        return logService.updateOne(log);
     }
 
     @GetMapping("/{id}")

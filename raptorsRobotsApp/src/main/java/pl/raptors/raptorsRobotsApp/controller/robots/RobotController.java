@@ -29,7 +29,16 @@ public class RobotController {
 
     @PostMapping("/add")
     public Robot add(@RequestBody @Valid Robot robot) {
-        return robotService.addOne(robot);
+        if (robot.getId() != null) {
+            return robotService.updateOne(robot);
+        } else {
+            return robotService.addOne(robot);
+        }
+    }
+
+    @PostMapping("/update")
+    public Robot update(@RequestBody @Valid Robot robot) {
+        return robotService.updateOne(robot);
     }
 
     @GetMapping("/{id}")

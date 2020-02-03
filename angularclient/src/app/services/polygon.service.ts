@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Polygon} from "../model/MapAreas/Polygons/Polygon";
+import {StoreService} from "./store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,9 @@ import {Polygon} from "../model/MapAreas/Polygons/Polygon";
 export class PolygonService {
   private readonly polygonURL: string;
 
-  constructor(private http: HttpClient) {
-    this.polygonURL = 'http://localhost:8080//movement/map-areas/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.polygonURL = store.baseURL + '/movement/map-areas/';
   }
 
   public getPolygons(): Observable<Polygon[]> {
@@ -29,7 +31,7 @@ export class PolygonService {
   }
 
   public delete(polygon: Polygon) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: polygon};
+    const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'}), body: polygon};
     return this.http.delete(this.polygonURL + 'delete', httpOptions);
   }
 

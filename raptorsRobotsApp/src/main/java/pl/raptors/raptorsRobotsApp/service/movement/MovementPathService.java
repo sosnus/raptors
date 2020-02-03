@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.service.movement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.movement.Corridor;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementPath;
@@ -10,7 +11,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
 
-//@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+
 @Service
 public class MovementPathService implements CRUDService<MovementPath> {
 

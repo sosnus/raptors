@@ -53,10 +53,13 @@ import { PolygonListComponent } from './components/map/polygons/polygon-list/pol
 import {StandListComponent} from "./components/map/stand-creator/stand-list/stand-list.component";
 import {CorridorListComponent} from "./components/map/corridors/corridor-list/corridor-list.component";
 import {MovementPathListComponent} from "./components/map/movement-path/movement-path-list/movement-path-list.component";
+import { AccessForbiddenComponent } from './components/access-forbidden/access-forbidden.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { RobotPanelComponent } from './components/robotpanel/robot-panel.component';
 import { RobotDetailsComponent } from './components/robotpanel/robot-details/robot-details.component';
 import {MapScaledComponent} from "./components/robotpanel/map-scaled/map-scaled.component";
+import { ExtraRobotElementComponent } from './components/adminpanel/data/extra-robot-element/extra-robot-element.component';
+import { ElementFunctionalityComponent } from './components/adminpanel/data/element-functionality/element-functionality.component';
 
 
 const config: InputFileConfig = {};
@@ -98,9 +101,12 @@ const config: InputFileConfig = {};
     StandListComponent,
     CorridorListComponent,
     MovementPathListComponent,
+    AccessForbiddenComponent,
     RobotPanelComponent,
     RobotDetailsComponent,
     MapScaledComponent,
+    ExtraRobotElementComponent,
+    ElementFunctionalityComponent,
   ],
   imports: [
     BrowserModule,

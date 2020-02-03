@@ -13,25 +13,28 @@
               <div class="card-body">
 
                 <!-- Header -->
-                <div class="form-header primary-color">
+                <div class="form-header red-motive">
                   <h3 class="font-weight-500 my-2 py-1"><i class="fas fa-sign-in-alt"></i> Logowanie</h3>
                 </div>
 
                 <!-- Login Form -->
                 <div class="md-form">
                   <i class="fas fa-envelope prefix grey-text d-flex"></i>
-                  <input type="email" id="email" name="email" class="form-control validate">
+                  <input type="email" id="email" name="email" class="form-control validate" [(ngModel)]="email">
                   <label for="email" class="d-flex">Identyfikator użytkownika</label>
                 </div>
 
                 <div class="md-form">
                   <i class="fas fa-lock prefix grey-text d-flex"></i>
-                  <input type="password" name="password" class="form-control validate">
+                  <input id="password" type="password" name="password" class="form-control validate"
+                         [(ngModel)]="password">
                   <label for="password" class="d-flex">Hasło</label>
                 </div>
 
                 <div class="text-center">
-                  <button class="btn primary-color white-text btn-lg">Zaloguj</button>
+                  <button class="btn red-motive white-text btn-lg" [disabled]="email.length<1||password.length<1"
+                          (click)="login() " >Zaloguj
+                  </button>
                 </div>
                 <!-- Login Form -->
 

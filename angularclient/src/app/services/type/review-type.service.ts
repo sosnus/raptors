@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ReviewType} from "../../model/type/ReviewType";
+import {StoreService} from "../store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,9 @@ export class ReviewTypeService {
 
   private readonly reviewTypeURL: string;
 
-  constructor(private http: HttpClient) {
-    this.reviewTypeURL = 'http://localhost:8080/type/review-types/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.reviewTypeURL = store.baseURL + '/type/review-types/';
   }
 
   public getByID(id: string): Observable<ReviewType> {

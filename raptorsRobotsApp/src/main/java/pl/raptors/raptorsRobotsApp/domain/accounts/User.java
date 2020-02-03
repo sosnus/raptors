@@ -15,16 +15,16 @@ public class User {
     private String id;
     private String email;
     private String password;
-    private List<Role> roles;
+    private List<String> rolesIDs;
 
     protected User() {
-        this.roles = new ArrayList<>();
+        this.rolesIDs = new ArrayList<>();
     }
 
-    public User(String email, String password, List<Role> roles) {
+    public User(String email, String password, List<String> rolesIDs) {
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.rolesIDs = rolesIDs;
     }
 }
 

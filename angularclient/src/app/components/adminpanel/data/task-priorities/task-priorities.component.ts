@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {PropulsionType} from "../../../../model/type/PropulsionType";
 import {TaskPriority} from "../../../../model/type/TaskPriority";
 import {ToastrService} from "ngx-toastr";
 import {TaskPriorityService} from "../../../../services/type/task-priority.service";

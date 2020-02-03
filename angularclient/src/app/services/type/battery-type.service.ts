@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {BatteryType} from "../../model/type/BatteryType";
+import {StoreService} from "../store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,9 @@ export class BatteryTypeService {
 
   private readonly batteryTypeURL: string;
 
-  constructor(private http: HttpClient) {
-    this.batteryTypeURL = 'http://localhost:8080/robots/battery-types/';
+  constructor(private http: HttpClient,
+              private store: StoreService) {
+    this.batteryTypeURL = store.baseURL + '/robots/battery-types/';
   }
 
   public getByID(id: string): Observable<BatteryType> {

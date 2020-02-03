@@ -23,7 +23,16 @@ public class StandStatusController {
 
     @PostMapping("/add")
     public StandStatus add(@RequestBody @Valid StandStatus standStatus) {
-        return standStatusService.addOne(standStatus);
+        if (standStatus.getId() != null) {
+            return standStatusService.updateOne(standStatus);
+        } else {
+            return standStatusService.addOne(standStatus);
+        }
+    }
+
+    @PostMapping("/update")
+    public StandStatus update(@RequestBody @Valid StandStatus standStatus) {
+        return standStatusService.updateOne(standStatus);
     }
 
     @GetMapping("/{id}")
