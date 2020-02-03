@@ -94,9 +94,9 @@ export class MapComponent implements OnInit {
     Online: this.robotStatusLayer,
     Grafy: this.graphs,
     Obszary: this.polygons,
-    Ścieżki: this.movementPaths,
     Korytarze: this.corridors,
-    Stanowiska: this.standLayer
+    Stanowiska: this.standLayer,
+    Sciezki: this.movementPaths
   };
 
   //Leaflet accepts coordinates in [y,x]
@@ -144,6 +144,21 @@ export class MapComponent implements OnInit {
     this.map = L.map('map', {
       crs: L.CRS.Simple
     });
+
+    this.map.on('overlayadd', function (eo) {
+      if (eo.name === 'Korytarze') {
+        console.log("Fired korytarze");
+      }
+      if (eo.name === 'Sciezki') {
+        this.removeLayer(eo.layer);
+        const layer = L.featureGroup();
+        Object.keys(eo.layer._layers).forEach(function (key) {
+          layer.addLayer(eo.layer._layers[key]);
+        });
+        this.addLayer(layer);
+      }
+    });
+
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
     L.easyButton('fa-crosshairs', function (btn, map) {
       map.setView([400, 400], 0);
@@ -194,7 +209,6 @@ export class MapComponent implements OnInit {
     }
     this.corridorService.getCorridors().subscribe(
       corridors => {
-        console.log(corridors)
         this.drawCorridors(corridors);
       }
     );
@@ -213,8 +227,9 @@ export class MapComponent implements OnInit {
         const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
         corridorPoints.push(pointPosition);
       })
-      let corridorPolygon = L.polygon(corridorPoints, {color: 'red'}).addTo(this.corridors);
-      console.log(corridorPolygon);
+      let corridorPolygon = L.polygon(corridorPoints, {color: 'red'}).addTo(this.corridors).bindTooltip(corridor.name, {
+        sticky: true
+      });
     })
 
   }
@@ -226,7 +241,9 @@ export class MapComponent implements OnInit {
           const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
           polylinePoints.push(pointPosition);
         })
-        new L.Polyline(polylinePoints).addTo(this.movementPaths);
+        new L.Polyline(polylinePoints).addTo(this.movementPaths).bindTooltip(path.name, {
+          sticky: true
+        });
       }
     )
   }

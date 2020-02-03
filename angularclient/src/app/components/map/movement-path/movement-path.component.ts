@@ -98,6 +98,7 @@ export class MovementPathComponent implements OnInit {
     }
     this.vertices = [];
     this.name = "";
+    this.pathID=null;
   }
 
   private getRealCoordinates(value) {
