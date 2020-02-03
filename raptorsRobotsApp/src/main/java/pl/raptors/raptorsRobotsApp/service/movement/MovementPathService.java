@@ -11,7 +11,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
 
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+
 @Service
 public class MovementPathService implements CRUDService<MovementPath> {
 

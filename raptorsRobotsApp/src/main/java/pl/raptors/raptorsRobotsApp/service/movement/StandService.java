@@ -14,7 +14,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import java.util.List;
 import java.util.Optional;
 
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+
 @Service
 public class StandService implements CRUDService<Stand> {
 

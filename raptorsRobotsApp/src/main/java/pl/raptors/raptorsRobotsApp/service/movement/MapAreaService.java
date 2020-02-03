@@ -11,7 +11,6 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
 
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class MapAreaService implements CRUDService<MapArea> {
 
