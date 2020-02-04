@@ -58,7 +58,14 @@ public class MovementPathService implements CRUDService<MovementPath> {
         movementPathRepository.delete(movementPath);
     }
 
-    public void deleteById(String id){
+    @Override
+    public void deleteAll(List<MovementPath> movementPathList) {
+        for (MovementPath movementPath : movementPathList) {
+            this.deleteOne(movementPath);
+        }
+    }
+
+    public void deleteById(String id) {
         movementPathRepository.deleteById(id);
     }
 }

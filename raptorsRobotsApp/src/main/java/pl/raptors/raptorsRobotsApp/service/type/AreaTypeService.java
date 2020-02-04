@@ -13,7 +13,8 @@ import pl.raptors.raptorsRobotsApp.service.movement.MovementMapService;
 
 import java.util.List;
 import java.util.Objects;
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
+//@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @Service
 public class AreaTypeService implements CRUDService<AreaType> {
 
@@ -59,7 +60,16 @@ public class AreaTypeService implements CRUDService<AreaType> {
     public void deleteOne(AreaType areaType) {
         AreaType areaTypeToDelete = areaTypeRepository.findByName(areaType.getName());
         if (!Objects.isNull((areaTypeToDelete))) {
+            List<MapArea> areaList = mapAreaService.getAreasByType(this.getOne(areaType.getId()));
+            mapAreaService.deleteAll(areaList);
             areaTypeRepository.delete(areaTypeToDelete);
+        }
+    }
+
+    @Override
+    public void deleteAll(List<AreaType> areaTypeList) {
+        for (AreaType areaType : areaTypeList) {
+            this.deleteOne(areaType);
         }
     }
 }

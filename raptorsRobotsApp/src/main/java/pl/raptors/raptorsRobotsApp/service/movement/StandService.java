@@ -46,6 +46,12 @@ public class StandService implements CRUDService<Stand> {
         standrepository.delete(stand);
     }
 
+    @Override
+    public void deleteAll(List<Stand> standList) {
+        for (Stand stand : standList) {
+            this.deleteOne(stand);
+        }
+    }
 
     public void deleteByID(String id) {
         Optional<Stand> standDB = standrepository.findById(id);

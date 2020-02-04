@@ -73,9 +73,16 @@ public class MovementMapService implements CRUDService<MovementMap> {
     @Override
     public void deleteOne(MovementMap movementMap) {
         List<Route> routeList = routeService.getByMap(this.getOne(movementMap.getId()));
-        for (Route route : routeList) {
-            routeService.deleteOne(route);
-        }
+        routeService.deleteAll(routeList);
+        List<MapArea> areaList = mapAreaService.getAreasByMap(this.getOne(movementMap.getId()));
+        mapAreaService.deleteAll(areaList);
         movementMapRepository.delete(movementMap);
+    }
+
+    @Override
+    public void deleteAll(List<MovementMap> movementMapList) {
+        for (MovementMap movementMap : movementMapList) {
+            this.deleteOne(movementMap);
+        }
     }
 }

@@ -20,8 +20,8 @@ public class RobotTask {
     private List<Behaviour> behaviours;
     private String startTime;
     private TaskPriority priority;
-    private  String status;
-    private  String userID;
+    private String status;
+    private String userID;
 
     public RobotTask(Robot robot, String name, List<Behaviour> behaviours, String startTime, TaskPriority priority, String status, String userID) {
         this.robot = robot;

@@ -40,4 +40,11 @@ public class LogService implements CRUDService<Log> {
     public void deleteOne(Log log) {
         logRepository.delete(log);
     }
+
+    @Override
+    public void deleteAll(List<Log> logList) {
+        for (Log log : logList) {
+            this.deleteOne(log);
+        }
+    }
 }

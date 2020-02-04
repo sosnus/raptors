@@ -9,6 +9,7 @@ import pl.raptors.raptorsRobotsApp.repository.robots.BehaviourRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
+
 @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class BehaviourService implements CRUDService<Behaviour> {
@@ -53,6 +54,15 @@ public class BehaviourService implements CRUDService<Behaviour> {
 
     @Override
     public void deleteOne(Behaviour behaviour) {
+        List<RobotTask> taskList = robotTaskService.getByBehaviour(this.getOne(behaviour.getId()));
+        robotTaskService.deleteAll(taskList);
         behaviourRepository.delete(behaviour);
+    }
+
+    @Override
+    public void deleteAll(List<Behaviour> behaviourList) {
+        for (Behaviour behaviour : behaviourList) {
+            this.deleteOne(behaviour);
+        }
     }
 }

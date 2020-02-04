@@ -6,12 +6,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.RobotModel;
 import pl.raptors.raptorsRobotsApp.domain.type.PropulsionType;
+import pl.raptors.raptorsRobotsApp.repository.robots.RobotModelRepository;
 import pl.raptors.raptorsRobotsApp.repository.type.PropulsionTypeRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import pl.raptors.raptorsRobotsApp.service.robots.RobotModelService;
 
 import java.util.List;
 import java.util.Objects;
+
 @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class PropulsionTypeService implements CRUDService<PropulsionType> {
@@ -20,13 +22,15 @@ public class PropulsionTypeService implements CRUDService<PropulsionType> {
     PropulsionTypeRepository propulsionTypeRepository;
     @Autowired
     RobotModelService robotModelService;
+    @Autowired
+    RobotModelRepository robotModelRepository;
 
     @Override
-    public PropulsionType addOne(PropulsionType PropulsionType) {
-        PropulsionType propulsionTypeAlreadyExists = propulsionTypeRepository.findByName(PropulsionType.getName());
+    public PropulsionType addOne(PropulsionType propulsionType) {
+        PropulsionType propulsionTypeAlreadyExists = propulsionTypeRepository.findByName(propulsionType.getName());
         if (Objects.isNull((propulsionTypeAlreadyExists))) {
-            propulsionTypeRepository.save(PropulsionType);
-            return PropulsionType;
+            propulsionTypeRepository.save(propulsionType);
+            return propulsionType;
         }
         return propulsionTypeAlreadyExists;
     }
@@ -52,10 +56,19 @@ public class PropulsionTypeService implements CRUDService<PropulsionType> {
     }
 
     @Override
-    public void deleteOne(PropulsionType PropulsionType) {
-        PropulsionType PropulsionTypeToDelete = propulsionTypeRepository.findByName(PropulsionType.getName());
+    public void deleteOne(PropulsionType propulsionType) {
+        PropulsionType PropulsionTypeToDelete = propulsionTypeRepository.findByName(propulsionType.getName());
         if (!Objects.isNull((PropulsionTypeToDelete))) {
+            List<RobotModel> modelList = robotModelService.getByPropulsionType(this.getOne(propulsionType.getId()));
+            robotModelService.deleteAll(modelList);
             propulsionTypeRepository.delete(PropulsionTypeToDelete);
+        }
+    }
+
+    @Override
+    public void deleteAll(List<PropulsionType> propulsionTypeList) {
+        for (PropulsionType propulsionType : propulsionTypeList) {
+            this.deleteOne(propulsionType);
         }
     }
 }

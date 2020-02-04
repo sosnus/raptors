@@ -54,9 +54,16 @@ public class CorridorService implements CRUDService<Corridor> {
         corridorRepository.delete(corridor);
     }
 
-    public void deleteById(String id){
-        Corridor corridor=getOne(id);
-        if(corridor!=null){
+    @Override
+    public void deleteAll(List<Corridor> corridorList) {
+        for (Corridor corridor : corridorList) {
+            this.deleteOne(corridor);
+        }
+    }
+
+    public void deleteById(String id) {
+        Corridor corridor = getOne(id);
+        if (corridor != null) {
             List<Route> routeList = routeService.getByCorridor(corridor);
             for (Route route : routeList) {
                 routeService.deleteOne(route);

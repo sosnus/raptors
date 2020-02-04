@@ -10,6 +10,7 @@ import pl.raptors.raptorsRobotsApp.repository.robots.BatteryTypeRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
+
 @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class BatteryTypeService implements CRUDService<BatteryType> {
@@ -53,6 +54,17 @@ public class BatteryTypeService implements CRUDService<BatteryType> {
 
     @Override
     public void deleteOne(BatteryType batteryType) {
+        List<RobotBattery> batteryList = robotBatteryService.getByType(this.getOne(batteryType.getId()));
+        robotBatteryService.deleteAll(batteryList);
+        List<RobotModel> modelList = robotModelService.getByBatteryType(this.getOne(batteryType.getId()));
+        robotModelService.deleteAll(modelList);
         batteryTypeRepository.delete(batteryType);
+    }
+
+    @Override
+    public void deleteAll(List<BatteryType> batteryTypeList) {
+        for (BatteryType batteryType : batteryTypeList) {
+            this.deleteOne(batteryType);
+        }
     }
 }

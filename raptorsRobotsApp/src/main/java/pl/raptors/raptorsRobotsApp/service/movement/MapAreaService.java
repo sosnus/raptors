@@ -42,6 +42,13 @@ public class MapAreaService implements CRUDService<MapArea> {
         mapAreaRepository.delete(mapArea);
     }
 
+    @Override
+    public void deleteAll(List<MapArea> mapAreaList) {
+        for (MapArea mapArea : mapAreaList) {
+            this.deleteOne(mapArea);
+        }
+    }
+
     List<MapArea> getAreasByMap(MovementMap map) {
         return mapAreaRepository.findAllByMap(map);
     }

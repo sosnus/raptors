@@ -11,6 +11,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.RobotTaskService;
 
 import java.util.List;
 import java.util.Objects;
+
 @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_REGULAR_USER')")
 @Service
 public class TaskPriorityService implements CRUDService<TaskPriority> {
@@ -54,8 +55,16 @@ public class TaskPriorityService implements CRUDService<TaskPriority> {
     public void deleteOne(TaskPriority taskPriority) {
         TaskPriority taskPriorityToDelete = taskPriorityRepository.findByName(taskPriority.getName());
         if (!Objects.isNull((taskPriorityToDelete))) {
+            List<RobotTask> taskList = robotTaskService.getByPriority(this.getOne(taskPriority.getId()));
+            robotTaskService.deleteAll(taskList);
             taskPriorityRepository.delete(taskPriorityToDelete);
         }
     }
 
+    @Override
+    public void deleteAll(List<TaskPriority> taskPriorityList) {
+        for (TaskPriority taskPriority : taskPriorityList) {
+            this.deleteOne(taskPriority);
+        }
+    }
 }

@@ -42,4 +42,11 @@ public class RoleService implements CRUDService<Role> {
     public void deleteOne(Role role) {
         roleRepository.delete(role);
     }
+
+    @Override
+    public void deleteAll(List<Role> roleList){
+        for (Role role : roleList) {
+            this.deleteOne(role);
+        }
+    }
 }

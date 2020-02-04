@@ -12,6 +12,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.RobotService;
 
 import java.util.List;
 import java.util.Objects;
+
 @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class RobotStatusService implements CRUDService<RobotStatus> {
@@ -63,7 +64,16 @@ public class RobotStatusService implements CRUDService<RobotStatus> {
     public void deleteOne(RobotStatus robotStatus) {
         RobotStatus robotStatusToDelete = robotStatusRepository.findByName(robotStatus.getName());
         if (!Objects.isNull((robotStatusToDelete))) {
+            List<Robot> robotList = robotService.getByStatus(this.getOne(robotStatus.getId()));
+            robotService.deleteAll(robotList);
             robotStatusRepository.delete(robotStatusToDelete);
+        }
+    }
+
+    @Override
+    public void deleteAll(List<RobotStatus> robotStatusList) {
+        for (RobotStatus status : robotStatusList) {
+            this.deleteOne(status);
         }
     }
 }
