@@ -53,7 +53,16 @@ public class ReviewTypeService implements CRUDService<ReviewType> {
     public void deleteOne(ReviewType reviewType) {
         ReviewType reviewTypeToDelete = reviewTypeRepository.findByName(reviewType.getName());
         if (!Objects.isNull((reviewTypeToDelete))) {
+            List<RobotReview> reviewList = robotReviewService.getByReviewType(this.getOne(reviewType.getId()));
+            robotReviewService.deleteAll(reviewList);
             reviewTypeRepository.delete(reviewTypeToDelete);
+        }
+    }
+
+    @Override
+    public void deleteAll(List<ReviewType> reviewTypeList) {
+        for (ReviewType reviewType : reviewTypeList) {
+            this.deleteOne(reviewType);
         }
     }
 }

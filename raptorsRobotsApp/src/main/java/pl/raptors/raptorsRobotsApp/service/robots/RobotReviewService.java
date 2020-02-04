@@ -41,6 +41,13 @@ public class RobotReviewService implements CRUDService<RobotReview> {
         robotReviewRepository.delete(robotReview);
     }
 
+    @Override
+    public void deleteAll(List<RobotReview> robotReviewList) {
+        for (RobotReview robotReview : robotReviewList) {
+            this.deleteOne(robotReview);
+        }
+    }
+
     List<RobotReview> getByRobot(Robot robot) {
         return robotReviewRepository.findAllByRobot(robot);
     }

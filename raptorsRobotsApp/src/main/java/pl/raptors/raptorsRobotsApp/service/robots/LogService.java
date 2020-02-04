@@ -8,7 +8,6 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
 
-
 @Service
 public class LogService implements CRUDService<Log> {
 

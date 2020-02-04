@@ -53,8 +53,16 @@ public class TaskPriorityService implements CRUDService<TaskPriority> {
     public void deleteOne(TaskPriority taskPriority) {
         TaskPriority taskPriorityToDelete = taskPriorityRepository.findByName(taskPriority.getName());
         if (!Objects.isNull((taskPriorityToDelete))) {
+            List<RobotTask> taskList = robotTaskService.getByPriority(this.getOne(taskPriority.getId()));
+            robotTaskService.deleteAll(taskList);
             taskPriorityRepository.delete(taskPriorityToDelete);
         }
     }
 
+    @Override
+    public void deleteAll(List<TaskPriority> taskPriorityList) {
+        for (TaskPriority taskPriority : taskPriorityList) {
+            this.deleteOne(taskPriority);
+        }
+    }
 }

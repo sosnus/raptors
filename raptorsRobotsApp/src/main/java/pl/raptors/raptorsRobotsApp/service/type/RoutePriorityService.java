@@ -50,10 +50,19 @@ public class RoutePriorityService implements CRUDService<RoutePriority> {
     }
 
     @Override
-    public void deleteOne(RoutePriority RoutePriority) {
-        RoutePriority RoutePriorityToDelete = routePriorityRepository.findByName(RoutePriority.getName());
+    public void deleteOne(RoutePriority routePriority) {
+        RoutePriority RoutePriorityToDelete = routePriorityRepository.findByName(routePriority.getName());
         if (!Objects.isNull((RoutePriorityToDelete))) {
+            List<Route> routeList = routeService.getByPriority(this.getOne(routePriority.getId()));
+            routeService.deleteAll(routeList);
             routePriorityRepository.delete(RoutePriorityToDelete);
+        }
+    }
+
+    @Override
+    public void deleteAll(List<RoutePriority> routePriorityList) {
+        for (RoutePriority routePriority : routePriorityList) {
+            this.deleteOne(routePriority);
         }
     }
 }

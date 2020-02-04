@@ -45,6 +45,7 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
     @PostMapping("/update")
     public User update(@RequestBody @Valid User user) {
         return userService.updateOne(user);

@@ -54,7 +54,18 @@ public class RobotService implements CRUDService<Robot> {
 
     @Override
     public void deleteOne(Robot robot) {
+        List<RobotReview> reviewList = robotReviewService.getByRobot(this.getOne(robot.getId()));
+        robotReviewService.deleteAll(reviewList);
+        List<RobotTask> taskList = robotTaskService.getByRobot(this.getOne(robot.getId()));
+        robotTaskService.deleteAll(taskList);
         robotRepository.delete(robot);
+    }
+
+    @Override
+    public void deleteAll(List<Robot> robotList) {
+        for (Robot robot : robotList) {
+            this.deleteOne(robot);
+        }
     }
 
     public List<String> getAllById() {

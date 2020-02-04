@@ -43,6 +43,13 @@ public class RouteService implements CRUDService<Route> {
         routeRepository.delete(route);
     }
 
+    @Override
+    public void deleteAll(List<Route> routeList) {
+        for (Route route : routeList) {
+            this.deleteOne(route);
+        }
+    }
+
     List<Route> getByMap(MovementMap map) {
         return routeRepository.findAllByMapId(map.getId());
     }

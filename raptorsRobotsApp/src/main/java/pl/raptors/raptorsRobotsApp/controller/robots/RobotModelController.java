@@ -3,13 +3,10 @@ package pl.raptors.raptorsRobotsApp.controller.robots;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
 import pl.raptors.raptorsRobotsApp.domain.robots.RobotModel;
 import pl.raptors.raptorsRobotsApp.service.robots.RobotModelService;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @RestController

@@ -53,7 +53,17 @@ public class StandStatusService implements CRUDService<StandStatus> {
     public void deleteOne(StandStatus standStatus) {
         StandStatus standStatusToDelete = standStatusRepository.findByName(standStatus.getName());
         if (!Objects.isNull((standStatusToDelete))) {
+            List<Stand> standList = standService.getByStandStatus(this.getOne(standStatus.getId()));
+            standService.deleteAll(standList);
             standStatusRepository.delete(standStatusToDelete);
         }
+    }
+
+    @Override
+    public void deleteAll(List<StandStatus> standStatusList) {
+        for (StandStatus standStatus : standStatusList) {
+            this.deleteOne(standStatus);
+        }
+
     }
 }

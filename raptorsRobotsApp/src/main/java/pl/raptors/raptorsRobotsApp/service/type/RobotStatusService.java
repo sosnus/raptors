@@ -62,7 +62,16 @@ public class RobotStatusService implements CRUDService<RobotStatus> {
     public void deleteOne(RobotStatus robotStatus) {
         RobotStatus robotStatusToDelete = robotStatusRepository.findByName(robotStatus.getName());
         if (!Objects.isNull((robotStatusToDelete))) {
+            List<Robot> robotList = robotService.getByStatus(this.getOne(robotStatus.getId()));
+            robotService.deleteAll(robotList);
             robotStatusRepository.delete(robotStatusToDelete);
+        }
+    }
+
+    @Override
+    public void deleteAll(List<RobotStatus> robotStatusList) {
+        for (RobotStatus status : robotStatusList) {
+            this.deleteOne(status);
         }
     }
 }
