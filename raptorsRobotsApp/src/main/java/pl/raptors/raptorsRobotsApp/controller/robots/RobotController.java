@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.controller.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
@@ -17,16 +18,19 @@ public class RobotController {
     @Autowired
     RobotService robotService;
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER') or hasAuthority('ROLE_ROBOT')")
     @GetMapping("/all")
     public List<Robot> getAll() {
         return robotService.getAll();
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER') or hasAuthority('ROLE_ROBOT')")
     @GetMapping("/allById")
     public List<String> getAllById() {
         return robotService.getAllById();
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_ROBOT')")
     @PostMapping("/add")
     public Robot add(@RequestBody @Valid Robot robot) {
         if (robot.getId() != null) {
@@ -36,21 +40,25 @@ public class RobotController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_ROBOT')")
     @PostMapping("/update")
     public Robot update(@RequestBody @Valid Robot robot) {
         return robotService.updateOne(robot);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER') or hasAuthority('ROLE_ROBOT')")
     @GetMapping("/{id}")
     public Robot getOne(@PathVariable String id) {
         return robotService.getOne(id);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER') or hasAuthority('ROLE_ROBOT')")
     @GetMapping("/pose/{id}")
     public Pose getOneRobotPose(@PathVariable String id) {
         return robotService.getOneRobotPose(id);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_ROBOT')")
     @DeleteMapping("/delete")
     public void delete(@RequestBody @Valid Robot robot) {
         robotService.deleteOne(robot);

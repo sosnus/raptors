@@ -14,6 +14,7 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Service
 public class UserService implements CRUDService<User> {
 
@@ -35,6 +36,16 @@ public class UserService implements CRUDService<User> {
         return userRepository.findByEmail(email);
     }
 
+    public User getByEmailWithRoleName(String email) {
+        User user=userRepository.findByEmail(email);
+        List<String> roleNames= new ArrayList<>();
+        for (String roleId: user.getRolesIDs()) {
+            roleNames.add(roleRepository.findRoleById(roleId).getName());
+        }
+        user.setRolesIDs(roleNames);
+        return user;
+    }
+
     @Override
     public User getOne(String id) {
         return userRepository.findById(id).orElse(null);
@@ -53,12 +64,5 @@ public class UserService implements CRUDService<User> {
     @Override
     public void deleteOne(User user) {
         userRepository.delete(user);
-    }
-
-    @Override
-    public void deleteAll(List<User> userList){
-        for (User user : userList) {
-            this.deleteOne(user);
-        }
     }
 }

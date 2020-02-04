@@ -1,7 +1,6 @@
 package pl.raptors.raptorsRobotsApp.service.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
 import pl.raptors.raptorsRobotsApp.domain.robots.*;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_ROBOT')")
 @Service
 public class RobotService implements CRUDService<Robot> {
 
@@ -56,18 +54,7 @@ public class RobotService implements CRUDService<Robot> {
 
     @Override
     public void deleteOne(Robot robot) {
-        List<RobotReview> reviewList = robotReviewService.getByRobot(this.getOne(robot.getId()));
-        robotReviewService.deleteAll(reviewList);
-        List<RobotTask> taskList = robotTaskService.getByRobot(this.getOne(robot.getId()));
-        robotTaskService.deleteAll(taskList);
         robotRepository.delete(robot);
-    }
-
-    @Override
-    public void deleteAll(List<Robot> robotList) {
-        for (Robot robot : robotList) {
-            this.deleteOne(robot);
-        }
     }
 
     public List<String> getAllById() {
