@@ -10,6 +10,9 @@ import {Task} from "protractor/built/taskScheduler";
 import {RobotTaskService} from "../../services/robotTask.service";
 import {ToastrService} from "ngx-toastr";
 import {ActivatedRoute} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
+import {User} from "../../model/User/User";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-taskpanel',
@@ -23,14 +26,15 @@ export class TaskpanelComponent implements OnInit {
   behaviour: Behaviour;
   behaviours: Behaviour[] = [];
   selectedBehaviour: string;
-
+  loggedUser: User;
+  users: User[] = [];
 
   taskPriority: TaskPriority;
   taskPriorities: TaskPriority[];
   selectedTaskPriority: string;
   constructor(private behaviourService: BehaviourService,
               private taskPriorityService: TaskPriorityService, private robotTaskService: RobotTaskService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService, private authService: AuthService, private userService: UserService) {
     this.robotTask.behaviours = new Array<Behaviour>();
   }
 
@@ -45,6 +49,21 @@ export class TaskpanelComponent implements OnInit {
         this.taskPriorities = priority;
       }
     );
+
+    this.userService.getUsers().subscribe(users=>{
+      users.forEach(user=>{
+        this.users.push(user);
+      })
+    })
+
+    this.loggedUser = JSON.parse(atob(localStorage.getItem('userData')));
+    console.log("User to: " + this.loggedUser);
+   /* this.loggedUser = JSON.parse(localStorage.getItem('userData'));
+    if(this.authService.userLoggedIn()){
+      this.robotTask.userID = this.loggedUser.id;
+      console.log("Id zalogowanego użytkownika: " + this.robotTask.userID);
+    }*/
+
   }
 
   selectBehaviour(id: string) {
@@ -68,6 +87,8 @@ export class TaskpanelComponent implements OnInit {
   }
 
   saveRobotTask() {
+
+
     this.robotTask.status = "waiting";
     this.robotTask.userID = "Uzytkownik";
     //this.robotTask.behaviours = this.selectedBehaviour; // tu musi być lista
