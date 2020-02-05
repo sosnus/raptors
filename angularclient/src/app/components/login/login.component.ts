@@ -23,10 +23,11 @@ export class LoginComponent implements OnInit {
 
 
   login() {
-    this.authService.login(this.email, this.password).subscribe(rolesNames => {
-      if (rolesNames!==null) {
+    this.authService.login(this.email, this.password).subscribe(userData => {
+      if (userData!==null) {
         sessionStorage.setItem('token', btoa(this.email + ':' + this.password));
-        localStorage.setItem('userData', btoa(JSON.stringify(rolesNames)));
+        localStorage.setItem('userData', btoa(JSON.stringify(userData.rolesIDs)));
+        localStorage.setItem('userID', btoa(JSON.stringify(userData.id)));
         this.router.navigate(['']);
         //alert("Logged");
         this.toast.success("Zalogowano poprawnie")

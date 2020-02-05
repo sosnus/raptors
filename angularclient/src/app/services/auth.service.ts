@@ -26,6 +26,7 @@ export class AuthService {
   public logOut() {
     sessionStorage.removeItem('token');
     localStorage.removeItem('userData');
+    localStorage.removeItem('userID');
     this.router.navigate(['login']);
     this.http.get<any>(this.logOutUrl);
   }
@@ -58,8 +59,8 @@ export class AuthService {
 
 
 
-  public login(email: string, password: string): Observable<string[]> {
-    return this.http.post<string[]>(this.url + "login", {
+  public login(email: string, password: string): Observable<User> {
+    return this.http.post<User>(this.url + "login", {
       email: email,
       password: password
     });
