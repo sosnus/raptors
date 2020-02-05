@@ -30,14 +30,15 @@ public class UserController {
 
 
     @RequestMapping("/login")
-    public List<String> login(@RequestBody User user) {
+    public User login(@RequestBody User user) {
         User userFromDb = userService.getByEmail(user.getEmail());
         List<String> roleNames= new ArrayList<>();
         if(user.getEmail().equals(userFromDb.getEmail()) && passwordEncoder.matches(user.getPassword(), userFromDb.getPassword())){
             for (String roleId:userFromDb.getRolesIDs()) {
                 roleNames.add(roleService.getOne(roleId).getName());
             }
-            return roleNames;
+            userFromDb.setRolesIDs(roleNames);
+            return userFromDb;
         }
         else{
             System.out.println("Logowanie nie powiodło się!");
@@ -52,9 +53,27 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
+    @PostMapping("/add")
+    public User addOne(@RequestBody @Valid User user) {
+        if (user.getId() != null) {
+            return userService.updateOne(user);
+        } else {
+            return userService.addOne(user);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
     @GetMapping("/all")
     public List<User> getAll() {
-
-        return this.userService.getAll();
+        List<User> usersWithRoleName= new ArrayList<>();
+        for (User user : userService.getAll()) {
+            List<String> roleNames= new ArrayList<>();
+            for (String roleId:user.getRolesIDs()) {
+                roleNames.add(roleService.getOne(roleId).getName());
+            }
+            user.setRolesIDs(roleNames);
+            usersWithRoleName.add(user);
+        };
+        return usersWithRoleName;
     }
 }
