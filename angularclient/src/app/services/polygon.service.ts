@@ -31,7 +31,11 @@ export class PolygonService {
   }
 
   public delete(polygon: Polygon) {
-    const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'}), body: polygon};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Basic ' + sessionStorage.getItem('token',)
+      }), body: polygon, responseType: 'text' as 'json'
+    };
     return this.http.delete(this.polygonURL + 'delete', httpOptions);
   }
 

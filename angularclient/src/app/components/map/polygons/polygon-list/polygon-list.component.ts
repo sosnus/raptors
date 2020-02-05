@@ -59,7 +59,7 @@ export class PolygonListComponent implements OnInit, OnChanges {
         */
       }
     );
-    this.polygonToEdit.emit(null);
+    //this.polygonToEdit.emit(null);
 
   }
 

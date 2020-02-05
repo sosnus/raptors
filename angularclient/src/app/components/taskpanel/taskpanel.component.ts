@@ -26,9 +26,6 @@ export class TaskpanelComponent implements OnInit {
   taskPriority: TaskPriority;
   taskPriorities: TaskPriority[];
   selectedTaskPriority: string;
-
-
-
   constructor(private behaviourService: BehaviourService,
               private taskPriorityService: TaskPriorityService, private robotTaskService: RobotTaskService,
               private toastr: ToastrService) {
