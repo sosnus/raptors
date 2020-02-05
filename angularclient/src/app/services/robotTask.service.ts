@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {RobotTask} from "../model/Robots/RobotTask";
 import {StoreService} from "./store.service";
 import {Polygon} from "../model/MapAreas/Polygons/Polygon";
+import {Robot} from "../model/Robots/Robot";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,8 @@ export class RobotTaskService {
   }
 
   public getRobotTask(id: string): Observable<RobotTask> {
-    return this.http.get<RobotTask>(this.readonlyrobotTaskURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<RobotTask>(this.readonlyrobotTaskURL + id, {headers: headers, responseType: 'json'})
   }
 
   public save(robotTask: RobotTask) {

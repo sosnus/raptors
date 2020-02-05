@@ -20,7 +20,7 @@ export class ExtraRobotElementComponent implements OnInit {
 
   selectedFunctionality: string;
   elementFunctionalities: ElementFunctionality[] = [];
-  elementFunctionalitiesEdit: ElementFunctionality[] = [];
+  //elementFunctionalitiesTemp: ElementFunctionality[] = [];
 
 
 
@@ -29,7 +29,7 @@ export class ExtraRobotElementComponent implements OnInit {
               private elementFunctionalityService: ElementFunctionalityService,
               private toastr: ToastrService) {
     this.extraRobotElement.functionalityList = new Array<ElementFunctionality>();
-
+    //this.elementFunctionalitiesTemp = new Array<ElementFunctionality>();
   }
 
   ngOnInit() {
@@ -53,6 +53,10 @@ export class ExtraRobotElementComponent implements OnInit {
 
   reset(){
     this.extraRobotElement=new ExtraRobotElement(null, null);
+    this.extraRobotElement.functionalityList = [];
+    //this.elementFunctionalitiesTemp = new Array<ElementFunctionality>();
+    //console.log("Lista funkcjonalności: " + this.elementFunctionalitiesTemp)
+    //this.extraRobotElement.functionalityList = null;
   }
 
 
@@ -60,6 +64,9 @@ export class ExtraRobotElementComponent implements OnInit {
     this.extraRobotElementService.save(this.extraRobotElement).subscribe(
       result=>{
         if(this.typeExists(this.extraRobotElement.id)){
+/*          this.elementFunctionalitiesTemp.forEach(functionality=>{
+            this.extraRobotElement.functionalityList.push(functionality);
+          });*/
           this.extraRobotElements[this.extraRobotElements.findIndex(item=>item.id==result.id)]=result;
         } else {
           this.extraRobotElements.push(result)
@@ -70,7 +77,9 @@ export class ExtraRobotElementComponent implements OnInit {
       error => {
         this.toastr.error("Wystąpił bład podczas dodawania lub edycji")
       }
-    )
+    );
+    this.extraRobotElement.functionalityList = [];
+
   }
 
   typeExists(id: string){
@@ -104,6 +113,7 @@ export class ExtraRobotElementComponent implements OnInit {
       if(functionality.id === this.selectedFunctionality){
         console.log("test: " + functionality.name);
         this.extraRobotElement.functionalityList.push(functionality);
+        //this.elementFunctionalitiesTemp.push(functionality);
       }
     });
   }

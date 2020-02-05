@@ -43,7 +43,6 @@ export class SidebarComponent implements OnInit, OnChanges {
     this.robotTaskService.getRobotTasks().subscribe(robotTask =>
     {
       this.robotTasks = robotTask;
-
       this.robotTasks.forEach(task=>{
         this.robotTasks = this.robotTasks.filter(item => item.id === task.id);
       })

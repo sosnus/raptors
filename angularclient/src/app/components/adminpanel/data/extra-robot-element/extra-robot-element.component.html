@@ -63,9 +63,9 @@
     </div>
     <div class="md-form" *ngIf="extraRobotElement.functionalityList.length>0">
       <tbody>
-      <tr *ngFor="let type of extraRobotElement.functionalityList;let i = index;">
+      <tr *ngFor="let f of extraRobotElement.functionalityList;let i = index;">
         <th scope="row">{{i + 1}} funkcja:</th>
-        <td>{{type.name}}</td>
+        <td>{{f.name}}</td>
         <!--        <td>
                   <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID + 'Confirm'"
                           (click)="extraRobotElement=type">Usuń
