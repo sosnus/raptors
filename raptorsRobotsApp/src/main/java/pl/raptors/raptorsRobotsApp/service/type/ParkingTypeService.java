@@ -1,17 +1,17 @@
 package pl.raptors.raptorsRobotsApp.service.type;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.movement.Stand;
 import pl.raptors.raptorsRobotsApp.domain.type.ParkingType;
+import pl.raptors.raptorsRobotsApp.repository.movement.StandRepository;
 import pl.raptors.raptorsRobotsApp.repository.type.ParkingTypeRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import pl.raptors.raptorsRobotsApp.service.movement.StandService;
 
 import java.util.List;
 import java.util.Objects;
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
 @Service
 public class ParkingTypeService implements CRUDService<ParkingType> {
 
@@ -19,6 +19,8 @@ public class ParkingTypeService implements CRUDService<ParkingType> {
     ParkingTypeRepository parkingTypeRepository;
     @Autowired
     StandService standService;
+    @Autowired
+    StandRepository standRepository;
 
     @Override
     public ParkingType addOne(ParkingType parkingType) {
@@ -54,7 +56,16 @@ public class ParkingTypeService implements CRUDService<ParkingType> {
     public void deleteOne(ParkingType parkingType) {
         ParkingType parkingTypeToDelete = parkingTypeRepository.findByName(parkingType.getName());
         if (!Objects.isNull((parkingTypeToDelete))) {
+            List<Stand> standList = standService.getByParkingType(this.getOne(parkingType.getId()));
+            standService.deleteAll(standList);
             parkingTypeRepository.delete(parkingTypeToDelete);
+        }
+    }
+
+    @Override
+    public void deleteAll(List<ParkingType> parkingTypeList) {
+        for (ParkingType parkingType : parkingTypeList) {
+            this.deleteOne(parkingType);
         }
     }
 }

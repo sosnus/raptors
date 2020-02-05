@@ -39,4 +39,11 @@ public class EdgeService implements CRUDService<Edge> {
     public void deleteOne(Edge edge) {
         edgeRepository.delete(edge);
     }
+
+    @Override
+    public void deleteAll(List<Edge> edgeList) {
+        for (Edge edge : edgeList) {
+            this.deleteOne(edge);
+        }
+    }
 }

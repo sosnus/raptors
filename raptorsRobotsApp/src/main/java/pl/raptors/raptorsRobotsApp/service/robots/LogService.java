@@ -1,7 +1,6 @@
 package pl.raptors.raptorsRobotsApp.service.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.Log;
 import pl.raptors.raptorsRobotsApp.repository.robots.LogRepository;
@@ -9,7 +8,6 @@ import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
 
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
 @Service
 public class LogService implements CRUDService<Log> {
 
@@ -39,5 +37,12 @@ public class LogService implements CRUDService<Log> {
     @Override
     public void deleteOne(Log log) {
         logRepository.delete(log);
+    }
+
+    @Override
+    public void deleteAll(List<Log> logList) {
+        for (Log log : logList) {
+            this.deleteOne(log);
+        }
     }
 }

@@ -14,14 +14,11 @@ public class RobotReview {
     @Id
     private String id;
     private Robot robot;
-//    private Date plannedDate;
-    private String plannedDate; // na potrzeby przykładowych danych zmieniłem na string todo
-//    private Date realizationDate;
-    private String realizationDate; // na potrzeby przykładowych danych zmieniłem na string todo
+    private String plannedDate;
+    private String realizationDate;
     private ReviewType reviewType;
 
-    public RobotReview(Robot robot, String plannedDate, String realizationDate, ReviewType reviewType)
-    {
+    public RobotReview(Robot robot, String plannedDate, String realizationDate, ReviewType reviewType) {
         this.robot = robot;
         this.plannedDate = plannedDate;
         this.realizationDate = realizationDate;

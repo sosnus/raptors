@@ -40,4 +40,11 @@ public class VertexService implements CRUDService<Vertex> {
     public void deleteOne(Vertex vertex) {
         vertexRepository.delete(vertex);
     }
+
+    @Override
+    public void deleteAll(List<Vertex> vertexList) {
+        for (Vertex vertex : vertexList) {
+            this.deleteOne(vertex);
+        }
+    }
 }

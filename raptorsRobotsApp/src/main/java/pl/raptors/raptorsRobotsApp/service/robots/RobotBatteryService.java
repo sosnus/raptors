@@ -1,7 +1,6 @@
 package pl.raptors.raptorsRobotsApp.service.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.BatteryType;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
@@ -10,7 +9,7 @@ import pl.raptors.raptorsRobotsApp.repository.robots.RobotBatteryRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+
 @Service
 public class RobotBatteryService implements CRUDService<RobotBattery> {
 
@@ -46,7 +45,16 @@ public class RobotBatteryService implements CRUDService<RobotBattery> {
 
     @Override
     public void deleteOne(RobotBattery robotBattery) {
+        List<Robot> robotList = robotService.getByBattery(this.getOne(robotBattery.getId()));
+        robotService.deleteAll(robotList);
         robotBatteryRepository.delete(robotBattery);
+    }
+
+    @Override
+    public void deleteAll(List<RobotBattery> robotBatteryList) {
+        for (RobotBattery robotBattery : robotBatteryList) {
+            this.deleteOne(robotBattery);
+        }
     }
 
     List<RobotBattery> getByType(BatteryType type) {

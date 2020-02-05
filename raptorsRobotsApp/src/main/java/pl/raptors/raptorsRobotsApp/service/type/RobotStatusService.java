@@ -2,7 +2,6 @@ package pl.raptors.raptorsRobotsApp.service.type;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
 import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
@@ -12,7 +11,7 @@ import pl.raptors.raptorsRobotsApp.service.robots.RobotService;
 
 import java.util.List;
 import java.util.Objects;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+
 @Service
 public class RobotStatusService implements CRUDService<RobotStatus> {
 
@@ -63,7 +62,16 @@ public class RobotStatusService implements CRUDService<RobotStatus> {
     public void deleteOne(RobotStatus robotStatus) {
         RobotStatus robotStatusToDelete = robotStatusRepository.findByName(robotStatus.getName());
         if (!Objects.isNull((robotStatusToDelete))) {
+            List<Robot> robotList = robotService.getByStatus(this.getOne(robotStatus.getId()));
+            robotService.deleteAll(robotList);
             robotStatusRepository.delete(robotStatusToDelete);
+        }
+    }
+
+    @Override
+    public void deleteAll(List<RobotStatus> robotStatusList) {
+        for (RobotStatus status : robotStatusList) {
+            this.deleteOne(status);
         }
     }
 }

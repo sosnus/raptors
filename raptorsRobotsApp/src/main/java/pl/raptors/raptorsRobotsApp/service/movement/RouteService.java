@@ -1,7 +1,6 @@
 package pl.raptors.raptorsRobotsApp.service.movement;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.movement.Corridor;
 import pl.raptors.raptorsRobotsApp.domain.movement.MovementMap;
@@ -12,7 +11,7 @@ import pl.raptors.raptorsRobotsApp.repository.movement.RouteRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+
 @Service
 public class RouteService implements CRUDService<Route> {
 
@@ -42,6 +41,13 @@ public class RouteService implements CRUDService<Route> {
     @Override
     public void deleteOne(Route route) {
         routeRepository.delete(route);
+    }
+
+    @Override
+    public void deleteAll(List<Route> routeList) {
+        for (Route route : routeList) {
+            this.deleteOne(route);
+        }
     }
 
     List<Route> getByMap(MovementMap map) {

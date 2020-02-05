@@ -13,4 +13,6 @@ public interface CRUDService<T extends Object> {
     T updateOne(T t);
 
     void deleteOne(T t);
+
+    void deleteAll(List<T> t);
 }

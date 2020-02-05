@@ -1,7 +1,6 @@
 package pl.raptors.raptorsRobotsApp.service.type;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.movement.Stand;
 import pl.raptors.raptorsRobotsApp.domain.type.StandType;
@@ -11,7 +10,7 @@ import pl.raptors.raptorsRobotsApp.service.movement.StandService;
 
 import java.util.List;
 import java.util.Objects;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_SERVICEMAN')")
+
 @Service
 public class StandTypeService implements CRUDService<StandType> {
 
@@ -54,7 +53,16 @@ public class StandTypeService implements CRUDService<StandType> {
     public void deleteOne(StandType standType) {
         StandType standTypeToDelete = repository.findByName(standType.getName());
         if (!Objects.isNull((standTypeToDelete))) {
+            List<Stand> standList = standService.getByStandType(this.getOne(standType.getId()));
+            standService.deleteAll(standList);
             repository.delete(standTypeToDelete);
+        }
+    }
+
+    @Override
+    public void deleteAll(List<StandType> standTypeList) {
+        for (StandType standType : standTypeList) {
+            this.deleteOne(standType);
         }
     }
 }

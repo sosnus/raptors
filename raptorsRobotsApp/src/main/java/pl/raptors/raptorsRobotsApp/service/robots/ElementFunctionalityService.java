@@ -1,7 +1,6 @@
 package pl.raptors.raptorsRobotsApp.service.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.ElementFunctionality;
 import pl.raptors.raptorsRobotsApp.domain.robots.ExtraRobotElement;
@@ -9,7 +8,7 @@ import pl.raptors.raptorsRobotsApp.repository.robots.ElementFunctionalityReposit
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
-@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+
 @Service
 public class ElementFunctionalityService implements CRUDService<ElementFunctionality> {
 
@@ -53,6 +52,15 @@ public class ElementFunctionalityService implements CRUDService<ElementFunctiona
 
     @Override
     public void deleteOne(ElementFunctionality elementFunctionality) {
+        List<ExtraRobotElement> extraElementList = extraRobotElementService.getByelementFunctionality(this.getOne(elementFunctionality.getId()));
+        extraRobotElementService.deleteAll(extraElementList);
         elementFunctionalityRepository.delete(elementFunctionality);
+    }
+
+    @Override
+    public void deleteAll(List<ElementFunctionality> elementFunctionalityList) {
+        for (ElementFunctionality elementFunctionality : elementFunctionalityList) {
+            this.deleteOne(elementFunctionality);
+        }
     }
 }
