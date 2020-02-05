@@ -20,13 +20,16 @@ export class ExtraRobotElementComponent implements OnInit {
 
   selectedFunctionality: string;
   elementFunctionalities: ElementFunctionality[] = [];
-  elementFunctionality: ElementFunctionality = new ElementFunctionality(null);
+  elementFunctionalitiesEdit: ElementFunctionality[] = [];
+
+
 
 
   constructor(private extraRobotElementService: ExtraRobotElementService,
               private elementFunctionalityService: ElementFunctionalityService,
               private toastr: ToastrService) {
-    this.extraRobotElement.functionalityList = new Array<Behaviour>();
+    this.extraRobotElement.functionalityList = new Array<ElementFunctionality>();
+
   }
 
   ngOnInit() {
@@ -75,7 +78,10 @@ export class ExtraRobotElementComponent implements OnInit {
   }
 
   edit(extraRobotElement:ExtraRobotElement){
-    Object.assign(this.extraRobotElement,extraRobotElement)
+    Object.assign(this.extraRobotElement,extraRobotElement);
+    /*extraRobotElement.functionalityList.forEach(functionality=>{
+      this.elementFunctionalitiesEdit.push(functionality);
+    })*/
   }
 
   delete(extraRobotElement:ExtraRobotElement){
