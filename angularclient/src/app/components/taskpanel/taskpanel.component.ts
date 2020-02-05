@@ -22,20 +22,21 @@ import {UserService} from "../../services/user.service";
 export class TaskpanelComponent implements OnInit {
 
   robotTask: RobotTask = new RobotTask(null, null, null, null, null, null, null);
+  robotTasks: RobotTask[] = [];
   //task = null;
-  behaviour: Behaviour;
   behaviours: Behaviour[] = [];
   selectedBehaviour: string;
-  loggedUser: User;
-  users: User[] = [];
+  loggedUserRole: string;
+  loggedUserID: string;
 
-  taskPriority: TaskPriority;
   taskPriorities: TaskPriority[];
   selectedTaskPriority: string;
+
   constructor(private behaviourService: BehaviourService,
               private taskPriorityService: TaskPriorityService, private robotTaskService: RobotTaskService,
               private toastr: ToastrService, private authService: AuthService, private userService: UserService) {
     this.robotTask.behaviours = new Array<Behaviour>();
+    this.robotTasks = new Array<RobotTask>();
   }
 
   ngOnInit() {
@@ -50,20 +51,18 @@ export class TaskpanelComponent implements OnInit {
       }
     );
 
-    this.userService.getUsers().subscribe(users=>{
-      users.forEach(user=>{
-        this.users.push(user);
-      })
-    })
+    this.loggedUserID = JSON.parse(atob(localStorage.getItem('userID')));
+    this.loggedUserRole = JSON.parse(atob(localStorage.getItem('userData')));
 
-    this.loggedUser = JSON.parse(atob(localStorage.getItem('userData')));
-    console.log("User to: " + this.loggedUser);
-   /* this.loggedUser = JSON.parse(localStorage.getItem('userData'));
-    if(this.authService.userLoggedIn()){
-      this.robotTask.userID = this.loggedUser.id;
-      console.log("Id zalogowanego użytkownika: " + this.robotTask.userID);
-    }*/
-
+    this.robotTaskService.getRobotTasks().subscribe(tasks=>{
+      this.robotTasks = tasks;
+      // filtrowanie listy zadań pod edit/delete zależnie od roli
+      this.getRobotTasksByRole();
+      //console.log("Lista po filtracji: " +this.robotTasks);
+      this.robotTasks.forEach(task=>{
+        //console.log("NAZWA ZADANKA POZOSTALEGO: " + task.name);
+      });
+    });
   }
 
   selectBehaviour(id: string) {
@@ -87,10 +86,8 @@ export class TaskpanelComponent implements OnInit {
   }
 
   saveRobotTask() {
-
-
     this.robotTask.status = "waiting";
-    this.robotTask.userID = "Uzytkownik";
+    this.robotTask.userID = this.loggedUserID;
     //this.robotTask.behaviours = this.selectedBehaviour; // tu musi być lista
     //this.robotTask.priority = this.selectedTaskPriority;
     this.robotTaskService.save(this.robotTask).subscribe(
@@ -99,5 +96,12 @@ export class TaskpanelComponent implements OnInit {
     console.log('RobotTask', this.robotTask);
     this.toastr.success('Dodano pomyślnie');
     this.robotTask = new RobotTask(null, null, null, null, null, null, null);
+  }
+
+  getRobotTasksByRole(){
+    // REGULAR_ROLE_USER
+    if(this.loggedUserRole == 'ROLE_REGULAR_USER'){
+      this.robotTasks = this.robotTasks.filter(task=> task.userID == this.loggedUserID);
+    }
   }
 }
