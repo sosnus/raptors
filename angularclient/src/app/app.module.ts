@@ -60,6 +60,7 @@ import { RobotDetailsComponent } from './components/robotpanel/robot-details/rob
 import {MapScaledComponent} from "./components/robotpanel/map-scaled/map-scaled.component";
 import { ExtraRobotElementComponent } from './components/adminpanel/data/extra-robot-element/extra-robot-element.component';
 import { ElementFunctionalityComponent } from './components/adminpanel/data/element-functionality/element-functionality.component';
+import { UserspanelComponent } from './components/userspanel/userspanel.component';
 
 
 const config: InputFileConfig = {};
@@ -107,6 +108,7 @@ const config: InputFileConfig = {};
     MapScaledComponent,
     ExtraRobotElementComponent,
     ElementFunctionalityComponent,
+    UserspanelComponent,
   ],
   imports: [
     BrowserModule,
