@@ -75,7 +75,7 @@ export class TaskpanelComponent implements OnInit {
     //this.robotTask.priority = this.selectedTaskPriority;
     this.robotTaskService.save(this.robotTask).subscribe(
       result => console.log('Response' + result),
-      error => console.log('Error' + error));
+      error => console.log('Error' + error.message));
     console.log('RobotTask', this.robotTask);
     this.toastr.success('Dodano pomyślnie');
     this.task = this.robotTask;
