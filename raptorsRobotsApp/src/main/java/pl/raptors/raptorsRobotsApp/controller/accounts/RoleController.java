@@ -2,6 +2,7 @@ package pl.raptors.raptorsRobotsApp.controller.accounts;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.raptors.raptorsRobotsApp.domain.accounts.Role;
 import pl.raptors.raptorsRobotsApp.service.accounts.RoleService;
@@ -25,6 +26,7 @@ public class RoleController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/update")
     public Role update(@RequestBody @Valid Role role) {
         return roleService.updateOne(role);

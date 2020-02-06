@@ -7,6 +7,7 @@ import pl.raptors.raptorsRobotsApp.domain.accounts.Role;
 import pl.raptors.raptorsRobotsApp.repository.accounts.RoleRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,7 +15,16 @@ public class RoleService implements CRUDService<Role> {
 
     @Autowired
     RoleRepository roleRepository;
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
+    public List<String> getRoleIdByName (List<String> rolesNames){
+        List<String> rolesIds = new ArrayList<>();
+        for (Role role : roleRepository.findRolesByNameIn(rolesNames)) {
+            rolesIds.add(role.getId());
+        };
+        return  rolesIds;
+    }
+
+
     @Override
     public Role addOne(Role role) {
         return roleRepository.save(role);
@@ -25,19 +35,16 @@ public class RoleService implements CRUDService<Role> {
         return roleRepository.findById(id).orElse(null);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Override
     public List<Role> getAll() {
         return roleRepository.findAll();
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Override
     public Role updateOne(Role role) {
         return roleRepository.save(role);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Override
     public void deleteOne(Role role) {
         roleRepository.delete(role);
