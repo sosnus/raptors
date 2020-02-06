@@ -1,10 +1,10 @@
 <button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
   <i class="fas fa-plus"></i> Dodaj
 </button>
-<a *ngIf="robotTasks.length<1">
+<a *ngIf="storeService.robotTaskList.length<1">
   <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
 </a>
-<div *ngIf="robotTasks.length>0">
+<div *ngIf="storeService.robotTaskList.length>0">
   <table class="table table-sm table-striped">
     <thead>
     <tr>
@@ -17,29 +17,29 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let data of robotTasks;let i = index;">
+    <tr *ngFor="let data of storeService.robotTaskList;let i = index;">
       <th scope="row">{{i + 1}}</th>
       <td>{{data.startTime}}</td>
       <td>{{data.name}}</td>
       <td>{{data.priority.name}}</td>
       <td>{{data.status}}</td>
       <td>{{data.userID}}</td>
-     <!-- <td>
+      <td>
         <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID"
                 (click)="edit(data)">Edytuj
         </button>
         <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal"
                 [attr.data-target]="'#' + modalID+'Confirm'"
-                (click)="user=data">Usuń
+                (click)="robotTask=data">Usuń
         </button>
-      </td>-->
+      </td>
     </tr>
     </tbody>
   </table>
 </div>
 
-<!--<app-confirm-modal-template [modalID]="modalID+'Confirm'"
-                            (onConfirm)="delete(user)"></app-confirm-modal-template>-->
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(robotTask)"></app-confirm-modal-template>
 
 <app-form-modal-template [modalName]="'Dodawanie zadania'"
                          [modalID]="modalID"

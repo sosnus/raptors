@@ -4,6 +4,8 @@ import {RobotTask} from "../../../model/Robots/RobotTask";
 import {ActivatedRoute} from "@angular/router";
 import {RobotTaskService} from "../../../services/robotTask.service";
 import {Polygon} from "../../../model/MapAreas/Polygons/Polygon";
+import {StoreService} from "../../../services/store.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-taskpanel-list',
@@ -15,7 +17,9 @@ export class TaskpanelListComponent implements OnInit {
   private robotTasks: RobotTask[];
 
   constructor(private activatedRoute: ActivatedRoute,
-              private robotTaskService: RobotTaskService) {
+              private robotTaskService: RobotTaskService,
+              private storeService: StoreService,
+              private toastr: ToastrService) {
     this.activatedRoute.params.subscribe(params => {
       const id = params['id'];
       console.log("wyswietlam id zadania: " + id);
@@ -27,23 +31,20 @@ export class TaskpanelListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.robotTaskService.getRobotTasks().subscribe(robotTasks=>{
-      this.robotTasks = robotTasks;
-    })
 
     //this.checkIfFinished();
 
   }
+
   delete(robotTask: RobotTask) {
     this.robotTaskService.delete(robotTask).subscribe(
       result => {
-        this.robotTasks = this.robotTasks.filter(item => item !== robotTask)
-        //this.polygon = new Polygon();
+        this.storeService.robotTaskList = this.storeService.robotTaskList.filter(item => item != robotTask)
+        this.toastr.success("Usunięto pomyślnie");
+        this.robotTask = new RobotTask(null, null, null, null, null, null, null);
       },
       error => {
-        /*
-                this.toastr.error("Wystąpił błąd podczas usuwania");
-        */
+        this.toastr.error("Wystąpił błąd podczas usuwania");
       }
     )
   }

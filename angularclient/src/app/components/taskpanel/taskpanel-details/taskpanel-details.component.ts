@@ -4,6 +4,7 @@ import {RobotTask} from "../../../model/Robots/RobotTask";
 import {Polygon} from "../../../model/MapAreas/Polygons/Polygon";
 import {RobotTaskService} from "../../../services/robotTask.service";
 import {ToastrService} from "ngx-toastr";
+import {StoreService} from "../../../services/store.service";
 
 @Component({
   selector: 'app-taskpanel-details',
@@ -16,23 +17,19 @@ export class TaskpanelDetailsComponent implements OnInit {
   task: RobotTask;
 
   robotTasks: RobotTask[] = [];
-  /*@Output()
-  robotTaskDelete: EventEmitter<RobotTask> = new EventEmitter<RobotTask>();*/
 
-  constructor(private robotTaskService: RobotTaskService, private toast: ToastrService) {
+  constructor(private robotTaskService: RobotTaskService, private toast: ToastrService, private storeService: StoreService) {
 
   }
 
   ngOnInit() {
-    this.robotTaskService.getRobotTasks().subscribe(robotTask=>{
-      this.robotTasks = robotTask;
-    })
+
   }
 
   delete() {
     this.robotTaskService.delete(this.task).subscribe(
       result => {
-        this.robotTasks = this.robotTasks.filter(item => item !== this.task);
+        this.storeService.robotTaskList = this.storeService.robotTaskList.filter(item => item !== this.task);
         this.toast.success('Anulowano zadanie')
       },
       error => {
