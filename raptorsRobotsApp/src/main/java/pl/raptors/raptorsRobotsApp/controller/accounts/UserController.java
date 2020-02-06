@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pl.raptors.raptorsRobotsApp.domain.accounts.User;
+import pl.raptors.raptorsRobotsApp.domain.robots.BatteryType;
 import pl.raptors.raptorsRobotsApp.service.accounts.MongoUserDetailsService;
 import pl.raptors.raptorsRobotsApp.service.accounts.RoleService;
 import pl.raptors.raptorsRobotsApp.service.accounts.UserService;
@@ -50,6 +51,12 @@ public class UserController {
     @PostMapping("/update")
     public void update(@RequestBody @Valid User user) {
          userService.updateOne(user);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable String id) {
+        userService.deleteById(id);
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
