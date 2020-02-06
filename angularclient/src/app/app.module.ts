@@ -62,6 +62,7 @@ import { ExtraRobotElementComponent } from './components/adminpanel/data/extra-r
 import { ElementFunctionalityComponent } from './components/adminpanel/data/element-functionality/element-functionality.component';
 import { TaskpanelDetailsComponent } from './components/taskpanel/taskpanel-details/taskpanel-details.component';
 import { TaskpanelListComponent } from './components/taskpanel/taskpanel-list/taskpanel-list.component';
+import { UserspanelComponent } from './components/userspanel/userspanel.component';
 
 
 const config: InputFileConfig = {};
@@ -109,6 +110,7 @@ const config: InputFileConfig = {};
     MapScaledComponent,
     ExtraRobotElementComponent,
     ElementFunctionalityComponent,
+    UserspanelComponent,
     TaskpanelDetailsComponent,
     TaskpanelListComponent,
   ],

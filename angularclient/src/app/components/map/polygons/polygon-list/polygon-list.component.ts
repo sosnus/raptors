@@ -30,14 +30,14 @@ export class PolygonListComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.polygonService.getPolygons().subscribe(
       polygons => this.polygons = polygons,
-      error => this.toast.error("Błąd podczas pobierania danych: " + error)
+      error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     );
   }
 
   ngOnChanges(changes: { [property: string]: SimpleChange }) {
     this.polygonService.getPolygons().subscribe(polygons =>
         this.polygons = polygons,
-      error => this.toast.error("/*Błąd podczas pobierania danych*/: " + error)
+      error => this.toast.error("/*Błąd podczas pobierania danych*/: " + error.message)
     )
   }
 

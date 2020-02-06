@@ -34,7 +34,7 @@ export class CorridorListComponent implements OnInit {
   getCorridorsFromDb() {
     this.corridorService.getCorridors().subscribe(
       corridors => this.corridors = corridors,
-      error => this.toast.error("Błąd podczas pobierania danych: " + error)
+      error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     )
   }
 
@@ -42,7 +42,7 @@ export class CorridorListComponent implements OnInit {
     // Extract changes to the input property by its name
     this.corridorService.getCorridors().subscribe(
       corridors => this.corridors = corridors,
-      error => this.toast.error("Błąd podczas pobierania danych: " + error)
+      error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     )
   }
 
@@ -57,7 +57,7 @@ export class CorridorListComponent implements OnInit {
         this.corridorToEdit.emit(null);
         this.toast.success('Usunięto korytarz ')
       },
-      error => this.toast.error('Błąd podczas łączenia z bazą: ' + error)
+      error => this.toast.error('Błąd podczas łączenia z bazą: ' + error.message)
     );
   }
 

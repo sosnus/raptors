@@ -33,7 +33,7 @@ export class GraphListComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.graphService.getAll().subscribe(
       graphs => this.graphs = graphs,
-      error => this.toast.error("Błąd podczas pobierania danych: " + error)
+      error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     )
   }
 
@@ -41,7 +41,7 @@ export class GraphListComponent implements OnInit, OnChanges {
     // Extract changes to the input property by its name
     this.graphService.getAll().subscribe(
       graphs => this.graphs = graphs,
-      error => this.toast.error("Błąd podczas pobierania danych: " + error)
+      error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     )
   }
 
@@ -53,11 +53,11 @@ export class GraphListComponent implements OnInit, OnChanges {
     this.graphs = this.graphs.filter(next => next != graph);
     // this.graphService.delete(graph).subscribe(
     //   result => result,
-    //   error => this.toast.error('Błąd podczas łączenia z bazą: ' + error)
+    //   error => this.toast.error('Błąd podczas łączenia z bazą: ' + error.message)
     // );
     this.graphService.deleteByID(graph.id).subscribe(
       result => this.toast.success('Usunięto graf '),
-      error => this.toast.error('Błąd podczas łączenia z bazą: ' + error)
+      error => this.toast.error('Błąd podczas łączenia z bazą: ' + error.message)
     );
     this.graphToEdit.emit(null);
   }

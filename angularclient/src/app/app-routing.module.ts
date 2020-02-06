@@ -13,6 +13,7 @@ import {TaskpanelComponent} from "./components/taskpanel/taskpanel.component";
 import {AuthGuard} from "./services/auth.guard";
 import {AccessForbiddenComponent} from "./components/access-forbidden/access-forbidden.component";
 import {RobotPanelComponent} from "./components/robotpanel/robot-panel.component";
+import {UserspanelComponent} from "./components/userspanel/userspanel.component";
 import {RobotTask} from "./model/Robots/RobotTask";
 import {TaskpanelDetailsComponent} from "./components/taskpanel/taskpanel-details/taskpanel-details.component";
 import {TaskpanelListComponent} from "./components/taskpanel/taskpanel-list/taskpanel-list.component";
@@ -32,6 +33,11 @@ const routes: Routes = [
   {path: 'stands', component: StandCreatorComponent},
   {
     path: 'adminpanel', component: AdminPanelComponent,
+    canActivate: [AuthGuard],
+    data: {rolesIDs: ['ROLE_ADMIN']},
+  },
+  {
+    path: 'users', component: UserspanelComponent,
     canActivate: [AuthGuard],
     data: {rolesIDs: ['ROLE_ADMIN']},
   },
