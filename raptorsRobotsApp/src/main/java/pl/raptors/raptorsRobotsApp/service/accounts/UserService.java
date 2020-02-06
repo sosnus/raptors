@@ -6,6 +6,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.accounts.User;
+import pl.raptors.raptorsRobotsApp.domain.movement.Corridor;
+import pl.raptors.raptorsRobotsApp.domain.movement.Route;
 import pl.raptors.raptorsRobotsApp.repository.accounts.RoleRepository;
 import pl.raptors.raptorsRobotsApp.repository.accounts.UserRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
@@ -52,6 +54,10 @@ public class UserService implements CRUDService<User> {
     @Override
     public void deleteOne(User user) {
         userRepository.delete(user);
+    }
+
+    public void deleteById(String id) {
+        userRepository.findById(id).ifPresent(user -> userRepository.delete(user));
     }
 
     @Override
