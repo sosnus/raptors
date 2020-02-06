@@ -53,7 +53,7 @@
       </li>
 
       <li class="nav-item" *ngIf="authService.userLoggedIn()">
-        <div *ngIf="authService.isAdmin() || authService.isServiceman()">
+        <div *ngIf="authService.isAdmin() || authService.isServiceman() || authService.isRegularUser() || authService.isSuperUser()">
         <a class="nav-link" [routerLink]="['taskpanel']">
           <i class="fas fa-tasks"></i>
           Panel zadań

@@ -1,21 +1,56 @@
-<form class="text-center border border-light p-5 register-form">
-  <p class="h4 mb-4">Dodaj zadanie</p>
-  <div class="card container">
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+<a *ngIf="storeService.robotTaskList.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+<div *ngIf="storeService.robotTaskList.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Rozpoczęcie</th>
+      <th scope="col">Nazwa</th>
+      <th scope="col">Priorytet</th>
+      <th scope="col">Status</th>
+      <th scope="col">Dodał</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of storeService.robotTaskList;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{data.startTime}}</td>
+      <td>{{data.name}}</td>
+      <td>{{data.priority.name}}</td>
+      <td>{{data.status}}</td>
+      <td>{{data.userID}}</td>
+      <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID"
+                (click)="edit(data)">Edytuj
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal"
+                [attr.data-target]="'#' + modalID+'Confirm'"
+                (click)="robotTask=data">Usuń
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
-  <div class="md-form">
-    <input type="text" class="form-control"
-           [(ngModel)]="robotTask.name"
-           name="robotTask"
-           placeholder="Nazwij zadanie">
-  </div>
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(robotTask)"></app-confirm-modal-template>
 
-    <p>Wybierz działanie</p>
-    <div class="md-form">
-      <select class="browser-default custom-select" (change)="selectBehaviour($event.target.value)"
-              [(ngModel)]="selectedBehaviour"
-              [ngModelOptions]="{standalone: true}">
-        <option [value]="item.id" *ngFor="let item of behaviours">{{item.name}} {{item.parameters}}</option>
-      </select>
+<app-form-modal-template [modalName]="'Dodawanie zadania'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form  #modalForm="ngForm">
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="robotTaskname" class="form-control validate" required [(ngModel)]="robotTask.name" name="name">
+      <label for="robotTaskname" [class.active]="robotTask.name && robotTask.name.length > 0">Nazwa zadania</label>
     </div>
 
     <p>Wybierz priorytet zadania</p>
@@ -26,10 +61,14 @@
         <option [value]="item.id" *ngFor="let item of taskPriorities">{{item.name}}</option>
       </select>
     </div>
-    <button class="btn btn-info btn-rounded btn-sm my-0" (click)="saveRobotTask()">Dodaj zadanie</button>
 
-  </div>
-
-
-</form>
-
+    <p>Wybierz działanie</p>
+    <div class="md-form">
+      <select class="browser-default custom-select" (change)="selectBehaviour($event.target.value)"
+              [(ngModel)]="selectedBehaviour"
+              [ngModelOptions]="{standalone: true}">
+        <option [value]="item.id" *ngFor="let item of behaviours">{{item.name}} {{item.parameters}}</option>
+      </select>
+    </div>
+  </form>
+</app-form-modal-template>

@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {RobotTask} from "../model/Robots/RobotTask";
 import {StoreService} from "./store.service";
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,19 +17,26 @@ export class RobotTaskService {
   }
 
   public getRobotTasks(): Observable<RobotTask[]> {
-    return this.http.get<RobotTask[]>(this.readonlyrobotTaskURL + 'all', {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<RobotTask[]>(this.readonlyrobotTaskURL + 'all', {headers: headers, responseType: 'json'})
   }
 
   public getRobotTask(id: string): Observable<RobotTask> {
-    return this.http.get<RobotTask>(this.readonlyrobotTaskURL + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<RobotTask>(this.readonlyrobotTaskURL + id, {headers: headers, responseType: 'json'})
   }
 
   public save(robotTask: RobotTask) {
-    return this.http.post<RobotTask>(this.readonlyrobotTaskURL + 'add', robotTask);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<RobotTask>(this.readonlyrobotTaskURL + 'add', robotTask, {headers: headers});
   }
 
   public delete(robotTask: RobotTask) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: robotTask};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Basic ' + sessionStorage.getItem('token',)
+      }), body: robotTask, responseType: 'text' as 'json'
+    };
     return this.http.delete(this.readonlyrobotTaskURL + 'delete', httpOptions);
   }
 

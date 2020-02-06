@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
+import {Robot} from '../model/Robots/Robot';
 import {StoreService} from "./store.service";
 import {User} from "../model/User/User";
 
@@ -55,5 +56,9 @@ export class UserService {
 
   public getRoleFromName(roleName: string): string {
     return Object.keys(this.roles).find(key => this.roles[key] == roleName);
+  }
+
+  public getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.userURL + 'all', {responseType: 'json'})
   }
 }
