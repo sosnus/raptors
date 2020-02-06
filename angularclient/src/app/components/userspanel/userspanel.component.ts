@@ -59,9 +59,9 @@ export class UserspanelComponent implements OnInit {
     this.userService.save(this.user).subscribe(
       result => {
         if (this.userExists(this.user.id)) {
-          this.users[this.users.findIndex(item => item.id == result.id)] = result;
+          this.users[this.users.findIndex(item => item.id == this.user.id)] = this.user;
         } else {
-          this.users.push(result)
+          this.users.push(this.user)
         }
         this.user = new User();
         this.toastr.success("Dodano lub edytowano pomyślnie");
