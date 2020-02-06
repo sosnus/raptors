@@ -22,8 +22,6 @@ export class TaskpanelComponent implements OnInit {
   //task = null;
   behaviours: Behaviour[] = [];
   selectedBehaviour: string;
-  loggedUserRole: string;
-  loggedUserID: string;
 
   taskPriorities: TaskPriority[];
   selectedTaskPriority: string;
@@ -47,8 +45,6 @@ export class TaskpanelComponent implements OnInit {
       }
     );
 
-    this.loggedUserID = JSON.parse(atob(localStorage.getItem('userID')));
-    this.loggedUserRole = JSON.parse(atob(localStorage.getItem('userData')));
   }
 
   selectBehaviour(id: string) {
@@ -75,7 +71,7 @@ export class TaskpanelComponent implements OnInit {
     let dateTime = new Date();
     this.robotTask.startTime = dateTime.toLocaleString();
     this.robotTask.status = "waiting";
-    this.robotTask.userID = this.loggedUserID;
+    this.robotTask.userID = this.storeService.loggedUserID;
     this.robotTaskService.save(this.robotTask).subscribe(
       result => {
         if (this.robotTaskExist(this.robotTask.id)) {
@@ -94,13 +90,6 @@ export class TaskpanelComponent implements OnInit {
 
   robotTaskExist(id: string) {
     return this.storeService.robotTaskList.some(item => item.id == id);
-  }
-
-  getRobotTasksByRole(){
-    // REGULAR_ROLE_USER
-    if(this.loggedUserRole == 'ROLE_REGULAR_USER'){
-      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
-    }
   }
 
   edit(robotTask: RobotTask) {
