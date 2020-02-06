@@ -14,16 +14,11 @@ export class SidebarComponent implements OnInit{
   robotDataloaded = false;
   private robotIDlist = [];
 
-  loggedUserRole: string;
-  loggedUserID: string;
 
-  constructor(private storeService: StoreService, private robotTaskService: RobotTaskService) {
+  constructor(private storeService: StoreService) {
   }
 
   ngOnInit() {
-    this.loggedUserID = JSON.parse(atob(localStorage.getItem('userID')));
-    this.loggedUserRole = JSON.parse(atob(localStorage.getItem('userData')));
-
     //console.log("test: " + this.storeService.robotsObjects[1].robotIP);
     this.storeService.getRobotIDlist().subscribe(
       rob => {
@@ -32,15 +27,6 @@ export class SidebarComponent implements OnInit{
         console.log("Pobieram listę id robotów: " + this.robotIDlist);
       }
     );
-
-    this.robotTaskService.getRobotTasks().subscribe(tasks=>{
-      this.storeService.robotTaskList = tasks;
-      // filtrowanie listy zadań pod edit/delete zależnie od roli
-      this.getRobotTasksByRole();
-      //console.log("Lista po filtracji: " +this.robotTasks);
-    });
-
-
   }
 
 
@@ -57,12 +43,4 @@ export class SidebarComponent implements OnInit{
        }
      }*/
   }
-
-  getRobotTasksByRole(){
-    // REGULAR_ROLE_USER
-    if(this.loggedUserRole == 'ROLE_REGULAR_USER'){
-      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
-    }
-  }
-
 }
