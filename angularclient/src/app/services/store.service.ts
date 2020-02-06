@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Orientation} from "../model/Stand/Orientation";
+import {RobotTask} from "../model/Robots/RobotTask";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class StoreService {
   public imageResolution = 1984;
   public mapID = '5e19f1fa9b1eab79e9a58e08';
   public baseURL = 'http://localhost:8080';
+  public robotTaskList: RobotTask[]= [];
 
   constructor(private http: HttpClient) {
     this.robotIDlist = 'http://localhost:8080/robots/allById'

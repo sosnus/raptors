@@ -12,6 +12,7 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Nazwa</th>
+      <th scope="col">Wymiary</th>
       <th scope="col">Funkcjonalności</th>
     </tr>
     </thead>
@@ -19,8 +20,9 @@
     <tr *ngFor="let type of extraRobotElements;let i = index;">
       <th scope="row">{{i + 1}}</th>
       <td>{{type.name}}</td>
+      <td>{{type.dimension}}</td>
       <h1><td *ngFor="let f of type.functionalityList">{{f.name}}</td></h1>
-    <td>
+      <td>
         <button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" [attr.data-target]="'#' + modalID"
                 (click)="edit(type)">Edytuj
         </button>
@@ -48,11 +50,29 @@
       <label for="extraRobotElementName" [class.active]="extraRobotElement.name && extraRobotElement.name.length > 0">Nazwa elementu</label>
     </div>
     <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="extraRobotElementDimension" class="form-control validate" required [(ngModel)]="extraRobotElement.dimension" name="dimensions">
+      <label for="extraRobotElementDimension" [class.active]="extraRobotElement.dimension && extraRobotElement.dimension.length > 0">Wymiary elementu</label>
+    </div>
+    <div class="md-form">
       <select class="browser-default custom-select" (change)="selectFunctionalities($event.target.value)"
-                [(ngModel)]="selectedFunctionality"
-                [ngModelOptions]="{standalone: true}">
-      <option [value]="item.id" *ngFor="let item of elementFunctionalities">{{item.name}}</option>
+              [(ngModel)]="selectedFunctionality"
+              [ngModelOptions]="{standalone: true}">
+        <option [value]="item.id" *ngFor="let item of elementFunctionalities">{{item.name}}</option>
       </select>
+    </div>
+    <div class="md-form" *ngIf="extraRobotElement.functionalityList.length>0">
+      <tbody>
+      <tr *ngFor="let f of extraRobotElement.functionalityList;let i = index;">
+        <th scope="row">{{i + 1}} funkcja:</th>
+        <td>{{f.name}}</td>
+        <!--        <td>
+                  <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID + 'Confirm'"
+                          (click)="extraRobotElement=type">Usuń
+                  </button>
+                </td>-->
+      </tr>
+      </tbody>
     </div>
   </form>
 </app-form-modal-template>

@@ -60,6 +60,8 @@ import { RobotDetailsComponent } from './components/robotpanel/robot-details/rob
 import {MapScaledComponent} from "./components/robotpanel/map-scaled/map-scaled.component";
 import { ExtraRobotElementComponent } from './components/adminpanel/data/extra-robot-element/extra-robot-element.component';
 import { ElementFunctionalityComponent } from './components/adminpanel/data/element-functionality/element-functionality.component';
+import { TaskpanelDetailsComponent } from './components/taskpanel/taskpanel-details/taskpanel-details.component';
+import { TaskpanelListComponent } from './components/taskpanel/taskpanel-list/taskpanel-list.component';
 import { UserspanelComponent } from './components/userspanel/userspanel.component';
 
 
@@ -109,6 +111,8 @@ const config: InputFileConfig = {};
     ExtraRobotElementComponent,
     ElementFunctionalityComponent,
     UserspanelComponent,
+    TaskpanelDetailsComponent,
+    TaskpanelListComponent,
   ],
   imports: [
     BrowserModule,

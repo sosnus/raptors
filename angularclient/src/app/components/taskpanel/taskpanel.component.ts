@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {RobotTask} from "../../model/Robots/RobotTask";
-import {RobotService} from "../../services/robot.service";
-import {Robot} from "../../model/Robots/Robot";
 import {BehaviourService} from "../../services/type/behaviour.service";
 import {Behaviour} from "../../model/Robots/Behaviour";
 import {TaskPriorityService} from "../../services/type/task-priority.service";
 import {TaskPriority} from "../../model/type/TaskPriority";
-import {Task} from "protractor/built/taskScheduler";
 import {RobotTaskService} from "../../services/robotTask.service";
 import {ToastrService} from "ngx-toastr";
+import {AuthService} from "../../services/auth.service";
+import {UserService} from "../../services/user.service";
+import {StoreService} from "../../services/store.service";
 
 @Component({
   selector: 'app-taskpanel',
@@ -16,22 +16,22 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./taskpanel.component.css']
 })
 export class TaskpanelComponent implements OnInit {
+  modalID = "taskRobotModal";
 
   robotTask: RobotTask = new RobotTask(null, null, null, null, null, null, null);
-  task = null;
-  behaviour: Behaviour;
+  //task = null;
   behaviours: Behaviour[] = [];
   selectedBehaviour: string;
+  loggedUserRole: string;
+  loggedUserID: string;
 
-  taskPriority: TaskPriority;
   taskPriorities: TaskPriority[];
   selectedTaskPriority: string;
 
-
-
   constructor(private behaviourService: BehaviourService,
               private taskPriorityService: TaskPriorityService, private robotTaskService: RobotTaskService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService, private authService: AuthService, private userService: UserService,
+              private storeService: StoreService) {
     this.robotTask.behaviours = new Array<Behaviour>();
   }
 
@@ -46,6 +46,9 @@ export class TaskpanelComponent implements OnInit {
         this.taskPriorities = priority;
       }
     );
+
+    this.loggedUserID = JSON.parse(atob(localStorage.getItem('userID')));
+    this.loggedUserRole = JSON.parse(atob(localStorage.getItem('userData')));
   }
 
   selectBehaviour(id: string) {
@@ -68,17 +71,57 @@ export class TaskpanelComponent implements OnInit {
     });
   }
 
-  saveRobotTask() {
+  createOrUpdate() {
+    let dateTime = new Date();
+    this.robotTask.startTime = dateTime.toLocaleString();
     this.robotTask.status = "waiting";
-    this.robotTask.userID = "Uzytkownik";
-    //this.robotTask.behaviours = this.selectedBehaviour; // tu musi być lista
-    //this.robotTask.priority = this.selectedTaskPriority;
+    this.robotTask.userID = this.loggedUserID;
     this.robotTaskService.save(this.robotTask).subscribe(
-      result => console.log('Response' + result),
-      error => console.log('Error' + error.message));
-    console.log('RobotTask', this.robotTask);
-    this.toastr.success('Dodano pomyślnie');
-    this.task = this.robotTask;
+      result => {
+        if (this.robotTaskExist(this.robotTask.id)) {
+          this.storeService.robotTaskList[this.storeService.robotTaskList.findIndex(item => item.id == result.id)] = result;
+        } else {
+          this.storeService.robotTaskList.push(result);
+        }
+        this.robotTask = new RobotTask(null, null, null, null, null, null, null);
+        this.toastr.success("Dodano lub edytowano pomyślnie");
+      },
+      error => {
+        this.toastr.error("W ystąpił bład podczas dodawania lub edycji");
+      }
+    )
+  }
+
+  robotTaskExist(id: string) {
+    return this.storeService.robotTaskList.some(item => item.id == id);
+  }
+
+  getRobotTasksByRole(){
+    // REGULAR_ROLE_USER
+    if(this.loggedUserRole == 'ROLE_REGULAR_USER'){
+      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
+    }
+  }
+
+  edit(robotTask: RobotTask) {
+    Object.assign(this.robotTask, robotTask)
+  }
+
+  delete(robotTask: RobotTask) {
+    this.robotTaskService.delete(robotTask).subscribe(
+      result => {
+        this.storeService.robotTaskList = this.storeService.robotTaskList.filter(item => item != robotTask)
+        this.toastr.success("Usunięto pomyślnie");
+        this.robotTask = new RobotTask(null, null, null, null, null, null, null);
+      },
+      error => {
+        this.toastr.error("Wystąpił błąd podczas usuwania");
+      }
+    )
+  }
+
+  reset() {
     this.robotTask = new RobotTask(null, null, null, null, null, null, null);
   }
+
 }

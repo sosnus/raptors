@@ -11,6 +11,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let polygon of polygons;let i = index;">
+    <tr *ngFor="let polygon of polygons;let i = index;">
       <th scope="row">{{++i}}</th>
       <td>>{{polygon.id.toString().substring(12,24)}}</td>
       <td>>{{polygon.type.name}}</td>
