@@ -18,16 +18,17 @@ export class RobotService {
   }
 
   public getRobots(): Observable<Robot[]> {
-    return this.http.get<Robot[]>(this.robotIP + 'all', {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Robot[]>(this.robotIP + 'all', {headers: headers,responseType: 'json'})
   }
 
   public getRobot(id: string): Observable<Robot> {
-    return this.http.get<Robot>(this.robotIP + id, {responseType: 'json'})
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Robot>(this.robotIP + id, {headers: headers, responseType: 'json'})
   }
 
   public save(robot: Robot) {
-    return this.http.post<Robot>(this.robotIP + 'add', robot);
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<Robot>(this.robotIP + 'add', robot, {headers: headers});
   }
-
-
 }
