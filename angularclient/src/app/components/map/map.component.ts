@@ -1,21 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import '../../../../node_modules/leaflet-rotatedmarker/leaflet.rotatedMarker.js'
 import '../../../lib/leaflet-easybutton/src/easy-button';
 import '../../../lib/leaflet-easybutton/src/easy-button.css';
-import {MapService} from "../../services/map.service";
-import {RobotService} from "../../services/robot.service";
-import {axisAngleFromQuaternion, StoreService} from "../../services/store.service";
-import {GraphService} from "../../services/graph.service";
-import {Graph} from "../../model/Graphs/Graph";
-import {PolygonService} from "../../services/polygon.service";
-import {Polygon} from "../../model/MapAreas/Polygons/Polygon";
-import {StandService} from "../../services/stand.service";
-import {Stand} from "../../model/Stand/Stand";
-import {CorridorService} from "../../services/corridor.service";
-import {MovementPathService} from "../../services/movementPath.service";
-import {Corridor} from "../../model/MapAreas/Corridors/Corridor";
-import {MovementPath} from "../../model/MapAreas/MovementPaths/MovementPath";
+import { MapService } from '../../services/map.service';
+import { RobotService } from '../../services/robot.service';
+import { axisAngleFromQuaternion, StoreService } from '../../services/store.service';
+import { GraphService } from '../../services/graph.service';
+import { Graph } from '../../model/Graphs/Graph';
+import { PolygonService } from '../../services/polygon.service';
+import { Polygon } from '../../model/MapAreas/Polygons/Polygon';
+import { StandService } from '../../services/stand.service';
+import { Stand } from '../../model/Stand/Stand';
+import { CorridorService } from '../../services/corridor.service';
+import { MovementPathService } from '../../services/movementPath.service';
+import { Corridor } from '../../model/MapAreas/Corridors/Corridor';
+import { MovementPath } from '../../model/MapAreas/MovementPaths/MovementPath';
+import { fromEvent, Subscription } from 'rxjs';
 
 export const WAYPOINTICON = L.icon({
   iconUrl: '/assets/icons/position.png',
@@ -52,6 +53,7 @@ export class MapComponent implements OnInit {
 
   dataLoaded = false;
   robotDataloaded = false;
+  subscription: Subscription;
 
   private robotStatusLayer = L.featureGroup();
   private standLayer = L.featureGroup();
@@ -101,14 +103,16 @@ export class MapComponent implements OnInit {
 
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
-  private graphID = '5e177dc681c34611534d8c79';//TODO()
-  private mapResolution = 0.01;//TODO()
-  private graph: Graph;
   private allpolygons: Polygon[];
-  private imageResolution;
 
+
+  //Map related variables
   private map;
   private imageURL = '';
+  private mapResolution = 0.01;//TODO()
+  private imageResolution;
+  private mapContainerSize = 800;
+
   private robotIP = '';
 
   constructor(private mapService: MapService,
@@ -120,6 +124,7 @@ export class MapComponent implements OnInit {
               private store: StoreService,
               private corridorService: CorridorService,
               private pathsService: MovementPathService) {
+    this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
   }
 
   ngOnInit() {
@@ -138,14 +143,14 @@ export class MapComponent implements OnInit {
 
   private initMap(): void {
 
-    const imageBounds = [[0, 0], [800, 800]];
+    const imageBounds = [[0, 0], [ this.mapContainerSize,  this.mapContainerSize]];
     this.map = L.map('map', {
       crs: L.CRS.Simple
     });
 
     this.map.on('overlayadd', function (eo) {
       if (eo.name === 'Korytarze') {
-        console.log("Fired korytarze");
+        console.log('Fired korytarze');
       }
       if (eo.name === 'Sciezki') {
         this.removeLayer(eo.layer);
@@ -165,18 +170,23 @@ export class MapComponent implements OnInit {
     L.control.layers({}, this.overlays).addTo(this.map);
   }
 
+  onResize() {
+    const mapContainer = document.getElementById('map-container');
+    this.mapContainerSize = mapContainer.clientWidth;
+  }
+
   private afterMapLoaded(data: String) {
     this.dataLoaded = true;
     this.imageURL = this.parseToJpeg(data);
     this.initMap();
 
-/*    this.storeService.getRobotIP('5dfb452fd9068433d5983610').subscribe(
-      rob => {
-        this.robotDataloaded = true;
-        this.robotIP = rob;
-        //console.log("Pobieram IP robota: " + this.robotIP);
-      }
-    );*/
+    /*    this.storeService.getRobotIP('5dfb452fd9068433d5983610').subscribe(
+          rob => {
+            this.robotDataloaded = true;
+            this.robotIP = rob;
+            //console.log("Pobieram IP robota: " + this.robotIP);
+          }
+        );*/
 
     this.graphService.getAll().subscribe(
       graphs => {
@@ -204,7 +214,7 @@ export class MapComponent implements OnInit {
     img.onload = () => {
       this.imageResolution = img.width;
       this.drawRobots(this.robots);
-    }
+    };
     this.corridorService.getCorridors().subscribe(
       corridors => {
         this.drawCorridors(corridors);
@@ -224,7 +234,7 @@ export class MapComponent implements OnInit {
       corridor.points.forEach(point => {
         const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
         corridorPoints.push(pointPosition);
-      })
+      });
       let corridorPolygon = L.polygon(corridorPoints, {color: 'red'}).addTo(this.corridors).bindTooltip(corridor.name, {
         sticky: true
       });
@@ -238,7 +248,7 @@ export class MapComponent implements OnInit {
         path.points.forEach(point => {
           const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
           polylinePoints.push(pointPosition);
-        })
+        });
         new L.Polyline(polylinePoints).addTo(this.movementPaths).bindTooltip(path.name, {
           sticky: true
         });
@@ -263,17 +273,17 @@ export class MapComponent implements OnInit {
       });
       orientationMarker.addTo(this.standLayer);
       marker.bindPopup(
-        "Stand Details<br />Position x: "
+        'Stand Details<br />Position x: '
         + stand.pose.position.x
-        + "<br />Position y: " +
+        + '<br />Position y: ' +
         +stand.pose.position.y
-        + "<br />Orientation: " +
+        + '<br />Orientation: ' +
         +stand.pose.position.z
-        + "<br />Status: " +
+        + '<br />Status: ' +
         +stand.standStatus.name
-        + "<br />Parking type: " +
+        + '<br />Parking type: ' +
         +stand.parkingType.name
-        + "<br />Stand type: " +
+        + '<br />Stand type: ' +
         +stand.standType.name);
     })
   }
@@ -330,16 +340,12 @@ export class MapComponent implements OnInit {
       let marker = L.marker(position, {icon: ROBOTICON});
       marker.addTo(this.robotStatusLayer);
       marker.bindPopup(
-        "Robot Details<br />Position x: "
+        'Robot Details<br />Position x: '
         + this.getRealCoordinates(marker.getLatLng().lng)
-        + "<br />Position y: " +
+        + '<br />Position y: ' +
         +this.getRealCoordinates(marker.getLatLng().lat));
       this.robotMarkers.push(marker);
       this.robotStatusLayer.addTo(this.map);
-
-      // L.marker(position, {icon: markerIcon}).addTo(this.map)
-      /*L.marker(position, {icon: markerIcon}).on('click', this.markerOnClick.bind(this)).addTo(this.map));*/
-
     })
   }
 
@@ -348,11 +354,11 @@ export class MapComponent implements OnInit {
   }
 
   getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
   getRealCoordinates(value: number) {
-    return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
+    return (value * this.mapResolution * (this.imageResolution /  this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
   }
 
   private updateRobotMarkerPositions(robots: number[][]) {
@@ -364,6 +370,4 @@ export class MapComponent implements OnInit {
       this.robotMarkers[i].setLatLng(position);
     }
   }
-
-
 }
