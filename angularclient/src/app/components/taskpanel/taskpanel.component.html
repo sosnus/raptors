@@ -27,6 +27,40 @@
     </div>
     <button class="btn btn-info btn-rounded btn-sm my-0" (click)="saveRobotTask()">Dodaj zadanie</button>
   </div>
-
 </form>
+<!--<div *ngIf="robotTasks.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Rozpoczęcie</th>
+      <th scope="col">Nazwa</th>
+      <th scope="col">Priorytet</th>
+      <th scope="col">Status</th>
+      <th scope="col">Kto stworzył</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let type of robotTasks;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{type.startTime}}</td>
+      <td>{{type.name}}</td>
+      <td>{{type.priority.name}}</td>
+      <td>{{type.status}}</td>
+      <td>{{type.userID}}</td>
+   &lt;!&ndash;   <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID"
+                (click)="edit(type)">Edit
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID+'Confirm'"
+                (click)="apartment=type">Delete
+        </button>
+        <button class="btn btn-info btn-rounded btn-sm my-0"
+                (click)="apartmentSelected.emit(type.flats)">Show flats
+        </button>
+      </td>&ndash;&gt;
+    </tr>
+    </tbody>
+  </table>
+</div>-->
 

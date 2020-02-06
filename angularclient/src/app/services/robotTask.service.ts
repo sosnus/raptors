@@ -33,7 +33,11 @@ export class RobotTaskService {
   }
 
   public delete(robotTask: RobotTask) {
-    const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: robotTask};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Basic ' + sessionStorage.getItem('token',)
+      }), body: robotTask, responseType: 'text' as 'json'
+    };
     return this.http.delete(this.readonlyrobotTaskURL + 'delete', httpOptions);
   }
 

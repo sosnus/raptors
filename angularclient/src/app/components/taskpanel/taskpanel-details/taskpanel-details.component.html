@@ -1,3 +1,8 @@
+<button type="button" class="btn btn-light switch-container" (click)="savePoly()">
+  <i class="fas fa-pen"></i>Edytuj</button>
+
+<button type="button" class="btn btn-light switch-container" (click)="delete()">
+  <i class="fas fa-minus-circle"></i>Anuluj</button>
 <table class="table">
   <thead>
   </thead>
@@ -22,7 +27,7 @@
     <th scope="row">Dodane przez</th>
     <td>{{task.userID}}</td>
   </tr>
-  <tr *ngIf="task.behaviours.length>0">
+  <tr ><!--*ngIf="task.behaviours.length>0"-->
     <th scope="row" >Szczegóły  zadania</th>
     <h1><td *ngFor="let item of task.behaviours">{{item.name}}</td></h1>
   </tr>

@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit, SimpleChange} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChange} from '@angular/core';
 import {RobotService} from "../../services/robot.service";
 import {StoreService} from "../../services/store.service";
 import {RobotTaskService} from "../../services/robotTask.service";
@@ -11,18 +11,25 @@ import {RobotTask} from "../../model/Robots/RobotTask";
 })
 export class SidebarComponent implements OnInit, OnChanges {
 
+  @Input()
+  robotTaskss: RobotTask[];
+
   robotDataloaded = false;
   private robotIDlist = [];
 
   private robotTasks: RobotTask[];
   private robotTask: RobotTask;
 
-  private i=0;
-  private j=0;
+  loggedUserRole: string;
+  loggedUserID: string;
+
   constructor(private storeService: StoreService, private robotTaskService: RobotTaskService) {
   }
 
   ngOnInit() {
+    this.loggedUserID = JSON.parse(atob(localStorage.getItem('userID')));
+    this.loggedUserRole = JSON.parse(atob(localStorage.getItem('userData')));
+
     //console.log("test: " + this.storeService.robotsObjects[1].robotIP);
     this.storeService.getRobotIDlist().subscribe(
       rob => {
@@ -32,22 +39,29 @@ export class SidebarComponent implements OnInit, OnChanges {
       }
     );
 
-    this.robotTaskService.getRobotTasks().subscribe(robotTask=>{
-      this.robotTasks = robotTask;
-    })
+    this.robotTaskService.getRobotTasks().subscribe(tasks=>{
+      this.robotTasks = tasks;
+      // filtrowanie listy zadań pod edit/delete zależnie od roli
+      this.getRobotTasksByRole();
+      //console.log("Lista po filtracji: " +this.robotTasks);
+      this.robotTasks.forEach(task=>{
+        //console.log("NAZWA ZADANKA POZOSTALEGO: " + task.name);
+      });
+    });
 
 
   }
 
   ngOnChanges(changes: { [property: string]: SimpleChange }) {
-    this.robotTaskService.getRobotTasks().subscribe(robotTask =>
-    {
-      this.robotTasks = robotTask;
+    this.robotTaskService.getRobotTasks().subscribe(tasks=>{
+      this.robotTasks = tasks;
+      // filtrowanie listy zadań pod edit/delete zależnie od roli
+      this.getRobotTasksByRole();
+      //console.log("Lista po filtracji: " +this.robotTasks);
       this.robotTasks.forEach(task=>{
         this.robotTasks = this.robotTasks.filter(item => item.id === task.id);
       })
-    }
-    )
+    });
   }
 
 
@@ -63,6 +77,13 @@ export class SidebarComponent implements OnInit, OnChanges {
          }
        }
      }*/
+  }
+
+  getRobotTasksByRole(){
+    // REGULAR_ROLE_USER
+    if(this.loggedUserRole == 'ROLE_REGULAR_USER'){
+      this.robotTasks = this.robotTasks.filter(task=> task.userID == this.loggedUserID);
+    }
   }
 
 }

@@ -88,6 +88,8 @@ export class TaskpanelComponent implements OnInit {
   saveRobotTask() {
     this.robotTask.status = "waiting";
     this.robotTask.userID = this.loggedUserID;
+    let dateTime = new Date();
+    this.robotTask.startTime = dateTime.toLocaleString();
     //this.robotTask.behaviours = this.selectedBehaviour; // tu musi być lista
     //this.robotTask.priority = this.selectedTaskPriority;
     this.robotTaskService.save(this.robotTask).subscribe(
