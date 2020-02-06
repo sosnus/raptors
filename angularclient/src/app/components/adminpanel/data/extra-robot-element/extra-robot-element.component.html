@@ -51,8 +51,8 @@
     </div>
     <div class="md-form">
       <i class="fas fa-file-signature prefix grey-text"></i>
-      <input type="text" id="extraRobotElementDimension" class="form-control validate" required [(ngModel)]="extraRobotElement.dimensions" name="dimensions">
-      <label for="extraRobotElementDimension" [class.active]="extraRobotElement.dimensions && extraRobotElement.dimensions.length > 0">Wymiary elementu</label>
+      <input type="text" id="extraRobotElementDimension" class="form-control validate" required [(ngModel)]="extraRobotElement.dimension" name="dimensions">
+      <label for="extraRobotElementDimension" [class.active]="extraRobotElement.dimension && extraRobotElement.dimension.length > 0">Wymiary elementu</label>
     </div>
     <div class="md-form">
       <select class="browser-default custom-select" (change)="selectFunctionalities($event.target.value)"

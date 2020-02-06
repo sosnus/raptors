@@ -9,10 +9,7 @@ import {RobotTask} from "../../model/Robots/RobotTask";
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit, OnChanges {
-
-  @Input()
-  robotTaskss: RobotTask[];
+export class SidebarComponent implements OnInit{
 
   robotDataloaded = false;
   private robotIDlist = [];
@@ -40,28 +37,13 @@ export class SidebarComponent implements OnInit, OnChanges {
     );
 
     this.robotTaskService.getRobotTasks().subscribe(tasks=>{
-      this.robotTasks = tasks;
+      this.storeService.robotTaskList = tasks;
       // filtrowanie listy zadań pod edit/delete zależnie od roli
       this.getRobotTasksByRole();
       //console.log("Lista po filtracji: " +this.robotTasks);
-      this.robotTasks.forEach(task=>{
-        //console.log("NAZWA ZADANKA POZOSTALEGO: " + task.name);
-      });
     });
 
 
-  }
-
-  ngOnChanges(changes: { [property: string]: SimpleChange }) {
-    this.robotTaskService.getRobotTasks().subscribe(tasks=>{
-      this.robotTasks = tasks;
-      // filtrowanie listy zadań pod edit/delete zależnie od roli
-      this.getRobotTasksByRole();
-      //console.log("Lista po filtracji: " +this.robotTasks);
-      this.robotTasks.forEach(task=>{
-        this.robotTasks = this.robotTasks.filter(item => item.id === task.id);
-      })
-    });
   }
 
 
@@ -82,7 +64,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   getRobotTasksByRole(){
     // REGULAR_ROLE_USER
     if(this.loggedUserRole == 'ROLE_REGULAR_USER'){
-      this.robotTasks = this.robotTasks.filter(task=> task.userID == this.loggedUserID);
+      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
     }
   }
 

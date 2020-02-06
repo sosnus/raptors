@@ -3,8 +3,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {RobotTask} from "../model/Robots/RobotTask";
 import {StoreService} from "./store.service";
-import {Polygon} from "../model/MapAreas/Polygons/Polygon";
-import {Robot} from "../model/Robots/Robot";
+
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +28,7 @@ export class RobotTaskService {
 
   public save(robotTask: RobotTask) {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.post<Polygon>(this.readonlyrobotTaskURL + 'add', robotTask, {headers: headers});
+    return this.http.post<RobotTask>(this.readonlyrobotTaskURL + 'add', robotTask, {headers: headers});
   }
 
   public delete(robotTask: RobotTask) {

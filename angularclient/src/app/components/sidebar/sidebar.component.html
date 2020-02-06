@@ -15,7 +15,7 @@
 
     <!-- Card body -->
     <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1">
-      <div *ngFor="let task of robotTasks">
+      <div *ngFor="let task of storeService.robotTaskList">
         <div class="card-header card-item" [routerLink]="['/taskpanel-details', task.id]"> <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
           {{task.name}}
         </div>

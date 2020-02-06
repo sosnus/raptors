@@ -13,6 +13,7 @@ import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {User} from "../../model/User/User";
 import {UserService} from "../../services/user.service";
+import {StoreService} from "../../services/store.service";
 
 @Component({
   selector: 'app-taskpanel',
@@ -20,6 +21,7 @@ import {UserService} from "../../services/user.service";
   styleUrls: ['./taskpanel.component.css']
 })
 export class TaskpanelComponent implements OnInit {
+  modalID = "taskRobotModal";
 
   robotTask: RobotTask = new RobotTask(null, null, null, null, null, null, null);
   robotTasks: RobotTask[] = [];
@@ -34,7 +36,8 @@ export class TaskpanelComponent implements OnInit {
 
   constructor(private behaviourService: BehaviourService,
               private taskPriorityService: TaskPriorityService, private robotTaskService: RobotTaskService,
-              private toastr: ToastrService, private authService: AuthService, private userService: UserService) {
+              private toastr: ToastrService, private authService: AuthService, private userService: UserService,
+              private storeService: StoreService) {
     this.robotTask.behaviours = new Array<Behaviour>();
     this.robotTasks = new Array<RobotTask>();
   }
@@ -83,6 +86,33 @@ export class TaskpanelComponent implements OnInit {
         this.robotTask.priority = taskPriority;
       }
     });
+  }
+
+  createOrUpdate() {
+    console.log(this.robotTask);
+    let dateTime = new Date();
+    this.robotTask.startTime = dateTime.toLocaleString();
+    this.robotTask.status = "waiting";
+    this.robotTask.userID = this.loggedUserID;
+    this.robotTaskService.save(this.robotTask).subscribe(
+      result => {
+        if (this.robotTaskExist(this.robotTask.id)) {
+          this.robotTasks[this.robotTasks.findIndex(item => item.id == result.id)] = result;
+        } else {
+          this.robotTasks.push(result);
+          this.storeService.robotTaskList.push(result);
+        }
+        this.robotTask = new RobotTask(null, null, null, null, null, null, null);
+        this.toastr.success("Dodano lub edytowano pomyślnie");
+      },
+      error => {
+        this.toastr.error("Wystąpił bład podczas dodawania lub edycji");
+      }
+    )
+  }
+
+  robotTaskExist(id: string) {
+    return this.robotTasks.some(item => item.id == id);
   }
 
   saveRobotTask() {
