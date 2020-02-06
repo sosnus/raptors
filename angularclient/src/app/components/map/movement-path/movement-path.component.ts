@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MapService} from "../../../services/map.service";
 import {MovementPathService} from "../../../services/movementPath.service";
 import * as L from 'leaflet';
@@ -9,24 +9,29 @@ import {Marker} from "leaflet/src/layer/marker/Marker";
 import {ToastrService} from "ngx-toastr";
 import {WAYPOINTICON} from "../map.component";
 import {Orientation} from "../../../model/Stand/Orientation";
+import {fromEvent} from "rxjs";
 
 @Component({
   selector: 'app-movement-path',
   templateUrl: './movement-path.component.html',
   styleUrls: ['./movement-path.component.css']
 })
-export class MovementPathComponent implements OnInit {
+export class MovementPathComponent implements OnInit, OnDestroy {
 
   dataLoaded = false;
-  private imageResolution;
-  private map;
-  private mapResolution = 0.01;//TODO()
-  private imageURL = '';
   private readonly context;
   private polyline: L.polyline = null;
   private vertices: Marker[] = [];
   private pathID;
   private name;
+
+  //Map related variables
+  private map;
+  private imageURL = '';
+  private mapResolution = 0.01;//TODO()
+  private imageResolution;
+  private mapContainerSize = 800;
+  private subscription;
 
   constructor(private mapService: MapService,
               private movementPathService: MovementPathService,
@@ -37,6 +42,16 @@ export class MovementPathComponent implements OnInit {
 
   ngOnInit() {
     this.loadMap();
+    this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  onResize() {
+    const mapContainer = document.getElementById('map-container');
+    this.mapContainerSize = mapContainer.clientWidth;
   }
 
   private loadMap() {
@@ -65,7 +80,7 @@ export class MovementPathComponent implements OnInit {
   }
 
   private initMap(): void {
-    const imageBounds = [[0, 0], [800, 800]];
+    const imageBounds = [[0, 0], [ this.mapContainerSize,  this.mapContainerSize]];
     this.map = L.map('map', {
       crs: L.CRS.Simple,
       contextmenu: true,
@@ -102,7 +117,7 @@ export class MovementPathComponent implements OnInit {
   }
 
   private getRealCoordinates(value) {
-    return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
+    return (value * this.mapResolution * (this.imageResolution /  this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
   }
 
   saveMovementPath() {
@@ -157,7 +172,7 @@ export class MovementPathComponent implements OnInit {
   }
 
   private getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
   private createNewMarker(position: L.latlng) {

@@ -33,3 +33,8 @@
 .mat-form-field {
   width: 98%;
 }
+.map-container {
+  padding: 0;
+  width: 800px;
+  height: 800px;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import '../../../../node_modules/leaflet-rotatedmarker/leaflet.rotatedMarker.js'
 import '../../../lib/leaflet-easybutton/src/easy-button';
@@ -49,7 +49,7 @@ export const CIRCLEBACK = L.icon({
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
 
   dataLoaded = false;
   robotDataloaded = false;
@@ -124,7 +124,6 @@ export class MapComponent implements OnInit {
               private store: StoreService,
               private corridorService: CorridorService,
               private pathsService: MovementPathService) {
-    this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
   }
 
   ngOnInit() {
@@ -139,6 +138,16 @@ export class MapComponent implements OnInit {
       );
     }
     //setTimeout(() => this.updateRobotMarkerPositions([[100, 992]], 0.01), 3000);
+    this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  onResize() {
+    const mapContainer = document.getElementById('map-container');
+    this.mapContainerSize = mapContainer.clientWidth;
   }
 
   private initMap(): void {
@@ -168,11 +177,6 @@ export class MapComponent implements OnInit {
     }).addTo(this.map);
     this.map.fitBounds(imageBounds);
     L.control.layers({}, this.overlays).addTo(this.map);
-  }
-
-  onResize() {
-    const mapContainer = document.getElementById('map-container');
-    this.mapContainerSize = mapContainer.clientWidth;
   }
 
   private afterMapLoaded(data: String) {

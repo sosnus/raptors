@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MapService} from '../../../services/map.service';
 import {Marker} from 'leaflet/src/layer/marker/Marker.js';
 import {Polygon} from 'leaflet/src/layer/vector/Polygon.js';
@@ -25,6 +25,7 @@ import {StandStatusService} from "../../../services/type/stand-status.service";
 import {ToastrService} from "ngx-toastr";
 
 import 'leaflet-path-transform';
+import {fromEvent} from "rxjs";
 
 declare var L: any;
 
@@ -33,13 +34,9 @@ declare var L: any;
   templateUrl: './stand-creator.component.html',
   styleUrls: ['./stand-creator.component.css']
 })
-export class StandCreatorComponent implements OnInit {
+export class StandCreatorComponent implements OnInit, OnDestroy {
 
   public dataLoaded = false;
-  private imageResolution;
-  private map;
-  private mapResolution = 0.01;//TODO()
-  private imageURL = '';
 
   private selectedMarker: Marker;
   public stand: Stand = new Stand();
@@ -47,6 +44,14 @@ export class StandCreatorComponent implements OnInit {
   private orientationAxis: Polygon;
   private orientationAngle = 0;
   private tempAngle = 0;
+
+  //Map related variables
+  private map;
+  private imageURL = '';
+  private mapResolution = 0.01;//TODO()
+  private imageResolution;
+  private mapContainerSize = 800;
+  private subscription;
 
   //data
   private parkingTypes: ParkingType[];
@@ -67,6 +72,16 @@ export class StandCreatorComponent implements OnInit {
     this.parkingTypeService.getAll().subscribe(data => this.parkingTypes = data);
     this.standTypeService.getAll().subscribe(data => this.standTypes = data);
     this.standStatusService.getAll().subscribe(data => this.standStatuses = data);
+    this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  onResize() {
+    const mapContainer = document.getElementById('map-container');
+    this.mapContainerSize = mapContainer.clientWidth;
   }
 
   private loadMap() {
@@ -96,7 +111,7 @@ export class StandCreatorComponent implements OnInit {
   }
 
   private initMap(): void {
-    const imageBounds = [[0, 0], [800, 800]];
+    const imageBounds = [[0, 0], [this.mapContainerSize, this.mapContainerSize]];
     this.map = L.map('map', {
       crs: L.CRS.Simple,
       contextmenu: true,
@@ -216,11 +231,11 @@ export class StandCreatorComponent implements OnInit {
   }
 
   getRealCoordinates(value: number) {
-    return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
+    return (value * this.mapResolution * (this.imageResolution / this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
   }
 
   getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (this.mapContainerSize / this.imageResolution)
   }
 
   compareItems(id1: any, id2: any): boolean {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MapService} from '../../../services/map.service';
 import * as L from 'leaflet';
 import {Marker} from 'leaflet/src/layer/marker/Marker.js';
@@ -12,6 +12,7 @@ import {GraphService} from "../../../services/graph.service";
 import {StoreService} from "../../../services/store.service";
 import {WAYPOINTICON} from "../map.component";
 import {ToastrService} from "ngx-toastr";
+import {fromEvent} from "rxjs";
 
 
 @Component({
@@ -19,14 +20,10 @@ import {ToastrService} from "ngx-toastr";
   templateUrl: './graphcreator.component.html',
   styleUrls: ['./graphcreator.component.css']
 })
-export class GraphcreatorComponent implements OnInit {
+export class GraphcreatorComponent implements OnInit, OnDestroy {
 
   dataLoaded = false;
   graph = null;
-  private imageResolution;
-  private map;
-  private mapResolution = 0.01;//TODO()
-  private imageURL = '';
   private editEdges = false;
   private graphID;
 
@@ -35,6 +32,14 @@ export class GraphcreatorComponent implements OnInit {
   selectedElement = null;
   private edges = [];
   private readonly context;
+
+  //Map related variables
+  private map;
+  private imageURL = '';
+  private mapResolution = 0.01;//TODO()
+  private imageResolution;
+  private mapContainerSize = 800;
+  private subscription;
 
   constructor(private mapService: MapService,
               private graphService: GraphService,
@@ -45,6 +50,16 @@ export class GraphcreatorComponent implements OnInit {
 
   ngOnInit() {
     this.loadMap();
+    this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  onResize() {
+    const mapContainer = document.getElementById('map-container');
+    this.mapContainerSize = mapContainer.clientWidth;
   }
 
   private loadMap() {
@@ -74,7 +89,7 @@ export class GraphcreatorComponent implements OnInit {
   }
 
   private initMap(): void {
-    const imageBounds = [[0, 0], [800, 800]];
+    const imageBounds = [[0, 0], [ this.mapContainerSize,  this.mapContainerSize]];
     this.map = L.map('map', {
       crs: L.CRS.Simple,
       contextmenu: true,
@@ -238,11 +253,11 @@ export class GraphcreatorComponent implements OnInit {
   }
 
   getRealCoordinates(value: number) {
-    return (value * this.mapResolution * (this.imageResolution / 800) - ((this.imageResolution * this.mapResolution) / 2))
+    return (value * this.mapResolution * (this.imageResolution / this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
   }
 
   getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (800 / this.imageResolution)
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (this.mapContainerSize / this.imageResolution)
   }
 
   clearMap() {
