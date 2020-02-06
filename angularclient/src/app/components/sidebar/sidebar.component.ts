@@ -14,9 +14,6 @@ export class SidebarComponent implements OnInit{
   robotDataloaded = false;
   private robotIDlist = [];
 
-  private robotTasks: RobotTask[];
-  private robotTask: RobotTask;
-
   loggedUserRole: string;
   loggedUserID: string;
 
