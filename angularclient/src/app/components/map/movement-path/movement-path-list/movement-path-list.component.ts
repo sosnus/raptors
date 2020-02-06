@@ -34,14 +34,14 @@ export class MovementPathListComponent implements OnInit {
   getPathsFromDb() {
     this.movementPathService.getMovementPaths().subscribe(
       paths => this.paths = paths,
-      error => this.toast.error("Błąd podczas pobierania danych: " + error)
+      error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     )
   }
 
   ngOnChanges(changes: { [property: string]: SimpleChange }) {
     this.movementPathService.getMovementPaths().subscribe(
       paths => this.paths = paths,
-      error => this.toast.error("Błąd podczas pobierania danych: " + error)
+      error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     )
   }
 
@@ -56,7 +56,7 @@ export class MovementPathListComponent implements OnInit {
         this.pathToEdit.emit(null);
         this.toast.success('Usunięto ścieżkę ')
       },
-      error => this.toast.error('Błąd podczas łączenia z bazą: ' + error)
+      error => this.toast.error('Błąd podczas łączenia z bazą: ' + error.message)
     );
   }
 }

@@ -1,0 +1,72 @@
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+<a *ngIf="users.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+<div *ngIf="users.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Identyfikator</th>
+      <th scope="col">Rola</th>
+      <th scope="col">Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of users;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{data.email}}</td>
+      <td>{{getRoles(data.rolesIDs)}}</td>
+      <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID"
+                (click)="edit(data)">Edytuj
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal"
+                [attr.data-target]="'#' + modalID+'Confirm'"
+                (click)="user=data">Usuń
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(user)"></app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Dodawanie użytkownika'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form  #modalForm="ngForm">
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="username" class="form-control validate" required [(ngModel)]="user.email" name="email">
+      <label for="username" [class.active]="user.email && user.email.length > 0">Identyfikator użytkownika</label>
+    </div>
+
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="password" id="password" class="form-control validate" required [(ngModel)]="user.password" name="password">
+      <label for="password" [class.active]="user.password && user.password.length > 0">Hasło</label>
+    </div>
+
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <mat-form-field class="multiselect">
+        <mat-label>Role</mat-label>
+        <mat-select multiple [(ngModel)]="user.rolesIDs" name="role">
+          <mat-option *ngFor="let role of roles" [value]="userService.getRoleFromName(role)">{{role}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</app-form-modal-template>
+
+
+
+
+
