@@ -46,6 +46,12 @@ public class LogController {
         return logService.getOne(id);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER')")
+    @GetMapping("/robot/{id}")
+    public List<Log> getLogsForOneRobot(@PathVariable String id) {
+        return logService.getLogsForRobot(id);
+    }
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @DeleteMapping("/delete")
     public void delete(@RequestBody @Valid Log log) {
