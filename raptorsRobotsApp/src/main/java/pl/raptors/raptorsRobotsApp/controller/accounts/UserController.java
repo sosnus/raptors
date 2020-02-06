@@ -48,17 +48,19 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
     @PostMapping("/update")
-    public User update(@RequestBody @Valid User user) {
-        return userService.updateOne(user);
+    public void update(@RequestBody @Valid User user) {
+         userService.updateOne(user);
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_USER')")
     @PostMapping("/add")
-    public User addOne(@RequestBody @Valid User user) {
+    public void addOne(@RequestBody User user) {
         if (user.getId() != null) {
-            return userService.updateOne(user);
+            user.setRolesIDs(roleService.getRoleIdByName(user.getRolesIDs()));
+            userService.updateOne(user);
         } else {
-            return userService.addOne(user);
+            user.setRolesIDs(roleService.getRoleIdByName(user.getRolesIDs()));
+            userService.addOne(user);
         }
     }
 
