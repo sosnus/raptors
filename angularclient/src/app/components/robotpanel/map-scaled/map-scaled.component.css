@@ -31,3 +31,11 @@
 .mat-form-field {
   width: 98%;
 }
+
+.map-container{
+  padding: 0;
+}
+.card-header{
+  text-align: center;
+  font-size: 1.5rem;
+}

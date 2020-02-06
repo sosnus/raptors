@@ -15,6 +15,11 @@
 .card-item{
   background: white;
 }
+
+.card-item:hover {
+  box-shadow: 0 8px 24px 0 rgba(255, 144, 144, 1);
+}
+
 .card-header h5{
   font-size: 1.1rem;
   font-weight: 400 !important;
@@ -36,4 +41,13 @@
   -moz-transform: rotate(180deg);
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
+}
+.material-icons{
+  vertical-align: sub;
+}
+.warning {
+  color: red;
+}
+.arrow{
+  float: right;
 }

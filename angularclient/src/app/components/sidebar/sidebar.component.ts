@@ -3,6 +3,7 @@ import {RobotService} from "../../services/robot.service";
 import {StoreService} from "../../services/store.service";
 import {RobotTaskService} from "../../services/robotTask.service";
 import {RobotTask} from "../../model/Robots/RobotTask";
+import {Robot} from "../../model/Robots/Robot";
 
 @Component({
   selector: 'app-sidebar',
@@ -12,12 +13,15 @@ import {RobotTask} from "../../model/Robots/RobotTask";
 export class SidebarComponent implements OnInit{
 
   robotDataloaded = false;
-  private robotIDlist = [];
+  private robotList: Robot[] = [];
 
   loggedUserRole: string;
   loggedUserID: string;
 
-  constructor(private storeService: StoreService, private robotTaskService: RobotTaskService) {
+
+  constructor(private storeService: StoreService,
+              private robotTaskService: RobotTaskService,
+              private robotService: RobotService) {
   }
 
   ngOnInit() {
@@ -25,11 +29,10 @@ export class SidebarComponent implements OnInit{
     this.loggedUserRole = JSON.parse(atob(localStorage.getItem('userData')));
 
     //console.log("test: " + this.storeService.robotsObjects[1].robotIP);
-    this.storeService.getRobotIDlist().subscribe(
-      rob => {
+    this.robotService.getRobots().subscribe(
+      data => {
         this.robotDataloaded = true;
-        this.robotIDlist = rob;
-        console.log("Pobieram listę id robotów: " + this.robotIDlist);
+        this.robotList = data;
       }
     );
 

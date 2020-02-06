@@ -16,7 +16,7 @@
     <!-- Card body -->
     <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1">
       <div *ngFor="let task of storeService.robotTaskList">
-        <div class="card-header card-item" [routerLink]="['/taskpanel-details', task.id]"> <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
+        <div class="card-header card-item clickable" [routerLink]="['/taskpanel-details', task.id]"> <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
           {{task.name}}
         </div>
       </div>
@@ -40,9 +40,11 @@
 
     <!-- Card body -->
     <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2">
-      <div *ngFor="let robot of robotIDlist">
-        <div class="card-header card-item" [routerLink]="['/robotpanel', robot]"> <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
-          {{robot}}
+      <div *ngFor="let robot of robotList">
+        <div class="card-header card-item clickable" [routerLink]="['/robotpanel', robot.id]"> <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
+          Robot IP: {{robot.robotIp}}
+          <i class="material-icons warning" *ngIf="robot.batteryLevel<10">battery_alert</i>
+          <i class="material-icons arrow">play_arrow</i>
         </div>
       </div>
     </div>

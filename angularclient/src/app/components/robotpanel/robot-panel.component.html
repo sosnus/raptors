@@ -1,5 +1,9 @@
 <div style="display: flex">
-  <app-robot-details [robot]="robot"></app-robot-details>
-  <app-map-scaled [mapContainerSize]="400" [robot]="robot"></app-map-scaled>
+  <app-robot-details class="card" [robot]="robot"></app-robot-details>
+  <app-map-scaled class="card"  [mapContainerSize]="400" [robot]="robot"></app-map-scaled>
 </div>
 <hr size="30" noshade>
+<div style="display: flex;width: 85%;">
+  <app-robot-model class="card item" [model]="robot.model"></app-robot-model>
+  <app-logs-table class="card item" [robotID]="robot.id"></app-logs-table>
+</div>

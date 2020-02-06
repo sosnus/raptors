@@ -63,6 +63,8 @@ import { ElementFunctionalityComponent } from './components/adminpanel/data/elem
 import { TaskpanelDetailsComponent } from './components/taskpanel/taskpanel-details/taskpanel-details.component';
 import { TaskpanelListComponent } from './components/taskpanel/taskpanel-list/taskpanel-list.component';
 import { UserspanelComponent } from './components/userspanel/userspanel.component';
+import { RobotModelComponent } from './components/robotpanel/robot-model/robot-model.component';
+import { LogsTableComponent } from './components/robotpanel/logs-table/logs-table.component';
 
 
 const config: InputFileConfig = {};
@@ -113,6 +115,8 @@ const config: InputFileConfig = {};
     UserspanelComponent,
     TaskpanelDetailsComponent,
     TaskpanelListComponent,
+    RobotModelComponent,
+    LogsTableComponent,
   ],
   imports: [
     BrowserModule,

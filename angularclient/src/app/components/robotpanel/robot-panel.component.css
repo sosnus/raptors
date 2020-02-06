@@ -2,6 +2,12 @@ app-robot-details{
   width: 50%;
 }
 app-map-scaled{
+  margin-left: 1rem;
+}
+hr{
+  border-top: 3px solid rgba(0,0,0,.1);
+}
+.item{
   width: 50%;
-  margin: 1rem;
+  padding-right: 1rem;
 }
