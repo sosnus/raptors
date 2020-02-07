@@ -120,4 +120,8 @@ export class MapScaledComponent implements OnInit, OnChanges {
   getMapCoordinates(value) {
     return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (this.mapContainerSize / this.imageResolution)
   }
+
+  getRounded(value){
+    if(value) return value.toFixed(4);
+  }
 }
