@@ -159,7 +159,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.map.on('overlayadd', function (eo) {
       if (eo.name === 'Korytarze') {
-        console.log('Fired korytarze');
+
       }
       if (eo.name === 'Sciezki') {
         this.removeLayer(eo.layer);
@@ -184,14 +184,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.imageURL = this.parseToJpeg(data);
     this.initMap();
 
-    /*    this.storeService.getRobotIP('5dfb452fd9068433d5983610').subscribe(
-          rob => {
-            this.robotDataloaded = true;
-            this.robotIP = rob;
-            //console.log("Pobieram IP robota: " + this.robotIP);
-          }
-        );*/
-
     this.graphService.getAll().subscribe(
       graphs => {
         graphs.map(graph => this.drawGraph(graph))
@@ -201,7 +193,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.polygonService.getPolygons().subscribe(
       polygons => {
-        console.log(polygons);
         this.allpolygons = polygons;
         this.drawPolygons(this.allpolygons);
       }
@@ -262,7 +253,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private drawStand(stands: Stand[]) {
     stands.forEach(stand => {
-      console.log(stand);
       const position = [
         this.getMapCoordinates(Number(stand.pose.position.y)),
         this.getMapCoordinates(Number(stand.pose.position.x))

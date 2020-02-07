@@ -82,7 +82,7 @@
   <!-- Collapsible content -->
 </nav>
 <div class="main">
-  <app-sidebar class="sidebar"></app-sidebar>
+  <app-sidebar class="sidebar" *ngIf="authService.userLoggedIn()"></app-sidebar>
   <!--/.Navbar-->
   <div class="wrapper">
     <router-outlet></router-outlet>

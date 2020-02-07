@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {LogService} from "../../../services/log.service";
 
 @Component({
   selector: 'app-logs-table',
@@ -8,11 +9,10 @@ import {Component, Input, OnInit} from '@angular/core';
 export class LogsTableComponent implements OnInit {
 
   @Input()
-  robotID;
-
   logs = [];
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

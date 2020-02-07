@@ -7,6 +7,6 @@
         <div id="map"></div>
       </div>
     </div>
-    <div>Aktualne współrzędne: {{robot.pose.position.x.toFixed(4)}}   |   {{robot.pose.position.y.toFixed(4)}}</div>
+    <div>Aktualne współrzędne: {{getRounded(robot.pose.position.x)}}   |   {{getRounded(robot.pose.position.y)}}</div>
   </div>
 </div>

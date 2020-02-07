@@ -10,25 +10,25 @@ import {StoreService} from "./store.service";
 
 export class RobotService {
 
-  private readonly robotIP: string;
+  private readonly robotURL: string;
 
   constructor(private http: HttpClient,
               private store: StoreService) {
-    this.robotIP = store.baseURL + '/robots/';
+    this.robotURL = store.baseURL + '/robots/';
   }
 
   public getRobots(): Observable<Robot[]> {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<Robot[]>(this.robotIP + 'all', {headers: headers,responseType: 'json'})
+    return this.http.get<Robot[]>(this.robotURL + 'all', {headers: headers,responseType: 'json'})
   }
 
   public getRobot(id: string): Observable<Robot> {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<Robot>(this.robotIP + id, {headers: headers, responseType: 'json'})
+    return this.http.get<Robot>(this.robotURL + id, {headers: headers, responseType: 'json'})
   }
 
   public save(robot: Robot) {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.post<Robot>(this.robotIP + 'add', robot, {headers: headers});
+    return this.http.post<Robot>(this.robotURL + 'add', robot, {headers: headers});
   }
 }

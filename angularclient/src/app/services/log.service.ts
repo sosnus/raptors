@@ -7,7 +7,7 @@ import {Log} from "../model/Robots/Log";
 @Injectable({
   providedIn: 'root'
 })
-export class CorridorService {
+export class LogService {
   private readonly logURL: string;
 
   constructor(private http: HttpClient,
@@ -15,9 +15,9 @@ export class CorridorService {
     this.logURL = store.baseURL + '/logs/';
   }
 
-  public getLogs(): Observable<Log[]> {
+  public getLogsFromRobot(robotID: string): Observable<Log[]> {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<Log[]>(this.logURL + 'all', {headers: headers, responseType: 'json'});
+    return this.http.get<Log[]>(this.logURL + 'robot/'+robotID, {headers: headers, responseType: 'json'});
   }
 
   public GetLog(id: string): Observable<Log> {
