@@ -18,11 +18,19 @@ export class StoreService {
   public mapID = '5e19f1fa9b1eab79e9a58e08';
   public baseURL = 'http://localhost:8080';
   public robotTaskList: RobotTask[]= [];
+  public loggedUserRole: string;
+  public loggedUserID: string;
 
   constructor(private http: HttpClient) {
     this.robotIDlist = 'http://localhost:8080/robots/allById'
     this.robotIP = 'http://localhost:8080/robots/';
 
+  }
+  public getRobotTasksByRole(){
+    // REGULAR_ROLE_USER
+    if(this.loggedUserRole == 'ROLE_REGULAR_USER'){
+      this.robotTaskList = this.robotTaskList.filter(task=> task.userID == this.loggedUserID);
+    }
   }
 
   public getRobotIDlist(): Observable<any> {

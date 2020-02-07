@@ -49,12 +49,16 @@ public class RobotTaskService implements CRUDService<RobotTask> {
         }
     }
 
-    List<RobotTask> getByRobot(Robot robot) {
+    public List<RobotTask> getByRobot(Robot robot) {
         return robotTaskRepository.findAllByRobot(robot);
     }
 
-    List<RobotTask> getByBehaviour(Behaviour behaviour) {
+    public List<RobotTask> getByBehaviour(Behaviour behaviour) {
         return robotTaskRepository.findAllByBehavioursContaining(behaviour);
+    }
+
+    public List<RobotTask> getTasksByUsersIds (List<String> userIdList){
+        return robotTaskRepository.findAllByUserIDIn(userIdList);
     }
 
     public List<RobotTask> getByPriority(TaskPriority priority) {

@@ -33,6 +33,12 @@ public class RobotTaskController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_SUPER_USER')")
+    @PostMapping("/get-list")
+    public List<RobotTask> getTasksListForUsersList(@RequestBody @Valid List<String> usersIDsList) {
+        return  robotTaskService.getTasksByUsersIds(usersIDsList);
+    }
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_REGULAR_USER')")
     @PostMapping("/update")
     public RobotTask update(@RequestBody @Valid RobotTask robotTask) {

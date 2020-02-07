@@ -17,4 +17,6 @@ public interface RobotTaskRepository extends MongoRepository<RobotTask, String> 
     List<RobotTask> findAllByBehavioursContaining(Behaviour behaviour);
 
     List<RobotTask> findAllByPriority(TaskPriority priority);
+
+    List<RobotTask> findAllByUserIDIn(List<String> userIdList);
 }

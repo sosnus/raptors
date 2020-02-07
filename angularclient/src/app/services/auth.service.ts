@@ -12,7 +12,7 @@ export class AuthService {
   private readonly url: string;
   private readonly logOutUrl: string;
   redirectURL: string;
-
+  
   constructor(private http: HttpClient,
               private router: Router) {
     this.url = 'http://localhost:8080/users/';
