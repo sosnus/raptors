@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {User} from "../model/User/User";
+import {StoreService} from "./store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,10 @@ export class AuthService {
   redirectURL: string;
 
   constructor(private http: HttpClient,
-              private router: Router) {
-    this.url = 'http://localhost:8080/users/';
-    this.logOutUrl = 'http://localhost:8080/logout';
+              private router: Router,
+              private store: StoreService) {
+    this.url = store.baseURL+'/users/';
+    this.logOutUrl = store.baseURL+'/logout';
   }
 
   public userLoggedIn(): boolean {

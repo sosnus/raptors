@@ -21,11 +21,7 @@ export class StoreService {
   public loggedUserRole: string;
   public loggedUserID: string;
 
-  constructor(private http: HttpClient) {
-    this.robotIDlist = 'http://localhost:8080/robots/allById'
-    this.robotIP = 'http://localhost:8080/robots/';
 
-  }
   public getRobotTasksByRole(){
     // REGULAR_ROLE_USER
     if(this.loggedUserRole == 'ROLE_REGULAR_USER'){
@@ -33,15 +29,7 @@ export class StoreService {
     }
   }
 
-  public getRobotIDlist(): Observable<any> {
-    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get(this.robotIDlist, {headers: headers})
-  }
 
-  public getRobotIP(id: string): Observable<any> {
-    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get(this.robotIP + id + '/ip/', {headers: headers, responseType: 'text'})
-  }
 }
 
 export function quaternionFromAxisAngle(axis, angle): Orientation {
