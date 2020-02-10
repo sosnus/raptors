@@ -10,7 +10,7 @@ import pl.raptors.raptorsRobotsApp.service.accounts.RoleService;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping("/roles")
 public class RoleController {
 

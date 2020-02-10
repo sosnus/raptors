@@ -16,7 +16,7 @@ import java.util.Base64;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping(value = "/movement/maps")
 public class MovementMapController {
 
