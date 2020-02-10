@@ -4,12 +4,13 @@ import {MovementPathService} from "../../../services/movementPath.service";
 import * as L from 'leaflet';
 import {MovementPath} from "../../../model/MapAreas/MovementPaths/MovementPath";
 import {UniversalPoint} from "../../../model/MapAreas/UniversalPoint";
-import {StoreService} from "../../../services/store.service";
+import {axisAngleFromQuaternion, StoreService} from "../../../services/store.service";
 import {Marker} from "leaflet/src/layer/marker/Marker";
 import {ToastrService} from "ngx-toastr";
-import {WAYPOINTICON} from "../map.component";
-import {Orientation} from "../../../model/Stand/Orientation";
+import {ARROWICON, CIRCLEBACK, STANDICON, WAYPOINTICON} from "../map.component";
 import {fromEvent} from "rxjs";
+import {StandService} from "../../../services/stand.service";
+import {Stand} from "../../../model/Stand/Stand";
 
 @Component({
   selector: 'app-movement-path',
@@ -33,10 +34,14 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   private mapContainerSize = 800;
   private subscription;
 
+  private startStand: L.marker;
+  private finishStand: L.marker;
+
   constructor(private mapService: MapService,
               private movementPathService: MovementPathService,
               private store: StoreService,
-              private toast: ToastrService) {
+              private toast: ToastrService,
+              private standService: StandService) {
     this.context = this;
   }
 
@@ -77,10 +82,96 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     img.onload = () => {
       this.imageResolution = img.width;
     }
+
+    this.standService.getAll().subscribe(
+      stands => {
+        this.drawStand(stands);
+      }
+    );
+  }
+
+  private drawStand(stands: Stand[]) {
+
+    stands.forEach(stand => {
+      const position = [
+        this.getMapCoordinates(Number(stand.pose.position.y)),
+        this.getMapCoordinates(Number(stand.pose.position.x))
+      ];
+      let circleMarker = L.marker(position, {
+        icon: CIRCLEBACK
+      });
+      circleMarker.addTo(this.map);
+      let orientationMarker = L.marker(position, {
+        icon: ARROWICON,
+        rotationAngle: axisAngleFromQuaternion(stand.pose.orientation) * 180 / Math.PI
+      });
+      orientationMarker.addTo(this.map);
+      let marker = L.marker(position, {
+        icon: STANDICON,
+        contextmenu: true,
+        contextmenuItems: [
+          {
+            text: 'Oznacz jako POI startowy',
+            callback: this.markAsStart,
+            context: this
+          },
+          {
+            text: 'Oznacz jako POI końcowy',
+            callback: this.markAsFinish,
+            context: this
+          },
+          {
+            text: 'Usuń POI ze ścieżki',
+            callback: this.deletePOI,
+            context: this
+          }
+        ]
+      }).bindTooltip(stand.name, {
+        sticky: true
+      });
+      marker.addTo(this.map);
+    })
+  }
+
+  private deletePOI(e) {//todo
+    // this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
+
+    if (this.startStand != null) {
+      if (e.relatedTarget.getLatLng() == this.startStand.getLatLng()) {
+        console.log("delete POI: start stand");
+        this.vertices = this.vertices.filter(marker => marker !==this.startStand);
+        this.startStand = null;
+        this.createPolyline();
+      }
+    }
+    if (this.finishStand != null) {
+      if (e.relatedTarget.getLatLng() == this.finishStand.getLatLng()) {
+        console.log("delete POI: finish stand");
+        this.vertices = this.vertices.filter(marker => marker !== this.finishStand);
+        this.finishStand = null;
+        this.createPolyline();
+      }
+    }
+
+  }
+
+  private markAsStart(e) {//todo
+    this.startStand = L.marker(e.relatedTarget.getLatLng(), {});
+    let tempVertices=[];
+    tempVertices.push(this.vertices);
+    this.vertices.splice(0,0,this.startStand);
+    this.createPolyline();
+    // e.relatedTarget.getLatLng();
+  }
+
+  private markAsFinish(e) {
+    this.finishStand = L.marker(e.relatedTarget.getLatLng(), {});
+    this.vertices.push(this.finishStand);
+    this.createPolyline();
   }
 
   private initMap(): void {
-    const imageBounds = [[0, 0], [ this.mapContainerSize,  this.mapContainerSize]];
+    const imageBounds = [[0, 0], [this.mapContainerSize, this.mapContainerSize]];
     this.map = L.map('map', {
       crs: L.CRS.Simple,
       contextmenu: true,
@@ -92,11 +183,13 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     this.map.fitBounds(imageBounds);
 
     this.map.on('click', e => {
-      this.createNewMarker(e.latlng);
+      const marker=this.createNewMarker(e.latlng);
       if (this.polyline == null) {
         this.polyline = new L.Polyline([]).addTo(this.map);
       }
-      this.polyline.addLatLng(e.latlng);
+      if(marker!=null){
+        this.polyline.addLatLng(e.latlng);
+      }
     });
   }
 
@@ -113,20 +206,18 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     }
     this.vertices = [];
     this.name = "";
-    this.pathID=null;
+    this.pathID = null;
+    this.startStand=null;
+    this.finishStand=null;
   }
 
   private getRealCoordinates(value) {
-    return (value * this.mapResolution * (this.imageResolution /  this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
+    return (value * this.mapResolution * (this.imageResolution / this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
   }
 
   saveMovementPath() {
-    if (this.polyline == null) {
-      alert("Nie wybrano żadnych punktów!");
-      return;
-    }
-    if(this.polyline.getLatLngs().length<2){
-      alert("Zdefiniowano za mało punktów!");
+    if (this.startStand == null || this.finishStand == null) {
+      alert("Punkt początkowy lub końcowy POI nie jest zdefiniowany!");
       return;
     }
 
@@ -172,22 +263,41 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   }
 
   private getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * ( this.mapContainerSize / this.imageResolution)
+    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (this.mapContainerSize / this.imageResolution)
   }
 
   private createNewMarker(position: L.latlng) {
     let marker = new L.marker(position, {
       draggable: true,
-      icon: WAYPOINTICON
+      icon: WAYPOINTICON,
+      contextmenu: true,
+      contextmenuItems: [
+        {
+          text: 'Usuń punkt',
+          callback: this.deleteMarker,
+          context: this
+        }
+      ]
     });
 
     marker.on('move', e => {
       this.updatePoints(e)
     });
+    if(this.finishStand!=null){
+      alert("Ściezka już utworzona! Usuń POI końcowy aby kontynuować rysowanie ściezki.");
+      return null;
+    }
+    if(this.finishStand==null) {
+      marker.addTo(this.map);
+      this.vertices.push(marker);
+      return marker;
+    }
+  }
 
-    marker.addTo(this.map);
-    this.vertices.push(marker);
-    return marker;
+  private deleteMarker(e) {
+    this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
+    this.map.removeLayer(e.relatedTarget);
+    this.createPolyline();
   }
 
   private updatePoints(e) {
