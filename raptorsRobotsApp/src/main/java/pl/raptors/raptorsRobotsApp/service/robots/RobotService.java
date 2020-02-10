@@ -28,8 +28,6 @@ public class RobotService implements CRUDService<Robot> {
     @Autowired
     UserService userService;
     @Autowired
-    PasswordEncoder bCryptPasswordEncoder;
-    @Autowired
     RoleService roleService;
 
     @Override
