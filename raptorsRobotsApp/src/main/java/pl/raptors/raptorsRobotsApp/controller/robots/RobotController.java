@@ -35,14 +35,15 @@ public class RobotController {
     @PostMapping("/add")
     //http://localhost:8080/robots/add?password=passy   <-- passy to nasze haslo
     public Robot add(@RequestBody @Valid Robot robot,@RequestParam(required = false) String password) {
-        if (robot.getId() != null) {
-            return robotService.updateOne(robot);
-        } else {
-            //return robotService.addOne(robot);
-            if(password==null)
-                password="robot";
-            return robotService.addRobotAndCreateAccount(robot,password);
+        if(robotService.getOne(robot.getId())==null) {
+            if (password == null)
+                password = "robot";
+            return robotService.addRobotAndCreateAccount(robot, password);
         }
+        else{
+            return null;
+        }
+
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_ROBOT')")
