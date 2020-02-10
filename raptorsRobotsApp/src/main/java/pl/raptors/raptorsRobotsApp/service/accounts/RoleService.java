@@ -24,6 +24,9 @@ public class RoleService implements CRUDService<Role> {
         return  rolesIds;
     }
 
+    public String getRoleIdByRoleName (String roleName){
+        return roleRepository.findIdByName(roleName).getId();
+    }
 
     @Override
     public Role addOne(Role role) {

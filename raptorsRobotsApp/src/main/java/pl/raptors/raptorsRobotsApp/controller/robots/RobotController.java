@@ -1,6 +1,7 @@
 package pl.raptors.raptorsRobotsApp.controller.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
@@ -32,11 +33,15 @@ public class RobotController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_ROBOT')")
     @PostMapping("/add")
-    public Robot add(@RequestBody @Valid Robot robot) {
+    //http://localhost:8080/robots/add?password=passy   <-- passy to nasze haslo
+    public Robot add(@RequestBody @Valid Robot robot,@RequestParam(required = false) String password) {
         if (robot.getId() != null) {
             return robotService.updateOne(robot);
         } else {
-            return robotService.addOne(robot);
+            //return robotService.addOne(robot);
+            if(password==null)
+                password="robot";
+            return robotService.addRobotAndCreateAccount(robot,password);
         }
     }
 

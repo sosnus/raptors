@@ -1,18 +1,19 @@
 package pl.raptors.raptorsRobotsApp.service.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.raptors.raptorsRobotsApp.domain.accounts.User;
 import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
 import pl.raptors.raptorsRobotsApp.domain.robots.*;
 import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
+import pl.raptors.raptorsRobotsApp.service.accounts.RoleService;
+import pl.raptors.raptorsRobotsApp.service.accounts.UserService;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,11 +25,27 @@ public class RobotService implements CRUDService<Robot> {
     RobotReviewService robotReviewService;
     @Autowired
     RobotTaskService robotTaskService;
-
+    @Autowired
+    UserService userService;
+    @Autowired
+    PasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    RoleService roleService;
 
     @Override
     public Robot addOne(Robot robot) {
         return robotRepository.save(robot);
+    }
+
+    public Robot addRobotAndCreateAccount (Robot robot, String password){
+        //format czasu
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        robot.setTimestamp(formatter.format(new Date()));
+        robotRepository.save(robot);
+        System.out.println(robot.getId());
+        User robotUser = new User(robot.getId(), password, Collections.singletonList(roleService.getRoleIdByRoleName("ROLE_ROBOT")));
+        userService.addOne(robotUser);
+        return robot;
     }
 
     @Override
