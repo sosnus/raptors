@@ -8,8 +8,11 @@ import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +24,7 @@ public class RobotService implements CRUDService<Robot> {
     RobotReviewService robotReviewService;
     @Autowired
     RobotTaskService robotTaskService;
+
 
     @Override
     public Robot addOne(Robot robot) {
@@ -37,8 +41,23 @@ public class RobotService implements CRUDService<Robot> {
         return robotRepository.findAll();
     }
 
+
     @Override
     public Robot updateOne(Robot robot) {
+        //format czasu
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Robot oldRobot = robotRepository.findById(robot.getId()).orElse(null);
+        if(oldRobot!=null){
+            if(robot.getAvailable()==null)robot.setAvailable(oldRobot.getAvailable());
+            if(robot.getRobotIp()==null)robot.setRobotIp(oldRobot.getRobotIp());
+            if(robot.getExtraRobotElement()==null)robot.setExtraRobotElement(oldRobot.getExtraRobotElement());
+            if(robot.getModel()==null)robot.setModel(oldRobot.getModel());
+            if(robot.getPose()==null)robot.setPose(oldRobot.getPose());
+            if(robot.getBattery()==null)robot.setBattery(oldRobot.getBattery());
+            if(robot.getBatteryLevel()==null)robot.setBatteryLevel(oldRobot.getBatteryLevel());
+            if(robot.getStatus()==null)robot.setStatus(oldRobot.getStatus());
+            if(robot.getTimestamp()==null)robot.setTimestamp(formatter.format(new Date()));
+        }
         List<RobotReview> reviewList = robotReviewService.getByRobot(this.getOne(robot.getId()));
         for (RobotReview review : reviewList) {
             review.setRobot(robot);
