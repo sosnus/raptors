@@ -1,6 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
 import {Orientation} from "../model/Stand/Orientation";
 import {RobotTask} from "../model/Robots/RobotTask";
 

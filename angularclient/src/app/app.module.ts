@@ -65,6 +65,11 @@ import { TaskpanelListComponent } from './components/taskpanel/taskpanel-list/ta
 import { UserspanelComponent } from './components/userspanel/userspanel.component';
 import { RobotModelComponent } from './components/robotpanel/robot-model/robot-model.component';
 import { LogsTableComponent } from './components/robotpanel/logs-table/logs-table.component';
+import { RobotListComponent } from './components/robot-list/robot-list.component';
+import { RobotsTableComponent } from './components/robot-list/robots-table/robots-table.component';
+import { RobotsToApproveTableComponent } from './components/robot-list/robots-toapprove-table/robots-toapprove-table.component';
+import {RobotaApprovalService} from "./services/robotapproval.service";
+import { SpinnerComponent } from './components/adminpanel/shared/spinner/spinner.component';
 
 
 const config: InputFileConfig = {};
@@ -117,6 +122,10 @@ const config: InputFileConfig = {};
     TaskpanelListComponent,
     RobotModelComponent,
     LogsTableComponent,
+    RobotListComponent,
+    RobotsTableComponent,
+    RobotsToApproveTableComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -132,7 +141,7 @@ const config: InputFileConfig = {};
   providers: [MapService,HttpClient, RobotService, GraphService, StoreService,
     StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,
     ParkingTypeService, TaskPriorityService, StandTypeService, StandStatusService,
-    ReviewTypeService],
+    ReviewTypeService, RobotaApprovalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

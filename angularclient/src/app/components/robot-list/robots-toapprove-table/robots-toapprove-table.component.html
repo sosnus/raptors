@@ -1,0 +1,31 @@
+<spinner *ngIf="!ready"></spinner>
+<ng-container *ngIf="ready">
+  <a *ngIf="robotsToApprove.length<1">
+    <h6 class="mt-1 mb-0 text-blue">Brak oczekujących robotów</h6>
+  </a>
+  <div *ngIf="robotsToApprove.length>0">
+    <table class="table table-sm table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nazwa</th>
+        <th scope="col">Akcja</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let type of robotsToApprove;let i = index;">
+        <th scope="row">{{i + 1}}</th>
+        <td>{{type.id}}</td>
+        <td>
+          <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID+'Confirm'"
+                  (click)="robotToApprove=type">Zatwierdź
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>
+
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="approveRobot(robotToApprove)"></app-confirm-modal-template>
