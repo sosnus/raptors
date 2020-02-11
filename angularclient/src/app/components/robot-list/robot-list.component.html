@@ -1,0 +1,13 @@
+<!--Accordion wrapper-->
+<div id="accordionParent" role="tablist" aria-multiselectable="true">
+  <app-collapsetemplate [name]="'Roboty oczekujące na akceptację'"
+                        [templateID]="'collapseRobotsToApprove'"
+                        [multipleExpand]="true">
+    <app-robots-toapprove-table (robotApproved)="refreshRobots()"></app-robots-toapprove-table>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Wszystkie roboty'"
+                        [templateID]="'collapseRobots'"
+                        [multipleExpand]="true">
+    <app-robots-table [robotApprovedEvent]="robotApprovedEvent.asObservable()"></app-robots-table>
+  </app-collapsetemplate>
+</div>

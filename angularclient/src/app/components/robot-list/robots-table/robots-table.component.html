@@ -1,0 +1,58 @@
+<spinner *ngIf="!ready"></spinner>
+<ng-container *ngIf="ready">
+<!--  <button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">-->
+<!--    <i class="fas fa-plus"></i> Dodaj-->
+<!--  </button>-->
+  <a *ngIf="robots.length<1">
+    <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+  </a>
+  <div *ngIf="robots.length>0">
+    <table class="table table-sm table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nazwa</th>
+        <th scope="col">Akcja</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let type of robots;let i = index;">
+        <th scope="row">{{i + 1}}</th>
+        <td>{{type.id}}</td>
+        <td>
+<!--          <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID"-->
+<!--                  (click)="edit(type)">Edytuj-->
+<!--          </button>-->
+<!--          <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID+'Confirm'"-->
+<!--                  (click)="robot=type">Usuń-->
+<!--          </button>-->
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>
+
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(robot)"></app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Tworzenie nowego typu obszaru'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <i class="fas fa-file-signature prefix grey-text"></i>
+    <input type="text" id="areaTypeName" class="form-control validate" required [(ngModel)]="robot.name" name="name">
+    <label for="areaTypeName" [class.active]="robot.name && robot.name.length > 0">Nazwa typu obszaru</label>
+  </form>
+
+  <form class="md-form mb-5" #modalForm="ngForm">
+
+  <span [style.color]="robot.color"
+        [cpPosition]="'bottom'"
+        [cpPositionOffset]="'50%'"
+        [cpPositionRelativeToArrow]="true"
+        [(colorPicker)]="robot.color"><p><i class="fas fa-palette fa-5x"></i></p></span>
+  </form>
+</app-form-modal-template>

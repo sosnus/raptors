@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { GraphcreatorComponent } from './components/map/graphcreator/graphcreator.component';
-import { PolygonsComponent } from './components/map/polygons/polygons.component';
-import { MapUploadComponent } from './components/map/map-upload/map-upload.component';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {HomeComponent} from './components/home/home.component';
+import {GraphcreatorComponent} from './components/map/graphcreator/graphcreator.component';
+import {PolygonsComponent} from './components/map/polygons/polygons.component';
+import {MapUploadComponent} from './components/map/map-upload/map-upload.component';
 import {StandCreatorComponent} from "./components/map/stand-creator/stand-creator.component";
 import {AdminPanelComponent} from "./components/adminpanel/admin-panel.component";
 import {LoginComponent} from "./components/login/login.component";
@@ -17,16 +17,18 @@ import {UserspanelComponent} from "./components/userspanel/userspanel.component"
 import {RobotTask} from "./model/Robots/RobotTask";
 import {TaskpanelDetailsComponent} from "./components/taskpanel/taskpanel-details/taskpanel-details.component";
 import {TaskpanelListComponent} from "./components/taskpanel/taskpanel-list/taskpanel-list.component";
+import {RobotListComponent} from "./components/robot-list/robot-list.component";
 
 
 const routes: Routes = [
-  {path: '', component: HomeComponent,
+  {
+    path: '', component: HomeComponent,
     canActivate: [AuthGuard],
-    data: {rolesIDs: ['ROLE_ADMIN','ROLE_REGULAR_USER','ROLE_SUPER_USER','ROLE_SERVICEMAN']},
+    data: {rolesIDs: ['ROLE_ADMIN', 'ROLE_REGULAR_USER', 'ROLE_SUPER_USER', 'ROLE_SERVICEMAN']},
   },
   {path: '', component: HomeComponent},
   {path: 'robotpanel/:id', component: RobotPanelComponent},
-  {path: 'taskpanel-details/:id', component: TaskpanelListComponent} ,
+  {path: 'taskpanel-details/:id', component: TaskpanelListComponent},
   {path: 'graphcreator', component: GraphcreatorComponent},
   {path: 'polygons', component: PolygonsComponent},
   {path: 'mapupload', component: MapUploadComponent},
@@ -40,6 +42,11 @@ const routes: Routes = [
     path: 'users', component: UserspanelComponent,
     canActivate: [AuthGuard],
     data: {rolesIDs: ['ROLE_ADMIN']},
+  },
+  {
+    path: 'robots', component: RobotListComponent,
+    canActivate: [AuthGuard],
+    data: {rolesIDs: ['ROLE_ADMIN', 'ROLE_SERVICEMAN']},
   },
   {path: 'login', component: LoginComponent},
   {path: 'movementPaths', component: MovementPathComponent},
