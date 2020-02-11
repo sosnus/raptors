@@ -244,9 +244,37 @@ public class DbSeeder implements CommandLineRunner {
         universalPoints1.add(movementPathUniversalPoint2);
         universalPoints1.add(movementPathUniversalPoint3);
 
+        StandType standType = new StandType("receiving");
+        StandType standType1 = new StandType("loading");
+
+        StandType standType3 = new StandType("charger");
+        StandType standType4 = new StandType("receiving-loading");
+        StandType standType5 = new StandType("parking");
+
+        StandStatus standStatus = new StandStatus("free");
+        StandStatus standStatus1 = new StandStatus("occupied");
+
+        ParkingType parkingType = new ParkingType("rough parking");
+        ParkingType parkingType1 = new ParkingType("exact parking");
+
+        Pose pose = new Pose();
+        pose.setOrientation(new Pose.Orientation(0.15, 0.54, 0.0, 1));
+        pose.setPosition(new UniversalPoint(13.0, 66.6, 22.3));
+        Stand stand = new Stand("charging station", pose, parkingType1, standType3, standStatus1);
+
+        Pose pose1 = new Pose();
+        pose1.setOrientation(new Pose.Orientation(1.0, 0.4, 0.0, 1));
+        pose1.setPosition(new UniversalPoint(135.0, 8.6, 28.8));
+        Stand stand1 = new Stand("warehouse", pose1, parkingType1, standType1, standStatus1);
+
+        Pose pose2 = new Pose();
+        pose2.setOrientation(new Pose.Orientation(0.8, 1.0, 0.0, 1.0));
+        pose2.setPosition(new UniversalPoint(98.0, 76.4, 34.34));
+        Stand stand2 = new Stand("parking B", pose2, parkingType, standType5, standStatus);
+
         //create movement paths with empty lists
-        MovementPath movementPath = new MovementPath("do magazynu", universalPoints);
-        MovementPath movementPath1 = new MovementPath("do taśmy produkcyjnej", universalPoints1);
+        MovementPath movementPath = new MovementPath("do magazynu", universalPoints,stand1.getId(),stand2.getId());
+        MovementPath movementPath1 = new MovementPath("do taśmy produkcyjnej", universalPoints1,stand1.getId(),stand2.getId());
         //save movement paths
         // movementPath = this.movementPathRepository.save(movementPath);
         // movementPath1 = this.movementPathRepository.save(movementPath1);
@@ -268,35 +296,6 @@ public class DbSeeder implements CommandLineRunner {
 
         RobotModel robotmModel = new RobotModel("C3P0", "300kg", "40km/h", "70cm", "120cm", "150cm", "45 deg", propulsionType1, batteryType1);
         RobotModel robotmModel1 = new RobotModel("R2D2", "500kg", "20km/h", "200cm", "250cm", "200cm", "30 deg", propulsionType, batteryType);
-
-        ParkingType parkingType = new ParkingType("rough parking");
-        ParkingType parkingType1 = new ParkingType("exact parking");
-
-        StandType standType = new StandType("receiving");
-        StandType standType1 = new StandType("loading");
-
-        StandType standType3 = new StandType("charger");
-        StandType standType4 = new StandType("receiving-loading");
-        StandType standType5 = new StandType("parking");
-
-        StandStatus standStatus = new StandStatus("free");
-        StandStatus standStatus1 = new StandStatus("occupied");
-
-
-        Pose pose = new Pose();
-        pose.setOrientation(new Pose.Orientation(0.15, 0.54, 0.0, 1));
-        pose.setPosition(new UniversalPoint(13.0, 66.6, 22.3));
-        Stand stand = new Stand("charging station", pose, parkingType1, standType3, standStatus1);
-
-        Pose pose1 = new Pose();
-        pose1.setOrientation(new Pose.Orientation(1.0, 0.4, 0.0, 1));
-        pose1.setPosition(new UniversalPoint(135.0, 8.6, 28.8));
-        Stand stand1 = new Stand("warehouse", pose1, parkingType1, standType1, standStatus1);
-
-        Pose pose2 = new Pose();
-        pose2.setOrientation(new Pose.Orientation(0.8, 1.0, 0.0, 1.0));
-        pose2.setPosition(new UniversalPoint(98.0, 76.4, 34.34));
-        Stand stand2 = new Stand("parking B", pose2, parkingType, standType5, standStatus);
 
 
         RobotStatus robotStatus = new RobotStatus("on the way");

@@ -56,6 +56,8 @@ public class MovementPathService implements CRUDService<MovementPath> {
     @Override
     public void deleteOne(MovementPath movementPath) {
         movementPathRepository.delete(movementPath);
+        List<Corridor> corridorList = corridorService.getCorridorsByMovementPath(this.getOne(movementPath.getId()));
+        setNullCorridorMovementPathId(corridorList);
     }
 
     @Override
@@ -67,5 +69,14 @@ public class MovementPathService implements CRUDService<MovementPath> {
 
     public void deleteById(String id) {
         movementPathRepository.deleteById(id);
+        List<Corridor> corridorList = corridorService.getCorridorsByMovementPathId(id);
+        setNullCorridorMovementPathId(corridorList);
+    }
+
+    private void setNullCorridorMovementPathId(List<Corridor> corridorList){
+        for (Corridor corridor : corridorList) {
+            corridor.setMovementPathId(null);
+            corridorService.updateOne(corridor);
+        }
     }
 }

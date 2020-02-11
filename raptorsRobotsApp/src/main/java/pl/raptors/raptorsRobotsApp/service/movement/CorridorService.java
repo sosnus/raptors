@@ -75,4 +75,8 @@ public class CorridorService implements CRUDService<Corridor> {
     List<Corridor> getCorridorsByMovementPath(MovementPath movementPath) {
         return corridorRepository.findAllByMovementPathId(movementPath.getId());
     }
+
+    List<Corridor> getCorridorsByMovementPathId(String movementPathId) {
+        return corridorRepository.findAllByMovementPathId(movementPathId);
+    }
 }

@@ -16,10 +16,13 @@ public class MovementPath {
     private String id;
     private String name;
     private List<UniversalPoint> points;
+    private String startStandId;
+    private String finishStandId;
 
-
-    public MovementPath(String name, List<UniversalPoint> points) {
+    public MovementPath(String name, List<UniversalPoint> points, String startStandId, String finishStandId) {
         this.name = name;
         this.points = points;
+        this.startStandId = startStandId;
+        this.finishStandId = finishStandId;
     }
 }

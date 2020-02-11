@@ -11,6 +11,8 @@ import {ARROWICON, CIRCLEBACK, STANDICON, WAYPOINTICON} from "../map.component";
 import {fromEvent} from "rxjs";
 import {StandService} from "../../../services/stand.service";
 import {Stand} from "../../../model/Stand/Stand";
+import {Corridor} from "../../../model/MapAreas/Corridors/Corridor";
+import {CorridorService} from "../../../services/corridor.service";
 
 @Component({
   selector: 'app-movement-path',
@@ -20,9 +22,13 @@ import {Stand} from "../../../model/Stand/Stand";
 export class MovementPathComponent implements OnInit, OnDestroy {
 
   dataLoaded = false;
+  showCorridors = false;
+  showPaths = false;
   private readonly context;
   private polyline: L.polyline = null;
   private vertices: Marker[] = [];
+  private corridors: Corridor [];
+  private paths: MovementPath[];
   private pathID;
   private name;
 
@@ -37,11 +43,18 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   private startStand: L.marker;
   private finishStand: L.marker;
 
+  private startStandId: string;
+  private finishStandId: string;
+
+  private stands: Stand[];
+  private standMarkers: L.marker=[];
+
   constructor(private mapService: MapService,
               private movementPathService: MovementPathService,
               private store: StoreService,
               private toast: ToastrService,
-              private standService: StandService) {
+              private standService: StandService,
+              private corridorService: CorridorService) {
     this.context = this;
   }
 
@@ -86,6 +99,19 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     this.standService.getAll().subscribe(
       stands => {
         this.drawStand(stands);
+        this.stands = stands;
+      }
+    );
+
+    this.movementPathService.getMovementPaths().subscribe(
+      paths => {
+        this.paths = paths;
+      }
+    );
+
+    this.corridorService.getCorridors().subscribe(
+      corridors => {
+        this.corridors = corridors;
       }
     );
   }
@@ -129,6 +155,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
       }).bindTooltip(stand.name, {
         sticky: true
       });
+      this.standMarkers.push(marker);
       marker.addTo(this.map);
     })
   }
@@ -139,7 +166,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     if (this.startStand != null) {
       if (e.relatedTarget.getLatLng() == this.startStand.getLatLng()) {
         console.log("delete POI: start stand");
-        this.vertices = this.vertices.filter(marker => marker !==this.startStand);
+        this.vertices = this.vertices.filter(marker => marker !== this.startStand);
         this.startStand = null;
         this.createPolyline();
       }
@@ -155,13 +182,10 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
   }
 
-  private markAsStart(e) {//todo
+  private markAsStart(e) {
     this.startStand = L.marker(e.relatedTarget.getLatLng(), {});
-    let tempVertices=[];
-    tempVertices.push(this.vertices);
-    this.vertices.splice(0,0,this.startStand);
+    this.vertices.splice(0, 0, this.startStand);
     this.createPolyline();
-    // e.relatedTarget.getLatLng();
   }
 
   private markAsFinish(e) {
@@ -183,11 +207,11 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     this.map.fitBounds(imageBounds);
 
     this.map.on('click', e => {
-      const marker=this.createNewMarker(e.latlng);
+      const marker = this.createNewMarker(e.latlng);
       if (this.polyline == null) {
         this.polyline = new L.Polyline([]).addTo(this.map);
       }
-      if(marker!=null){
+      if (marker != null) {
         this.polyline.addLatLng(e.latlng);
       }
     });
@@ -207,8 +231,9 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     this.vertices = [];
     this.name = "";
     this.pathID = null;
-    this.startStand=null;
-    this.finishStand=null;
+    this.startStand = null;
+    this.finishStand = null;
+
   }
 
   private getRealCoordinates(value) {
@@ -229,8 +254,10 @@ export class MovementPathComponent implements OnInit, OnDestroy {
         0);
       universalPoints.push(universalPoint)
     });
+    this.startStandId = this.getStandId(this.startStand, this.stands);
+    this.finishStandId = this.getStandId(this.finishStand, this.stands);
 
-    let movementPath = new MovementPath(this.pathID, this.name, universalPoints);
+    let movementPath = new MovementPath(this.pathID, this.name, universalPoints, this.startStandId, this.finishStandId);
     this.movementPathService.save(movementPath).subscribe(result => {
       if (result.id != null) {
         this.toast.success('Ścieżka zapisana w bazie');
@@ -249,6 +276,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
   editExistingPath(path: MovementPath) {
     this.clearMap();
+
     if (!path) return;
     this.pathID = path.id;
     this.name = path.name;
@@ -256,9 +284,32 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     path.points.forEach(e => {
       const translatedPoint = L.latLng([this.getMapCoordinates(e.x), this.getMapCoordinates(e.y)]);
       this.polyline.addLatLng(translatedPoint);
-      this.createNewMarker(translatedPoint);
-    })
+      if (path.points[0] != e && path.points[path.points.length - 1] != e) {
+        this.createNewMarker(translatedPoint);
+      }
+    });
+    let currentStartStand:Stand=this.stands.find(e => {
+      if(e.id == path.startStandId){
+        return e;
+      }
+    });
+    let currentFinishStand:Stand=this.stands.find(e => {
+      if(e.id == path.finishStandId){
+        return e;
+      }
+    });
+
+    this.startStand = this.getMarkerByStand(currentStartStand);
+    this.finishStand = this.getMarkerByStand(currentFinishStand);
+
+    this.startStandId = path.startStandId;
+    this.finishStandId = path.finishStandId;
+    this.vertices.splice(0, 0, this.startStand);
+    this.vertices.push(this.finishStand);
     this.polyline.addTo(this.map);
+
+
+    this.createPolyline();
 
   }
 
@@ -283,11 +334,11 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     marker.on('move', e => {
       this.updatePoints(e)
     });
-    if(this.finishStand!=null){
+    if (this.finishStand != null) {
       alert("Ściezka już utworzona! Usuń POI końcowy aby kontynuować rysowanie ściezki.");
       return null;
     }
-    if(this.finishStand==null) {
+    if (this.finishStand == null) {
       marker.addTo(this.map);
       this.vertices.push(marker);
       return marker;
@@ -317,5 +368,74 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     this.vertices.forEach(marker => {
       this.polyline.addLatLng(marker._latlng);
     });
+  }
+
+  private drawCorridors(corridor: Corridor[]) {
+    corridor.forEach(corridor => {
+      let corridorPoints = [];
+      corridor.points.forEach(point => {
+        const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+        corridorPoints.push(pointPosition);
+      });
+      let corridorPolygon = L.polygon(corridorPoints, {color: 'red'}).addTo(this.map).bindTooltip(corridor.name, {
+        sticky: true
+      });
+    })
+
+  }
+
+  showCorridorsChange(eve: any) {
+    if (this.showCorridors) {
+      this.drawCorridors(this.corridors);
+    }
+  }
+
+  showPathsChange(eve: any) {
+    if (this.showPaths) {
+      this.drawPaths(this.paths);
+    }
+  }
+
+  private drawPaths(paths: MovementPath[]) {
+    paths.forEach(path => {
+        let polylinePoints = [];
+        path.points.forEach(point => {
+          const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+          polylinePoints.push(pointPosition);
+        });
+        new L.Polyline(polylinePoints).addTo(this.map).bindTooltip(path.name, {
+          sticky: true
+        });
+      }
+    )
+  }
+
+  private getStandId(marker: L.marker, stands: Stand[]) {
+    let id: string;
+    stands.forEach(stand => {
+      const position = [
+        this.getMapCoordinates(Number(stand.pose.position.y)),
+        this.getMapCoordinates(Number(stand.pose.position.x))
+      ];
+      if (position[0] == marker._latlng.lat && position[1] == marker._latlng.lng) {
+        id = stand.id;
+      }
+    });
+    return id;
+  }
+
+  private getMarkerByStand(stand: Stand) {
+    let currentMarker;
+    this.standMarkers.forEach(e => {
+      const position = [
+        this.getMapCoordinates(Number(stand.pose.position.y)),
+        this.getMapCoordinates(Number(stand.pose.position.x))
+      ];
+      if (position[0] == e._latlng.lat && position[1] == e._latlng.lng) {
+        currentMarker= L.marker(position, {});
+      }
+    });
+
+    return currentMarker;
   }
 }
