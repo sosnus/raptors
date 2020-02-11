@@ -9,6 +9,7 @@ export class CollapsetemplateComponent implements OnInit {
 
   @Input() name: string;
   @Input() templateID: string;
+  @Input() multipleExpand: boolean = false;
 
 
   constructor() {

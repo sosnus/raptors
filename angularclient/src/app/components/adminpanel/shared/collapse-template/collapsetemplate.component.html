@@ -9,7 +9,7 @@
     </a>
   </div>
   <!-- Card body -->
-  <div [attr.id]="templateID" class="collapse" role="tabpanel" data-parent="#accordionParent">
+  <div [attr.id]="templateID" class="collapse" role="tabpanel" [attr.data-parent]="multipleExpand ? '': '#accordionParent'">
     <div class="card-body">
       <ng-content></ng-content>
     </div>
