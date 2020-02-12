@@ -1,9 +1,7 @@
 <div class="modal fade" [attr.id]="modalID" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-body mx-3" >
-       Czy na pewno chcesz usunąć?
-      </div>
+      <div class="modal-body mx-3" >{{message}}</div>
       <div class="modal-footer d-flex justify-content-center">
         <button class="btn btn-default" data-dismiss="modal">Nie</button>
         <button class="btn btn-default" data-dismiss="modal" (click)="modalClose()">Tak</button>

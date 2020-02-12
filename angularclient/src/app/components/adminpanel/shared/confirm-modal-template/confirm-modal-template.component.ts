@@ -9,6 +9,7 @@ export class ConfirmModalTemplateComponent implements OnInit {
 
   @Input() modalName: string;
   @Input() modalID: string;
+  @Input() message: string = 'Czy na pewno chcesz usunąć?';
   @Output() onConfirm = new EventEmitter();
 
   constructor() { }
