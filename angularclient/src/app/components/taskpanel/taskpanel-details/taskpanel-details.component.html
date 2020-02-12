@@ -28,3 +28,11 @@
   </tr>
   </tbody>
 </table>
+
+<div class="md-form">
+  <select class="browser-default custom-select" (change)="selectRobot($event.target.value)"
+          [(ngModel)]="selectedRobot"
+          [ngModelOptions]="{standalone: true}">
+    <option [value]="item.id" *ngFor="let item of robots">{{item.id}}</option>
+  </select>
+</div>
