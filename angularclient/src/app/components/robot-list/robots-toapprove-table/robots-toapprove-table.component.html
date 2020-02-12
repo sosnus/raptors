@@ -28,4 +28,5 @@
 </ng-container>
 
 <app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            [message]="'Potwierdź operację dodania robota do systemu'"
                             (onConfirm)="approveRobot(robotToApprove)"></app-confirm-modal-template>

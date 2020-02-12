@@ -20,7 +20,7 @@ export class RobotService {
 
   public getRobots(): Observable<Robot[]> {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<Robot[]>(this.robotURL + 'all', {headers: headers,responseType: 'json'})
+    return this.http.get<Robot[]>(this.robotURL + 'all', {headers: headers, responseType: 'json'})
   }
 
   public getRobot(id: string): Observable<Robot> {
@@ -28,9 +28,9 @@ export class RobotService {
     return this.http.get<Robot>(this.robotURL + id, {headers: headers, responseType: 'json'})
   }
 
-  public save(robot: Robot) {
+  public save(robot: Robot, password: string) {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.post<Robot>(this.robotURL + 'add', robot, {headers: headers});
+    return this.http.post<Robot>(this.robotURL + 'add?password=' + password, robot, {headers: headers});
   }
 
   public delete(robot: Robot) {

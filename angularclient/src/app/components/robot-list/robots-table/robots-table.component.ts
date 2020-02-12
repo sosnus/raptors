@@ -3,6 +3,10 @@ import {ToastrService} from "ngx-toastr";
 import {Robot} from "../../../model/Robots/Robot";
 import {RobotService} from "../../../services/robot.service";
 import {Observable, Subscription} from "rxjs";
+import {ExtraRobotElement} from "../../../model/Robots/ExtraRobotElement";
+import {RobotModel} from "../../../model/Robots/RobotModel";
+import {ExtraRobotElementService} from "../../../services/type/exra-robot-element.service";
+import {RobotModelService} from "../../../services/type/robot-model.service";
 
 @Component({
   selector: 'app-robots-table',
@@ -20,17 +24,45 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
 
   ready: boolean = false;
 
+  extraRobotElements: ExtraRobotElement[] = [];
+  robotModels: RobotModel[] = [];
+  password: string = '';
+
   constructor(private robotService: RobotService,
+              private extraRobotElementService: ExtraRobotElementService,
+              private robotModelService: RobotModelService,
               private toastr: ToastrService) {
   }
 
   ngOnInit() {
     this.getRobots();
+    this.getRobotModels();
+    this.getExtraElements();
     this.subscription = this.robotApprovedEvent.subscribe(() => this.getRobots());
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe()
+  }
+
+  getRobotModels(){
+    this.ready = false;
+    this.robotModelService.getAll().subscribe(
+      data => {
+        this.robotModels = data;
+        this.ready = true;
+      }
+    )
+  }
+
+  getExtraElements(){
+    this.ready = false;
+    this.extraRobotElementService.getAll().subscribe(
+      data => {
+        this.extraRobotElements = data;
+        this.ready = true;
+      }
+    )
   }
 
   getRobots() {
@@ -48,12 +80,12 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
   }
 
   createOrUpdate() {
-    this.robotService.save(this.robot).subscribe(
+    this.robotService.save(this.robot, this.password).subscribe(
       result => {
         if (this.typeExists(this.robot.id)) {
-          this.robots[this.robots.findIndex(item => item.id == result.id)] = result;
+          this.robots[this.robots.findIndex(item => item.id == this.robot.id)] =  this.robot;
         } else {
-          this.robots.push(result)
+          this.robots.push(this.robot)
         }
         this.robot = new Robot();
         this.toastr.success("Dodano lub edytowano pomyślnie");
@@ -83,5 +115,9 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
         this.toastr.error("Wystąpił błąd podczas usuwania");
       }
     )
+  }
+
+  compareItems(id1: any, id2: any): boolean {
+    return id1.id === id2.id;
   }
 }
