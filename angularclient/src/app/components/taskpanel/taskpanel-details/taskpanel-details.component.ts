@@ -20,7 +20,7 @@ export class TaskpanelDetailsComponent implements OnInit {
 
   robots: Robot[] = [];
   robotsFromDB: Robot[] = [];
-  //freeRobots: Robot[] = [];
+  robotStatus: RobotStatus = new RobotStatus(null);
   robot = new Robot(null, null, null, null, null, null, null, null, null);
   robotTasks: RobotTask[]=[];
   selectedRobot: string;
@@ -43,8 +43,7 @@ export class TaskpanelDetailsComponent implements OnInit {
         robotStatus.forEach(freeStatus=>{
           if(freeStatus.name==="free"){
             this.robotStatusFree = freeStatus;
-            this.robots = this.robots.filter(robot=> robot.status.some(state=>state.id=== this.robotStatusFree.id));
-          }
+            this.refresh();          }
         });
       });
     });
@@ -74,6 +73,26 @@ export class TaskpanelDetailsComponent implements OnInit {
       //robot.status.includes();
       this.robotTaskService.save(this.task).subscribe(
         result => {
+          robot.status = robot.status.filter(status=> status.id !== this.robotStatusFree.id);
+          console.log("Status po dodaniu: " + JSON.stringify(robot.status));
+
+          this.robotStatus.name = "during task";
+          robot.status.push(this.robotStatus);
+          this.robotService.update(robot).subscribe(
+            result => {
+              if (this.taskExists(this.task.id)) {
+                this.robotsFromDB[ this.robotsFromDB.findIndex(item => item.id == result.id)] = result;
+              } else {
+                this.robotsFromDB.push(result)
+              }
+              this.toastr.success("Zaktualizowano robota");
+              console.log(result);
+            },
+            error => {
+              this.toastr.error("Wystąpił bład podczas dodawania");
+            }
+          );
+          this.refresh();
           if (this.taskExists(this.task.id)) {
             this.robotTasks[this.robotTasks.findIndex(item => item.id == result.id)] = result;
           } else {
@@ -86,26 +105,9 @@ export class TaskpanelDetailsComponent implements OnInit {
           this.toastr.error("Wystąpił bład podczas dodawania");
         }
       );
-
-     /* this.robot.status = this.robot.status.filter(status=> status.id !== this.robotStatusFree.id);
-      console.log("Statusy robota po filtrowaniu: " + JSON.stringify(this.robot.status));*/
-      /*this.robotService.update(this.robot).subscribe(
-        result => {
-          if (this.taskExists(this.task.id)) {
-            this.robotsFromDB[ this.robotsFromDB.findIndex(item => item.id == result.id)] = result;
-          } else {
-            this.robotsFromDB.push(result)
-          }
-          this.toastr.success("Zaktualizowano robota");
-          console.log(result);
-        },
-        error => {
-          this.toastr.error("Wystąpił bład podczas dodawania");
-        }
-      );*/
-
-
     });
+    this.robotStatus = new RobotStatus(null);
+
   }
 
   taskExists(id: string) {
@@ -131,5 +133,9 @@ export class TaskpanelDetailsComponent implements OnInit {
       return true;
     }
     return null;
+  }
+
+  refresh(){
+    this.robots = this.robots.filter(robot=> robot.status.some(state=>state.id=== this.robotStatusFree.id));
   }
 }

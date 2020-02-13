@@ -92,6 +92,9 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.polygonService.getPolygons().subscribe(polygons => {
         console.log(polygons);
         this.getPolygonsFromDB = polygons;
+        this.getPolygonsFromDB.forEach(id=>{
+          console.log("ID POLYGONÓW: " + id.id)
+        });
       }
     );
 
@@ -185,8 +188,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     } else {
       this.map.removeLayer(this.polygon);
       this.polygonsList.push(this.polygonPoints);
-      //this.areaType.color = 'red';
-      //console.log("checking color: " + this.areaType.color);
+
       this.polygon = L.polygon(this.polygonPoints, {color: this.areaType.color}).addTo(this.map);
       this.map.fitBounds(this.polygon.getBounds());
     }
@@ -223,12 +225,12 @@ export class PolygonsComponent implements OnInit, OnDestroy {
         polygonPointz.push(universalPoint)
       });
       let type: AreaType = new AreaType(this.areaType.name, this.areaType.color);
-      //let polygon = new Polygon('polygon', type, polygonPointz);
+      let polygon = new Polygon('polygon', type, polygonPointz);
       this.polygoN.name = "polygon";
       this.polygoN.type = type;
       this.polygoN.points = polygonPointz;
       console.log(this.polygoN);
-      this.polygonService.save(this.polygoN).subscribe(
+/*      this.polygonService.save(this.polygoN).subscribe(
         result => {
           if (this.polygonExists(this.polygoN.id)) {
             this.getPolygonsFromDB[this.getPolygonsFromDB.findIndex(item => item.id == result.id)] = result;
@@ -241,12 +243,12 @@ export class PolygonsComponent implements OnInit, OnDestroy {
         error => {
           this.toast.error("Wystąpił bład podczas dodawania");
         }
-      );
-/*      this.polygonService.save(polygon).subscribe(result => {
+      );*/
+      this.polygonService.save(this.polygoN).subscribe(result => {
           this.poly = this.polygon;
           this.toast.success('Graf zapisany w bazie')
         }
-      );*/
+      );
       this.polygonPoints = [];
       this.vertices = [];
       //this.resetPoly();
@@ -267,10 +269,11 @@ export class PolygonsComponent implements OnInit, OnDestroy {
 
   private editPol(polygon: Polygon) {
     //this.clearMap();
+    console.log("Pobrane id polygonu: " + polygon.id);
     this.vertices.map(edge => this.map.removeLayer(edge));
     this.vertices = new Array<Marker>();
     this.polygoN.id = polygon.id;
-    this.delete(polygon);
+    //this.delete(polygon);
     //this.resetPoly();
 
     this.areaType.color = polygon.type.color;
