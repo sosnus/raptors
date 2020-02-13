@@ -33,7 +33,7 @@ export class RobotService {
     return this.http.post<Robot>(this.robotURL + 'add?password=' + password, robot, {headers: headers});
   }
 
-  public update(robot: Robot, password: string) {
+  public update(robot: Robot, password: string = null) {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
     return this.http.post<Robot>(this.robotURL + 'update?password=' + password, robot, {headers: headers});
   }
