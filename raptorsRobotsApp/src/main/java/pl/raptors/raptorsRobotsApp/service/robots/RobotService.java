@@ -40,7 +40,6 @@ public class RobotService implements CRUDService<Robot> {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         robot.setTimestamp(formatter.format(new Date()));
         robotRepository.save(robot);
-        System.out.println(robot.getId());
         User robotUser = new User(robot.getId(), password, Collections.singletonList(roleService.getRoleIdByRoleName("ROLE_ROBOT")));
         userService.addOne(robotUser);
         return robot;
@@ -88,6 +87,8 @@ public class RobotService implements CRUDService<Robot> {
 
     @Override
     public void deleteOne(Robot robot) {
+        User robotUser = userService.getByEmail(robot.getId());
+        userService.deleteOne(robotUser);
         List<RobotReview> reviewList = robotReviewService.getByRobot(this.getOne(robot.getId()));
         robotReviewService.deleteAll(reviewList);
         List<RobotTask> taskList = robotTaskService.getByRobot(this.getOne(robot.getId()));
