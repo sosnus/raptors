@@ -28,7 +28,7 @@ export class RobotPanelComponent implements OnInit {
   }
 
   private getRobotData(id) {
-    this.robotService.getRobot(id).subscribe(data => {
+    this.robotService.getByID(id).subscribe(data => {
       this.robot = data;
       this.getLogs();
     })
