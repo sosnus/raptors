@@ -157,20 +157,6 @@ export class MapComponent implements OnInit, OnDestroy {
       crs: L.CRS.Simple
     });
 
-    this.map.on('overlayadd', function (eo) {
-      if (eo.name === 'Korytarze') {
-
-      }
-      if (eo.name === 'Sciezki') {
-        this.removeLayer(eo.layer);
-        const layer = L.featureGroup();
-        Object.keys(eo.layer._layers).forEach(function (key) {
-          layer.addLayer(eo.layer._layers[key]);
-        });
-        this.addLayer(layer);
-      }
-    });
-
     L.imageOverlay(this.imageURL, imageBounds).addTo(this.map);
     L.easyButton('fa-crosshairs', function (btn, map) {
       map.setView([400, 400], 0);
@@ -227,7 +213,7 @@ export class MapComponent implements OnInit, OnDestroy {
     corridor.forEach(corridor => {
       let corridorPoints = [];
       corridor.points.forEach(point => {
-        const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+        const pointPosition = L.latLng([this.getMapCoordinates(point.y), this.getMapCoordinates(point.x)]);
         corridorPoints.push(pointPosition);
       });
       let corridorPolygon = L.polygon(corridorPoints, {color: 'red'}).addTo(this.corridors).bindTooltip(corridor.name, {
@@ -241,7 +227,7 @@ export class MapComponent implements OnInit, OnDestroy {
     paths.forEach(path => {
         let polylinePoints = [];
         path.points.forEach(point => {
-          const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+          const pointPosition = L.latLng([this.getMapCoordinates(point.y),this.getMapCoordinates(point.x)]);
           polylinePoints.push(pointPosition);
         });
         new L.Polyline(polylinePoints).addTo(this.movementPaths).bindTooltip(path.name, {

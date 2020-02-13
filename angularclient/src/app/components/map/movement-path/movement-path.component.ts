@@ -249,8 +249,8 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     let universalPoints: UniversalPoint[] = [];
     this.polyline.getLatLngs().forEach(lang => {
       let universalPoint: UniversalPoint = new UniversalPoint(
-        this.getRealCoordinates(lang.lat),
         this.getRealCoordinates(lang.lng),
+        this.getRealCoordinates(lang.lat),
         0);
       universalPoints.push(universalPoint)
     });
