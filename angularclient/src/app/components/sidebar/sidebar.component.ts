@@ -30,7 +30,7 @@ export class SidebarComponent implements OnInit {
     if (this.authService.userLoggedIn()) {
       this.loggedUserID = JSON.parse(atob(localStorage.getItem('userID')));
       this.loggedUserRole = JSON.parse(atob(localStorage.getItem('userData')));
-      this.robotService.getRobots().subscribe(
+      this.robotService.getAll().subscribe(
         data => {
           this.robotDataloaded = true;
           this.robotList = data;
