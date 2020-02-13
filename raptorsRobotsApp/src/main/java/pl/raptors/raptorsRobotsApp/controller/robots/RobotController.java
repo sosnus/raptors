@@ -57,6 +57,7 @@ public class RobotController {
         if (password == null)
             password = "robot";
         User user = userService.getByEmail(robot.getId());
+        user.setPassword(password);
         userService.updateOne(user);
         return robotService.updateOne(robot);
     }
