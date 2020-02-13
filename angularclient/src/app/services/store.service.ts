@@ -15,38 +15,11 @@ export class StoreService {
   public imageResolution = 1984;
   public mapID = '5e19f1fa9b1eab79e9a58e08';
   public baseURL = 'http://localhost:8080';
+
   public robotTaskList: RobotTask[]= [];
-  public loggedUserRole: string;
+  public robotTaskListTemp: RobotTask[] = [];
+
   public loggedUserID: string;
-
-
-  public getRobotTasksByRole(){
-    // REGULAR_ROLE_USER
-    if(this.loggedUserRole.includes('ROLE_REGULAR_USER')){
-      this.robotTaskList = this.robotTaskList.filter(task=> task.userID == this.loggedUserID);
-    }
-
-    // ROLE_ADMIN
-    if(this.loggedUserRole.includes("ROLE_ADMIN")){
-      // do nothing = get all tasks
-    }
-
-    // ROLE_SERVICEMAN
-    if(this.loggedUserRole.includes("ROLE_SERVICEMAN")){
-      this.robotTaskList = this.robotTaskList.filter(task=> task.userID == this.loggedUserID);
-    }
-
-    // ROLE_SUPER_USER
-    if(this.loggedUserRole.includes("ROLE_SUPER_USER")){
-      //this.robotTaskListTemp = this.robotTaskList;
-      this.robotTaskList = this.robotTaskList.filter(task=> task.userID == this.loggedUserID);
-      // dodaj taski wszystkich regular user;
-/*      this.robotTaskListTemp.forEach(task=>{
-        this.robotTaskList.push(task);
-      })*/
-    }
-  }
-
 
 }
 

@@ -40,4 +40,13 @@ export class RobotTaskService {
     return this.http.delete(this.readonlyrobotTaskURL + 'delete', httpOptions);
   }
 
+  public getTasksListForUsersList(usersIDsList: string[]): Observable<RobotTask[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Basic ' + sessionStorage.getItem('token',)
+      }), body: usersIDsList, responseType: 'text' as 'json'
+    };
+    return this.http.get<RobotTask[]>(this.readonlyrobotTaskURL + 'get-list', httpOptions)
+  }
+
 }

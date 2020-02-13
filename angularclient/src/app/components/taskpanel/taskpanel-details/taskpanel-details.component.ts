@@ -19,6 +19,7 @@ export class TaskpanelDetailsComponent implements OnInit {
   task: RobotTask;
 
   robots: Robot[] = [];
+  robotsFromDB: Robot[] = [];
   //freeRobots: Robot[] = [];
   robot = new Robot(null, null, null, null, null, null, null, null, null);
   robotTasks: RobotTask[]=[];
@@ -35,8 +36,10 @@ export class TaskpanelDetailsComponent implements OnInit {
     this.getTasks();
     this.robotService.getAll().subscribe(robots=>{
       this.robots=robots;
+      this.robotsFromDB=robots;
       this.robotStatusService.getAll().subscribe(robotStatus=>{
 
+        // pobierz tylko roboty, które mają status free
         robotStatus.forEach(freeStatus=>{
           if(freeStatus.name==="free"){
             this.robotStatusFree = freeStatus;
@@ -64,7 +67,6 @@ export class TaskpanelDetailsComponent implements OnInit {
       this.task.robot=robot;
       // uaktualnij status zadania z waiting na zajęte
       this.task.status="on going";
-      // pobierz tylko roboty, które mają status free
 
       // przypisz mu, że juz nie ma zadania, czyli, gdzie robot.status.incluses"free"
 
@@ -83,7 +85,26 @@ export class TaskpanelDetailsComponent implements OnInit {
         error => {
           this.toastr.error("Wystąpił bład podczas dodawania");
         }
-      )
+      );
+
+     /* this.robot.status = this.robot.status.filter(status=> status.id !== this.robotStatusFree.id);
+      console.log("Statusy robota po filtrowaniu: " + JSON.stringify(this.robot.status));*/
+      /*this.robotService.update(this.robot).subscribe(
+        result => {
+          if (this.taskExists(this.task.id)) {
+            this.robotsFromDB[ this.robotsFromDB.findIndex(item => item.id == result.id)] = result;
+          } else {
+            this.robotsFromDB.push(result)
+          }
+          this.toastr.success("Zaktualizowano robota");
+          console.log(result);
+        },
+        error => {
+          this.toastr.error("Wystąpił bład podczas dodawania");
+        }
+      );*/
+
+
     });
   }
 
@@ -100,7 +121,6 @@ export class TaskpanelDetailsComponent implements OnInit {
 
   checkIsTaskFree(){
     if(this.task.status === "waiting"){
-      //console.log("Status: "  + this.task.status)
       return true;
     }
     return null;
@@ -112,9 +132,4 @@ export class TaskpanelDetailsComponent implements OnInit {
     }
     return null;
   }
-
-  checkRobotStatus(robots: Robot[]){
-    //if(robots.)
-  }
-
 }
