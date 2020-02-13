@@ -3,6 +3,11 @@ import {ToastrService} from "ngx-toastr";
 import {Robot} from "../../../model/Robots/Robot";
 import {RobotService} from "../../../services/robot.service";
 import {Observable, Subscription} from "rxjs";
+import {ExtraRobotElement} from "../../../model/Robots/ExtraRobotElement";
+import {RobotModel} from "../../../model/Robots/RobotModel";
+import {ExtraRobotElementService} from "../../../services/type/exra-robot-element.service";
+import {RobotModelService} from "../../../services/type/robot-model.service";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-robots-table',
@@ -20,12 +25,21 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
 
   ready: boolean = false;
 
+  extraRobotElements: ExtraRobotElement[] = [];
+  robotModels: RobotModel[] = [];
+  password: string = '';
+
   constructor(private robotService: RobotService,
+              private extraRobotElementService: ExtraRobotElementService,
+              private robotModelService: RobotModelService,
+              private userService: UserService,
               private toastr: ToastrService) {
   }
 
   ngOnInit() {
     this.getRobots();
+    this.getRobotModels();
+    this.getExtraElements();
     this.subscription = this.robotApprovedEvent.subscribe(() => this.getRobots());
   }
 
@@ -33,9 +47,29 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe()
   }
 
+  getRobotModels() {
+    this.ready = false;
+    this.robotModelService.getAll().subscribe(
+      data => {
+        this.robotModels = data;
+        this.ready = true;
+      }
+    )
+  }
+
+  getExtraElements() {
+    this.ready = false;
+    this.extraRobotElementService.getAll().subscribe(
+      data => {
+        this.extraRobotElements = data;
+        this.ready = true;
+      }
+    )
+  }
+
   getRobots() {
     this.ready = false;
-    this.robotService.getRobots().subscribe(
+    this.robotService.getAll().subscribe(
       data => {
         this.robots = data;
         this.ready = true;
@@ -43,25 +77,38 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
     )
   }
 
+
   reset() {
     this.robot = new Robot();
+    this.password = '';
   }
 
   createOrUpdate() {
-    this.robotService.save(this.robot).subscribe(
-      result => {
-        if (this.typeExists(this.robot.id)) {
-          this.robots[this.robots.findIndex(item => item.id == result.id)] = result;
-        } else {
-          this.robots.push(result)
+    if (this.typeExists(this.robot.id)) {
+      this.robotService.update(this.robot, this.password).subscribe(
+        result => {
+          this.robots[this.robots.findIndex(item => item.id == this.robot.id)] = this.robot;
+          this.robot = new Robot();
+          this.password = '';
+          this.toastr.success("Dodano pomyślnie");
+        },
+        error => {
+          this.toastr.error("Wystąpił bład podczas aktualizacji");
         }
-        this.robot = new Robot();
-        this.toastr.success("Dodano lub edytowano pomyślnie");
-      },
-      error => {
-        this.toastr.error("Wystąpił bład podczas dodawania lub edycji");
-      }
-    )
+      )
+    } else {
+      this.robotService.save(this.robot, this.password).subscribe(
+        result => {
+          this.robots[this.robots.findIndex(item => item.id == this.robot.id)] = this.robot;
+          this.robot = new Robot();
+          this.password = '';
+          this.toastr.success("Aktualizowano pomyślnie");
+        },
+        error => {
+          this.toastr.error("Wystąpił bład podczas aktualizacji");
+        }
+      )
+    }
   }
 
   typeExists(id: string) {
@@ -83,5 +130,9 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
         this.toastr.error("Wystąpił błąd podczas usuwania");
       }
     )
+  }
+
+  compareItems(id1: any, id2: any): boolean {
+    return id1.id === id2.id;
   }
 }

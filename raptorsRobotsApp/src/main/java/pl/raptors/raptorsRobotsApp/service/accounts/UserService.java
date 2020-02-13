@@ -48,6 +48,7 @@ public class UserService implements CRUDService<User> {
 
     @Override
     public User updateOne(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

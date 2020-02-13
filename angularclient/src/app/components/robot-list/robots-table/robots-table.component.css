@@ -7,3 +7,13 @@
 table.table td, table.table th {
   vertical-align: middle;
 }
+.mat-slide-toggle {
+  margin-bottom: 1rem;
+}
+.mat-form-field{
+  width: calc(100% - 2.5rem);
+  margin-left: 2.5rem;
+}
+.clickable{
+  cursor: pointer;
+}

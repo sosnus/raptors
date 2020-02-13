@@ -5,7 +5,7 @@ import * as L from 'leaflet';
 import {MovementPath} from "../../../model/MapAreas/MovementPaths/MovementPath";
 import {UniversalPoint} from "../../../model/MapAreas/UniversalPoint";
 import {axisAngleFromQuaternion, StoreService} from "../../../services/store.service";
-import {Marker} from "leaflet/src/layer/marker/Marker";
+import {Marker} from "leaflet/src/layer/marker/Marker.js";
 import {ToastrService} from "ngx-toastr";
 import {ARROWICON, CIRCLEBACK, STANDICON, WAYPOINTICON} from "../map.component";
 import {fromEvent} from "rxjs";
@@ -40,14 +40,14 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   private mapContainerSize = 800;
   private subscription;
 
-  private startStand: L.marker;
-  private finishStand: L.marker;
+  private startStand: Marker;
+  private finishStand: Marker;
 
   private startStandId: string;
   private finishStandId: string;
 
   private stands: Stand[];
-  private standMarkers: L.marker=[];
+  private standMarkers: Marker = [];
 
   constructor(private mapService: MapService,
               private movementPathService: MovementPathService,
@@ -183,13 +183,13 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   }
 
   private markAsStart(e) {
-    this.startStand = L.marker(e.relatedTarget.getLatLng(), {});
+    this.startStand = e.relatedTarget;
     this.vertices.splice(0, 0, this.startStand);
     this.createPolyline();
   }
 
   private markAsFinish(e) {
-    this.finishStand = L.marker(e.relatedTarget.getLatLng(), {});
+    this.finishStand = e.relatedTarget;
     this.vertices.push(this.finishStand);
     this.createPolyline();
   }
@@ -288,13 +288,13 @@ export class MovementPathComponent implements OnInit, OnDestroy {
         this.createNewMarker(translatedPoint);
       }
     });
-    let currentStartStand:Stand=this.stands.find(e => {
-      if(e.id == path.startStandId){
+    let currentStartStand: Stand = this.stands.find(e => {
+      if (e.id == path.startStandId) {
         return e;
       }
     });
-    let currentFinishStand:Stand=this.stands.find(e => {
-      if(e.id == path.finishStandId){
+    let currentFinishStand: Stand = this.stands.find(e => {
+      if (e.id == path.finishStandId) {
         return e;
       }
     });
@@ -318,28 +318,47 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   }
 
   private createNewMarker(position: L.latlng) {
-    let marker = new L.marker(position, {
-      draggable: true,
-      icon: WAYPOINTICON,
-      contextmenu: true,
-      contextmenuItems: [
-        {
-          text: 'Usuń punkt',
-          callback: this.deleteMarker,
-          context: this
-        }
-      ]
-    });
+
+    if (this.finishStand != null) {
+      var marker = new L.marker(position, {
+        draggable: true,
+        icon: WAYPOINTICON,
+        contextmenu: true,
+        contextmenuItems: [
+          {
+            text: 'Usuń punkt',
+            callback: this.deleteMarker,
+            context: this
+          },
+          {
+            text: 'Dodaj punkt do ścieżki',
+            callback: this.addToPoly,
+            context: this
+          }
+        ]
+      });
+    }
+    if (this.finishStand == null) {
+      var marker = new L.marker(position, {
+        draggable: true,
+        icon: WAYPOINTICON,
+        contextmenu: true,
+        contextmenuItems: [
+          {
+            text: 'Usuń punkt',
+            callback: this.deleteMarker,
+            context: this
+          }
+        ]
+      });
+    }
 
     marker.on('move', e => {
       this.updatePoints(e)
     });
-    if (this.finishStand != null) {
-      alert("Ściezka już utworzona! Usuń POI końcowy aby kontynuować rysowanie ściezki.");
-      return null;
-    }
+    marker.addTo(this.map);
+
     if (this.finishStand == null) {
-      marker.addTo(this.map);
       this.vertices.push(marker);
       return marker;
     }
@@ -349,6 +368,77 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
     this.map.removeLayer(e.relatedTarget);
     this.createPolyline();
+  }
+
+  private addToPoly(e) {
+
+    if(this.vertices.includes(e.relatedTarget)){
+      return;
+    }
+
+    let points: L.LatLng [];
+    points = this.polyline.getLatLngs();
+
+    let closestA;
+    let closestB;
+
+    let distanceA = Math.sqrt(
+      Math.pow(e.relatedTarget.getLatLng().lat - points[0].lat, 2)
+      +
+      Math.pow(e.relatedTarget.getLatLng().lng - points[0].lng, 2));
+    closestA = points[0];
+
+    points.forEach(point => {
+      let distance = Math.sqrt(
+        Math.pow(e.relatedTarget.getLatLng().lat - point.lat, 2)
+        +
+        Math.pow(e.relatedTarget.getLatLng().lng - point.lng, 2));
+
+      if (distance < distanceA) {
+        distanceA = distance;
+        closestA = point;
+      }
+    });
+    const indxA = points.indexOf(closestA);
+
+    if (indxA == 0) {
+      var distanceB = Math.sqrt(
+        Math.pow(e.relatedTarget.getLatLng().lat - points[1].lat, 2)
+        +
+        Math.pow(e.relatedTarget.getLatLng().lng - points[1].lng, 2));
+      closestB = points[1];
+    } else {
+      var distanceB = Math.sqrt(
+        Math.pow(e.relatedTarget.getLatLng().lat - points[0].lat, 2)
+        +
+        Math.pow(e.relatedTarget.getLatLng().lng - points[0].lng, 2));
+      closestB = points[0];
+    }
+
+    points.forEach(point => {
+      if (points.indexOf(point) != indxA) {
+        let distance = Math.sqrt(
+          Math.pow(e.relatedTarget.getLatLng().lat - point.lat, 2)
+          +
+          Math.pow(e.relatedTarget.getLatLng().lng - point.lng, 2));
+
+        if (distance < distanceB) {
+          distanceB = distance;
+          closestB = point;
+        }
+      }
+    });
+    const indxB = points.indexOf(closestB);
+
+
+    if (indxA > indxB) {
+      points.splice(indxA, 0, e.relatedTarget.getLatLng());
+      this.vertices.splice(indxA, 0, e);
+    } else {
+      points.splice(indxB, 0, e.relatedTarget.getLatLng());
+      this.vertices.splice(indxB, 0, e.relatedTarget);
+    }
+    this.polyline.setLatLngs(points);
   }
 
   private updatePoints(e) {
@@ -432,7 +522,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
         this.getMapCoordinates(Number(stand.pose.position.x))
       ];
       if (position[0] == e._latlng.lat && position[1] == e._latlng.lng) {
-        currentMarker= L.marker(position, {});
+        currentMarker = L.marker(position, {});
       }
     });
 

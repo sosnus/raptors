@@ -70,6 +70,7 @@ import { RobotsTableComponent } from './components/robot-list/robots-table/robot
 import { RobotsToApproveTableComponent } from './components/robot-list/robots-toapprove-table/robots-toapprove-table.component';
 import {RobotaApprovalService} from "./services/robotapproval.service";
 import { SpinnerComponent } from './components/adminpanel/shared/spinner/spinner.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 
 const config: InputFileConfig = {};
@@ -136,6 +137,7 @@ const config: InputFileConfig = {};
     ToastrModule.forRoot(),
     FormsModule,
     MatSelectModule,
+    MatSlideToggleModule,
     ColorPickerModule
   ],
   providers: [MapService,HttpClient, RobotService, GraphService, StoreService,

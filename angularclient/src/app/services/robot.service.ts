@@ -18,19 +18,24 @@ export class RobotService {
     this.robotURL = store.baseURL + '/robots/';
   }
 
-  public getRobots(): Observable<Robot[]> {
+  public getAll(): Observable<Robot[]> {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<Robot[]>(this.robotURL + 'all', {headers: headers,responseType: 'json'})
+    return this.http.get<Robot[]>(this.robotURL + 'all', {headers: headers, responseType: 'json'})
   }
 
-  public getRobot(id: string): Observable<Robot> {
+  public getByID(id: string): Observable<Robot> {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
     return this.http.get<Robot>(this.robotURL + id, {headers: headers, responseType: 'json'})
   }
 
-  public save(robot: Robot) {
+  public save(robot: Robot, password: string) {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.post<Robot>(this.robotURL + 'add', robot, {headers: headers});
+    return this.http.post<Robot>(this.robotURL + 'add?password=' + password, robot, {headers: headers});
+  }
+
+  public update(robot: Robot, password: string) {
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.post<Robot>(this.robotURL + 'update?password=' + password, robot, {headers: headers});
   }
 
   public delete(robot: Robot) {
