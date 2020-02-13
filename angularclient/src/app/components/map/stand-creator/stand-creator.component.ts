@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MapService} from '../../../services/map.service';
 import {Marker} from 'leaflet/src/layer/marker/Marker.js';
 import {Polygon} from 'leaflet/src/layer/vector/Polygon.js';
+import {Polygon as CustomPolygon} from '../../../model/MapAreas/Polygons/Polygon';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
 import '../../../../../node_modules/leaflet-path-transform/dist/L.Path.Transform.js'
 import '../../../../lib/leaflet-circle-to-polygon/leaflet.circle.topolygon-src.js'
@@ -26,6 +27,10 @@ import {ToastrService} from "ngx-toastr";
 
 import 'leaflet-path-transform';
 import {fromEvent} from "rxjs";
+import {MovementPathService} from "../../../services/movementPath.service";
+import {MovementPath} from "../../../model/MapAreas/MovementPaths/MovementPath";
+import {PolygonService} from "../../../services/polygon.service";
+import {UniversalPointPair} from "../../../model/MapAreas/UniversalPointPair";
 
 declare var L: any;
 
@@ -37,6 +42,8 @@ declare var L: any;
 export class StandCreatorComponent implements OnInit, OnDestroy {
 
   public dataLoaded = false;
+  private canBeEdited = true;
+  forbidden="test";
 
   private selectedMarker: Marker;
   public stand: Stand = new Stand();
@@ -57,6 +64,8 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   private parkingTypes: ParkingType[];
   private standTypes: StandType[];
   private standStatuses: StandStatus[];
+  private paths: MovementPath[];
+  private polygons: CustomPolygon[];
 
   constructor(private mapService: MapService,
               private standService: StandService,
@@ -64,15 +73,19 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
               private standTypeService: StandTypeService,
               private standStatusService: StandStatusService,
               private store: StoreService,
-              private toast: ToastrService) {
+              private toast: ToastrService,
+              private pathService: MovementPathService,
+              private polygonService: PolygonService) {
   }
 
   ngOnInit() {
     this.loadMap();
     this.parkingTypeService.getAll().subscribe(data => this.parkingTypes = data);
+    this.pathService.getMovementPaths().subscribe(data => this.paths = data);
     this.standTypeService.getAll().subscribe(data => this.standTypes = data);
     this.standStatusService.getAll().subscribe(data => this.standStatuses = data);
     this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
+    this.polygonService.getPolygons().subscribe(data => this.polygons = data);
   }
 
   ngOnDestroy(): void {
@@ -129,18 +142,103 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit() {
-    this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
-    this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
-    this.stand.pose.orientation = quaternionFromAxisAngle([0, 1, 0], this.degToRad(this.orientationAngle));
-    this.standService.save(this.stand).subscribe(
-      result => {
-        this.toast.success("Dodano nowe stanowisko");
+  private getPairOfPointsFromAreas() {
+    let pairs:UniversalPointPair[]=[];
 
-        this.clearMap();
-      },
-      error => this.toast.error("Błąd podczas dodawania stanowiska")
-    )
+    let forbiddenAreas:CustomPolygon[]=this.polygons.filter(e=> e.type.name==this.forbidden);
+
+    if(forbiddenAreas.length>0){
+      forbiddenAreas.forEach(e=>{
+        var i;
+        let polygonPoints=e.points;
+        for (i = 0; i < polygonPoints.length; i++) {
+
+          if(i==(polygonPoints.length-1)){
+            let pair2:UniversalPointPair=new UniversalPointPair(polygonPoints[0],polygonPoints[polygonPoints.length-1]);
+            pairs.push(pair2);
+            break;
+          }
+
+          let pair:UniversalPointPair=new UniversalPointPair(polygonPoints[i],polygonPoints[i+1]);
+          pairs.push(pair);
+        }
+      });
+    }
+
+    return pairs;
+  }
+
+  private checkRelatedPaths() {
+    let check = false;
+    const id = this.stand.id;
+    //console.log(id);
+    let pairs:UniversalPointPair[]=this.getPairOfPointsFromAreas();
+    //console.log(pairs);
+    let relatedPathsWithFinishStand: MovementPath[] = this.paths.filter(e => e.finishStandId == id);
+    let relatedPathsWithStartStand: MovementPath[] = this.paths.filter(e => e.startStandId == id);
+    //console.log(relatedPathsWithStartStand);
+    const a = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
+    const b = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
+    //console.log(a);
+    //console.log(b);
+    relatedPathsWithStartStand.forEach(e => {
+      const c = e.points[1].x;
+      const d = e.points[1].y;
+
+      // console.log(c);
+      // console.log(d);
+      //console.log(pairs);
+      pairs.forEach(e=>{
+        check=this.intersects(a, b, c, d, e.first.x, e.first.y, e.second.x, e.second.y);
+      });
+    });
+
+
+    relatedPathsWithFinishStand.forEach(e => {
+      //console.log(e.points);
+      //console.log(relatedPathsWithFinishStand.length);
+      const c = e.points[e.points.length - 2].x;
+      const d = e.points[e.points.length - 2].y;
+
+      pairs.forEach(e=>{
+        check=this.intersects(a, b, c, d, e.first.x, e.first.y, e.second.x, e.second.y);
+      });
+    });
+    return check;
+  }
+
+// returns true iff the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
+  private intersects(a, b, c, d, p, q, r, s) {
+    var det, gamma, lambda;
+    det = (c - a) * (s - q) - (r - p) * (d - b);
+    if (det === 0) {
+      return false;
+    } else {
+      lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+      gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+      return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+    }
+  };
+
+  onSubmit() {
+     this.canBeEdited=this.checkRelatedPaths();
+     console.log(this.canBeEdited);
+  //  if (this.canBeEdited) {//todo
+      this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
+      this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
+      this.stand.pose.orientation = quaternionFromAxisAngle([0, 1, 0], this.degToRad(this.orientationAngle));
+      this.standService.save(this.stand).subscribe(
+        result => {
+          this.toast.success("Dodano nowe stanowisko");
+
+          this.clearMap();
+        },
+        error => this.toast.error("Błąd podczas dodawania stanowiska")
+      );
+   // } else {
+
+  //  }
+
   }
 
   private createNewMarker(position) {

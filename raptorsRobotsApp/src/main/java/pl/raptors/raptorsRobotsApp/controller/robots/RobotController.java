@@ -39,13 +39,12 @@ public class RobotController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_ROBOT')")
     @PostMapping("/add")
     //http://localhost:8080/robots/add?password=passy   <-- passy to nasze haslo
-    public Robot add(@RequestBody @Valid Robot robot,@RequestParam(required = false) String password) {
-        if(robotService.getOne(robot.getId())==null) {
+    public Robot add(@RequestBody @Valid Robot robot, @RequestParam(required = false) String password) {
+        if (robotService.getOne(robot.getId()) == null) {
             if (password == null)
                 password = "robot";
             return robotService.addRobotAndCreateAccount(robot, password);
-        }
-        else{
+        } else {
             return null;
         }
 
@@ -54,11 +53,11 @@ public class RobotController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_ROBOT')")
     @PostMapping("/update")
     public Robot update(@RequestBody @Valid Robot robot, @RequestParam(required = false) String password) {
-        if (password == null)
-            password = "robot";
-        User user = userService.getByEmail(robot.getId());
-        user.setPassword(password);
-        userService.updateOne(user);
+        if (password != null) {
+            User user = userService.getByEmail(robot.getId());
+            user.setPassword(password);
+            userService.updateOne(user);
+        }
         return robotService.updateOne(robot);
     }
 
