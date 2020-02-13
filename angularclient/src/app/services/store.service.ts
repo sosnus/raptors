@@ -22,8 +22,28 @@ export class StoreService {
 
   public getRobotTasksByRole(){
     // REGULAR_ROLE_USER
-    if(this.loggedUserRole == 'ROLE_REGULAR_USER'){
+    if(this.loggedUserRole.includes('ROLE_REGULAR_USER')){
       this.robotTaskList = this.robotTaskList.filter(task=> task.userID == this.loggedUserID);
+    }
+
+    // ROLE_ADMIN
+    if(this.loggedUserRole.includes("ROLE_ADMIN")){
+      // do nothing = get all tasks
+    }
+
+    // ROLE_SERVICEMAN
+    if(this.loggedUserRole.includes("ROLE_SERVICEMAN")){
+      this.robotTaskList = this.robotTaskList.filter(task=> task.userID == this.loggedUserID);
+    }
+
+    // ROLE_SUPER_USER
+    if(this.loggedUserRole.includes("ROLE_SUPER_USER")){
+      //this.robotTaskListTemp = this.robotTaskList;
+      this.robotTaskList = this.robotTaskList.filter(task=> task.userID == this.loggedUserID);
+      // dodaj taski wszystkich regular user;
+/*      this.robotTaskListTemp.forEach(task=>{
+        this.robotTaskList.push(task);
+      })*/
     }
   }
 
