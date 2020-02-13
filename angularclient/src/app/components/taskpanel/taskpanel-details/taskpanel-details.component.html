@@ -29,7 +29,7 @@
   </tbody>
 </table>
 
-<div class="md-form">
+<div class="md-form" *ngIf="checkAccess()">
   <select class="browser-default custom-select" (change)="selectRobot($event.target.value)"
           [(ngModel)]="selectedRobot"
           [ngModelOptions]="{standalone: true}">

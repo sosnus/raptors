@@ -1,12 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Robot} from "../../../model/Robots/Robot";
 import {RobotTask} from "../../../model/Robots/RobotTask";
-import {Polygon} from "../../../model/MapAreas/Polygons/Polygon";
 import {RobotTaskService} from "../../../services/robotTask.service";
 import {ToastrService} from "ngx-toastr";
-import {StoreService} from "../../../services/store.service";
 import {RobotService} from "../../../services/robot.service";
-import {AreaType} from "../../../model/type/AreaType";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-taskpanel-details',
@@ -23,7 +21,7 @@ export class TaskpanelDetailsComponent implements OnInit {
   robotTasks: RobotTask[]=[];
   selectedRobot: string;
 
-  constructor(private robotService: RobotService, private robotTaskService: RobotTaskService,
+  constructor(private robotService: RobotService, private robotTaskService: RobotTaskService,private authService: AuthService,
               private toastr: ToastrService) {
 
   }
@@ -53,6 +51,12 @@ export class TaskpanelDetailsComponent implements OnInit {
   createOrUpdate() {
     this.robotService.getRobot(this.selectedRobot).subscribe(robot=>{
       this.task.robot=robot;
+      // pobierz tylko roboty, które mają status free
+      // przypisz mu, że juz nie ma zadania, czyli, gdzie robot.status.incluses"free"
+
+      // uaktualnij status robota z free na zajęty
+      // uaktualnij status zadania z waiting na zajęte
+      //robot.status.includes();
       this.robotTaskService.save(this.task).subscribe(
         result => {
           if (this.typeExists(this.task.id)) {
@@ -60,7 +64,6 @@ export class TaskpanelDetailsComponent implements OnInit {
           } else {
             this.robotTasks.push(result)
           }
-          //this.task = new AreaType(null, null);
           this.toastr.success("Dodano robota pomyślnie");
           console.log(result);
         },
@@ -69,12 +72,32 @@ export class TaskpanelDetailsComponent implements OnInit {
         }
       )
     });
-
-
   }
 
   typeExists(id: string) {
     return this.robotTasks.some(item => item.id == id);
+  }
+
+  checkRole(){
+    if(this.authService.isAdmin() || this.authService.isServiceman()){
+      return true;
+    }
+    return null;
+  }
+
+  checkIsTaskFree(){
+    if(this.task.status === "waiting"){
+      console.log("Status: "  + this.task.status)
+      return true;
+    }
+    return null;
+  }
+
+  checkAccess(){
+    if(this.checkRole() && this.checkIsTaskFree()){
+      return true;
+    }
+    return null;
   }
 
 }
