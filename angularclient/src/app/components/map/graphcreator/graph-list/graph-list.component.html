@@ -1,0 +1,34 @@
+<div class="wrapper mx-auto">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th class="sticky-top" scope="col">#</th>
+      <th class="sticky-top" scope="col">ID grafu</th>
+      <th class="sticky-top" scope="col"></th>
+      <th class="sticky-top" scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let graph of graphs;let i = index;">
+      <th scope="row">{{++i}}</th>
+      <td>{{graph.id}}</td>
+      <td>
+        <button class="btn btn-primary btn-sm"
+                (click)="editGraph(graph)">
+          Edit
+        </button>
+      </td>
+      <td>
+        <button class="btn btn-primary btn-sm"
+                (click)="selectedGraph=graph"
+                data-toggle="modal"
+                [attr.data-target]="'#' + modalID + 'Confirm'">
+          Delete
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="deleteGraph(selectedGraph)"></app-confirm-modal-template>

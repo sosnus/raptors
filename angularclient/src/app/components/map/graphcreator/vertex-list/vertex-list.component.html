@@ -1,0 +1,27 @@
+<div class="wrapper mx-auto">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th class="sticky-top" scope="col">#</th>
+      <th class="sticky-top" scope="col">Pozycja X</th>
+      <th class="sticky-top" scope="col">Pozycja Y</th>
+      <th class="sticky-top" scope="col">Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let vert of markers;let i = index;">
+      <th scope="row">{{++i}}</th>
+      <td> <div contenteditable="true" class="edit" [attr.id]="i+'x'">{{getMarkerPos(vert).x}}</div>
+
+      </td>
+      <td> <div contenteditable="true" class="edit" [attr.id]="i+'y'">{{getMarkerPos(vert).y}}</div></td>
+      <td>
+        <button class="btn btn-primary btn-sm"
+                (click)="updateMarker(i)">
+          Zastosuj
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

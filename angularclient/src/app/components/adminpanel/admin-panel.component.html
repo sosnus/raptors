@@ -1,0 +1,43 @@
+<!--Accordion wrapper-->
+<div id="accordionParent" role="tablist" aria-multiselectable="true">
+  <app-collapsetemplate [name]="'Typy obszarów'" [templateID]="'collapseAreaTypes'">
+    <app-area-types></app-area-types>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Typy baterii'" [templateID]="'collapseBatteryType'">
+    <app-battery-types></app-battery-types>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Typy napędu'" [templateID]="'collapsePropulsionType'">
+    <app-propulsion-types></app-propulsion-types>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Typy parkowania'" [templateID]="'collapseParkingType'">
+    <app-parking-types></app-parking-types>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Priorytety zadań'" [templateID]="'collapseTaskPriority'">
+    <app-task-priorities></app-task-priorities>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Typy stanowisk'" [templateID]="'collapseStandType'">
+    <app-stand-types></app-stand-types>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Typy statusów stanowisk'" [templateID]="'collapseStandStatus'">
+    <app-stand-statuses></app-stand-statuses>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Typy przeglądów'" [templateID]="'collapseReviewType'">
+    <app-review-types></app-review-types>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Zachowania robota'" [templateID]="'collapseBehaviour'">
+    <app-behaviour></app-behaviour>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Statusy robota'" [templateID]="'collapseRobotStatus'">
+    <app-robot-statuses></app-robot-statuses>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Modele robota'" [templateID]="'collapseRobotModel'">
+    <app-robot-models></app-robot-models>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Funkcjonalności elementów'" [templateID]="'collapseElementFunctionality'">
+    <app-element-functionality></app-element-functionality>
+  </app-collapsetemplate>
+  <app-collapsetemplate [name]="'Dodatkowe elementy'" [templateID]="'collapseExtraRobotElement'">
+    <app-extra-robot-element></app-extra-robot-element>
+  </app-collapsetemplate>
+</div>
+<!--/.Accordion wrapper-->

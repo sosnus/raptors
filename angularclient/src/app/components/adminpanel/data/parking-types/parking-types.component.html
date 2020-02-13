@@ -1,0 +1,45 @@
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+<a *ngIf="parkingTypes.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+<div *ngIf="parkingTypes.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nazwa</th>
+      <th scope="col">Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let type of parkingTypes;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{type.name}}</td>
+      <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" [attr.data-target]="'#' + modalID"
+                (click)="edit(type)">Edytuj
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID + 'Confirm'"
+                (click)="parkingType=type">Usuń
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(parkingType)"></app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Tworzenie nowego typu parkowania'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <i class="fas fa-file-signature prefix grey-text"></i>
+    <input type="text" id="propulsionTypeName" class="form-control validate" required [(ngModel)]="parkingType.name" name="name">
+    <label for="propulsionTypeName" [class.active]="parkingType.name && parkingType.name.length > 0">Nazwa typu parkowania</label>
+  </form>
+</app-form-modal-template>

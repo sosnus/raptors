@@ -1,0 +1,65 @@
+<div class="inline-container">
+  <div class="map">
+    <form class="form" #standForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="md-form">
+          <input type="text" id="inputName" class="form-control form-control-lg" required [(ngModel)]="stand.name" name="name">
+          <label for="inputName" [class.active]="stand.name && stand.name.length > 0">Nazwa stanowiska</label>
+        </div>
+        <div class="md-form">
+          <mat-form-field>
+            <mat-label>Typ parkowania</mat-label>
+            <mat-select [(ngModel)]="stand.parkingType" name="parkingType" [compareWith]="compareItems">
+              <mat-option *ngFor="let parkingType of parkingTypes" [value]="parkingType">
+                {{parkingType.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="md-form">
+          <mat-form-field>
+            <mat-label>Typ stanowiska</mat-label>
+            <mat-select [(ngModel)]="stand.standType" name="standType" [compareWith]="compareItems">
+              <mat-option *ngFor="let standType of standTypes" [value]="standType">
+                {{standType.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="md-form">
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="stand.standStatus" name="standStatus" [compareWith]="compareItems">
+              <mat-option *ngFor="let standStatus of standStatuses" [value]="standStatus">
+                {{standStatus.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="md-form">
+          <input type="text" id="orientation" class="form-control form-control-lg" required [(ngModel)]="orientationAngle" name="orientationAngle" (change)="updateAngle()">
+          <label for="orientation" [class.active]="true">Orientacja</label>
+        </div>
+        <div class="md-form">
+          <button type="button" class="btn btn-light btn-save" (click)="clearMap()"><i class="fas fa-retweet"></i> Nowy</button>
+          <button type="submit" class="btn btn-light btn-save" [disabled]="!standForm.form.valid||!this.selectedMarker"><i class="far fa-save" ></i> Dodaj</button>
+        </div>
+      </div>
+
+    </form>
+    <!-- Material inline form -->
+
+    <div class="map-container" id="map-container">
+      <div class="map-frame">
+        <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+
+  <app-stand-list
+    [stand]="stand"
+    (standToEdit)="editExistingStand($event)" class="list"></app-stand-list>
+</div>

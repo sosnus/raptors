@@ -1,0 +1,11 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<h1>Upload new Map</h1>
+<form method="POST" action="/movement/maps/add" enctype="multipart/form-data">
+    Name:<input type="text" name="name"/>
+    mapImage:<input type="file" name="mapImage" accept=".pgm, .yaml"/>
+    <input type="submit" value="Upload" />
+</form>
+</body>
+</html>

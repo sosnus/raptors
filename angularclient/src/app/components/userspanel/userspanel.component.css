@@ -1,0 +1,17 @@
+.btn-rounded{
+  border-radius: 1rem;
+}
+.text-blue {
+  color: #007bff;
+}
+table.table td, table.table th {
+  vertical-align: middle;
+}
+.cdk-overlay-container {
+  z-index: 99999 !important;
+}
+
+.multiselect{
+  width: 100%;
+  padding-left: 2.5rem;
+}

@@ -1,0 +1,34 @@
+<div class="inline-container">
+  <div class="map">
+    <form class="form" #pathForm="ngForm" (ngSubmit)="saveMovementPath()">
+      <div class="row">
+        <div class="md-form">
+          <input type="text" id="inputName" class="form-control form-control-lg" required [(ngModel)]="name"
+                 name="name">
+          <label for="inputName" [class.active]="name && name.length > 0">Nazwa ścieżki</label>
+        </div>
+        <div class="md-form">
+          <button type="button" class="btn btn-light" (click)="cancelMovementPath()"><i
+            class="far fa-window-close"></i> Anuluj
+          </button>
+        </div>
+        <div class="md-form">
+          <button type="submit" class="btn btn-light" [disabled]="!pathForm.form.valid"><i
+            class="far fa-save"></i>Zapisz
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="map-container" id="map-container">
+      <div class="map-frame">
+        <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+  <app-vertex-list [markers]="vertices" class="list"></app-vertex-list>
+  <app-movement-path-list
+    [path]="polyline"
+    (pathToEdit)="editExistingPath($event)" class="list">
+  </app-movement-path-list>
+</div>

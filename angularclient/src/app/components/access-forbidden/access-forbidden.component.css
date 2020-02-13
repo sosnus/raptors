@@ -1,0 +1,10 @@
+#footer{
+  text-align: center;
+  position: fixed;
+  margin-left: 530px;
+  bottom: 0px
+}
+
+.bg-dark{
+  background-color: #616161 !important;
+}
