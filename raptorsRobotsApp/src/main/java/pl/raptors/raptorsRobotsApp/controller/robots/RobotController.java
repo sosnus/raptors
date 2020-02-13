@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.raptors.raptorsRobotsApp.domain.accounts.User;
 import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
+import pl.raptors.raptorsRobotsApp.service.accounts.UserService;
 import pl.raptors.raptorsRobotsApp.service.robots.RobotService;
 
 import javax.validation.Valid;
@@ -18,6 +20,9 @@ public class RobotController {
 
     @Autowired
     RobotService robotService;
+
+    @Autowired
+    UserService userService;
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER') or hasAuthority('ROLE_ROBOT')")
     @GetMapping("/all")
@@ -48,7 +53,11 @@ public class RobotController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_ROBOT')")
     @PostMapping("/update")
-    public Robot update(@RequestBody @Valid Robot robot) {
+    public Robot update(@RequestBody @Valid Robot robot, @RequestParam(required = false) String password) {
+        if (password == null)
+            password = "robot";
+        User user = userService.getByEmail(robot.getId());
+        userService.updateOne(user);
         return robotService.updateOne(robot);
     }
 
