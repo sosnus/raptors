@@ -87,7 +87,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     img.onload = () => {
       this.imageResolution = img.width;
       //
-    }
+    };
 
     this.polygonService.getPolygons().subscribe(polygons => {
         this.getPolygonsFromDB = polygons;
@@ -308,7 +308,6 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.polygonService.delete(polygon).subscribe(
       result => {
         this.getPolygonsFromDB = this.getPolygonsFromDB.filter(item => item !== polygon)
-        //this.polygon = new Polygon();
       },
       error => {
         /*

@@ -180,8 +180,6 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   private deletePOI(e) {
     if (this.startStand != null) {
       if (e.relatedTarget.getLatLng() == this.startStand.getLatLng()) {
-
-        console.log("delete POI: start stand");
         this.vertices = this.vertices.filter(marker => marker !== this.startStand);
         this.startStand = null;
         this.createPolyline();
@@ -189,22 +187,20 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     }
     if (this.finishStand != null) {
       if (e.relatedTarget.getLatLng() == this.finishStand.getLatLng()) {
-        console.log("delete POI: finish stand");
         this.vertices = this.vertices.filter(marker => marker !== this.finishStand);
         this.finishStand = null;
         this.createPolyline();
       }
     }
-    var str=e.relatedTarget._tooltip._content;
-    e.relatedTarget._tooltip._content=str.slice(8);
+    var str = e.relatedTarget._tooltip._content;
+    e.relatedTarget._tooltip._content = str.slice(8);
   }
 
   private markAsStart(e) {
-    if(this.startStand!=null){
+    if (this.startStand != null) {
       alert("Punkt początkowy POI jest już zdefiniowany!");
-    }
-    else {
-      e.relatedTarget._tooltip._content=" START: "+e.relatedTarget._tooltip._content;
+    } else {
+      e.relatedTarget._tooltip._content = " START: " + e.relatedTarget._tooltip._content;
       this.startStand = e.relatedTarget;
       this.vertices.splice(0, 0, this.startStand);
       this.createPolyline();
@@ -212,11 +208,13 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   }
 
   private markAsFinish(e) {
-    if(this.finishStand!=null){
+    if (this.finishStand != null) {
       alert("Punkt końcowy POI jest już zdefiniowany!");
     }
-    else {
-      e.relatedTarget._tooltip._content="KONIEC: "+e.relatedTarget._tooltip._content;
+    if (this.startStand == null) {
+      alert("Zdefiniuj najpierw punkt początkowy POI!");
+    } else {
+      e.relatedTarget._tooltip._content = "KONIEC: " + e.relatedTarget._tooltip._content;
       this.finishStand = e.relatedTarget;
       this.vertices.push(this.finishStand);
       this.createPolyline();
@@ -249,19 +247,19 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     if (this.polyline != null) {
       this.map.removeLayer(this.polyline);
     }
-    this.polyline = null;
-
     if (this.vertices.length != 0) {
       this.vertices.forEach(e => {
-        this.map.removeLayer(e);
-      })
+        if (this.vertices.indexOf(e) !== 0 && this.vertices.indexOf(e) !== (this.vertices.length - 1)) {
+          this.map.removeLayer(e);
+        }
+      });
     }
     this.vertices = [];
     this.name = "";
     this.pathID = null;
     this.startStand = null;
     this.finishStand = null;
-
+    this.polyline = new L.Polyline([]).addTo(this.map);
   }
 
   private getRealCoordinates(value) {
@@ -347,7 +345,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
   private createNewMarker(position: L.latlng) {
 
-    if (this.finishStand != null) {
+    if (this.finishStand != null && this.startStand != null) {
       var marker = new L.marker(position, {
         draggable: true,
         icon: WAYPOINTICON,
@@ -366,7 +364,8 @@ export class MovementPathComponent implements OnInit, OnDestroy {
         ]
       });
     }
-    if (this.finishStand == null) {
+    ;
+    if (this.finishStand == null || this.startStand == null) {
       var marker = new L.marker(position, {
         draggable: true,
         icon: WAYPOINTICON,
@@ -380,13 +379,14 @@ export class MovementPathComponent implements OnInit, OnDestroy {
         ]
       });
     }
+    ;
 
     marker.on('move', e => {
       this.updatePoints(e)
     });
     marker.addTo(this.map);
 
-    if (this.finishStand == null) {
+    if (this.finishStand == null || this.startStand == null) {
       this.vertices.push(marker);
       return marker;
     }
@@ -400,7 +400,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
   private addToPoly(e) {
 
-    if(this.vertices.includes(e.relatedTarget)){
+    if (this.vertices.includes(e.relatedTarget)) {
       return;
     }
 
@@ -409,18 +409,18 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
     let closestA;
     let closestB;
-
     let distanceA = Math.sqrt(
-      Math.pow(e.relatedTarget.getLatLng().lat - points[0].lat, 2)
+
+      Math.pow(e.relatedTarget._latlng.lat - points[0].lat, 2)
       +
-      Math.pow(e.relatedTarget.getLatLng().lng - points[0].lng, 2));
+      Math.pow(e.relatedTarget._latlng.lng - points[0].lng, 2));
     closestA = points[0];
 
     points.forEach(point => {
       let distance = Math.sqrt(
-        Math.pow(e.relatedTarget.getLatLng().lat - point.lat, 2)
+        Math.pow(e.relatedTarget._latlng.lat - point.lat, 2)
         +
-        Math.pow(e.relatedTarget.getLatLng().lng - point.lng, 2));
+        Math.pow(e.relatedTarget._latlng.lng - point.lng, 2));
 
       if (distance < distanceA) {
         distanceA = distance;
@@ -431,24 +431,24 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
     if (indxA == 0) {
       var distanceB = Math.sqrt(
-        Math.pow(e.relatedTarget.getLatLng().lat - points[1].lat, 2)
+        Math.pow(e.relatedTarget._latlng.lat - points[1].lat, 2)
         +
-        Math.pow(e.relatedTarget.getLatLng().lng - points[1].lng, 2));
+        Math.pow(e.relatedTarget._latlng.lng - points[1].lng, 2));
       closestB = points[1];
     } else {
       var distanceB = Math.sqrt(
-        Math.pow(e.relatedTarget.getLatLng().lat - points[0].lat, 2)
+        Math.pow(e.relatedTarget._latlng.lat - points[0].lat, 2)
         +
-        Math.pow(e.relatedTarget.getLatLng().lng - points[0].lng, 2));
+        Math.pow(e.relatedTarget._latlng.lng - points[0].lng, 2));
       closestB = points[0];
     }
 
     points.forEach(point => {
       if (points.indexOf(point) != indxA) {
         let distance = Math.sqrt(
-          Math.pow(e.relatedTarget.getLatLng().lat - point.lat, 2)
+          Math.pow(e.relatedTarget._latlng.lat - point.lat, 2)
           +
-          Math.pow(e.relatedTarget.getLatLng().lng - point.lng, 2));
+          Math.pow(e.relatedTarget._latlng.lng - point.lng, 2));
 
         if (distance < distanceB) {
           distanceB = distance;
@@ -458,12 +458,12 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     });
     const indxB = points.indexOf(closestB);
 
-
-    if (indxA > indxB) {
-      points.splice(indxA, 0, e.relatedTarget.getLatLng());
-      this.vertices.splice(indxA, 0, e);
+        if (indxA > indxB) {
+      points.splice(indxA, 0, e.relatedTarget._latlng);
+      this.vertices.splice(indxA, 0, e.relatedTarget);
     } else {
-      points.splice(indxB, 0, e.relatedTarget.getLatLng());
+      points.splice(indxB, 0, e.relatedTarget._latlng);
+
       this.vertices.splice(indxB, 0, e.relatedTarget);
     }
     this.polyline.setLatLngs(points);
@@ -539,7 +539,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
-      const pointPosition = L.latLng([this.getMapCoordinates(point.y), this.getMapCoordinates(point.x)]);
+      const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
       existingPolygonpoints.push(pointPosition);
 
     });

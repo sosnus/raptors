@@ -1,8 +1,7 @@
-import {Component, Input, OnChanges, OnInit, SimpleChange} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RobotService} from "../../services/robot.service";
 import {StoreService} from "../../services/store.service";
 import {RobotTaskService} from "../../services/robotTask.service";
-import {RobotTask} from "../../model/Robots/RobotTask";
 import {Robot} from "../../model/Robots/Robot";
 import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
@@ -62,13 +61,13 @@ export class SidebarComponent implements OnInit {
     }
 
     // ROLE_ADMIN
-    if(this.authService.isAdmin()){
+    if (this.authService.isAdmin()) {
       // do nothing = get all tasks
     }
 
     // ROLE_SERVICEMAN
-    if(this.authService.isServiceman()){
-      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
+    if (this.authService.isServiceman()) {
+      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task => task.userID == this.loggedUserID);
     }
 
 

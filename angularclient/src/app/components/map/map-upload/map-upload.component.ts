@@ -3,6 +3,7 @@ import {ViewChild} from '@angular/core';
 import {InputFileComponent} from 'ngx-input-file';
 import {MapService} from '../../../services/map.service';
 import {Map} from '../../../model/Map';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-map-upload',
@@ -17,7 +18,8 @@ export class MapUploadComponent implements OnInit {
   success = false;
   error = false;
 
-  constructor(private mapService: MapService) {
+  constructor(private mapService: MapService,
+              private toastrService: ToastrService) {
 
   }
 
@@ -33,14 +35,17 @@ export class MapUploadComponent implements OnInit {
 
   submitFiles(): void {
     this.mapService.save(this.mapName, this.mapInputComponent.files[0].file, this.yamlInput.files[0].file).subscribe(
-      data => this.success = true,
+      data => {
+        this.toastrService.success('Mapa dodana pomyślnie');
+        this.success = true;
+      },
       error => {
-        console.log(error);
+        this.toastrService.error('Bląd podczas dodawania mapy' + error.message)
         this.error = true
       });
   }
 
-  checkForm(){
-    return (!this.mapSelected)||(!this.yamlSelected)||(this.mapName.length<1);
+  checkForm() {
+    return (!this.mapSelected) || (!this.yamlSelected) || (this.mapName.length < 1);
   }
 }
