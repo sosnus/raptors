@@ -224,10 +224,10 @@ export class PolygonsComponent implements OnInit, OnDestroy {
         );
         polygonPointz.push(universalPoint)
       });
-      let type: AreaType = new AreaType(this.areaType.name, this.areaType.color);
-      let polygon = new Polygon('polygon', type, polygonPointz);
+      //let type: AreaType = new AreaType(this.areaType.name, this.areaType.color);
+      //let polygon = new Polygon('polygon', this.areaType, polygonPointz);
       this.polygoN.name = "polygon";
-      this.polygoN.type = type;
+      this.polygoN.type = this.areaType;
       this.polygoN.points = polygonPointz;
       console.log(this.polygoN);
 /*      this.polygonService.save(this.polygoN).subscribe(
@@ -251,6 +251,9 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       );
       this.polygonPoints = [];
       this.vertices = [];
+      this.polygoN.id = null;
+      this.polygoN = new Polygon(null, null, null);
+      this.areaType = new AreaType(null, null);
       //this.resetPoly();
       console.log("vertices po zapisaniu " + this.vertices);
     }
@@ -276,8 +279,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     //this.delete(polygon);
     //this.resetPoly();
 
-    this.areaType.color = polygon.type.color;
-    this.areaType.name = polygon.type.name;
+    this.areaType = polygon.type;
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
@@ -344,9 +346,8 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     console.log('Kliknięty typ obszaru ma id: : ' + this.selectedAreaType);
     this.areaTypes.forEach(areaType => {
       if (areaType.id === this.selectedAreaType) {
-        console.log("kolor: areatype: " + areaType.color);
-        this.areaType.color = areaType.color;
-        this.areaType.name = areaType.name;
+        this.areaType = areaType;
+
 
         this.polygon.setStyle({
           color: this.areaType.color

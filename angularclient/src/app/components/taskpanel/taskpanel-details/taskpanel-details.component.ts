@@ -41,9 +41,11 @@ export class TaskpanelDetailsComponent implements OnInit {
 
         // pobierz tylko roboty, które mają status free
         robotStatus.forEach(freeStatus=>{
-          if(freeStatus.name==="free"){
+          if(freeStatus.name==="charge needed"){
             this.robotStatusFree = freeStatus;
-            this.refresh();          }
+            console.log(this.robotStatusFree);
+            this.robots = this.robots.filter(robot=> robot.status.some(state=>state.id=== this.robotStatusFree.id));
+          }
         });
       });
     });
@@ -92,7 +94,11 @@ export class TaskpanelDetailsComponent implements OnInit {
               this.toastr.error("Wystąpił bład podczas dodawania");
             }
           );
-          this.refresh();
+          console.log("przed zapisaniem: " + this.robots);
+          this.robots = this.robotsFromDB.filter(robot=> robot.status.some(state=>state.id=== this.robotStatusFree.id));
+          console.log("po zapisaniu: " + this.robots);
+
+
           if (this.taskExists(this.task.id)) {
             this.robotTasks[this.robotTasks.findIndex(item => item.id == result.id)] = result;
           } else {
@@ -135,7 +141,4 @@ export class TaskpanelDetailsComponent implements OnInit {
     return null;
   }
 
-  refresh(){
-    this.robots = this.robots.filter(robot=> robot.status.some(state=>state.id=== this.robotStatusFree.id));
-  }
 }
