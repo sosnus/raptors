@@ -43,7 +43,15 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
 
   public dataLoaded = false;
   private canBeEdited = true;
-  forbidden="test";
+  forbidden="Obszar zabroniony";
+  private polygonsLayer = L.featureGroup();
+  private movementPathsLayer = L.featureGroup();
+  private relatedPaths:MovementPath[];
+  private overlays = {
+    Obszary: this.polygonsLayer,
+    Sciezki: this.movementPathsLayer
+  };
+  private allpolygons: Polygon[];
 
   private selectedMarker: Marker;
   public stand: Stand = new Stand();
@@ -121,6 +129,18 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
       this.imageResolution = img.width;
       //
     }
+    this.pathService.getMovementPaths().subscribe(
+      paths => {
+        this.drawPaths(paths);
+      }
+    );
+
+    this.polygonService.getPolygons().subscribe(
+      polygons => {
+        this.allpolygons = polygons;
+        this.drawPolygons(this.allpolygons);
+      }
+    );
   }
 
   private initMap(): void {
@@ -140,6 +160,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     this.map.on('click', e => {
       this.createNewMarker(e.latlng);
     });
+    L.control.layers({}, this.overlays).addTo(this.map);
   }
 
   private getPairOfPointsFromAreas() {
@@ -171,23 +192,18 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   private checkRelatedPaths() {
     let check = false;
     const id = this.stand.id;
-    //console.log(id);
     let pairs:UniversalPointPair[]=this.getPairOfPointsFromAreas();
-    //console.log(pairs);
     let relatedPathsWithFinishStand: MovementPath[] = this.paths.filter(e => e.finishStandId == id);
     let relatedPathsWithStartStand: MovementPath[] = this.paths.filter(e => e.startStandId == id);
-    //console.log(relatedPathsWithStartStand);
+
+    relatedPathsWithStartStand.forEach(e=>this.relatedPaths.push(e));
+    relatedPathsWithFinishStand.forEach(e=>this.relatedPaths.push(e));
+
     const a = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
     const b = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
-    //console.log(a);
-    //console.log(b);
     relatedPathsWithStartStand.forEach(e => {
       const c = e.points[1].x;
       const d = e.points[1].y;
-
-      // console.log(c);
-      // console.log(d);
-      //console.log(pairs);
       pairs.forEach(e=>{
         check=this.intersects(a, b, c, d, e.first.x, e.first.y, e.second.x, e.second.y);
       });
@@ -195,13 +211,11 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
 
 
     relatedPathsWithFinishStand.forEach(e => {
-      //console.log(e.points);
-      //console.log(relatedPathsWithFinishStand.length);
       const c = e.points[e.points.length - 2].x;
       const d = e.points[e.points.length - 2].y;
 
       pairs.forEach(e=>{
-        check=this.intersects(a, b, c, d, e.first.x, e.first.y, e.second.x, e.second.y);
+        check=this.lineIntersect(a, b, c, d, e.first.x, e.first.y, e.second.x, e.second.y);
       });
     });
     return check;
@@ -220,10 +234,41 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     }
   };
 
+  private lineIntersect(x1,y1,x2,y2, x3,y3,x4,y4) {
+    var x=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
+    var y=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
+    if (isNaN(x)||isNaN(y)) {
+      return false;
+    } else {
+      if (x1>=x2) {
+        if (!(x2<=x&&x<=x1)) {return false;}
+      } else {
+        if (!(x1<=x&&x<=x2)) {return false;}
+      }
+      if (y1>=y2) {
+        if (!(y2<=y&&y<=y1)) {return false;}
+      } else {
+        if (!(y1<=y&&y<=y2)) {return false;}
+      }
+      if (x3>=x4) {
+        if (!(x4<=x&&x<=x3)) {return false;}
+      } else {
+        if (!(x3<=x&&x<=x4)) {return false;}
+      }
+      if (y3>=y4) {
+        if (!(y4<=y&&y<=y3)) {return false;}
+      } else {
+        if (!(y3<=y&&y<=y4)) {return false;}
+      }
+    }
+    return true;
+  }
   onSubmit() {
      this.canBeEdited=this.checkRelatedPaths();
-     console.log(this.canBeEdited);
-  //  if (this.canBeEdited) {//todo
+    if (this.canBeEdited) {
+
+      this.toast.error("Niektóre ścieżki powiązane z tym stanowiskiem przechodzą teraz przez obszary zabronione!");
+    }
       this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
       this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
       this.stand.pose.orientation = quaternionFromAxisAngle([0, 1, 0], this.degToRad(this.orientationAngle));
@@ -235,9 +280,6 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
         },
         error => this.toast.error("Błąd podczas dodawania stanowiska")
       );
-   // } else {
-
-  //  }
 
   }
 
@@ -346,5 +388,39 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
 
   degToRad(degAngle) {
     return degAngle * Math.PI / 180;
+  }
+
+  private drawPolygon(polygon: Polygon) {
+
+    let existingPolygonpoints = [];
+    polygon.points.forEach(point => {
+      const pointPosition = L.latLng([this.getMapCoordinates(point.y), this.getMapCoordinates(point.x)]);
+      existingPolygonpoints.push(pointPosition);
+
+    });
+    let polygonik = L.polygon(existingPolygonpoints, {color: polygon.type.color}).bindTooltip(polygon.type.name, {
+      sticky: true // If true, the tooltip will follow the mouse instead of being fixed at the feature center.
+    });
+    polygonik.addTo(this.polygonsLayer);
+  }
+
+  private drawPolygons(polygon: Polygon[]) {
+    polygon.forEach(object => {
+      this.drawPolygon(object);
+    });
+  }
+
+  private drawPaths(paths: MovementPath[]) {
+    paths.forEach(path => {
+        let polylinePoints = [];
+        path.points.forEach(point => {
+          const pointPosition = L.latLng([this.getMapCoordinates(point.y),this.getMapCoordinates(point.x)]);
+          polylinePoints.push(pointPosition);
+        });
+        new L.Polyline(polylinePoints).addTo(this.movementPathsLayer).bindTooltip(path.name, {
+          sticky: true
+        });
+      }
+    )
   }
 }
