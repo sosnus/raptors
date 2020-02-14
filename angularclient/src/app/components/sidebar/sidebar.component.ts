@@ -42,7 +42,9 @@ export class SidebarComponent implements OnInit {
       this.robotTaskService.getRobotTasks().subscribe(tasks => {
         this.storeService.robotTaskList = tasks;
         // filtrowanie listy zadań pod edit/delete zależnie od roli
-        this.getRobotsForSuperUser();
+        if(this.authService.isSuperUser()){
+          this.getRobotsForSuperUser();
+        }
         this.getRobotTasksByRole();
       });
     }
@@ -69,15 +71,7 @@ export class SidebarComponent implements OnInit {
       this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
     }
 
-    // ROLE_SUPER_USER
-    if(this.authService.isSuperUser()){
-      //this.robotTaskListTemp = this.robotTaskList;
-      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
-      // dodaj taski wszystkich regular user;
-      this.storeService.robotTaskListTemp.forEach(task=>{
-        this.storeService.robotTaskList.push(task);
-      })
-    }
+
   }
 
   getRobotsForSuperUser() {
@@ -89,13 +83,17 @@ export class SidebarComponent implements OnInit {
         }
       });
 
-      let myJsonString = JSON.stringify(this.usersID);
-      console.log("Json: " + myJsonString); // tu mam postać taką jak Piotrek wrzuca, ale to jest string, nie lista
-      console.log("Lista id: " + this.usersID); // tu mam swoją listę
+
+
 
       this.robotTaskService.getTasksListForUsersList(this.usersID).subscribe(tasks => {
         this.storeService.robotTaskListTemp = tasks;
-        console.log("Lista z endpoint'u: " + tasks);
+        // ROLE_SUPER_USER
+        this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
+        this.storeService.robotTaskListTemp.forEach(task=>{
+          this.storeService.robotTaskList.push(task);
+        })
+
       });
     });
   }
