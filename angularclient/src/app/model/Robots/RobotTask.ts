@@ -4,7 +4,7 @@ import {TaskPriority} from "../type/TaskPriority";
 
 export class RobotTask {
   id: string;
-  robot: Robot
+  robot: Robot;
   name: string;
   behaviours: Behaviour[];
   startTime: string;

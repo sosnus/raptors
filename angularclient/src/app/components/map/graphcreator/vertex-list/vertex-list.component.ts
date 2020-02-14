@@ -13,6 +13,7 @@ export class VertexListComponent implements OnInit, OnChanges {
 
   @Input() markers: Marker[];
   @Output() markersEmitter = new EventEmitter<Marker[]>();
+  @Output() deleteMarkerEmitter = new EventEmitter<any>();
 
   constructor(private store: StoreService) {
   }
@@ -23,8 +24,14 @@ export class VertexListComponent implements OnInit, OnChanges {
   updateMarker(id) {
     const x = Number(document.getElementById(id + "x").innerText);
     const y = Number(document.getElementById(id + "y").innerText);
-    this.markers[id].setLatLng([this.getMapCoordinates(y),this.getMapCoordinates(x)]);
+    this.markers[id].setLatLng([this.getMapCoordinates(y), this.getMapCoordinates(x)]);
     this.markersEmitter.emit(this.markers);
+  }
+
+  deleteMarker(marker: Marker) {
+    let e: any = {relatedTarget: null};
+    e.relatedTarget = marker;
+    this.deleteMarkerEmitter.emit(e);
   }
 
 
@@ -44,6 +51,5 @@ export class VertexListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
 }

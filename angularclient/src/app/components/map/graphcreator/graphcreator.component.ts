@@ -286,14 +286,12 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
         marker1 = this.createNewMarker(vertPosA);
         markers.push(marker1);
         existingWaypoints.push(vertPosA + '');
-        console.log('NewA')
       }
       if (!existingWaypoints.includes(vertPosB + '')) {
         marker2 = this.createNewMarker(vertPosB);
 
         markers.push(marker2);
         existingWaypoints.push(vertPosB + '');
-        console.log('NewB')
       }
     });
     graph.edges.forEach(edge => {

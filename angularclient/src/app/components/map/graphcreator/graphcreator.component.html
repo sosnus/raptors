@@ -24,7 +24,9 @@
       </div>
     </div>
   </div>
-  <app-vertex-list [markers]="vertices" class="list"></app-vertex-list>
+  <app-vertex-list
+    [markers]="vertices"
+    (deleteMarkerEmitter)="deleteMarker($event)" class="list"></app-vertex-list>
   <app-graph-list
     [graph]="graph"
     (graphToEdit)="editExistingGraph($event)" class="list"></app-graph-list>

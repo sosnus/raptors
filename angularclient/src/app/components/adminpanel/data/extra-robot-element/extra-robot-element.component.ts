@@ -20,16 +20,11 @@ export class ExtraRobotElementComponent implements OnInit {
 
   selectedFunctionality: string;
   elementFunctionalities: ElementFunctionality[] = [];
-  //elementFunctionalitiesTemp: ElementFunctionality[] = [];
-
-
-
 
   constructor(private extraRobotElementService: ExtraRobotElementService,
               private elementFunctionalityService: ElementFunctionalityService,
               private toastr: ToastrService) {
     this.extraRobotElement.functionalityList = new Array<ElementFunctionality>();
-    //this.elementFunctionalitiesTemp = new Array<ElementFunctionality>();
   }
 
   ngOnInit() {
@@ -54,9 +49,6 @@ export class ExtraRobotElementComponent implements OnInit {
   reset(){
     this.extraRobotElement=new ExtraRobotElement(null, null);
     this.extraRobotElement.functionalityList = [];
-    //this.elementFunctionalitiesTemp = new Array<ElementFunctionality>();
-    //console.log("Lista funkcjonalności: " + this.elementFunctionalitiesTemp)
-    //this.extraRobotElement.functionalityList = null;
   }
 
 
@@ -64,9 +56,6 @@ export class ExtraRobotElementComponent implements OnInit {
     this.extraRobotElementService.save(this.extraRobotElement).subscribe(
       result=>{
         if(this.typeExists(this.extraRobotElement.id)){
-/*          this.elementFunctionalitiesTemp.forEach(functionality=>{
-            this.extraRobotElement.functionalityList.push(functionality);
-          });*/
           this.extraRobotElements[this.extraRobotElements.findIndex(item=>item.id==result.id)]=result;
         } else {
           this.extraRobotElements.push(result)
@@ -107,11 +96,9 @@ export class ExtraRobotElementComponent implements OnInit {
   }
 
   selectFunctionalities(id: string) {
-    console.log(id);
     this.selectedFunctionality = id;
     this.elementFunctionalities.forEach(functionality=>{
       if(functionality.id === this.selectedFunctionality){
-        console.log("test: " + functionality.name);
         this.extraRobotElement.functionalityList.push(functionality);
         //this.elementFunctionalitiesTemp.push(functionality);
       }

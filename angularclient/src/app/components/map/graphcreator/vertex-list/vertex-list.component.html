@@ -6,6 +6,7 @@
       <th class="sticky-top" scope="col">Pozycja X</th>
       <th class="sticky-top" scope="col">Pozycja Y</th>
       <th class="sticky-top" scope="col">Akcja</th>
+      <th class="sticky-top" scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -19,6 +20,12 @@
         <button class="btn btn-primary btn-sm"
                 (click)="updateMarker(i)">
           Zastosuj
+        </button>
+      </td>
+      <td>
+        <button class="btn btn-primary btn-sm"
+                (click)="deleteMarker(vert)">
+          Usuń
         </button>
       </td>
     </tr>

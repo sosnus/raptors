@@ -3,10 +3,6 @@
   </thead>
   <tbody>
   <tr>
-    <th scope="row">Priorytet zadania</th>
-    <td>{{task.priority.name}}</td>
-  </tr>
-  <tr>
     <th scope="row">ID</th>
     <td>{{task.id}}</td>
   </tr>
@@ -28,3 +24,11 @@
   </tr>
   </tbody>
 </table>
+
+<div class="md-form" *ngIf="checkAccess()">
+  <select class="browser-default custom-select" (change)="selectRobot($event.target.value)"
+          [(ngModel)]="selectedRobot"
+          [ngModelOptions]="{standalone: true}">
+    <option [value]="item.id" *ngFor="let item of robots">{{item.id}}</option>
+  </select>
+</div>
