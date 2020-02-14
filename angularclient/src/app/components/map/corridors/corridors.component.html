@@ -11,6 +11,9 @@
           <mat-form-field>
             <mat-label>Dostępne ścieżki</mat-label>
             <mat-select [(ngModel)]="corridor.movementPathId" name="pathId">
+              <mat-option [value]="null">
+                Wybierz...
+              </mat-option>
               <mat-option *ngFor="let path of paths" [value]="path.id">
                 {{path.name}}
               </mat-option>
@@ -38,7 +41,7 @@
       Zapisz
     </button>
     </form>
-    <div class="map-container">
+    <div class="map-container" id="map-container">
       <div class="map-frame">
         <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
         <div id="map"></div>

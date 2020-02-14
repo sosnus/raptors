@@ -246,7 +246,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       );*/
       this.polygonService.save(this.polygoN).subscribe(result => {
           this.poly = this.polygon;
-          this.toast.success('Graf zapisany w bazie')
+          this.toast.success('Obszar zapisany w bazie')
         }
       );
       this.polygonPoints = [];
