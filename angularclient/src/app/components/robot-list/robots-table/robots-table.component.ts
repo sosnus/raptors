@@ -99,7 +99,7 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
     } else {
       this.robotService.save(this.robot, this.password).subscribe(
         result => {
-          this.robots[this.robots.findIndex(item => item.id == this.robot.id)] = this.robot;
+          this.robots.push(this.robot)
           this.robot = new Robot();
           this.password = '';
           this.toastr.success("Aktualizowano pomyślnie");
