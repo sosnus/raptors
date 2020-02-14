@@ -146,8 +146,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   onResize() {
-    const mapContainer = document.getElementById('map-container');
-    this.mapContainerSize = mapContainer.clientWidth;
+    // const mapContainer = document.getElementById('map-container');
+    // this.mapContainerSize = mapContainer.clientWidth;
   }
 
   private initMap(): void {
@@ -294,7 +294,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
-      const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+      const pointPosition = L.latLng([this.getMapCoordinates(point.y), this.getMapCoordinates(point.x)]);
       existingPolygonpoints.push(pointPosition);
 
     });

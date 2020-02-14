@@ -13,6 +13,8 @@ import {StandService} from "../../../services/stand.service";
 import {Stand} from "../../../model/Stand/Stand";
 import {Corridor} from "../../../model/MapAreas/Corridors/Corridor";
 import {CorridorService} from "../../../services/corridor.service";
+import {Polygon} from "../../../model/MapAreas/Polygons/Polygon";
+import {PolygonService} from "../../../services/polygon.service";
 
 @Component({
   selector: 'app-movement-path',
@@ -22,16 +24,22 @@ import {CorridorService} from "../../../services/corridor.service";
 export class MovementPathComponent implements OnInit, OnDestroy {
 
   dataLoaded = false;
-  showCorridors = false;
   showPaths = false;
   private readonly context;
   private polyline: L.polyline = null;
   private vertices: Marker[] = [];
-  private corridors: Corridor [];
   private paths: MovementPath[];
   private pathID;
   private name;
 
+  private standLayer = L.featureGroup();
+  private polygonsLayer = L.featureGroup();
+  private corridorsLayer = L.featureGroup();
+
+  private overlays = {
+    Obszary: this.polygonsLayer,
+    Korytarze: this.corridorsLayer,
+  };
   //Map related variables
   private map;
   private imageURL = '';
@@ -48,13 +56,15 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
   private stands: Stand[];
   private standMarkers: Marker = [];
+  private allpolygons: Polygon[];
 
   constructor(private mapService: MapService,
               private movementPathService: MovementPathService,
               private store: StoreService,
               private toast: ToastrService,
               private standService: StandService,
-              private corridorService: CorridorService) {
+              private corridorService: CorridorService,
+              private polygonService: PolygonService) {
     this.context = this;
   }
 
@@ -68,8 +78,8 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   }
 
   onResize() {
-    const mapContainer = document.getElementById('map-container');
-    this.mapContainerSize = mapContainer.clientWidth;
+    // const mapContainer = document.getElementById('map-container');
+    // this.mapContainerSize = mapContainer.clientWidth;
   }
 
   private loadMap() {
@@ -103,6 +113,13 @@ export class MovementPathComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.polygonService.getPolygons().subscribe(
+      polygons => {
+        this.allpolygons = polygons;
+        this.drawPolygons(this.allpolygons);
+      }
+    );
+
     this.movementPathService.getMovementPaths().subscribe(
       paths => {
         this.paths = paths;
@@ -111,7 +128,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
     this.corridorService.getCorridors().subscribe(
       corridors => {
-        this.corridors = corridors;
+        this.drawCorridorsLayer(corridors);
       }
     );
   }
@@ -160,11 +177,10 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     })
   }
 
-  private deletePOI(e) {//todo
-    // this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
-
+  private deletePOI(e) {
     if (this.startStand != null) {
       if (e.relatedTarget.getLatLng() == this.startStand.getLatLng()) {
+
         console.log("delete POI: start stand");
         this.vertices = this.vertices.filter(marker => marker !== this.startStand);
         this.startStand = null;
@@ -179,19 +195,32 @@ export class MovementPathComponent implements OnInit, OnDestroy {
         this.createPolyline();
       }
     }
-
+    var str=e.relatedTarget._tooltip._content;
+    e.relatedTarget._tooltip._content=str.slice(8);
   }
 
   private markAsStart(e) {
-    this.startStand = e.relatedTarget;
-    this.vertices.splice(0, 0, this.startStand);
-    this.createPolyline();
+    if(this.startStand!=null){
+      alert("Punkt początkowy POI jest już zdefiniowany!");
+    }
+    else {
+      e.relatedTarget._tooltip._content=" START: "+e.relatedTarget._tooltip._content;
+      this.startStand = e.relatedTarget;
+      this.vertices.splice(0, 0, this.startStand);
+      this.createPolyline();
+    }
   }
 
   private markAsFinish(e) {
-    this.finishStand = e.relatedTarget;
-    this.vertices.push(this.finishStand);
-    this.createPolyline();
+    if(this.finishStand!=null){
+      alert("Punkt końcowy POI jest już zdefiniowany!");
+    }
+    else {
+      e.relatedTarget._tooltip._content="KONIEC: "+e.relatedTarget._tooltip._content;
+      this.finishStand = e.relatedTarget;
+      this.vertices.push(this.finishStand);
+      this.createPolyline();
+    }
   }
 
   private initMap(): void {
@@ -205,16 +234,15 @@ export class MovementPathComponent implements OnInit, OnDestroy {
       map.setView([400, 400], 0);
     }).addTo(this.map);
     this.map.fitBounds(imageBounds);
+    this.polyline = new L.Polyline([]).addTo(this.map);
 
     this.map.on('click', e => {
       const marker = this.createNewMarker(e.latlng);
-      if (this.polyline == null) {
-        this.polyline = new L.Polyline([]).addTo(this.map);
-      }
       if (marker != null) {
         this.polyline.addLatLng(e.latlng);
       }
     });
+    L.control.layers({}, this.overlays).addTo(this.map);
   }
 
   cancelMovementPath() {
@@ -282,7 +310,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     this.name = path.name;
     this.polyline = new L.Polyline([]);
     path.points.forEach(e => {
-      const translatedPoint = L.latLng([this.getMapCoordinates(e.x), this.getMapCoordinates(e.y)]);
+      const translatedPoint = L.latLng([this.getMapCoordinates(e.y), this.getMapCoordinates(e.x)]);
       this.polyline.addLatLng(translatedPoint);
       if (path.points[0] != e && path.points[path.points.length - 1] != e) {
         this.createNewMarker(translatedPoint);
@@ -460,46 +488,6 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     });
   }
 
-  private drawCorridors(corridor: Corridor[]) {
-    corridor.forEach(corridor => {
-      let corridorPoints = [];
-      corridor.points.forEach(point => {
-        const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
-        corridorPoints.push(pointPosition);
-      });
-      let corridorPolygon = L.polygon(corridorPoints, {color: 'red'}).addTo(this.map).bindTooltip(corridor.name, {
-        sticky: true
-      });
-    })
-
-  }
-
-  showCorridorsChange(eve: any) {
-    if (this.showCorridors) {
-      this.drawCorridors(this.corridors);
-    }
-  }
-
-  showPathsChange(eve: any) {
-    if (this.showPaths) {
-      this.drawPaths(this.paths);
-    }
-  }
-
-  private drawPaths(paths: MovementPath[]) {
-    paths.forEach(path => {
-        let polylinePoints = [];
-        path.points.forEach(point => {
-          const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
-          polylinePoints.push(pointPosition);
-        });
-        new L.Polyline(polylinePoints).addTo(this.map).bindTooltip(path.name, {
-          sticky: true
-        });
-      }
-    )
-  }
-
   private getStandId(marker: L.marker, stands: Stand[]) {
     let id: string;
     stands.forEach(stand => {
@@ -527,5 +515,37 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     });
 
     return currentMarker;
+  }
+
+  private drawCorridorsLayer(corridor: Corridor[]) {
+    corridor.forEach(corridor => {
+      let corridorPoints = [];
+      corridor.points.forEach(point => {
+        const pointPosition = L.latLng([this.getMapCoordinates(point.y), this.getMapCoordinates(point.x)]);
+        corridorPoints.push(pointPosition);
+      });
+      let corridorPolygon = L.polygon(corridorPoints, {color: 'red'}).addTo(this.corridorsLayer).bindTooltip(corridor.name, {
+        sticky: true
+      });
+    })
+  }
+  private drawPolygons(polygon: Polygon[]) {
+    polygon.forEach(object => {
+      this.drawPolygon(object);
+    });
+  }
+
+  private drawPolygon(polygon: Polygon) {
+
+    let existingPolygonpoints = [];
+    polygon.points.forEach(point => {
+      const pointPosition = L.latLng([this.getMapCoordinates(point.y), this.getMapCoordinates(point.x)]);
+      existingPolygonpoints.push(pointPosition);
+
+    });
+    let polygonik = L.polygon(existingPolygonpoints, {color: polygon.type.color}).bindTooltip(polygon.type.name, {
+      sticky: true // If true, the tooltip will follow the mouse instead of being fixed at the feature center.
+    });
+    polygonik.addTo(this.polygonsLayer);
   }
 }
