@@ -55,7 +55,6 @@ export class UserspanelComponent implements OnInit {
   }
 
   createOrUpdate() {
-    console.log(this.user)
     this.userService.save(this.user).subscribe(
       result => {
         if (this.userExists(this.user.id)) {

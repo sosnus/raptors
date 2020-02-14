@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Robot} from "../../../model/Robots/Robot";
 import {RobotTask} from "../../../model/Robots/RobotTask";
 import {ActivatedRoute} from "@angular/router";
@@ -22,18 +22,13 @@ export class TaskpanelListComponent implements OnInit {
               private toastr: ToastrService) {
     this.activatedRoute.params.subscribe(params => {
       const id = params['id'];
-      console.log("wyswietlam id zadania: " + id);
       this.robotTaskService.getRobotTask(id).subscribe(data => {
         this.robotTask = data;
-        console.log("Wyświetlam obiekt zadania: " + this.robotTask);
       })
     });
   }
 
   ngOnInit() {
-
-    //this.checkIfFinished();
-
   }
 
   delete(robotTask: RobotTask) {
@@ -49,9 +44,9 @@ export class TaskpanelListComponent implements OnInit {
     )
   }
 
-  checkIfFinished(){
-    this.robotTasks.forEach(robotTask=>{
-      if(robotTask.status === 'finished'){
+  checkIfFinished() {
+    this.robotTasks.forEach(robotTask => {
+      if (robotTask.status === 'finished') {
         this.delete(robotTask);
       }
     })

@@ -1,5 +1,5 @@
 .wrapper {
-  width: 400px;
+  min-width: 400px;
   height: 100%;
   border: 1px solid #333;
   overflow-y: auto;

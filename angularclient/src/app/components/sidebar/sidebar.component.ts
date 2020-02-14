@@ -1,8 +1,7 @@
-import {Component, Input, OnChanges, OnInit, SimpleChange} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RobotService} from "../../services/robot.service";
 import {StoreService} from "../../services/store.service";
 import {RobotTaskService} from "../../services/robotTask.service";
-import {RobotTask} from "../../model/Robots/RobotTask";
 import {Robot} from "../../model/Robots/Robot";
 import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
@@ -60,21 +59,21 @@ export class SidebarComponent implements OnInit {
     }
 
     // ROLE_ADMIN
-    if(this.authService.isAdmin()){
+    if (this.authService.isAdmin()) {
       // do nothing = get all tasks
     }
 
     // ROLE_SERVICEMAN
-    if(this.authService.isServiceman()){
-      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
+    if (this.authService.isServiceman()) {
+      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task => task.userID == this.loggedUserID);
     }
 
     // ROLE_SUPER_USER
-    if(this.authService.isSuperUser()){
+    if (this.authService.isSuperUser()) {
       //this.robotTaskListTemp = this.robotTaskList;
-      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
+      this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task => task.userID == this.loggedUserID);
       // dodaj taski wszystkich regular user;
-      this.storeService.robotTaskListTemp.forEach(task=>{
+      this.storeService.robotTaskListTemp.forEach(task => {
         this.storeService.robotTaskList.push(task);
       })
     }
@@ -88,14 +87,8 @@ export class SidebarComponent implements OnInit {
           this.usersID.push(user.id.toString());
         }
       });
-
-      let myJsonString = JSON.stringify(this.usersID);
-      console.log("Json: " + myJsonString); // tu mam postać taką jak Piotrek wrzuca, ale to jest string, nie lista
-      console.log("Lista id: " + this.usersID); // tu mam swoją listę
-
       this.robotTaskService.getTasksListForUsersList(this.usersID).subscribe(tasks => {
         this.storeService.robotTaskListTemp = tasks;
-        console.log("Lista z endpoint'u: " + tasks);
       });
     });
   }
