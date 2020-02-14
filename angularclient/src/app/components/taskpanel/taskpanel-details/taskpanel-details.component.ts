@@ -25,6 +25,7 @@ export class TaskpanelDetailsComponent implements OnInit {
   robotTasks: RobotTask[]=[];
   selectedRobot: string;
   robotStatusFree: RobotStatus = new RobotStatus(null);
+  robotStatusDuringTask: RobotStatus = new RobotStatus(null);
 
   constructor(private robotService: RobotService, private robotTaskService: RobotTaskService,private authService: AuthService,
               private robotStatusService: RobotStatusService, private toastr: ToastrService) {
@@ -41,10 +42,13 @@ export class TaskpanelDetailsComponent implements OnInit {
 
         // pobierz tylko roboty, które mają status free
         robotStatus.forEach(freeStatus=>{
-          if(freeStatus.name==="charge needed"){
+          if(freeStatus.name==="free"){
             this.robotStatusFree = freeStatus;
             console.log(this.robotStatusFree);
             this.robots = this.robots.filter(robot=> robot.status.some(state=>state.id=== this.robotStatusFree.id));
+          }
+          else if(freeStatus.name==="during task"){
+            this.robotStatusDuringTask = freeStatus;
           }
         });
       });
@@ -69,16 +73,13 @@ export class TaskpanelDetailsComponent implements OnInit {
       // uaktualnij status zadania z waiting na zajęte
       this.task.status="on going";
 
-      // przypisz mu, że juz nie ma zadania, czyli, gdzie robot.status.incluses"free"
 
-      // uaktualnij status robota z free na zajęty
-      //robot.status.includes();
       this.robotTaskService.save(this.task).subscribe(
         result => {
           robot.status = robot.status.filter(status=> status.id !== this.robotStatusFree.id);
           console.log("Status po dodaniu: " + JSON.stringify(robot.status));
 
-          this.robotStatus.name = "during task";
+          this.robotStatus = this.robotStatusDuringTask;
           robot.status.push(this.robotStatus);
           this.robotService.update(robot).subscribe(
             result => {
