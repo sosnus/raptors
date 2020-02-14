@@ -3,6 +3,7 @@ package pl.raptors.raptorsRobotsApp.service.movement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import pl.raptors.raptorsRobotsApp.domain.movement.MovementPath;
 import pl.raptors.raptorsRobotsApp.domain.movement.Pose;
 import pl.raptors.raptorsRobotsApp.domain.movement.Stand;
 import pl.raptors.raptorsRobotsApp.domain.type.ParkingType;
@@ -21,6 +22,9 @@ public class StandService implements CRUDService<Stand> {
     @Autowired
     StandRepository standrepository;
 
+    @Autowired
+    MovementPathService movementPathService;
+
     @Override
     public Stand addOne(Stand stand) {
         return standrepository.save(stand);
@@ -38,6 +42,21 @@ public class StandService implements CRUDService<Stand> {
 
     @Override
     public Stand updateOne(Stand stand) {
+        String standId=stand.getId();
+        List<MovementPath> movementPaths=movementPathService.getAll();
+        for (MovementPath path:movementPaths) {
+            if(path.getStartStandId().equals(standId)){
+                path.getPoints().get(0).setX(stand.getPose().getPosition().getX());
+                path.getPoints().get(0).setY(stand.getPose().getPosition().getY());
+                movementPathService.updateOne(path);
+            }
+            if(path.getFinishStandId().equals(standId)){
+                path.getPoints().get(path.getPoints().size()-1).setX(stand.getPose().getPosition().getX());
+                path.getPoints().get(path.getPoints().size()-1).setY(stand.getPose().getPosition().getY());
+                movementPathService.updateOne(path);
+            }
+        }
+
         return standrepository.save(stand);
     }
 
