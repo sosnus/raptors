@@ -2,12 +2,14 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
 import {Robot} from "../../../model/Robots/Robot";
 import {RobotService} from "../../../services/robot.service";
-import {Observable, Subscription} from "rxjs";
+import {forkJoin, Observable, Subscription} from "rxjs";
 import {ExtraRobotElement} from "../../../model/Robots/ExtraRobotElement";
 import {RobotModel} from "../../../model/Robots/RobotModel";
 import {ExtraRobotElementService} from "../../../services/type/exra-robot-element.service";
 import {RobotModelService} from "../../../services/type/robot-model.service";
 import {UserService} from "../../../services/user.service";
+import {RobotStatus} from "../../../model/Robots/RobotStatus";
+import {RobotStatusService} from "../../../services/type/robot-status.service";
 
 @Component({
   selector: 'app-robots-table',
@@ -27,44 +29,40 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
 
   extraRobotElements: ExtraRobotElement[] = [];
   robotModels: RobotModel[] = [];
+  statuses: RobotStatus[] = [];
   password: string = '';
 
   constructor(private robotService: RobotService,
               private extraRobotElementService: ExtraRobotElementService,
               private robotModelService: RobotModelService,
               private userService: UserService,
+              private robotStatusService: RobotStatusService,
               private toastr: ToastrService) {
   }
 
   ngOnInit() {
-    this.getRobots();
-    this.getRobotModels();
-    this.getExtraElements();
+    this.ready = false;
+    forkJoin(
+      this.robotModelService.getAll(),
+      this.extraRobotElementService.getAll(),
+      this.robotService.getAll(),
+      this.robotStatusService.getAll()
+    ).subscribe(([
+                   robotModels,
+                   extraRobotElements,
+                   robots,
+                   statuses]) => {
+      this.robotModels = robotModels;
+      this.extraRobotElements = extraRobotElements;
+      this.robots = robots;
+      this.statuses = statuses;
+      this.ready = true;
+    });
     this.subscription = this.robotApprovedEvent.subscribe(() => this.getRobots());
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe()
-  }
-
-  getRobotModels() {
-    this.ready = false;
-    this.robotModelService.getAll().subscribe(
-      data => {
-        this.robotModels = data;
-        this.ready = true;
-      }
-    )
-  }
-
-  getExtraElements() {
-    this.ready = false;
-    this.extraRobotElementService.getAll().subscribe(
-      data => {
-        this.extraRobotElements = data;
-        this.ready = true;
-      }
-    )
   }
 
   getRobots() {
@@ -76,7 +74,6 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
       }
     )
   }
-
 
   reset() {
     this.robot = new Robot();
@@ -99,7 +96,7 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
     } else {
       this.robotService.save(this.robot, this.password).subscribe(
         result => {
-          this.robots[this.robots.findIndex(item => item.id == this.robot.id)] = this.robot;
+          this.robots.push(this.robot)
           this.robot = new Robot();
           this.password = '';
           this.toastr.success("Aktualizowano pomyślnie");

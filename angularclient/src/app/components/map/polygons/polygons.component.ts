@@ -32,6 +32,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
   private areaTypes: AreaType[] = [];
   private areaType: AreaType;
   selectedAreaType: string;
+  private polygoN: Polygon = new Polygon(null, null, null);
 
   //Map related variables
   private map;
@@ -91,6 +92,9 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.polygonService.getPolygons().subscribe(polygons => {
         console.log(polygons);
         this.getPolygonsFromDB = polygons;
+        this.getPolygonsFromDB.forEach(id=>{
+          console.log("ID POLYGONÓW: " + id.id)
+        });
       }
     );
 
@@ -184,8 +188,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     } else {
       this.map.removeLayer(this.polygon);
       this.polygonsList.push(this.polygonPoints);
-      //this.areaType.color = 'red';
-      //console.log("checking color: " + this.areaType.color);
+
       this.polygon = L.polygon(this.polygonPoints, {color: this.areaType.color}).addTo(this.map);
       this.map.fitBounds(this.polygon.getBounds());
     }
@@ -221,21 +224,45 @@ export class PolygonsComponent implements OnInit, OnDestroy {
         );
         polygonPointz.push(universalPoint)
       });
-      let type: AreaType = new AreaType(this.areaType.name, this.areaType.color);
-      let polygon = new Polygon('polygon', type, polygonPointz);
-      console.log(polygon);
-      this.polygonService.save(polygon).subscribe(result => {
+      //let type: AreaType = new AreaType(this.areaType.name, this.areaType.color);
+      //let polygon = new Polygon('polygon', this.areaType, polygonPointz);
+      this.polygoN.name = "polygon";
+      this.polygoN.type = this.areaType;
+      this.polygoN.points = polygonPointz;
+      console.log(this.polygoN);
+/*      this.polygonService.save(this.polygoN).subscribe(
+        result => {
+          if (this.polygonExists(this.polygoN.id)) {
+            this.getPolygonsFromDB[this.getPolygonsFromDB.findIndex(item => item.id == result.id)] = result;
+          } else {
+            this.getPolygonsFromDB.push(result)
+          }
+          this.toast.success("Dodano robota pomyślnie");
+          console.log(result);
+        },
+        error => {
+          this.toast.error("Wystąpił bład podczas dodawania");
+        }
+      );*/
+      this.polygonService.save(this.polygoN).subscribe(result => {
           this.poly = this.polygon;
           this.toast.success('Graf zapisany w bazie')
         }
       );
       this.polygonPoints = [];
       this.vertices = [];
+      this.polygoN.id = null;
+      this.polygoN = new Polygon(null, null, null);
+      this.areaType = new AreaType(null, null);
       //this.resetPoly();
       console.log("vertices po zapisaniu " + this.vertices);
     }
     else this.toast.error('Podaj typ obszaru!')
 
+  }
+
+  polygonExists(id: string) {
+    return this.getPolygonsFromDB.some(item => item.id == id);
   }
 
   private deleteMarker(e) {
@@ -245,13 +272,14 @@ export class PolygonsComponent implements OnInit, OnDestroy {
 
   private editPol(polygon: Polygon) {
     //this.clearMap();
+    console.log("Pobrane id polygonu: " + polygon.id);
     this.vertices.map(edge => this.map.removeLayer(edge));
     this.vertices = new Array<Marker>();
-    this.delete(polygon);
+    this.polygoN.id = polygon.id;
+    //this.delete(polygon);
     //this.resetPoly();
 
-    this.areaType.color = polygon.type.color;
-    this.areaType.name = polygon.type.name;
+    this.areaType = polygon.type;
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
@@ -318,9 +346,8 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     console.log('Kliknięty typ obszaru ma id: : ' + this.selectedAreaType);
     this.areaTypes.forEach(areaType => {
       if (areaType.id === this.selectedAreaType) {
-        console.log("kolor: areatype: " + areaType.color);
-        this.areaType.color = areaType.color;
-        this.areaType.name = areaType.name;
+        this.areaType = areaType;
+
 
         this.polygon.setStyle({
           color: this.areaType.color

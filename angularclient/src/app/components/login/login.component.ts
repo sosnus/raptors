@@ -32,16 +32,9 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('token', btoa(this.email + ':' + this.password));
         localStorage.setItem('userData', btoa(JSON.stringify(userData.rolesIDs)));
         localStorage.setItem('userID', btoa(JSON.stringify(userData.id)));
-        this.storeService.loggedUserID = JSON.parse(atob(localStorage.getItem('userID')));
-        this.storeService.loggedUserRole = JSON.parse(atob(localStorage.getItem('userData')));
         //this.storeService.getRobotTasksByRole();
 
-        this.robotTaskService.getRobotTasks().subscribe(tasks=>{
-          this.storeService.robotTaskList = tasks;
-          // filtrowanie listy zadań pod edit/delete zależnie od roli
-          this.storeService.getRobotTasksByRole();
-          //console.log("Lista po filtracji: " +this.robotTasks);
-        });
+
         this.router.navigate(['']);
         //alert("Logged");
         this.toast.success("Zalogowano poprawnie")

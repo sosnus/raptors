@@ -15,18 +15,11 @@ export class StoreService {
   public imageResolution = 1984;
   public mapID = '5e19f1fa9b1eab79e9a58e08';
   public baseURL = 'http://localhost:8080';
+
   public robotTaskList: RobotTask[]= [];
-  public loggedUserRole: string;
+  public robotTaskListTemp: RobotTask[] = [];
+
   public loggedUserID: string;
-
-
-  public getRobotTasksByRole(){
-    // REGULAR_ROLE_USER
-    if(this.loggedUserRole == 'ROLE_REGULAR_USER'){
-      this.robotTaskList = this.robotTaskList.filter(task=> task.userID == this.loggedUserID);
-    }
-  }
-
 
 }
 
