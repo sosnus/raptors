@@ -202,17 +202,21 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
       const c = e.points[1].x;
       const d = e.points[1].y;
       pairs.forEach(e=>{
-        check=this.intersects(a, b, c, d, e.first.x, e.first.y, e.second.x, e.second.y);
+        let inter=this.intersects(a, b, c, d, e.first.y, e.first.x, e.second.y, e.second.x);
+        if(inter){
+          check=true;
+        }
       });
     });
-
-
     relatedPathsWithFinishStand.forEach(e => {
       const c = e.points[e.points.length - 2].x;
       const d = e.points[e.points.length - 2].y;
 
       pairs.forEach(e=>{
-        check=this.lineIntersect(a, b, c, d, e.first.x, e.first.y, e.second.x, e.second.y);
+        let inter=this.intersects(a, b, c, d, e.first.y, e.first.x, e.second.y, e.second.x);
+        if(inter){
+          check=true;
+        }
       });
     });
     return check;
@@ -263,7 +267,6 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   onSubmit() {
      this.canBeEdited=this.checkRelatedPaths();
     if (this.canBeEdited) {
-
       this.toast.error("Niektóre ścieżki powiązane z tym stanowiskiem przechodzą teraz przez obszary zabronione!");
     }
       this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
