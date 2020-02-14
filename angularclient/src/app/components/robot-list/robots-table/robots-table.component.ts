@@ -8,6 +8,8 @@ import {RobotModel} from "../../../model/Robots/RobotModel";
 import {ExtraRobotElementService} from "../../../services/type/exra-robot-element.service";
 import {RobotModelService} from "../../../services/type/robot-model.service";
 import {UserService} from "../../../services/user.service";
+import {RobotStatus} from "../../../model/Robots/RobotStatus";
+import {RobotStatusService} from "../../../services/type/robot-status.service";
 
 @Component({
   selector: 'app-robots-table',
@@ -27,12 +29,14 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
 
   extraRobotElements: ExtraRobotElement[] = [];
   robotModels: RobotModel[] = [];
+  statuses: RobotStatus[] = [];
   password: string = '';
 
   constructor(private robotService: RobotService,
               private extraRobotElementService: ExtraRobotElementService,
               private robotModelService: RobotModelService,
               private userService: UserService,
+              private robotStatusService: RobotStatusService,
               private toastr: ToastrService) {
   }
 
@@ -40,6 +44,7 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
     this.getRobots();
     this.getRobotModels();
     this.getExtraElements();
+    this.getRobotStatuses();
     this.subscription = this.robotApprovedEvent.subscribe(() => this.getRobots());
   }
 
@@ -72,6 +77,16 @@ export class RobotsTableComponent implements OnInit, OnDestroy {
     this.robotService.getAll().subscribe(
       data => {
         this.robots = data;
+        this.ready = true;
+      }
+    )
+  }
+
+  getRobotStatuses() {
+    this.ready = false;
+    this.robotStatusService.getAll().subscribe(
+      data => {
+        this.statuses = data;
         this.ready = true;
       }
     )

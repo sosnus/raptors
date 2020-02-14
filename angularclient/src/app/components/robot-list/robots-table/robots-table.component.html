@@ -79,6 +79,15 @@
       </mat-form-field>
     </div>
     <div class="md-form">
+      <i class="fas fa-plug prefix grey-text"></i>
+      <mat-form-field class="multiselect">
+        <mat-label>Status</mat-label>
+        <mat-select multiple [(ngModel)]="robot.status" name="status" [compareWith]="compareItems">
+          <mat-option *ngFor="let status of statuses" [value]="status">{{status.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="md-form">
       <i class="fas fa-battery-full prefix grey-text"></i>
       <input type="number" id="batteryLevel" class="form-control validate" required
              [(ngModel)]="robot.batteryLevel" name="batteryLevel">
