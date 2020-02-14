@@ -83,7 +83,7 @@ export class TaskpanelDetailsComponent implements OnInit {
           robot.status.push(this.robotStatus);
           this.robotService.update(robot).subscribe(
             result => {
-              if (this.taskExists(this.task.id)) {
+              if (this.robotExists(robot.id)) {
                 this.robotsFromDB[ this.robotsFromDB.findIndex(item => item.id == result.id)] = result;
               } else {
                 this.robotsFromDB.push(result)
@@ -119,6 +119,11 @@ export class TaskpanelDetailsComponent implements OnInit {
 
   taskExists(id: string) {
     return this.robotTasks.some(item => item.id == id);
+  }
+
+  robotExists(id: string){
+    return this.robotsFromDB.some(item => item.id == id);
+
   }
 
   checkRole(){

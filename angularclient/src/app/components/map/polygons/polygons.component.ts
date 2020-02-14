@@ -253,7 +253,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       this.vertices = [];
       this.polygoN.id = null;
       this.polygoN = new Polygon(null, null, null);
-      this.areaType = new AreaType(null, null);
+      //this.areaType = new AreaType(null, null);
       //this.resetPoly();
       console.log("vertices po zapisaniu " + this.vertices);
     }
@@ -280,7 +280,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     //this.resetPoly();
 
     this.areaType = polygon.type;
-    let existingPolygonpoints = [];
+    //let existingPolygonpoints = [];
     polygon.points.forEach(point => {
       const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
       const markerIcon = L.icon({
@@ -302,7 +302,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       });
       this.vertices.push(marker);
       marker.addTo(this.map);
-      existingPolygonpoints.push(pointPosition);
+      //existingPolygonpoints.push(pointPosition);
       marker.on('move', e => {
         this.updatePoly(e)
       });
@@ -342,6 +342,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
   }
 
   selectAreaTypeID(id: string) {
+    this.areaType = new AreaType(null, null);
     this.selectedAreaType = id;
     console.log('Kliknięty typ obszaru ma id: : ' + this.selectedAreaType);
     this.areaTypes.forEach(areaType => {
