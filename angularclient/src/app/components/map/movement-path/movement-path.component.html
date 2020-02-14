@@ -26,7 +26,7 @@
       </div>
     </div>
   </div>
-  <app-vertex-list [markers]="vertices" class="list"></app-vertex-list>
+  <app-vertex-list [markers]="vertices" class="list" (deleteMarkerEmitter)="deleteMarker($event)"></app-vertex-list>
   <app-movement-path-list
     [path]="polyline"
     (pathToEdit)="editExistingPath($event)" class="list">
