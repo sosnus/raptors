@@ -48,7 +48,6 @@ export class TaskpanelComponent implements OnInit {
   }
 
   selectBehaviour(id: string) {
-    console.log(id);
     this.selectedBehaviour = id;
     this.behaviours.forEach(behaviour=>{
       if(behaviour.id === this.selectedBehaviour){
@@ -58,7 +57,6 @@ export class TaskpanelComponent implements OnInit {
   }
 
   selectTaskPriority(id: string) {
-    console.log(id);
     this.selectedTaskPriority = id;
     this.taskPriorities.forEach(taskPriority=>{
       if(taskPriority.id === this.selectedTaskPriority){

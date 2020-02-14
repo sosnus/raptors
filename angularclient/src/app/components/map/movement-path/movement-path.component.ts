@@ -180,8 +180,6 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   private deletePOI(e) {
     if (this.startStand != null) {
       if (e.relatedTarget.getLatLng() == this.startStand.getLatLng()) {
-
-        console.log("delete POI: start stand");
         this.vertices = this.vertices.filter(marker => marker !== this.startStand);
         this.startStand = null;
         this.createPolyline();
@@ -189,7 +187,6 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     }
     if (this.finishStand != null) {
       if (e.relatedTarget.getLatLng() == this.finishStand.getLatLng()) {
-        console.log("delete POI: finish stand");
         this.vertices = this.vertices.filter(marker => marker !== this.finishStand);
         this.finishStand = null;
         this.createPolyline();

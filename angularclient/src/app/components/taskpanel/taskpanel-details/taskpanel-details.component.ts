@@ -44,7 +44,6 @@ export class TaskpanelDetailsComponent implements OnInit {
         robotStatus.forEach(freeStatus=>{
           if(freeStatus.name==="free"){
             this.robotStatusFree = freeStatus;
-            console.log(this.robotStatusFree);
             this.robots = this.robots.filter(robot=> robot.status.some(state=>state.id=== this.robotStatusFree.id));
           }
           else if(freeStatus.name==="during task"){
@@ -62,7 +61,6 @@ export class TaskpanelDetailsComponent implements OnInit {
   }
 
   selectRobot(id: string) {
-    console.log(id);
     this.selectedRobot = id;
     this.createOrUpdate();
   }
@@ -77,7 +75,6 @@ export class TaskpanelDetailsComponent implements OnInit {
       this.robotTaskService.save(this.task).subscribe(
         result => {
           robot.status = robot.status.filter(status=> status.id !== this.robotStatusFree.id);
-          console.log("Status po dodaniu: " + JSON.stringify(robot.status));
 
           this.robotStatus = this.robotStatusDuringTask;
           robot.status.push(this.robotStatus);
@@ -89,15 +86,12 @@ export class TaskpanelDetailsComponent implements OnInit {
                 this.robotsFromDB.push(result)
               }
               this.toastr.success("Zaktualizowano robota");
-              console.log(result);
             },
             error => {
               this.toastr.error("Wystąpił bład podczas dodawania");
             }
           );
-          console.log("przed zapisaniem: " + this.robots);
           this.robots = this.robotsFromDB.filter(robot=> robot.status.some(state=>state.id=== this.robotStatusFree.id));
-          console.log("po zapisaniu: " + this.robots);
 
 
           if (this.taskExists(this.task.id)) {
@@ -106,7 +100,6 @@ export class TaskpanelDetailsComponent implements OnInit {
             this.robotTasks.push(result)
           }
           this.toastr.success("Dodano robota pomyślnie");
-          console.log(result);
         },
         error => {
           this.toastr.error("Wystąpił bład podczas dodawania");

@@ -87,13 +87,11 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     img.onload = () => {
       this.imageResolution = img.width;
       //
-    }
+    };
 
     this.polygonService.getPolygons().subscribe(polygons => {
-        console.log(polygons);
         this.getPolygonsFromDB = polygons;
         this.getPolygonsFromDB.forEach(id=>{
-          console.log("ID POLYGONÓW: " + id.id)
         });
       }
     );
@@ -123,7 +121,6 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.map.on('click', e => {
       // dodaj wierzcholki do listy
       if (this.drawPolygon) {
-        console.log("Markec created")
         const markerIcon = L.icon({
           iconUrl: '/assets/icons/position.png',
           iconSize: [36, 36],
@@ -141,17 +138,13 @@ export class PolygonsComponent implements OnInit, OnDestroy {
             }
           ]
         });
-
         marker.addTo(this.map);
-        console.log(marker._leaflet_id);
         this.vertices.push(marker);
 
         //przemieszczanie vertexów
         marker.on('move', e => {
           this.updatePoly(e)
         });
-        console.log(marker._latlng);
-        //this.vertices.push(marker);
       }
     });
 
@@ -182,7 +175,6 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.vertices.forEach(marker => {
       this.polygonPoints.push(marker._latlng);
     });
-    console.log("Wierzchołki: " + this.polygonPoints);
     if (this.polygonPoints.length <= 3) {
       alert("Zbyt mała liczba wierzchołków: " + this.polygonPoints.length);
     } else {
@@ -229,21 +221,6 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       this.polygoN.name = "polygon";
       this.polygoN.type = this.areaType;
       this.polygoN.points = polygonPointz;
-      console.log(this.polygoN);
-/*      this.polygonService.save(this.polygoN).subscribe(
-        result => {
-          if (this.polygonExists(this.polygoN.id)) {
-            this.getPolygonsFromDB[this.getPolygonsFromDB.findIndex(item => item.id == result.id)] = result;
-          } else {
-            this.getPolygonsFromDB.push(result)
-          }
-          this.toast.success("Dodano robota pomyślnie");
-          console.log(result);
-        },
-        error => {
-          this.toast.error("Wystąpił bład podczas dodawania");
-        }
-      );*/
       this.polygonService.save(this.polygoN).subscribe(result => {
           this.poly = this.polygon;
           this.toast.success('Graf zapisany w bazie')
@@ -253,9 +230,6 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       this.vertices = [];
       this.polygoN.id = null;
       this.polygoN = new Polygon(null, null, null);
-      //this.areaType = new AreaType(null, null);
-      //this.resetPoly();
-      console.log("vertices po zapisaniu " + this.vertices);
     }
     else this.toast.error('Podaj typ obszaru!')
 
@@ -272,7 +246,6 @@ export class PolygonsComponent implements OnInit, OnDestroy {
 
   private editPol(polygon: Polygon) {
     //this.clearMap();
-    console.log("Pobrane id polygonu: " + polygon.id);
     this.vertices.map(edge => this.map.removeLayer(edge));
     this.vertices = new Array<Marker>();
     this.polygoN.id = polygon.id;
@@ -302,15 +275,11 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       });
       this.vertices.push(marker);
       marker.addTo(this.map);
-      //existingPolygonpoints.push(pointPosition);
       marker.on('move', e => {
         this.updatePoly(e)
       });
     });
     this.createPoly();
-   // console.log(polygon.type.color);
-   // this.polygon = L.polygon(existingPolygonpoints, {color: polygon.type.color}).addTo(this.map);
-   // console.log("vertices: " + this.vertices);
   }
 
   getMapCoordinates(value) {
@@ -321,7 +290,6 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.polygonService.delete(polygon).subscribe(
       result => {
         this.getPolygonsFromDB = this.getPolygonsFromDB.filter(item => item !== polygon)
-        //this.polygon = new Polygon();
       },
       error => {
         /*
@@ -344,7 +312,6 @@ export class PolygonsComponent implements OnInit, OnDestroy {
   selectAreaTypeID(id: string) {
     this.areaType = new AreaType(null, null);
     this.selectedAreaType = id;
-    console.log('Kliknięty typ obszaru ma id: : ' + this.selectedAreaType);
     this.areaTypes.forEach(areaType => {
       if (areaType.id === this.selectedAreaType) {
         this.areaType = areaType;
