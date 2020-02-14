@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <app-vertex-list [markers]="vertices" class="list"></app-vertex-list>
+  <app-vertex-list [markers]="vertices" (deleteMarkerEmitter)="deleteMarker($event)" class="list"></app-vertex-list>
   <app-polygon-list
     [polygon]="poly"
     (polygonToEdit)="editPol($event)" class="list"></app-polygon-list>
