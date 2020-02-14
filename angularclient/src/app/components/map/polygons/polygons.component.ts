@@ -138,6 +138,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
             }
           ]
         });
+
         marker.addTo(this.map);
         this.vertices.push(marker);
 
@@ -145,6 +146,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
         marker.on('move', e => {
           this.updatePoly(e)
         });
+        //this.vertices.push(marker);
       }
     });
 
@@ -221,15 +223,31 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       this.polygoN.name = "polygon";
       this.polygoN.type = this.areaType;
       this.polygoN.points = polygonPointz;
+/*      this.polygonService.save(this.polygoN).subscribe(
+        result => {
+          if (this.polygonExists(this.polygoN.id)) {
+            this.getPolygonsFromDB[this.getPolygonsFromDB.findIndex(item => item.id == result.id)] = result;
+          } else {
+            this.getPolygonsFromDB.push(result)
+          }
+          this.toast.success("Dodano robota pomyślnie");
+          console.log(result);
+        },
+        error => {
+          this.toast.error("Wystąpił bład podczas dodawania");
+        }
+      );*/
       this.polygonService.save(this.polygoN).subscribe(result => {
           this.poly = this.polygon;
-          this.toast.success('Graf zapisany w bazie')
+          this.toast.success('Obszar zapisany w bazie')
         }
       );
       this.polygonPoints = [];
       this.vertices = [];
       this.polygoN.id = null;
       this.polygoN = new Polygon(null, null, null);
+      //this.areaType = new AreaType(null, null);
+      //this.resetPoly();
     }
     else this.toast.error('Podaj typ obszaru!')
 

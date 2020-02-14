@@ -17,9 +17,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private router: Router,
-              private toast: ToastrService,
-              private robotTaskService: RobotTaskService,
-              private storeService: StoreService) {
+              private toast: ToastrService) {
   }
 
   ngOnInit() {
@@ -32,8 +30,6 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('token', btoa(this.email + ':' + this.password));
         localStorage.setItem('userData', btoa(JSON.stringify(userData.rolesIDs)));
         localStorage.setItem('userID', btoa(JSON.stringify(userData.id)));
-        //this.storeService.getRobotTasksByRole();
-
 
         this.router.navigate(['']);
         //alert("Logged");

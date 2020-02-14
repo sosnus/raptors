@@ -19,12 +19,13 @@ export class TaskpanelComponent implements OnInit {
   modalID = "taskRobotModal";
 
   robotTask: RobotTask = new RobotTask(null, null, null, null, null, null, null);
-  //task = null;
   behaviours: Behaviour[] = [];
   selectedBehaviour: string;
 
   taskPriorities: TaskPriority[];
   selectedTaskPriority: string;
+
+  loggedUserID: string;
 
   constructor(private behaviourService: BehaviourService,
               private taskPriorityService: TaskPriorityService, private robotTaskService: RobotTaskService,
@@ -34,6 +35,7 @@ export class TaskpanelComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loggedUserID = JSON.parse(atob(localStorage.getItem('userID')));
     this.behaviourService.getAll().subscribe(
       behaviour => {
         this.behaviours = behaviour;
@@ -69,7 +71,7 @@ export class TaskpanelComponent implements OnInit {
     let dateTime = new Date();
     this.robotTask.startTime = dateTime.toLocaleString();
     this.robotTask.status = "waiting";
-    this.robotTask.userID = this.storeService.loggedUserID;
+    this.robotTask.userID = this.loggedUserID;
     this.robotTaskService.save(this.robotTask).subscribe(
       result => {
         if (this.robotTaskExist(this.robotTask.id)) {

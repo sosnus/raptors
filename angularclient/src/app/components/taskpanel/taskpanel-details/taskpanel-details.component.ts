@@ -91,7 +91,8 @@ export class TaskpanelDetailsComponent implements OnInit {
               this.toastr.error("Wystąpił bład podczas dodawania");
             }
           );
-          this.robots = this.robotsFromDB.filter(robot=> robot.status.some(state=>state.id=== this.robotStatusFree.id));
+          //this.robots = this.robotsFromDB.filter(robot=> robot.status.some(state=>state.id=== this.robotStatusFree.id));
+          this.robots = this.robots.filter(robot=> robot.id !== this.selectedRobot);
 
 
           if (this.taskExists(this.task.id)) {
