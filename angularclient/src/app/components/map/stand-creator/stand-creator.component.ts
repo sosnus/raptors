@@ -127,8 +127,8 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
-      //
-    }
+
+    };
     this.pathService.getMovementPaths().subscribe(
       paths => {
         this.drawPaths(paths);
@@ -195,9 +195,6 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     let pairs:UniversalPointPair[]=this.getPairOfPointsFromAreas();
     let relatedPathsWithFinishStand: MovementPath[] = this.paths.filter(e => e.finishStandId == id);
     let relatedPathsWithStartStand: MovementPath[] = this.paths.filter(e => e.startStandId == id);
-
-    relatedPathsWithStartStand.forEach(e=>this.relatedPaths.push(e));
-    relatedPathsWithFinishStand.forEach(e=>this.relatedPaths.push(e));
 
     const a = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
     const b = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
@@ -275,11 +272,17 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
       this.standService.save(this.stand).subscribe(
         result => {
           this.toast.success("Dodano nowe stanowisko");
-
           this.clearMap();
+          this.pathService.getMovementPaths().subscribe(
+            paths => {
+              this.drawPaths(paths);
+            }
+          );
+
         },
         error => this.toast.error("Błąd podczas dodawania stanowiska")
       );
+
 
   }
 
@@ -394,7 +397,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
 
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
-      const pointPosition = L.latLng([this.getMapCoordinates(point.y), this.getMapCoordinates(point.x)]);
+      const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
       existingPolygonpoints.push(pointPosition);
 
     });
@@ -411,6 +414,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   }
 
   private drawPaths(paths: MovementPath[]) {
+    this.movementPathsLayer.clearLayers();
     paths.forEach(path => {
         let polylinePoints = [];
         path.points.forEach(point => {
