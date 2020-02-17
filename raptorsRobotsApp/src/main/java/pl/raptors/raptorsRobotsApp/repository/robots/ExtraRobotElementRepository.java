@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ExtraRobotElementRepository extends MongoRepository<ExtraRobotElement, String> {
-
+    ExtraRobotElement findByName (String name);
     List<ExtraRobotElement> findAllByFunctionalityListContaining(ElementFunctionality elementFunctionality);
 }

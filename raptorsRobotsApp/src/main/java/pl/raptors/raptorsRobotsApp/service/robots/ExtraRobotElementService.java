@@ -9,6 +9,7 @@ import pl.raptors.raptorsRobotsApp.repository.robots.ExtraRobotElementRepository
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ExtraRobotElementService implements CRUDService<ExtraRobotElement> {
@@ -20,7 +21,11 @@ public class ExtraRobotElementService implements CRUDService<ExtraRobotElement> 
 
     @Override
     public ExtraRobotElement addOne(ExtraRobotElement extraRobotElement) {
-        return extraRobotElementRepository.save(extraRobotElement);
+        if (Objects.isNull((extraRobotElementRepository.findByName(extraRobotElement.getName())))) {
+            extraRobotElement.setId(extraRobotElement.getName());
+            return extraRobotElementRepository.save(extraRobotElement);
+        }
+        return extraRobotElementRepository.findByName(extraRobotElement.getName());
     }
 
     @Override

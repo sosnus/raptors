@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface RobotModelRepository extends MongoRepository<RobotModel, String> {
 
+    RobotModel findByName(String name);
+
     List<RobotModel> findAllByPropulsionType(PropulsionType propulsionType);
 
     List<RobotModel> findAllByBatteryType(BatteryType batteryType);

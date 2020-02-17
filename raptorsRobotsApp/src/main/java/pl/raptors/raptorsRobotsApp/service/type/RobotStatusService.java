@@ -21,13 +21,13 @@ public class RobotStatusService implements CRUDService<RobotStatus> {
     RobotService robotService;
 
     @Override
-    public RobotStatus addOne(RobotStatus RobotStatus) {
-        RobotStatus robotStatusAlreadyExists = robotStatusRepository.findByName(RobotStatus.getName());
-        if (Objects.isNull((robotStatusAlreadyExists))) {
-            robotStatusRepository.save(RobotStatus);
-            return RobotStatus;
+    public RobotStatus addOne(RobotStatus robotStatus) {
+        if (Objects.isNull((robotStatusRepository.findByName(robotStatus.getName())))) {
+            robotStatus.setId(robotStatus.getName());
+            robotStatusRepository.save(robotStatus);
+            return robotStatus;
         }
-        return robotStatusAlreadyExists;
+        return robotStatusRepository.findByName(robotStatus.getName());
     }
 
     @Override

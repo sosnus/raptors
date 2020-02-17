@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.*;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotRepository;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotToApproveRepository;
+import pl.raptors.raptorsRobotsApp.repository.type.RobotStatusRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.*;
