@@ -2,17 +2,16 @@ package pl.raptors.raptorsRobotsApp.service.robots;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
-import pl.raptors.raptorsRobotsApp.domain.robots.RobotToApprove;
+import pl.raptors.raptorsRobotsApp.domain.robots.*;
 import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
 import pl.raptors.raptorsRobotsApp.repository.robots.ExtraRobotElementRepository;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotModelRepository;
+import pl.raptors.raptorsRobotsApp.repository.robots.RobotRepository;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotToApproveRepository;
 import pl.raptors.raptorsRobotsApp.repository.type.RobotStatusRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class RobotToApproveService implements CRUDService<RobotToApprove> {
