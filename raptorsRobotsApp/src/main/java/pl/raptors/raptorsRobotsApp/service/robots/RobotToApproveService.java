@@ -18,11 +18,25 @@ public class RobotToApproveService implements CRUDService<RobotToApprove> {
     @Autowired
     RobotService robotService;
 
+    @Autowired
+    RobotModelRepository robotModelRepository;
+    @Autowired
+    ExtraRobotElementRepository extraRobotElementRepository;
+    @Autowired
+    RobotStatusRepository robotStatusRepository;
+
     @Override
     public RobotToApprove addOne(RobotToApprove robot) {
-        if (robotService.getOne(robot.getId()) == null && this.getOne(robot.getId()) == null)
+        if (robotService.getOne(robot.getId()) == null && this.getOne(robot.getId()) == null) {
+            robot.setModel(robotModelRepository.findById(robot.getModel().getId()).get());
+            robot.setExtraRobotElement((extraRobotElementRepository.findById(robot.getExtraRobotElement().getId()).get()));
+            List<String> statusIdList = new ArrayList<>();
+            for (RobotStatus status : robot.getStatus()) {
+                statusIdList.add(status.getId());
+            }
+            robot.setStatus(robotStatusRepository.findAllByIdIn(statusIdList));
             return robotToApproveRepository.save(robot);
-        else
+        } else
             return null;
     }
 
