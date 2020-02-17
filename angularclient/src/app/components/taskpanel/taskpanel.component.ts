@@ -116,22 +116,26 @@ export class TaskpanelComponent implements OnInit {
 
   delete(robotTask: RobotTask) {
 
-    this.robot = robotTask.robot;
+    if(robotTask.robot!=null){
+      this.robot = robotTask.robot;
 
-    this.robot.status.forEach(status=>{
-      if(status.name==="during task"){
-        this.robot.status = this.robot.status.filter(status=> status.id !== this.robotStatusDuringTask.id);
-        this.robot.status.push(this.robotStatusFree);
-      }
-    });
+      this.robot.status.forEach(status=>{
+        if(status.name==="during task"){
+          this.robot.status = this.robot.status.filter(status=> status.id !== this.robotStatusDuringTask.id);
+          this.robot.status.push(this.robotStatusFree);
+        }
+      });
 
-    this.robotService.update(this.robot).subscribe(result => {
-      if (result.id != null) {
-        this.toastr.success('Status robota wykonującego zmieniony');
-      } else {
-        this.toastr.error('Nie udało się zmienić statusu');
-      }
-    });
+      this.robotService.update(this.robot).subscribe(result => {
+        if (result.id != null) {
+          this.toastr.success('Status robota wykonującego zmieniony');
+        } else {
+          this.toastr.error('Nie udało się zmienić statusu');
+        }
+      });
+    }
+
+
 
     this.robotTaskService.delete(robotTask).subscribe(
       result => {
