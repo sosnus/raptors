@@ -28,6 +28,7 @@ export class RobotsToApproveTableComponent implements OnInit {
   }
 
   getRobotsToApprove() {
+    this.ready = false;
     this.robotaApprovalService.getAll().subscribe(
       data => {
         this.robotsToApprove = data;
@@ -51,4 +52,16 @@ export class RobotsToApproveTableComponent implements OnInit {
       });
   }
 
+  denyRobot(robotToApprove: RobotToApprove) {
+    this.ready = false;
+    this.robotaApprovalService.delete(robotToApprove).subscribe(
+      result => {
+        this.toastr.success("Robot usunięty z bazy");
+        this.getRobotsToApprove();
+      },
+      error => {
+        this.toastr.error('Wystąpił błąd: ' + error.message);
+        this.ready = true;
+      });
+  }
 }
