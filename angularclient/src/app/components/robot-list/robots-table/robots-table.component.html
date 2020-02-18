@@ -45,8 +45,8 @@
   <form class="md-form mb-5" #modalForm="ngForm">
     <div class="md-form">
       <i class="fas fa-file-signature prefix grey-text"></i>
-      <input type="text" id="id" class="form-control validate" required [(ngModel)]="robot.id" name="id">
-      <label for="id" [class.active]="robot.id && robot.id.length > 0">Klucz identyfikacyjny (opcjonalnie)</label>
+      <input type="text" id="id" class="form-control validate" required [(ngModel)]="robot.id" name="id" [disabled]="robot.id && robot.id.length>0">
+      <label for="id" [class.active]="robot.id && robot.id.length > 0">Klucz identyfikacyjny (opcjonalnie) <i class="fas fa-lock" *ngIf="robot.id && robot.id.length>0"></i></label>
     </div>
     <div class="md-form">
       <i class="fas fa-network-wired prefix grey-text"></i>
@@ -97,7 +97,7 @@
       <i class="fas fa-key prefix grey-text"></i>
       <input type="text" id="password" class="form-control validate"
              [(ngModel)]="password" name="password">
-      <label for="password" >Hasło robota</label>
+      <label for="batteryLevel" [class.active]="password&&password.length>0">Hasło robota (zostaw aby nie zmieniać)e</label>
     </div>
   </form>
 </app-form-modal-template>
