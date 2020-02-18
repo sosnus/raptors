@@ -8,6 +8,8 @@ import {Graph} from "../../../../model/Graphs/Graph";
 import {ToastrService} from "ngx-toastr";
 import {Stand} from "../../../../model/Stand/Stand";
 import {StandService} from "../../../../services/stand.service";
+import {MovementPathService} from "../../../../services/movementPath.service";
+import {MovementPath} from "../../../../model/MapAreas/MovementPaths/MovementPath";
 
 @Component({
   selector: 'app-stand-list',
@@ -17,9 +19,11 @@ import {StandService} from "../../../../services/stand.service";
 export class StandListComponent implements OnInit, OnChanges {
 
   stands: Stand[];
+  paths:MovementPath[];
 
   modalID = "standListModal";
   selectedStand;
+  relatedPathsToSelectedStandMessage;
 
   @Input()
   stand;
@@ -29,12 +33,17 @@ export class StandListComponent implements OnInit, OnChanges {
 
   constructor(private store: StoreService,
               private standService: StandService,
-              private toast: ToastrService) {
+              private toast: ToastrService,
+              private pathService: MovementPathService) {
   }
 
   ngOnInit() {
     this.standService.getAll().subscribe(
       stands => this.stands = stands,
+      error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
+    )
+    this.pathService.getMovementPaths().subscribe(
+      paths => this.paths = paths,
       error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     )
   }
@@ -61,6 +70,25 @@ export class StandListComponent implements OnInit, OnChanges {
       },
       error => this.toast.error('Błąd podczas łączenia z bazą: ' + error.message)
     );
-
   }
+
+  validateStand(stand:Stand){
+    this.selectedStand=stand;
+
+    const standId=stand.id;
+    var counter=0;
+    this.paths.forEach(e=>{
+      if(e.startStandId==standId || e.finishStandId==standId){
+        counter=counter+1;
+      }
+    });
+    if(counter>0){
+      this.relatedPathsToSelectedStandMessage=" Usunięcie tego stanowiska wiąże się z usunięciem go jako punktu POI z "+counter+" ścieżek! " +
+        "Będziesz mógł dopisać nowe stanowiska do ścieżek, ale mogą one działać niepoprawnie.";
+    }
+    else{
+      this.relatedPathsToSelectedStandMessage=""
+    }
+  }
+
 }

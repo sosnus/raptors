@@ -20,9 +20,9 @@
       </td>
       <td>
         <button class="btn btn-primary btn-sm"
-                (click)="selectedStand=stand"
+                (click)="validateStand(stand)"
                 data-toggle="modal"
-                [attr.data-target]="'#' + modalID + 'Confirm'">
+                [attr.data-target]="'#' + modalID + 'Confirm'" >
           Delete
         </button>
       </td>
@@ -30,5 +30,5 @@
     </tbody>
   </table>
 </div>
-<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+<app-confirm-modal-template [modalID]="modalID+'Confirm'" [message]="'Czy na pewno chcesz usunąć?'+relatedPathsToSelectedStandMessage"
                             (onConfirm)="deleteStand(selectedStand)"></app-confirm-modal-template>

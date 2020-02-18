@@ -62,7 +62,20 @@ public class StandService implements CRUDService<Stand> {
 
     @Override
     public void deleteOne(Stand stand) {
+        String standId=stand.getId();
         standrepository.delete(stand);
+
+        List<MovementPath> movementPaths=movementPathService.getAll();
+        for (MovementPath path:movementPaths) {//set null for MovementPaths that had this stand
+            if(path.getStartStandId().equals(standId)){
+                path.setStartStandId(null);
+                movementPathService.updateOne(path);
+            }
+            if(path.getFinishStandId().equals(standId)){
+                path.setFinishStandId(null);
+                movementPathService.updateOne(path);
+            }
+        }
     }
 
     @Override
