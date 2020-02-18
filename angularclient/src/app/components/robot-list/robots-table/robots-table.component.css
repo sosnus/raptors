@@ -17,3 +17,6 @@ table.table td, table.table th {
 .clickable{
   cursor: pointer;
 }
+.form-control:disabled{
+  color: #b3b3b3;
+}

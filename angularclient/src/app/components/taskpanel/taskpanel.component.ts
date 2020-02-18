@@ -5,10 +5,14 @@ import {Behaviour} from "../../model/Robots/Behaviour";
 import {TaskPriorityService} from "../../services/type/task-priority.service";
 import {TaskPriority} from "../../model/type/TaskPriority";
 import {RobotTaskService} from "../../services/robotTask.service";
-import {ToastrService} from "ngx-toastr";
+import {ToastrService} from 'ngx-toastr';
 import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
 import {StoreService} from "../../services/store.service";
+import {Robot} from "../../model/Robots/Robot";
+import {RobotStatus} from "../../model/Robots/RobotStatus";
+import {RobotService} from "../../services/robot.service";
+import {RobotStatusService} from "../../services/type/robot-status.service";
 
 @Component({
   selector: 'app-taskpanel',
@@ -19,10 +23,13 @@ export class TaskpanelComponent implements OnInit {
   modalID = "taskRobotModal";
 
   robotTask: RobotTask = new RobotTask(null, null, null, null, null, null, null);
+  robot = new Robot(null, null, null, null, null, null, null, null, null);
+  robotStatusFree: RobotStatus = new RobotStatus(null);
+  robotStatusDuringTask: RobotStatus = new RobotStatus(null);
   behaviours: Behaviour[] = [];
   selectedBehaviour: string;
 
-  taskPriorities: TaskPriority[];
+  taskPriorities: TaskPriority[] = [];
   selectedTaskPriority: string;
 
   loggedUserID: string;
@@ -30,17 +37,31 @@ export class TaskpanelComponent implements OnInit {
   constructor(private behaviourService: BehaviourService,
               private taskPriorityService: TaskPriorityService, private robotTaskService: RobotTaskService,
               private toastr: ToastrService, private authService: AuthService, private userService: UserService,
-              private storeService: StoreService) {
-    this.robotTask.behaviours = new Array<Behaviour>();
+              private storeService: StoreService, private robotService: RobotService, private robotStatusService: RobotStatusService) {
+    this.robotTask.behaviours = []
   }
 
   ngOnInit() {
     this.loggedUserID = JSON.parse(atob(localStorage.getItem('userID')));
+
     this.behaviourService.getAll().subscribe(
       behaviour => {
+        console.log("Pobrane wszystkie zachowania: " + behaviour);
         this.behaviours = behaviour;
+        console.log("Pobrane wszystkie tablica: " + this.behaviours);
       }
     );
+
+    this.robotStatusService.getAll().subscribe(statuses=>{
+      statuses.forEach(status=>{
+        if(status.name==="free"){
+          this.robotStatusFree = status;
+        }
+        if(status.name==="during task"){
+          this.robotStatusDuringTask = status;
+        }
+      })
+    });
 
     this.taskPriorityService.getAll().subscribe(priority => {
         this.taskPriorities = priority;
@@ -50,12 +71,15 @@ export class TaskpanelComponent implements OnInit {
   }
 
   selectBehaviour(id: string) {
+    console.log("Podczas wyboru: " + this.behaviours);
     this.selectedBehaviour = id;
-    this.behaviours.forEach(behaviour=>{
-      if(behaviour.id === this.selectedBehaviour){
-        this.robotTask.behaviours.push(behaviour);
+    this.behaviours.forEach(beha=>{
+      if(beha.id === this.selectedBehaviour){
+        console.log(beha.name);
+        this.robotTask.behaviours.push(beha);
       }
     });
+    this.selectedBehaviour = null;
   }
 
   selectTaskPriority(id: string) {
@@ -65,6 +89,7 @@ export class TaskpanelComponent implements OnInit {
         this.robotTask.priority = taskPriority;
       }
     });
+    this.selectedTaskPriority = null;
   }
 
   createOrUpdate() {
@@ -83,9 +108,9 @@ export class TaskpanelComponent implements OnInit {
         this.toastr.success("Dodano lub edytowano pomyślnie");
       },
       error => {
-        this.toastr.error("W ystąpił bład podczas dodawania lub edycji");
+        this.toastr.error("Wystąpił bład podczas dodawania lub edycji");
       }
-    )
+    );
   }
 
   robotTaskExist(id: string) {
@@ -97,16 +122,40 @@ export class TaskpanelComponent implements OnInit {
   }
 
   delete(robotTask: RobotTask) {
+
+    if(robotTask.robot!=null){
+      this.robot = robotTask.robot;
+
+      this.robot.status.forEach(status=>{
+        if(status.name==="during task"){
+          this.robot.status = this.robot.status.filter(status=> status.id !== this.robotStatusDuringTask.id);
+          this.robot.status.push(this.robotStatusFree);
+        }
+      });
+
+      this.robotService.update(this.robot).subscribe(result => {
+        if (result.id != null) {
+          this.toastr.success('Status robota wykonującego zmieniony');
+        } else {
+          this.toastr.error('Nie udało się zmienić statusu');
+        }
+      });
+    }
+
     this.robotTaskService.delete(robotTask).subscribe(
       result => {
-        this.storeService.robotTaskList = this.storeService.robotTaskList.filter(item => item != robotTask)
+        this.storeService.robotTaskList = this.storeService.robotTaskList.filter(item => item != robotTask);
         this.toastr.success("Usunięto pomyślnie");
         this.robotTask = new RobotTask(null, null, null, null, null, null, null);
+        this.robot = new Robot(null, null, null, null, null, null, null, null, null);
+
       },
       error => {
         this.toastr.error("Wystąpił błąd podczas usuwania");
       }
     )
+
+
   }
 
   reset() {

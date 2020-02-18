@@ -33,6 +33,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
   private areaType: AreaType;
   selectedAreaType: string;
   private polygoN: Polygon = new Polygon(null, null, null);
+  private isDrawed: boolean;
 
   //Map related variables
   private map;
@@ -186,6 +187,8 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       this.polygon = L.polygon(this.polygonPoints, {color: this.areaType.color}).addTo(this.map);
       this.map.fitBounds(this.polygon.getBounds());
     }
+    this.isDrawed = true;
+
   }
 
   private getRealCoordinates(value) {
@@ -223,20 +226,20 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       this.polygoN.name = "polygon";
       this.polygoN.type = this.areaType;
       this.polygoN.points = polygonPointz;
-/*      this.polygonService.save(this.polygoN).subscribe(
-        result => {
-          if (this.polygonExists(this.polygoN.id)) {
-            this.getPolygonsFromDB[this.getPolygonsFromDB.findIndex(item => item.id == result.id)] = result;
-          } else {
-            this.getPolygonsFromDB.push(result)
-          }
-          this.toast.success("Dodano robota pomyślnie");
-          console.log(result);
-        },
-        error => {
-          this.toast.error("Wystąpił bład podczas dodawania");
-        }
-      );*/
+      /*      this.polygonService.save(this.polygoN).subscribe(
+              result => {
+                if (this.polygonExists(this.polygoN.id)) {
+                  this.getPolygonsFromDB[this.getPolygonsFromDB.findIndex(item => item.id == result.id)] = result;
+                } else {
+                  this.getPolygonsFromDB.push(result)
+                }
+                this.toast.success("Dodano robota pomyślnie");
+                console.log(result);
+              },
+              error => {
+                this.toast.error("Wystąpił bład podczas dodawania");
+              }
+            );*/
       this.polygonService.save(this.polygoN).subscribe(result => {
           this.poly = this.polygon;
           this.toast.success('Obszar zapisany w bazie')
@@ -250,6 +253,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       //this.resetPoly();
     }
     else this.toast.error('Podaj typ obszaru!')
+    this.isDrawed = false;
 
   }
 
@@ -258,8 +262,19 @@ export class PolygonsComponent implements OnInit, OnDestroy {
   }
 
   private deleteMarker(e) {
-    this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
-    this.map.removeLayer(e.relatedTarget);
+    if(this.isDrawed){
+      this.drawPolygon = true;
+      this.map.removeLayer(this.polygon);
+      this.map.removeLayer(this.vertices);
+      this.vertices.map(edge => this.map.removeLayer(edge));
+      this.vertices = new Array<Marker>();
+      this.polygon = new Polygon(null, null, null);
+      this.isDrawed = false;
+    }
+    else{
+      this.vertices = this.vertices.filter(marker => marker !== e.relatedTarget);
+      this.map.removeLayer(e.relatedTarget);
+    }
   }
 
   private editPol(polygon: Polygon) {
