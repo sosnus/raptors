@@ -17,6 +17,8 @@ import { MovementPathService } from '../../services/movementPath.service';
 import { Corridor } from '../../model/MapAreas/Corridors/Corridor';
 import { MovementPath } from '../../model/MapAreas/MovementPaths/MovementPath';
 import { fromEvent, Subscription } from 'rxjs';
+import {Robot} from "../../model/Robots/Robot";
+import {RobotStatus} from "../../model/Robots/RobotStatus";
 
 export const WAYPOINTICON = L.icon({
   iconUrl: '/assets/icons/position.png',
@@ -62,35 +64,6 @@ export class MapComponent implements OnInit, OnDestroy {
   private movementPaths = L.featureGroup();
   private corridors = L.featureGroup();
 
-  //Example data
-  private robots = [
-    {
-      'id': '0',
-      'x': '3.05336356163',
-      'y': '2.6747405529',
-      'rot': '-90.2808007761'
-    },
-    {
-      'id': '1',
-      'x': '2.99178433418',
-      'y': '-2.6739563942',
-      'rot': '179.770314899'
-    },
-    {
-      'id': '2',
-      'x': '-1.70923388004',
-      'y': '-2.60913944244',
-      'rot': '88.1495543791'
-    },
-    {
-      'id': 'SomeID4',
-      'x': '-1.43146789074',
-      'y': '2.68175768852',
-      'rot': '0.183157256614'
-    }
-  ];
-
-
   //filters for the map
   private overlays = {
     Online: this.robotStatusLayer,
@@ -104,7 +77,7 @@ export class MapComponent implements OnInit, OnDestroy {
   //Leaflet accepts coordinates in [y,x]
   private robotMarkers = [];
   private allpolygons: Polygon[];
-
+  private robotStatus : string[] = [];
 
   //Map related variables
   private map;
@@ -113,7 +86,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private imageResolution;
   private mapContainerSize = 800;
 
-  private robotIP = '';
+  //private robotIP = '';
 
   constructor(private mapService: MapService,
               private robotService: RobotService,
@@ -170,6 +143,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.imageURL = this.parseToJpeg(data);
     this.initMap();
 
+
+
     this.graphService.getAll().subscribe(
       graphs => {
         graphs.map(graph => this.drawGraph(graph))
@@ -194,7 +169,13 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
-      this.drawRobots(this.robots);
+      this.robotService.getAll().subscribe(
+        robots=>{
+          this.drawRobots(robots);
+
+        }
+      );
+      //this.drawRobots(this.robots);
     };
     this.corridorService.getCorridors().subscribe(
       corridors => {
@@ -313,20 +294,30 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private drawRobots(robots) {
     robots.forEach(robot => {
-      const position = [
-        this.getMapCoordinates(Number(robot.y)),
-        this.getMapCoordinates(Number(robot.x))
-      ];
-      let marker = L.marker(position, {icon: ROBOTICON});
-      marker.addTo(this.robotStatusLayer);
-      marker.bindPopup(
-        'Robot Details<br />Position x: '
-        + this.getRealCoordinates(marker.getLatLng().lng)
-        + '<br />Position y: ' +
-        +this.getRealCoordinates(marker.getLatLng().lat));
-      this.robotMarkers.push(marker);
-      this.robotStatusLayer.addTo(this.map);
+      if(robot.pose !=null){
+        const position = L.latLng([
+          this.getMapCoordinates(robot.pose.position.y),
+          this.getMapCoordinates(robot.pose.position.x)
+        ]);
+        let marker = L.marker(position, {icon: ROBOTICON});
+        marker.addTo(this.robotStatusLayer);
+        marker.bindPopup(
+          'Robot Details<br />Position x: '
+          + this.getRealCoordinates(marker.getLatLng().lng)
+          + '<br />Position y: ' +
+          +this.getRealCoordinates(marker.getLatLng().lat) + '<br />Status: ' + this.showRobotStatus(robot.status));
+        this.robotMarkers.push(marker);
+        this.robotStatusLayer.addTo(this.map);
+      }
     })
+  }
+
+  private showRobotStatus(statuses: RobotStatus[]){
+    this.robotStatus = [];
+    statuses.forEach(status=>{
+      this.robotStatus.push(status.name);
+    });
+    return this.robotStatus;
   }
 
   private parseToJpeg(image: any): string {
