@@ -24,15 +24,12 @@ import {PolygonService} from "../../../services/polygon.service";
 export class MovementPathComponent implements OnInit, OnDestroy {
 
   dataLoaded = false;
-  showPaths = false;
   private readonly context;
   private polyline: L.polyline = null;
   private vertices: Marker[] = [];
-  private paths: MovementPath[];
   private pathID;
   private name;
 
-  private standLayer = L.featureGroup();
   private polygonsLayer = L.featureGroup();
   private corridorsLayer = L.featureGroup();
 
@@ -57,6 +54,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   private stands: Stand[];
   private standMarkers: Marker = [];
   private allpolygons: Polygon[];
+  private separateMarkers: Marker[] = [];
 
   constructor(private mapService: MapService,
               private movementPathService: MovementPathService,
@@ -108,7 +106,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
     this.standService.getAll().subscribe(
       stands => {
-        this.drawStand(stands);
+        this.drawStands(stands);
         this.stands = stands;
       }
     );
@@ -120,12 +118,6 @@ export class MovementPathComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.movementPathService.getMovementPaths().subscribe(
-      paths => {
-        this.paths = paths;
-      }
-    );
-
     this.corridorService.getCorridors().subscribe(
       corridors => {
         this.drawCorridorsLayer(corridors);
@@ -133,7 +125,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     );
   }
 
-  private drawStand(stands: Stand[]) {
+  private drawStands(stands: Stand[]) {
 
     stands.forEach(stand => {
       const position = [
@@ -178,17 +170,22 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   }
 
   private deletePOI(e) {
+    let eLat = e.relatedTarget._latlng.lat;
+    let eLng = e.relatedTarget._latlng.lng;
+
     if (this.startStand != null) {
-      if (e.relatedTarget.getLatLng() == this.startStand.getLatLng()) {
+      if ((eLat == this.startStand.getLatLng().lat) && (eLng == this.startStand.getLatLng().lng)) {
         this.vertices = this.vertices.filter(marker => marker !== this.startStand);
         this.startStand = null;
+        this.startStandId = null;
         this.createPolyline();
       }
     }
     if (this.finishStand != null) {
-      if (e.relatedTarget.getLatLng() == this.finishStand.getLatLng()) {
+      if ((eLat == this.finishStand.getLatLng().lat) && (eLng == this.finishStand.getLatLng().lng)) {
         this.vertices = this.vertices.filter(marker => marker !== this.finishStand);
         this.finishStand = null;
+        this.finishStandId = null;
         this.createPolyline();
       }
     }
@@ -236,11 +233,19 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
     this.map.on('click', e => {
       const marker = this.createNewMarker(e.latlng);
+
       if (marker != null) {
         this.polyline.addLatLng(e.latlng);
       }
     });
     L.control.layers({}, this.overlays).addTo(this.map);
+  }
+
+  private resetStandMarkers() {
+    this.standMarkers.forEach(e => {
+      this.map.removeLayer(e);
+      e.addTo(this.map);
+    })
   }
 
   cancelMovementPath() {
@@ -249,21 +254,41 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     }
     if (this.vertices.length != 0) {
       this.vertices.forEach(e => {
-        if (this.vertices.indexOf(e) !== 0 && this.vertices.indexOf(e) !== (this.vertices.length - 1)) {
-          this.map.removeLayer(e);
-        }
+
+        this.map.removeLayer(e);
       });
     }
+    ;
+    if (this.separateMarkers.length != 0) {
+      this.separateMarkers.forEach(e => {
+        this.map.removeLayer(e);
+      });
+    }
+    ;
+    this.clearStartAndFinishTooltip();
+    this.startStand = null;
+    this.finishStand = null;
+
     this.vertices = [];
     this.name = "";
     this.pathID = null;
-    this.startStand = null;
-    this.finishStand = null;
     this.polyline = new L.Polyline([]).addTo(this.map);
+    this.resetStandMarkers();
   }
 
   private getRealCoordinates(value) {
     return (value * this.mapResolution * (this.imageResolution / this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
+  }
+
+  private clearStartAndFinishTooltip() {
+    if(this.startStand!=null) {
+      var str = this.startStand._tooltip._content;
+      this.startStand._tooltip._content = str.slice(8);
+    }
+    if(this.finishStand!=null){
+      var str = this.finishStand._tooltip._content;
+      this.finishStand._tooltip._content = str.slice(8);
+    }
   }
 
   saveMovementPath() {
@@ -271,7 +296,6 @@ export class MovementPathComponent implements OnInit, OnDestroy {
       alert("Punkt początkowy lub końcowy POI nie jest zdefiniowany!");
       return;
     }
-
     let universalPoints: UniversalPoint[] = [];
     this.polyline.getLatLngs().forEach(lang => {
       let universalPoint: UniversalPoint = new UniversalPoint(
@@ -282,7 +306,6 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     });
     this.startStandId = this.getStandId(this.startStand, this.stands);
     this.finishStandId = this.getStandId(this.finishStand, this.stands);
-
     let movementPath = new MovementPath(this.pathID, this.name, universalPoints, this.startStandId, this.finishStandId);
     this.movementPathService.save(movementPath).subscribe(result => {
       if (result.id != null) {
@@ -328,15 +351,36 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     this.startStand = this.getMarkerByStand(currentStartStand);
     this.finishStand = this.getMarkerByStand(currentFinishStand);
 
+    if (this.startStand != null) {
+      this.standMarkers.forEach(e => {
+        if (e._latlng.lat == this.startStand.getLatLng().lat && e._latlng.lng == this.startStand.getLatLng().lng) {
+          e._tooltip._content = " START: " + e._tooltip._content;
+        }
+      });
+      this.vertices.splice(0, 0, this.startStand);
+    } else {
+      this.toast.error("Stanowisko startowe powiązane wcześniej z tą ścieżką zostało usunięte! Należy ustawić nowy punkt POI startowy!", '', {
+        disableTimeOut: true,
+      });
+    }
+
+    if (this.finishStand != null) {
+      this.standMarkers.forEach(e => {
+        if (e._latlng.lat == this.finishStand.getLatLng().lat && e._latlng.lng == this.finishStand.getLatLng().lng) {
+          e._tooltip._content = "KONIEC: " + e._tooltip._content;
+        }
+      });
+      this.vertices.push(this.finishStand);
+    } else {
+      this.toast.error("Stanowisko końcowe powiązane wcześniej z tą ścieżką zostało usunięte! Należy ustawić nowy punkt POI końcowy!", '', {
+        disableTimeOut: true,
+      });
+    }
+
     this.startStandId = path.startStandId;
     this.finishStandId = path.finishStandId;
-    this.vertices.splice(0, 0, this.startStand);
-    this.vertices.push(this.finishStand);
     this.polyline.addTo(this.map);
-
-
     this.createPolyline();
-
   }
 
   private getMapCoordinates(value) {
@@ -345,7 +389,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
   private createNewMarker(position: L.latlng) {
 
-    if (this.finishStand != null && this.startStand != null) {
+    if (this.finishStand != null) {
       var marker = new L.marker(position, {
         draggable: true,
         icon: WAYPOINTICON,
@@ -363,9 +407,10 @@ export class MovementPathComponent implements OnInit, OnDestroy {
           }
         ]
       });
+      this.separateMarkers.push(marker);
     }
     ;
-    if (this.finishStand == null || this.startStand == null) {
+    if (this.finishStand == null) {
       var marker = new L.marker(position, {
         draggable: true,
         icon: WAYPOINTICON,
@@ -386,7 +431,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     });
     marker.addTo(this.map);
 
-    if (this.finishStand == null || this.startStand == null) {
+    if (this.finishStand == null) {
       this.vertices.push(marker);
       return marker;
     }
@@ -410,7 +455,6 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     let closestA;
     let closestB;
     let distanceA = Math.sqrt(
-
       Math.pow(e.relatedTarget._latlng.lat - points[0].lat, 2)
       +
       Math.pow(e.relatedTarget._latlng.lng - points[0].lng, 2));
@@ -458,7 +502,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     });
     const indxB = points.indexOf(closestB);
 
-        if (indxA > indxB) {
+    if (indxA > indxB) {
       points.splice(indxA, 0, e.relatedTarget._latlng);
       this.vertices.splice(indxA, 0, e.relatedTarget);
     } else {
@@ -472,11 +516,13 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   private updatePoints(e) {
     let markerPos = this.vertices.filter(marker => marker._leaflet_id === e.target._leaflet_id)[0];
 
-    this.vertices.forEach(point => {
-      if (point._leaflet_id === markerPos._leaflet_id) {
-        point._latlng = markerPos._latlng;
-      }
-    });
+    if(markerPos!=null){
+      this.vertices.forEach(point => {
+        if (point._leaflet_id === markerPos._leaflet_id) {
+          point._latlng = markerPos._latlng;
+        }
+      });
+    }
     this.createPolyline();
   }
 
@@ -503,18 +549,21 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   }
 
   private getMarkerByStand(stand: Stand) {
-    let currentMarker;
-    this.standMarkers.forEach(e => {
-      const position = [
-        this.getMapCoordinates(Number(stand.pose.position.y)),
-        this.getMapCoordinates(Number(stand.pose.position.x))
-      ];
-      if (position[0] == e._latlng.lat && position[1] == e._latlng.lng) {
-        currentMarker = L.marker(position, {});
-      }
-    });
-
-    return currentMarker;
+    if (stand == null) {
+      return null;
+    } else {
+      var currentMarker;
+      this.standMarkers.forEach(e => {
+        const position = [
+          this.getMapCoordinates(Number(stand.pose.position.y)),
+          this.getMapCoordinates(Number(stand.pose.position.x))
+        ];
+        if (position[0] == e._latlng.lat && position[1] == e._latlng.lng) {
+          currentMarker = e;
+        }
+      });
+      return currentMarker;
+    }
   }
 
   private drawCorridorsLayer(corridor: Corridor[]) {
@@ -529,6 +578,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
       });
     })
   }
+
   private drawPolygons(polygon: Polygon[]) {
     polygon.forEach(object => {
       this.drawPolygon(object);
@@ -544,7 +594,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
     });
     let polygonik = L.polygon(existingPolygonpoints, {color: polygon.type.color}).bindTooltip(polygon.type.name, {
-      sticky: true // If true, the tooltip will follow the mouse instead of being fixed at the feature center.
+      sticky: true
     });
     polygonik.addTo(this.polygonsLayer);
   }

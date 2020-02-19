@@ -53,7 +53,7 @@ public class RobotController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_ROBOT')")
     @PostMapping("/update")
     public Robot update(@RequestBody @Valid Robot robot, @RequestParam(required = false) String password) {
-        if (password != null) {
+        if (password != null && !password.isEmpty()) {
             User user = userService.getByEmail(robot.getId());
             user.setPassword(password);
             userService.updateOne(user);

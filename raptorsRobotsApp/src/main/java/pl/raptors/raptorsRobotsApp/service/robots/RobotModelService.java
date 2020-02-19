@@ -10,6 +10,7 @@ import pl.raptors.raptorsRobotsApp.repository.robots.RobotModelRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class RobotModelService implements CRUDService<RobotModel> {
@@ -21,7 +22,11 @@ public class RobotModelService implements CRUDService<RobotModel> {
 
     @Override
     public RobotModel addOne(RobotModel robotModel) {
-        return robotModelRepository.save(robotModel);
+        if (Objects.isNull((robotModelRepository.findByName(robotModel.getName())))) {
+            robotModel.setId(robotModel.getName());
+            return robotModelRepository.save(robotModel);
+        }
+        return robotModelRepository.findByName(robotModel.getName());
     }
 
     @Override

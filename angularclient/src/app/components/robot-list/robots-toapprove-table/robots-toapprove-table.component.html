@@ -20,6 +20,9 @@
           <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID+'Confirm'"
                   (click)="robotToApprove=type">Zatwierdź
           </button>
+          <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID+'Delete'"
+                  (click)="robotToApprove=type">Odmów
+          </button>
         </td>
       </tr>
       </tbody>
@@ -30,3 +33,7 @@
 <app-confirm-modal-template [modalID]="modalID+'Confirm'"
                             [message]="'Potwierdź operację dodania robota do systemu'"
                             (onConfirm)="approveRobot(robotToApprove)"></app-confirm-modal-template>
+
+<app-confirm-modal-template [modalID]="modalID+'Delete'"
+                            [message]="'Potwierdź operację dodania robota do systemu'"
+                            (onConfirm)="denyRobot(robotToApprove)"></app-confirm-modal-template>

@@ -3,8 +3,11 @@ package pl.raptors.raptorsRobotsApp.service.robots;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.*;
-import pl.raptors.raptorsRobotsApp.repository.robots.RobotRepository;
+import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
+import pl.raptors.raptorsRobotsApp.repository.robots.ExtraRobotElementRepository;
+import pl.raptors.raptorsRobotsApp.repository.robots.RobotModelRepository;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotToApproveRepository;
+import pl.raptors.raptorsRobotsApp.repository.type.RobotStatusRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 
 import java.util.*;
@@ -17,11 +20,39 @@ public class RobotToApproveService implements CRUDService<RobotToApprove> {
     @Autowired
     RobotService robotService;
 
+    @Autowired
+    RobotModelRepository robotModelRepository;
+    @Autowired
+    ExtraRobotElementRepository extraRobotElementRepository;
+
+    @Autowired
+    RobotModelService robotModelService;
+    @Autowired
+    ExtraRobotElementService extraRobotElementService;
+
+    @Autowired
+    RobotStatusRepository robotStatusRepository;
+
     @Override
     public RobotToApprove addOne(RobotToApprove robot) {
-        if (robotService.getOne(robot.getId()) == null && this.getOne(robot.getId()) == null)
+        if (robotService.getOne(robot.getId()) == null && this.getOne(robot.getId()) == null) {
+
+            if (robotModelService.getOne(robot.getModel().getName()) != null)
+                robot.setModel(robotModelService.getOne(robot.getModel().getName()));
+
+            if (extraRobotElementService.getOne(robot.getExtraRobotElement().getName()) != null)
+                robot.setExtraRobotElement(extraRobotElementService.getOne(robot.getExtraRobotElement().getName()));
+
+            List<String> statusNameList = new ArrayList<>();
+            for (RobotStatus status : robot.getStatus()) {
+                statusNameList.add(status.getName());
+            }
+
+            if (robotStatusRepository.findAllByIdIn(statusNameList) != null)
+                robot.setStatus(robotStatusRepository.findAllByIdIn(statusNameList));
+
             return robotToApproveRepository.save(robot);
-        else
+        } else
             return null;
     }
 
