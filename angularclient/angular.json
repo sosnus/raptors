@@ -28,7 +28,7 @@
               "src/styles.css",
               "./node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.css",
               "node_modules/material-design-icons/iconfont/material-icons.css",
-              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           },
@@ -128,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "angularclient"
+  "defaultProject": "angularclient",
+  "cli": {
+    "analytics": "92b6ab5d-bb5c-4f71-867f-e752b15f128b"
+  }
 }

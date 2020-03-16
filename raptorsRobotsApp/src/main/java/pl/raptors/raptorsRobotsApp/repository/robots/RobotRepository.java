@@ -6,7 +6,7 @@ import pl.raptors.raptorsRobotsApp.domain.robots.ExtraRobotElement;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
 import pl.raptors.raptorsRobotsApp.domain.robots.RobotBattery;
 import pl.raptors.raptorsRobotsApp.domain.robots.RobotModel;
-import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
+import pl.raptors.raptorsRobotsApp.domain.robots.RobotStatus;
 
 import java.util.List;
 

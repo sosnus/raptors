@@ -3,7 +3,7 @@ package pl.raptors.raptorsRobotsApp.controller.type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
+import pl.raptors.raptorsRobotsApp.domain.robots.RobotStatus;
 import pl.raptors.raptorsRobotsApp.service.type.RobotStatusService;
 
 

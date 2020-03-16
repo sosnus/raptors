@@ -4,7 +4,7 @@ package pl.raptors.raptorsRobotsApp.service.type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
-import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
+import pl.raptors.raptorsRobotsApp.domain.robots.RobotStatus;
 import pl.raptors.raptorsRobotsApp.repository.type.RobotStatusRepository;
 import pl.raptors.raptorsRobotsApp.service.CRUDService;
 import pl.raptors.raptorsRobotsApp.service.robots.RobotService;
