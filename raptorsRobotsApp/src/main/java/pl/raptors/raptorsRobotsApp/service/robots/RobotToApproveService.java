@@ -3,7 +3,7 @@ package pl.raptors.raptorsRobotsApp.service.robots;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.raptors.raptorsRobotsApp.domain.robots.*;
-import pl.raptors.raptorsRobotsApp.domain.type.RobotStatus;
+import pl.raptors.raptorsRobotsApp.domain.robots.RobotStatus;
 import pl.raptors.raptorsRobotsApp.repository.robots.ExtraRobotElementRepository;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotModelRepository;
 import pl.raptors.raptorsRobotsApp.repository.robots.RobotToApproveRepository;

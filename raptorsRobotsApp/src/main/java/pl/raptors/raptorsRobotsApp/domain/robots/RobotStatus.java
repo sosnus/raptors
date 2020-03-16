@@ -1,4 +1,4 @@
-package pl.raptors.raptorsRobotsApp.domain.type;
+package pl.raptors.raptorsRobotsApp.domain.robots;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
