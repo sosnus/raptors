@@ -1,0 +1,43 @@
+<div class="row">
+
+  <table class="table table-sm table-striped">
+    <!--      <thead>-->
+    <!--      <tr>-->
+    <!--        <th scope="col">nazwa</th>-->
+    <!--        <th scope="col">wartość</th>-->
+    <!--      </tr>-->
+    <!--      </thead>-->
+
+    <tbody>
+    <tr>
+      <th scope="row">wersja aplikacji frontend</th>
+      <td>{{frontVersion}}</td>
+    </tr>
+    <tr>
+      <th scope="row">wersja aplikacji backend</th>
+      <td>{{backVersion}}</td>
+    </tr>
+    <tr>
+      <th scope="row">baza danych</th>
+      <td>{{database}}</td>
+    </tr>
+    <tr>
+      <th scope="row">wolna pamięć</th>
+      <td>{{jvmDate.freeMemory}}</td>
+    </tr>
+    <tr>
+      <th scope="row">zajęta pamięć</th>
+      <td>{{jvmDate.allocatedMemory}}</td>
+    </tr>
+    <tr>
+      <th scope="row">maksymalna pamięć</th>
+      <td>{{jvmDate.maxMemory}}</td>
+    </tr>
+    <tr>
+      <th scope="row">całkowita pamięć</th>
+      <td>{{jvmDate.totalFreeMemory}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+

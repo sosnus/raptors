@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {RobotService} from "../../services/robot.service";
-import {StoreService} from "../../services/store.service";
-import {RobotTaskService} from "../../services/robotTask.service";
-import {Robot} from "../../model/Robots/Robot";
-import {AuthService} from "../../services/auth.service";
-import {UserService} from "../../services/user.service";
+import {RobotService} from '../../services/robot.service';
+import {StoreService} from '../../services/store.service';
+import {RobotTaskService} from '../../services/robotTask.service';
+import {Robot} from '../../model/Robots/Robot';
+import {AuthService} from '../../services/auth.service';
+import {UserService} from '../../services/user.service';
+import {HealthzService} from '../../services/healthz.service';
+
+declare var require: any;
 
 @Component({
   selector: 'app-sidebar',
@@ -19,12 +22,15 @@ export class SidebarComponent implements OnInit {
   loggedUserRole: string;
   loggedUserID: string;
   usersID: string[] = [];
+  frontVersion = '';
+  backVersion = '';
 
   constructor(private storeService: StoreService,
               private robotTaskService: RobotTaskService,
               private robotService: RobotService,
               private authService: AuthService,
-              private userService: UserService) {
+              private userService: UserService,
+              private healthzService: HealthzService) {
   }
 
   ngOnInit() {
@@ -41,13 +47,22 @@ export class SidebarComponent implements OnInit {
       this.robotTaskService.getRobotTasks().subscribe(tasks => {
         this.storeService.robotTaskList = tasks;
         // filtrowanie listy zadań pod edit/delete zależnie od roli
-        if(this.authService.isSuperUser()){
+        if (this.authService.isSuperUser()) {
           this.getRobotsForSuperUser();
         }
         this.getRobotTasksByRole();
       });
     }
 
+    if (this.authService.isAdmin() || this.authService.isServiceman()) {
+      this.frontVersion = require('../../../../package.json').version;
+      this.healthzService.getBackendVersion().subscribe(data => {
+          this.backVersion = data;
+        },
+        error => {
+          console.log(error);
+        });
+    }
   }
 
   rotateIcon(elementID: string): void {
@@ -88,10 +103,10 @@ export class SidebarComponent implements OnInit {
       this.robotTaskService.getTasksListForUsersList(this.usersID).subscribe(tasks => {
         this.storeService.robotTaskListTemp = tasks;
         // ROLE_SUPER_USER
-        this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task=> task.userID == this.loggedUserID);
-        this.storeService.robotTaskListTemp.forEach(task=>{
+        this.storeService.robotTaskList = this.storeService.robotTaskList.filter(task => task.userID == this.loggedUserID);
+        this.storeService.robotTaskListTemp.forEach(task => {
           this.storeService.robotTaskList.push(task);
-        })
+        });
 
       });
     });
