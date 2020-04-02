@@ -9,6 +9,8 @@ import pl.raptors.raptorsRobotsApp.service.accounts.RoleService;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import pl.raptors.raptorsRobotsApp.service.healthz.HealthzService;
+
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -19,6 +21,20 @@ public class HealthzController {
 
     @Autowired
     private RoleService roleService;
+    private static final String version = HealthzController.getVersion();
+
+    private static String getVersion() {
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        Model model = null;
+        try {
+            model = reader.read(new FileReader("pom.xml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        return model.getVersion();
+    }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/backend")
@@ -28,10 +44,8 @@ public class HealthzController {
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/backend/version")
-    public String getBackendVersion() throws IOException, XmlPullParserException {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        Model model = reader.read(new FileReader("pom.xml"));
-        return model.getVersion();
+    public String getBackendVersion() {
+        return version;
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
