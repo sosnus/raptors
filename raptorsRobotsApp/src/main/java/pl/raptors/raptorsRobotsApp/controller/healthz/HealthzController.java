@@ -1,5 +1,6 @@
 package pl.raptors.raptorsRobotsApp.controller.healthz;
 
+import com.mongodb.ServerAddress;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,7 +11,6 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import pl.raptors.raptorsRobotsApp.service.healthz.HealthzService;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -21,6 +21,10 @@ public class HealthzController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private HealthzService healthzService;
+
     private static final String version = HealthzController.getVersion();
 
     private static String getVersion() {
@@ -42,7 +46,7 @@ public class HealthzController {
         return true;
     }
 
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/backend/version")
     public String getBackendVersion() {
         return version;
@@ -50,7 +54,7 @@ public class HealthzController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/database")
-    public Boolean idDatabaseWorking() {
+    public Boolean isDatabaseWorking() {
         try {
             roleService.getAll();
         }
@@ -58,6 +62,18 @@ public class HealthzController {
             return false;
        }
         return true;
+    }
+
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+    @GetMapping("/database/dbaddress")
+    public String getServerAddress() {
+        return healthzService.getDatabaseAddress();
+    }
+
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+    @GetMapping("/database/dbname")
+    public String getDatabaseName() {
+        return healthzService.getDatabaseName();
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
