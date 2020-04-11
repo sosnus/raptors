@@ -40,19 +40,19 @@ public class HealthzController {
         return model.getVersion();
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/backend")
     public Boolean isBackendWorking() {
         return true;
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
-    @GetMapping("/backend/version")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+    @GetMapping("/backend/version")//zróbmy żeby bez tokenu może odrazu? no jest bez tokenu xD
     public String getBackendVersion() {
         return version;
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/database")
     public Boolean isDatabaseWorking() {
         try {
