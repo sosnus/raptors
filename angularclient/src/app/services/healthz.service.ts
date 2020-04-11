@@ -21,8 +21,18 @@ export class HealthzService {
     }
 
   isDatabaseWorking() {
-    const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<boolean>(this.url + 'database', {headers});
+    // const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<boolean>(this.url + 'database');
+  }
+
+  getDatabaseAdress() {
+    // const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get(this.url + 'database/dbaddress', { responseType: 'text'});
+  }
+
+  getDatabaseName() {
+    // const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get(this.url + 'database/dbname', { responseType: 'text'});
   }
 
   isBackendWorking() {
@@ -31,8 +41,8 @@ export class HealthzService {
   }
 
   getBackendVersion() {
-    const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get(this.url + 'backend/version', {headers, responseType: 'text'});
+    // const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get(this.url + 'backend/version', { responseType: 'text'});
   }
-
+//  dznoiał to jest git xdńó
 }

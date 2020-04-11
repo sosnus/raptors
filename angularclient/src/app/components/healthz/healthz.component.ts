@@ -12,16 +12,37 @@ declare var require: any;
 export class HealthzComponent implements OnInit {
 
   frontVersion: string = require('../../../../package.json').version;
-  backVersion: string = '';
-  database: boolean = false;
+  backVersion = '';
+  backend = false;
+  database = false;
+  databaseAdress = '';
+  databaseName = '';
   jvmDate: JVMdata = new JVMdata();
 
   constructor(private healthzService: HealthzService) {
   }
 
   ngOnInit() {
+    this.healthzService.isBackendWorking().subscribe(data =>
+        this.backend = data,
+      error => {
+        console.log(error);
+      }
+    );
     this.healthzService.isDatabaseWorking().subscribe(data =>
         this.database = data,
+      error => {
+        console.log(error);
+      }
+    );
+    this.healthzService.getDatabaseAdress().subscribe(data =>
+        this.databaseAdress = data,
+      error => {
+        console.log(error);
+      }
+    );
+    this.healthzService.getDatabaseName().subscribe(data =>
+        this.databaseName = data,
       error => {
         console.log(error);
       }
@@ -31,6 +52,7 @@ export class HealthzComponent implements OnInit {
       },
       error => {
         console.log(error);
+        console.log(this.backVersion);
       }
     );
     this.healthzService.getJVMData().subscribe(data => {

@@ -100,6 +100,7 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     private LogRepository logRepository;
 
+
     //SERVICES
     @Autowired
     private GraphService graphService;
