@@ -51,3 +51,7 @@
 .arrow{
   float: right;
 }
+.version{
+  position: absolute;
+  bottom: 0;
+}

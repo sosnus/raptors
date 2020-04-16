@@ -33,15 +33,42 @@
 
                 <div class="text-center">
                   <button class="btn red-motive white-text btn-lg" [disabled]="email.length<1||password.length<1"
-                          (click)="login() " >Zaloguj
+                          (click)="login() ">Zaloguj
                   </button>
+                  <div>
+                    <table class="table table-sm table-striped tabelka">
+                      <tbody>
+                      <tr>
+                        <th scope="row">wersja aplikacji frontend</th>
+                        <td *ngIf="frontVersion!=''">{{frontVersion}}</td>
+                        <td *ngIf="frontVersion==''">brak danych</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">wersja aplikacji backend</th>
+                        <td *ngIf="backVersion!=''">{{backVersion}}</td>
+                        <td *ngIf="backVersion==''">brak połączenia z aplikacją backend</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">nazwa bazy danych</th>
+                        <td>{{databaseName}}</td>
+                        <td *ngIf="!database">brak połączenia z bazą danych</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">adres bazy danych</th>
+                        <td>{{databaseAdress}}</td>
+                        <td *ngIf="!database">brak połączenia z bazą danych</td>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
                 <!-- Login Form -->
 
               </div>
             </div>
             <!-- Front Side -->
+
           </div>
+
         </div>
         <!-- Rotating card -->
 
