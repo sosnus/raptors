@@ -10,7 +10,9 @@ branches:
   - master
   
 before_script:
+  - cd angularclient
   - npm install -g @angular/cli
+  
 script:
-- npm install
-- ng build 
+  - npm install
+  - ng build 
