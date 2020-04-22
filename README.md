@@ -1,4 +1,4 @@
-# raptors- Aplikacja frontend
+# raptors- Aplikacja frontend [![Build Status](https://travis-ci.org/jurczewski/raptors.svg?branch=master)](https://travis-ci.org/jurczewski/raptors)
 Aplikacja wykorzystuje w warstwie frontowej framework Angular w wersji 8.
 * W celu uruchomienia projektu na urządzeniu wymagana jest instalacja środowisja [Node.js](https://nodejs.org/en/).
 * Projekt zbudowany jest w oparciu o framework Angular. którego instalacja polega na wykonaniu komendy ```npm install -g @angular/cli``` w terminalu
