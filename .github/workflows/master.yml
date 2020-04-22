@@ -13,11 +13,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      
+      - run: cd angularclient
 
-      - name: Node $
+      - name: Node 12.16.2
         uses: actions/setup-node@v1
         with:
-          node-version: $
+          node-version: '12.16.2'
 
       - name: npm install and npm run build
         run: |
