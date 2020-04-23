@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Orientation} from "../model/Stand/Orientation";
 import {RobotTask} from "../model/Robots/RobotTask";
+import {environment} from "../../environments/environment"
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class StoreService {
   public mapResolution = 0.01;
   public imageResolution = 1984;
   public mapID = '5e19f1fa9b1eab79e9a58e08';
-  public baseURL = 'http://localhost:8080';
+  public baseURL = environment.serverUrl;
 
   public robotTaskList: RobotTask[]= [];
   public robotTaskListTemp: RobotTask[] = [];
