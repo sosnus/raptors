@@ -58,17 +58,12 @@ export class LoginComponent implements OnInit {
     );
     this.healthzService.getBackendVersion().subscribe(data => { // udaje sie
         this.backVersion = data;
-        console.log(this.backVersion);  // czemu tu jest html? xD
+        console.log(this.backVersion);
       },
       error => {
         console.log(error);
       }
-    );// czyto ejst git? tak, chyba działa, jeszcze to niżej pole nie działa ale to też token trzeba wyjebać... ciekway problem xD
-    // takie w miar e logizcny, bo jednk z tokenem to html ma już zuepłnie inną budowę xd
-    // tylko czemu zwracał htmla zamiast dać ze nie udało sie fechować xD
-    // pewnie nie było jakiegoś opodwienidego łąpania błeó xd
-    // nie działa... tam jest większa logika chbya, zaraz zmienie i potestuje
-    // to ja bęe patrzył ;) ok xD
+    );
   }
 
 

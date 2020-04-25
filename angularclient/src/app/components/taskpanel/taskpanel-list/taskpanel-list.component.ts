@@ -46,7 +46,7 @@ export class TaskpanelListComponent implements OnInit {
 
   checkIfFinished() {
     this.robotTasks.forEach(robotTask => {
-      if (robotTask.status === 'finished') {
+      if (robotTask.status.name === 'finished') {
         this.delete(robotTask);
       }
     })

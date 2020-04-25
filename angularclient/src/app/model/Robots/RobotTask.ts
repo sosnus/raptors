@@ -1,6 +1,7 @@
 import {Robot} from "./Robot";
 import {Behaviour} from "./Behaviour";
 import {TaskPriority} from "../type/TaskPriority";
+import {StatusType} from "./StatusType"
 
 export class RobotTask {
   id: string;
@@ -9,10 +10,12 @@ export class RobotTask {
   behaviours: Behaviour[];
   startTime: string;
   priority: TaskPriority;
-  status: string;
+  status: StatusType;
   userID: string;
 
-  constructor(robot: Robot, name: string, behaviours: Behaviour[], startTime: string, priority: TaskPriority, status: string, userID: string) {
+
+  // tslint:disable-next-line:max-line-length
+  constructor(robot: Robot, name: string, behaviours: Behaviour[], startTime: string, priority: TaskPriority, status: StatusType, userID: string) {
     this.robot = robot;
     this.name = name;
     this.behaviours = behaviours;

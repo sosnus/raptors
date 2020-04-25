@@ -95,7 +95,7 @@ export class TaskpanelComponent implements OnInit {
   createOrUpdate() {
     let dateTime = new Date();
     this.robotTask.startTime = dateTime.toLocaleString();
-    this.robotTask.status = "waiting";
+    this.robotTask.status.name = "waiting";
     this.robotTask.userID = this.loggedUserID;
     this.robotTaskService.save(this.robotTask).subscribe(
       result => {
