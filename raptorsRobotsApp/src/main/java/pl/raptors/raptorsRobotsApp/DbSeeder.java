@@ -367,10 +367,10 @@ public class DbSeeder implements CommandLineRunner {
         TaskPriority taskPriority2 = new TaskPriority("medium", 3);
 
 
-        RobotTask robotTask = new RobotTask(robot, "transport tools", behaviours, formatter.format(new Date()), taskPriority, "done", testowyUser1.getId());
-        RobotTask robotTask1 = new RobotTask(null, "deliver package", behaviours1, formatter.format(new Date()), taskPriority1, "waiting", testowySuperUser1.getId());
-        RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, "on going", testowyServiceman1.getId());
-        RobotTask robotTask3 = new RobotTask(robot1, "receive package", behaviours1, formatter.format(new Date()), taskPriority2, "on going", testowyAdmin1.getId());
+        RobotTask robotTask = new RobotTask(robot, "transport tools", behaviours, formatter.format(new Date()), taskPriority, new StatusType("done", "zadanie zostało wykonane", "✔"), testowyUser1.getId());
+        RobotTask robotTask1 = new RobotTask(null, "deliver package", behaviours1, formatter.format(new Date()), taskPriority1, new StatusType("wait", "zadanie zostało już zaplanowane ale jeszcze robot go nie wykonuje", "⏳"), testowySuperUser1.getId());
+        RobotTask robotTask2 = new RobotTask(robot2, "receive package", behaviours2, formatter.format(new Date()), taskPriority2, new StatusType("in-progress", "robot wykonuje właśnie to zadanie", "\uD83D\uDD1B"), testowyServiceman1.getId());
+        RobotTask robotTask3 = new RobotTask(robot1, "receive package", behaviours1, formatter.format(new Date()), taskPriority2, new StatusType("in-progress", "robot wykonuje właśnie to zadanie", "\uD83D\uDD1B"), testowyAdmin1.getId());
 
 /*        this.robotTaskRepository.deleteAll();
         this.robotTaskRepository.save(robotTask);
