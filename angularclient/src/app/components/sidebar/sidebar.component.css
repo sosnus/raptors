@@ -52,6 +52,10 @@
   float: right;
 }
 .version{
-  position: absolute;
-  bottom: 0;
+  background: white;
+  /*margin-top: auto;*/
+  /*font-size: 12px;*/
+  position:relative;
+  bottom:0;
+  width:100%;
 }

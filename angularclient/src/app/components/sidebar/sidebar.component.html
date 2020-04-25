@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="this.authService.isAdmin() || this.authService.isServiceman()" class="version">wersja frontendu: {{frontVersion}}<br/> wersja backendu: {{backVersion}}</div>
+    <div class="version" *ngIf="this.authService.isAdmin() || this.authService.isServiceman()" >wersja frontendu: {{frontVersion}}<br/> wersja backendu: {{backVersion}}</div>
   </div>
   <!-- Accordion group -->
 </div>

@@ -66,10 +66,10 @@ export class TaskpanelDetailsComponent implements OnInit {
   }
 
   createOrUpdate() {
-    this.robotService.getByID(this.selectedRobot).subscribe(robot=>{
-      this.task.robot=robot;
+    this.robotService.getByID(this.selectedRobot).subscribe(robot => {
+      this.task.robot = robot;
       // uaktualnij status zadania z waiting na zajęte
-      this.task.status="on going";
+      this.task.status.name = 'on going';
 
 
       this.robotTaskService.save(this.task).subscribe(
@@ -121,21 +121,21 @@ export class TaskpanelDetailsComponent implements OnInit {
   }
 
   checkRole(){
-    if(this.authService.isAdmin() || this.authService.isServiceman()){
+    if(this.authService.isAdmin() || this.authService.isServiceman()) {
       return true;
     }
     return null;
   }
 
   checkIsTaskFree(){
-    if(this.task.status === "waiting"){
+    if(this.task.status.name === 'waiting') {
       return true;
     }
     return null;
   }
 
-  checkAccess(){
-    if(this.checkRole() && this.checkIsTaskFree()){
+  checkAccess() {
+    if (this.checkRole() && this.checkIsTaskFree()) {
       return true;
     }
     return null;
