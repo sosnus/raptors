@@ -19,7 +19,7 @@
     <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1">
       <div *ngFor="let task of storeService.robotTaskList">
         <div class="card-header card-item clickable" [routerLink]="['/taskpanel-details', task.id]"> <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
-          {{task.name}}
+          {{task.name}}<mat-icon matBadge="22" matBadgePosition="above after" id="badge" >{{task.status.symbol}}</mat-icon>
         </div>
       </div>
     </div>

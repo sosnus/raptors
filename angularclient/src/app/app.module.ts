@@ -72,6 +72,7 @@ import {RobotaApprovalService} from './services/robotapproval.service';
 import { SpinnerComponent } from './components/adminpanel/shared/spinner/spinner.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { HealthzComponent } from './components/healthz/healthz.component';
+import {MatIconModule} from '@angular/material';
 
 
 const config: InputFileConfig = {};
@@ -130,18 +131,19 @@ const config: InputFileConfig = {};
     SpinnerComponent,
     HealthzComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    InputFileModule.forRoot(config),
-    ToastrModule.forRoot(),
-    FormsModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    ColorPickerModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        InputFileModule.forRoot(config),
+        ToastrModule.forRoot(),
+        FormsModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        ColorPickerModule,
+        MatIconModule
+    ],
   providers: [MapService, HttpClient, RobotService, GraphService, StoreService,
     StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,
     ParkingTypeService, TaskPriorityService, StandTypeService, StandStatusService,
