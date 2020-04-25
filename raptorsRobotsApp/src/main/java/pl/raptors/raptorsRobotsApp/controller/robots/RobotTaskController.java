@@ -17,10 +17,15 @@ public class RobotTaskController {
     @Autowired
     RobotTaskService robotTaskService;
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER')")
     @GetMapping("/all")
     public List<RobotTask> getAll() {
-        return robotTaskService.getAll();
+        List<RobotTask> xD = robotTaskService.getAll();
+//        for (RobotTask r:xD      ) {
+//            System.out.println(r);
+//        }
+//        System.out.println(xD);
+        return xD;
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasRole('ROLE_REGULAR_USER')")
