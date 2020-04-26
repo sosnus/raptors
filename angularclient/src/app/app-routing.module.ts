@@ -37,8 +37,6 @@ const routes: Routes = [
   {path: 'stands', component: StandCreatorComponent},
   {
     path: 'adminpanel', component: AdminPanelComponent,
-    canActivate: [AuthGuard],
-    data: {rolesIDs: ['ROLE_ADMIN']},
   },
   {
     path: 'users', component: UserspanelComponent,

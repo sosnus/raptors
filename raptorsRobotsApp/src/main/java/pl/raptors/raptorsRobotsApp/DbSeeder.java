@@ -187,12 +187,14 @@ public class DbSeeder implements CommandLineRunner {
 
         List<User> usersToAdd = Arrays.asList(testowyUser1,testowySuperUser1, testowyServiceman1, testowyRobot1,testowyAdmin1);
 
-/*        this.userRepository.deleteAll();
+
+        this.userRepository.deleteAll();
         this.userService.addOne(testowyUser1);
         this.userService.addOne(testowySuperUser1);
         this.userService.addOne(testowyServiceman1);
         this.userService.addOne(testowyRobot1);
-        this.userService.addOne(testowyAdmin1);*/
+        this.userService.addOne(testowyAdmin1);
+
 
         //GRAFY
         Vertex vertex1 = new Vertex(17.5, 25.0, "A");
@@ -378,7 +380,7 @@ public class DbSeeder implements CommandLineRunner {
         this.robotTaskRepository.save(robotTask3);*/
 
         //czyść baze
-        /*
+
         this.mapAreaRepository.deleteAll();
         //this.movementMapRepository.deleteAll();
         this.standRepository.deleteAll();
@@ -456,7 +458,7 @@ public class DbSeeder implements CommandLineRunner {
         this.robotTaskRepository.save(robotTask);
         this.robotTaskRepository.save(robotTask1);
         this.robotTaskRepository.save(robotTask2);
-*/
+
         //KEEP COMMENTED! ---TESTING CASCADE UPDATES/DELETES--- KEEP COMMENTED!
 
         //MOVEMENT

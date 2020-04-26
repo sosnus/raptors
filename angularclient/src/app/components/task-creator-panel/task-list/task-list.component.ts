@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { TASKS } from '../local_db'
+import { TaskCreatorService } from 'src/app/services/task-creator.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
@@ -8,14 +9,16 @@ import { TASKS } from '../local_db'
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit {
-  tasks = TASKS;
+  tasks: Observable<[]>
 
-  constructor() { }
+  constructor(private taskCreatorService: TaskCreatorService) {
+    this.taskCreatorService.getTasks().subscribe(res => this.tasks = res);
+   }
 
   ngOnInit() {
   }
   
   removeTask(id: Number): void {
-    console.log("Removing task with ID: " + id);
+    this.taskCreatorService.removeTask(id).subscribe(res => this.tasks = res);
   }
 }

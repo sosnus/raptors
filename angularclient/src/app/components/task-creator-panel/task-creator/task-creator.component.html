@@ -6,17 +6,15 @@
 
     <div>
         <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let movie of movies" cdkDrag>
-                <div>
-                    {{movie}}
-                    <app-task-behaviour></app-task-behaviour>
 
+            <div class="example-box" *ngFor="let behaviour of behaviours" cdkDrag>
+
+                <div>
+                    <app-task-behaviour title={{behaviour}}></app-task-behaviour>
                 </div>
+                            
             </div>
 
-            <button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
-                <i class="fas fa-plus"></i> Dodaj
-            </button>
         </div>
     </div>
 

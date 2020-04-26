@@ -76,7 +76,9 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { TaskListComponent } from './components/task-creator-panel/task-list/task-list.component';
 import { TaskCreatorComponent } from './components/task-creator-panel/task-creator/task-creator.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { TaskBehaviourComponent } from './components/task-creator-panel/task-behaviour/task-behaviour.component';;
+import { TaskBehaviourComponent } from './components/task-creator-panel/task-behaviour/task-behaviour.component';
+import { TaskBehaviourModalComponent } from './components/task-creator-panel/task-behaviour-modal/task-behaviour-modal.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 const config: InputFileConfig = {};
@@ -137,6 +139,7 @@ const config: InputFileConfig = {};
     TaskListComponent,
     TaskCreatorComponent,
     TaskBehaviourComponent,
+    TaskBehaviourModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -150,7 +153,8 @@ const config: InputFileConfig = {};
     MatSlideToggleModule,
     ColorPickerModule,
     DragDropModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogModule
   ],
   providers: [MapService,HttpClient, RobotService, GraphService, StoreService,
     StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,

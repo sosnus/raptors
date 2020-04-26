@@ -13,20 +13,19 @@ export class TaskCreatorComponent implements OnInit {
   ngOnInit() {
   }
   
-  movies = [
-    'Episode I - The Phantom Menace',
-    'Episode II - Attack of the Clones',
-    'Episode III - Revenge of the Sith',
-    'Episode IV - A New Hope',
-    'Episode V - The Empire Strikes Back',
-    'Episode VI - Return of the Jedi',
-    'Episode VII - The Force Awakens',
-    'Episode VIII - The Last Jedi',
-    'Episode IX – The Rise of Skywalker'
+  behaviours = [
+    'Idź do przodu',
+    'Otwórz lodówkę',
+    'Podnieś żółty ser',
+    'Zamknij lodówkę',
+    'Odwróć się',
+    'Idź do przodu',
+    'Odłóż żółty ser na stół',
+    'Zakończ'
   ];
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
-    console.log(this.movies)
+    moveItemInArray(this.behaviours, event.previousIndex, event.currentIndex);
+    console.log(this.behaviours)
   }
 }

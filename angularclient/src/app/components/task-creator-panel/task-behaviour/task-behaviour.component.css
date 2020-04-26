@@ -1,0 +1,18 @@
+.behaviour-container {
+    width: 40vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.behaviour-title {
+    width: 30vw;
+}
+
+.behaviour-manage {
+    width: 10vw;
+}
+
+.btn {
+    padding: 0.5em 1em;
+}
