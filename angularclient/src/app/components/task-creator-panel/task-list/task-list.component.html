@@ -1,0 +1,27 @@
+<div class="task-list-container">
+
+    <div *ngFor="let task of tasks">
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <strong>{{task.title}}</strong>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="task-details">
+                <p>{{task.description}}</p>
+
+                <button class="btn btn-primary" [routerLink]="['/task', task.id]">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="btn btn-danger" (click)="removeTask(task.id)">
+                    <i class="fas fa-trash-alt"></i> Remove
+                </button>
+            </div>
+
+        </mat-expansion-panel>
+
+    </div>
+
+</div>

@@ -18,6 +18,8 @@ import {RobotTask} from "./model/Robots/RobotTask";
 import {TaskpanelDetailsComponent} from "./components/taskpanel/taskpanel-details/taskpanel-details.component";
 import {TaskpanelListComponent} from "./components/taskpanel/taskpanel-list/taskpanel-list.component";
 import {RobotListComponent} from "./components/robot-list/robot-list.component";
+import { TaskCreatorPanelComponent } from './components/task-creator-panel/task-creator-panel.component';
+import { TaskCreatorComponent } from './components/task-creator-panel/task-creator/task-creator.component';
 
 
 const routes: Routes = [
@@ -52,6 +54,8 @@ const routes: Routes = [
   {path: 'movementPaths', component: MovementPathComponent},
   {path: 'corridors', component: CorridorsComponent},
   {path: 'taskpanel', component: TaskpanelComponent},
+  {path: 'task-creator-panel', component: TaskCreatorPanelComponent},
+  {path: 'task/:id', component: TaskCreatorComponent},
   {path: 'access-denied', component: AccessForbiddenComponent},
 
 ];

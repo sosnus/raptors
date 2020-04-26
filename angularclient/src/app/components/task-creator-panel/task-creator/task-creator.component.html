@@ -1,0 +1,23 @@
+<div class="task-creator-container">
+
+    <div class="task-creator-title">
+        <h4>Task Creator - <strong>Task 1</strong></h4>
+    </div>
+
+    <div>
+        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let movie of movies" cdkDrag>
+                <div>
+                    {{movie}}
+                    <app-task-behaviour></app-task-behaviour>
+
+                </div>
+            </div>
+
+            <button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+                <i class="fas fa-plus"></i> Dodaj
+            </button>
+        </div>
+    </div>
+
+</div>

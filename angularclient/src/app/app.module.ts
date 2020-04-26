@@ -71,6 +71,12 @@ import { RobotsToApproveTableComponent } from './components/robot-list/robots-to
 import {RobotaApprovalService} from "./services/robotapproval.service";
 import { SpinnerComponent } from './components/adminpanel/shared/spinner/spinner.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { TaskCreatorPanelComponent } from './components/task-creator-panel/task-creator-panel.component';
+import { DragDropModule } from "@angular/cdk/drag-drop";
+import { TaskListComponent } from './components/task-creator-panel/task-list/task-list.component';
+import { TaskCreatorComponent } from './components/task-creator-panel/task-creator/task-creator.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { TaskBehaviourComponent } from './components/task-creator-panel/task-behaviour/task-behaviour.component';;
 
 
 const config: InputFileConfig = {};
@@ -127,6 +133,10 @@ const config: InputFileConfig = {};
     RobotsTableComponent,
     RobotsToApproveTableComponent,
     SpinnerComponent,
+    TaskCreatorPanelComponent,
+    TaskListComponent,
+    TaskCreatorComponent,
+    TaskBehaviourComponent,
   ],
   imports: [
     BrowserModule,
@@ -138,7 +148,9 @@ const config: InputFileConfig = {};
     FormsModule,
     MatSelectModule,
     MatSlideToggleModule,
-    ColorPickerModule
+    ColorPickerModule,
+    DragDropModule,
+    MatExpansionModule
   ],
   providers: [MapService,HttpClient, RobotService, GraphService, StoreService,
     StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,
