@@ -41,10 +41,10 @@
     <!-- Card body -->
     <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2">
       <div *ngFor="let robot of robotList">
-        <div class="card-header card-item clickable" [routerLink]="['/robotpanel', robot.id]"> <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
-          Robot IP: {{robot.robotIp}}
+        <div class="card-header card-item clickable"> <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
+          <span [routerLink]="['/robotpanel', robot.id]">Robot IP: {{robot.robotIp}}</span>
           <i class="material-icons warning" *ngIf="robot.batteryLevel<10">battery_alert</i>
-          <i class="material-icons arrow">play_arrow</i>
+          <i class="material-icons arrow" [routerLink]="['/robotpanel-new', robot.id]">play_arrow</i>
         </div>
       </div>
     </div>
