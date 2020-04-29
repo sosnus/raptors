@@ -1,0 +1,19 @@
+.table{
+  width: 100%;
+  margin-top: 2rem;
+}
+
+h1 {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 10px;
+  margin: 0;
+  resize: horizontal;
+  font-size: 15px;
+}
+.card-header{
+  text-align: center;
+  font-size: 1.5rem;
+}
