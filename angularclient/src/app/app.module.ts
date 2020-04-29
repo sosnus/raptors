@@ -56,6 +56,7 @@ import {MovementPathListComponent} from "./components/map/movement-path/movement
 import { AccessForbiddenComponent } from './components/access-forbidden/access-forbidden.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { RobotPanelComponent } from './components/robotpanel/robot-panel.component';
+import { RobotPanelComponentNew } from './components/robotpanel-new/robot-panel.component';
 import { RobotDetailsComponent } from './components/robotpanel/robot-details/robot-details.component';
 import {MapScaledComponent} from "./components/robotpanel/map-scaled/map-scaled.component";
 import { ExtraRobotElementComponent } from './components/adminpanel/data/extra-robot-element/extra-robot-element.component';
@@ -114,6 +115,7 @@ const config: InputFileConfig = {};
     MovementPathListComponent,
     AccessForbiddenComponent,
     RobotPanelComponent,
+    RobotPanelComponentNew,
     RobotDetailsComponent,
     MapScaledComponent,
     ExtraRobotElementComponent,
