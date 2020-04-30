@@ -2,8 +2,12 @@
   <app-robot-details class="card" [robot]="robot"></app-robot-details>
   <app-map-scaled class="card" [mapContainerSize]="400" [robot]="robot"></app-map-scaled>
 </div>
-<hr size="30" noshade>
-<div style="display: flex;width: 85%;">
-  <app-robot-model class="card item" [model]="robot.model"></app-robot-model>
-  <app-logs-table class="card item" [logs]="logs"></app-logs-table>
+<hr size="30" noshade/>
+<div class="container">
+  <div class="row">
+    <app-model-table class="col-xl-12" [root]="genericModel"></app-model-table>
+  </div>
+  <div class="row">
+    <app-logs-table class="col-xl-12" [logs]="logs"></app-logs-table>
+  </div>
 </div>

@@ -72,6 +72,8 @@ import { RobotsToApproveTableComponent } from './components/robot-list/robots-to
 import {RobotaApprovalService} from "./services/robotapproval.service";
 import { SpinnerComponent } from './components/adminpanel/shared/spinner/spinner.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {ModelTableComponent} from "./components/robotpanel-new/model-table/model-table.component";
+import { TableRowComponent } from './components/robotpanel-new/model-table/table-row/table-row.component';
 
 
 const config: InputFileConfig = {};
@@ -129,6 +131,8 @@ const config: InputFileConfig = {};
     RobotsTableComponent,
     RobotsToApproveTableComponent,
     SpinnerComponent,
+    ModelTableComponent,
+    TableRowComponent,
   ],
   imports: [
     BrowserModule,

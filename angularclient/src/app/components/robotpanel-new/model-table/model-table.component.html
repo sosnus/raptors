@@ -1,0 +1,13 @@
+<div class="card-header">{{header}}</div>
+<table class="table">
+  <tbody>
+  <tr (click)="goToRoot()">
+    <th>
+      < go back
+    </th>
+  </tr>
+  <tr *ngFor="let prop of properties" (click)="updateRoot(prop)">
+    <app-table-row [prop]="prop"></app-table-row>
+  </tr>
+  </tbody>
+</table>

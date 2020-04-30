@@ -5,6 +5,7 @@ import {Robot} from "../../model/Robots/Robot";
 import {LogService} from "../../services/log.service";
 import {Log} from "../../model/Robots/Log";
 import {PropertyFactory} from "../../model/GenericRobotModel/PropertyFactory";
+import {Property} from "../../model/GenericRobotModel/Property";
 
 @Component({
   selector: 'app-robot-panel',
@@ -15,6 +16,7 @@ export class RobotPanelComponentNew implements OnInit {
 
   private robot: Robot = new Robot();
   private logs: Log[] = [];
+  private genericModel: Property;
 
   constructor(private activatedRoute: ActivatedRoute,
               private robotService: RobotService,
@@ -38,8 +40,8 @@ export class RobotPanelComponentNew implements OnInit {
 
   private getGenericRobotModel(id) {
     this.robotService.getRawByID(id).subscribe(data => {
-      const genericModel = PropertyFactory.createFromObject('root', data);
-      console.log(genericModel);
+      const genericModel = PropertyFactory.createFromObject('Model', data);
+      this.genericModel = genericModel;
     })
   }
 
