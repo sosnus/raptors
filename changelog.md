@@ -18,6 +18,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - refactor domain/type/RobotStatus.java to domain.robots
 - change version frontend and backend to  1.0.1
 
+## [1.0.1] - 2020-05-06
+### Changed
+- add scroll to sidebar
+- edit robot view in sidebar
+- add badge to tasks with status
+- refactor status field in RobotTask
 
 
 -----------------------------------------------------------
