@@ -113,4 +113,7 @@ export class SidebarComponent implements OnInit {
     });
   }
 
+  drukuj(robot: Robot) {
+    console.log(robot);
+  }
 }
