@@ -1,6 +1,6 @@
 {
   "name": "angularclient",
-  "version": "1.0.1",
+  "version": "1.0.2-dev",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open --watch",
