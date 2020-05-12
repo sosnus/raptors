@@ -20,6 +20,10 @@
   box-shadow: 0 8px 24px 0 rgba(255, 144, 144, 1);
 }
 
+.card-item:focus {
+  background: #d06368;
+}
+
 .card-header h5{
   font-size: 1.1rem;
   font-weight: 400 !important;
@@ -52,6 +56,17 @@
   float: right;
 }
 .version{
-  position: absolute;
-  bottom: 0;
+  background: white;
+  /*margin-top: auto;*/
+  /*font-size: 12px;*/
+  position:relative;
+  bottom:0;
+  width:100%;
+}
+.mat-icon {
+  height: 0;
+  width: 0;
+  background-repeat: no-repeat;
+  display: inline-block;
+  fill: currentColor;
 }

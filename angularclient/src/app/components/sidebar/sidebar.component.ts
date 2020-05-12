@@ -46,6 +46,7 @@ export class SidebarComponent implements OnInit {
 
       this.robotTaskService.getRobotTasks().subscribe(tasks => {
         this.storeService.robotTaskList = tasks;
+        console.log(tasks);
         // filtrowanie listy zadań pod edit/delete zależnie od roli
         if (this.authService.isSuperUser()) {
           this.getRobotsForSuperUser();
@@ -112,4 +113,7 @@ export class SidebarComponent implements OnInit {
     });
   }
 
+  drukuj(robot: Robot) {
+    console.log(robot);
+  }
 }
