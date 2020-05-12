@@ -21,11 +21,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - refactor domain/type/RobotStatus.java to domain.robots
 - change version frontend and backend to  1.0.1
 
+
 ## [1.0.0] - 2020-02-19
 ### Added
 - RaptorsApp project
-
-
 
 
 
