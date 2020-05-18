@@ -77,8 +77,8 @@ import { TaskListComponent } from './components/task-creator-panel/task-list/tas
 import { TaskCreatorComponent } from './components/task-creator-panel/task-creator/task-creator.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { TaskBehaviourComponent } from './components/task-creator-panel/task-behaviour/task-behaviour.component';
-import { TaskBehaviourModalComponent } from './components/task-creator-panel/task-behaviour-modal/task-behaviour-modal.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import { TaskDetailsComponent } from './components/task-creator-panel/task-details/task-details.component';
 
 
 const config: InputFileConfig = {};
@@ -139,7 +139,7 @@ const config: InputFileConfig = {};
     TaskListComponent,
     TaskCreatorComponent,
     TaskBehaviourComponent,
-    TaskBehaviourModalComponent,
+    TaskDetailsComponent
   ],
   imports: [
     BrowserModule,
