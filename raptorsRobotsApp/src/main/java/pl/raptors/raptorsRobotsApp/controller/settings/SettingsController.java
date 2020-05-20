@@ -1,10 +1,7 @@
 package pl.raptors.raptorsRobotsApp.controller.settings;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.raptors.raptorsRobotsApp.domain.robots.Robot;
 import pl.raptors.raptorsRobotsApp.domain.settings.ContactInfo;
 import pl.raptors.raptorsRobotsApp.domain.settings.CurrentMap;
@@ -16,6 +13,7 @@ import pl.raptors.raptorsRobotsApp.service.settings.ContactInfoService;
 import pl.raptors.raptorsRobotsApp.service.settings.CurrentMapService;
 import pl.raptors.raptorsRobotsApp.service.settings.InstanceInfoService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -49,4 +47,8 @@ public class SettingsController {
         return contactInfoService.getAll();
     }
 
+    @PostMapping("/updateInstanceInfo")
+    public InstanceInfo updateInstanceInfo(@RequestBody @Valid InstanceInfo instanceInfo) {
+        return instanceInfoService.updateOne(instanceInfo);
+    }
 }
