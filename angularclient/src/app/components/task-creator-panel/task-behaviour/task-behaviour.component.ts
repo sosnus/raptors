@@ -7,14 +7,19 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 
 export class TaskBehaviourComponent implements OnInit {
-  @Input() title: string;
-  @Input() index: number;
-
+  modalID="taskBehaviourEditModal";
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  reset(){
+    console.log("reset");
+  }
 
+  update(){
+    console.log("update");
+    
+  }
 }

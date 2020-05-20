@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, copyArrayItem } from '@angular/cdk/drag-drop';
 import { BehaviourService } from 'src/app/services/type/behaviour.service';
 import { Behaviour } from 'src/app/model/Robots/Behaviour';
 import { RobotTask } from 'src/app/model/Robots/RobotTask';
@@ -10,7 +10,7 @@ import { TaskPriorityService } from 'src/app/services/type/task-priority.service
 import { RobotTaskService } from 'src/app/services/robotTask.service';
 import { StoreService } from 'src/app/services/store.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
 })
 export class TaskCreatorComponent implements OnInit {
   behaviours: Behaviour[] = [];
+  defaultBehaviours: Behaviour[] = [];
   behavioursComplete: Behaviour[] = [];
 
   robotTask: RobotTask = new RobotTask(null, null, null, null, null, null, null);
@@ -32,19 +33,33 @@ export class TaskCreatorComponent implements OnInit {
   selectedTaskPriority: string;
 
   loggedUserID: string;
+
+  modalID = "taskBehaviourEditModal";
+
   constructor(private behaviourService: BehaviourService,
     private taskPriorityService: TaskPriorityService,
     private robotTaskService: RobotTaskService,
     private storeService: StoreService,
     private toastr: ToastrService,
-    private router: Router) { }
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
+    if (this.route.snapshot.paramMap.get('id') !== null) {
+      this.robotTaskService.getRobotTask(this.route.snapshot.paramMap.get('id')).subscribe(
+        robotTask => {
+          console.log(robotTask)
+          this.robotTask = robotTask;
+          this.selectedTaskPriority = robotTask.priority.id;
+          this.behavioursComplete = robotTask.behaviours;
+        }
+      )
+    }
+
     this.behaviourService.getAll().subscribe(
       behaviours => {
-        console.log("Pobrane wszystkie zachowania: " + behaviours.map(behaviour => console.log(behaviour)));
         this.behaviours = behaviours;
-        console.log("Pobrane wszystkie tablica: " + this.behaviours);
+        this.defaultBehaviours = behaviours;
       }
     );
 
@@ -52,15 +67,15 @@ export class TaskCreatorComponent implements OnInit {
 
     this.taskPriorityService.getAll().subscribe(priority => {
       this.taskPriorities = priority;
-    }
-    );
+    });
+
   }
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data,
+      copyArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
@@ -74,10 +89,10 @@ export class TaskCreatorComponent implements OnInit {
   createOrUpdate() {
     let dateTime = new Date();
     this.robotTask.startTime = dateTime.toLocaleString();
-    this.robotTask.status = "waiting";
+    this.robotTask.status = this.selectedTaskPriority;
     this.robotTask.userID = this.loggedUserID;
     this.robotTask.behaviours = this.behavioursComplete;
-    console.log("duuupa");
+
     this.robotTaskService.save(this.robotTask).subscribe(
       result => {
         if (this.robotTaskExist(this.robotTask.id)) {
@@ -94,6 +109,14 @@ export class TaskCreatorComponent implements OnInit {
     );
     this.router.navigate(['/task-creator-panel']);
 
+  }
+
+  removeBehaviour(index): void {
+    this.behavioursComplete.splice(index, 1)
+  }
+
+  openEditModal(index): void {
+    console.log("openEditModal");
   }
 
 }

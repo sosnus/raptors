@@ -54,7 +54,7 @@
 
       <li class="nav-item" *ngIf="authService.userLoggedIn()">
         <div *ngIf="authService.isAdmin() || authService.isServiceman() || authService.isRegularUser() || authService.isSuperUser()">
-        <a class="nav-link" [routerLink]="['taskpanel']">
+        <a class="nav-link" [routerLink]="['task-creator-panel']">
           <i class="fas fa-tasks"></i>
           Panel zadań
           <span class="sr-only">(current)</span>

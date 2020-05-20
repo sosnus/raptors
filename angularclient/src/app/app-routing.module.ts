@@ -56,6 +56,7 @@ const routes: Routes = [
   {path: 'taskpanel', component: TaskpanelComponent},
   {path: 'task-creator-panel', component: TaskCreatorPanelComponent},
   {path: 'task-creator-panel/add', component: TaskCreatorComponent},
+  {path: 'task-creator-panel/edit/:id', component: TaskCreatorComponent},
   {path: 'task-creator-panel/details/:id', component: TaskDetailsComponent},
   {path: 'access-denied', component: AccessForbiddenComponent},
 

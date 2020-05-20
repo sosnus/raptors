@@ -35,6 +35,7 @@
             data-toggle="modal"
             [attr.data-target]="'#' + modalID"
             (click)="edit(data)"
+            [routerLink]="['edit', data.id]"
           >
             Edytuj
           </button>
