@@ -6,6 +6,8 @@ import {Robot} from '../../model/Robots/Robot';
 import {AuthService} from '../../services/auth.service';
 import {UserService} from '../../services/user.service';
 import {HealthzService} from '../../services/healthz.service';
+import {SettingsService} from '../../services/settings.service';
+import {InstanceInfo} from '../../model/Settings/InstanceInfo';
 
 declare var require: any;
 
@@ -24,13 +26,15 @@ export class SidebarComponent implements OnInit {
   usersID: string[] = [];
   frontVersion = '';
   backVersion = '';
+  private instanceInfo: InstanceInfo;
 
   constructor(private storeService: StoreService,
               private robotTaskService: RobotTaskService,
               private robotService: RobotService,
               private authService: AuthService,
               private userService: UserService,
-              private healthzService: HealthzService) {
+              private healthzService: HealthzService,
+              private settingsService: SettingsService) {
   }
 
   ngOnInit() {
@@ -46,7 +50,6 @@ export class SidebarComponent implements OnInit {
 
       this.robotTaskService.getRobotTasks().subscribe(tasks => {
         this.storeService.robotTaskList = tasks;
-        console.log(tasks);
         // filtrowanie listy zadań pod edit/delete zależnie od roli
         if (this.authService.isSuperUser()) {
           this.getRobotsForSuperUser();
@@ -64,6 +67,13 @@ export class SidebarComponent implements OnInit {
           console.log(error);
         });
     }
+
+    this.settingsService.getInstanceInfo().subscribe(data => {
+      this.instanceInfo = data;
+    },
+      error => {
+      console.log(error);
+      });
   }
 
   rotateIcon(elementID: string): void {

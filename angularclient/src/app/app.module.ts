@@ -73,6 +73,7 @@ import { SpinnerComponent } from './components/adminpanel/shared/spinner/spinner
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { HealthzComponent } from './components/healthz/healthz.component';
 import {MatIconModule, MatTooltipModule} from '@angular/material';
+import {SettingsComponent} from './components/settings/settings.component';
 
 
 const config: InputFileConfig = {};
@@ -130,6 +131,7 @@ const config: InputFileConfig = {};
     RobotsToApproveTableComponent,
     SpinnerComponent,
     HealthzComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

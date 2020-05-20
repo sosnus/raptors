@@ -19,6 +19,7 @@ import {TaskpanelDetailsComponent} from './components/taskpanel/taskpanel-detail
 import {TaskpanelListComponent} from './components/taskpanel/taskpanel-list/taskpanel-list.component';
 import {RobotListComponent} from './components/robot-list/robot-list.component';
 import {HealthzComponent} from './components/healthz/healthz.component';
+import {SettingsComponent} from './components/settings/settings.component';
 
 
 const routes: Routes = [
@@ -55,6 +56,7 @@ const routes: Routes = [
   {path: 'taskpanel', component: TaskpanelComponent},
   {path: 'access-denied', component: AccessForbiddenComponent},
   {path: 'healthz', component: HealthzComponent},
+  {path: 'settings', component: SettingsComponent},
 
 ];
 

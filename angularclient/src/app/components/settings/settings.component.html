@@ -1,0 +1,100 @@
+<div class="row">
+
+  <table class="table table-sm table-striped">
+    <!--      <thead>-->
+    <!--      <tr>-->
+    <!--        <th scope="col">nazwa</th>-->
+    <!--        <th scope="col">wartość</th>-->
+    <!--      </tr>-->
+    <!--      </thead>-->
+
+    <tbody>
+    <tr>
+      <th scope="row">Aktualna mapa</th>
+      <table class="table table-sm table-striped">
+        <tr>
+          <th scope="row">ID mapy</th>
+          <td>{{this.currentMap.currentMapId}}</td>
+        </tr>
+        <tr>
+          <th scope="row">rozdzielczość obrazu</th>
+          <td>{{this.currentMap.imageResolutionX}} x {{currentMap.imageResolutionY}}</td>
+        </tr>
+        <tr>
+          <th scope="row">rozdzielczość mapy</th>
+          <td>{{currentMap.mapResolutionX}} x {{currentMap.mapResolutionY}}</td>
+        </tr>
+      </table>
+    </tr>
+    <tr>
+      <th scope="row">Dane instancji<br>
+        <button *ngIf="authService.isAdmin()" class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal"
+                [attr.data-target]="'#' + modalID" (click)="edit(instanceInfo)"
+        >Edytuj
+        </button>
+      </th>
+      <table class="table table-sm table-striped">
+        <tr>
+          <th scope="row">nazwa instancji</th>
+          <td>{{this.instanceInfo.instanceName}}</td>
+        </tr>
+        <tr>
+          <th scope="row">adres instancji</th>
+          <td>{{this.instanceInfo.instanceAddress}}</td>
+        </tr>
+        <tr>
+          <th scope="row">opis instancji</th>
+          <td>{{instanceInfo.instanceDescription}}</td>
+        </tr>
+      </table>
+    <tr>
+      <th scope="row">Kontakt</th>
+      <table class="table table-sm table-striped" *ngFor="let person of contactInfo">
+        <tr>
+          <th scope="row">funkcja</th>
+          <td>{{person.function}}</td>
+        </tr>
+        <tr>
+          <th scope="row">imie</th>
+          <td>{{person.name}}</td>
+        </tr>
+        <tr>
+          <th scope="row">mail</th>
+          <td>{{person.mail}}</td>
+        </tr>
+        <tr>
+          <th scope="row">telefon</th>
+          <td>{{person.phone}}</td>
+        </tr>
+      </table>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<app-form-modal-template [modalName]="'Edycja danych instancji'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="update()">
+  <form  #modalForm="ngForm">
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="instanceName" class="form-control validate" required [(ngModel)]="instanceInfo.instanceName" name="nazwa">
+      <label for="instanceName" >nazwa instancji</label>
+    </div>
+
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="instanceAdres" class="form-control validate" required [(ngModel)]="instanceInfo.instanceAddress" name="adres">
+      <label for="instanceAdres" >adres instancji</label>
+    </div>
+
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="instanceDescription" class="form-control validate" required [(ngModel)]="instanceInfo.instanceDescription" name="opis">
+      <label for="instanceDescription" >opis instancji</label>
+    </div>
+  </form>
+</app-form-modal-template>
