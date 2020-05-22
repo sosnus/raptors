@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "contactInfo")
 public class ContactInfo {
     @Id
-    private String id;
+    private String _id;
     private String Function;
     private String Name;
     private Long Phone;
