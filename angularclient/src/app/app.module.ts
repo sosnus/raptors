@@ -58,6 +58,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { RobotPanelComponent } from './components/robotpanel/robot-panel.component';
 import { RobotPanelComponentNew } from './components/robotpanel-new/robot-panel.component';
 import { RobotDetailsComponent } from './components/robotpanel/robot-details/robot-details.component';
+import { RobotDetailsComponentNew } from './components/robotpanel-new/robot-details-new/robot-details-new.component';
 import {MapScaledComponent} from "./components/robotpanel/map-scaled/map-scaled.component";
 import { ExtraRobotElementComponent } from './components/adminpanel/data/extra-robot-element/extra-robot-element.component';
 import { ElementFunctionalityComponent } from './components/adminpanel/data/element-functionality/element-functionality.component';
@@ -119,6 +120,7 @@ const config: InputFileConfig = {};
     RobotPanelComponent,
     RobotPanelComponentNew,
     RobotDetailsComponent,
+    RobotDetailsComponentNew,
     MapScaledComponent,
     ExtraRobotElementComponent,
     ElementFunctionalityComponent,
