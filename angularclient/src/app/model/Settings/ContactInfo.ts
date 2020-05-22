@@ -6,7 +6,7 @@ export class ContactInfo {
   mail;
 
 
-  constructor(id, Function, Name, Phone: number, Mail) {
+  constructor(id = '', Function = '', Name = '', Phone: number = 0, Mail = '') {
     this.id = id;
     this.function = Function;
     this.name = Name;

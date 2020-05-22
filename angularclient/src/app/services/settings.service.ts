@@ -4,6 +4,7 @@ import {StoreService} from './store.service';
 import {InstanceInfo} from '../model/Settings/InstanceInfo';
 import {CurrentMap} from '../model/Settings/CurrentMap';
 import {ContactInfo} from '../model/Settings/ContactInfo';
+import {ContactInfos} from '../model/Settings/ContactInfos';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,6 @@ export class SettingsService {
 
   updateContactInfo(noweInformacje) {
     // const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<ContactInfo[]>(this.url + 'updateContactInfo', noweInformacje);
+    return this.http.post<ContactInfo[]>(this.url + 'updateContactInfo', noweInformacje);
   }
 }

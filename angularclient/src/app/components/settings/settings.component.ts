@@ -17,10 +17,12 @@ import {ToastrService} from 'ngx-toastr';
 export class SettingsComponent implements OnInit {
 
   modalID = 'settingsTypeModal';
+  modalID1 = 'settingsTypeModal1';
+  modalID2 = 'settingsTypeModal2';
 
-  contactInfo: ContactInfo[];
-  instanceInfo: InstanceInfo;
-  currentMap: CurrentMap;
+  contactInfo: ContactInfo[] = [new ContactInfo(), new ContactInfo()];
+  instanceInfo: InstanceInfo = new InstanceInfo('', '', '');
+  currentMap: CurrentMap = new CurrentMap('', 0, 0, 0, 0);
 
   constructor(private settingsService: SettingsService,
               public authService: AuthService,
@@ -48,9 +50,20 @@ export class SettingsComponent implements OnInit {
     );
   }
 
-  update() {
-    console.log('update');
+  updateInstanceInfo() {
     this.settingsService.updateInstanceInfo(this.instanceInfo).subscribe(
+      result => {
+        this.toastr.success('Edytowano pomyślnie');
+      },
+      error => {
+        console.log(error);
+        this.toastr.error('Wystąpił bład podczas dodawania lub edycji');
+      }
+    );
+  }
+
+  updateContactInfo() {
+    this.settingsService.updateContactInfo(this.contactInfo).subscribe(
       result => {
         this.toastr.success('Edytowano pomyślnie');
       },
@@ -65,8 +78,13 @@ export class SettingsComponent implements OnInit {
     console.log('reset');
   }
 
-  edit(instanceInfo: InstanceInfo) {
+  editInstanceInfo(instanceInfo: InstanceInfo) {
     Object.assign(this.instanceInfo, instanceInfo);
+  }
+
+  editContactInfo(contactInfoArray: ContactInfo[]) {
+    console.log(contactInfoArray);
+    Object.assign(this.contactInfo, contactInfoArray);
   }
 
 }
