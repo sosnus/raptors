@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, Input, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Property} from "../../../model/GenericRobotModel/Property";
 import {PropertyTypeEnum} from "../../../model/GenericRobotModel/PropertyTypeEnum";
 
@@ -7,22 +7,17 @@ import {PropertyTypeEnum} from "../../../model/GenericRobotModel/PropertyTypeEnu
   templateUrl: './model-table.component.html',
   styleUrls: ['./model-table.component.css']
 })
-export class ModelTableComponent implements OnInit, AfterViewChecked {
+export class ModelTableComponent {
 
   @Input()
   root: Property;
-  private prevRoot: Property;
+  @Input()
   header: string;
+  @Input()
   properties;
+  private prevRoot: Property;
 
   constructor() { }
-
-  ngOnInit() {
-  }
-
-  ngAfterViewChecked() {
-    this.goToRoot();
-  }
 
   updateRoot(prop: Property): void {
     if (prop.type === PropertyTypeEnum.COMPLEX) {
