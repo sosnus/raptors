@@ -11,6 +11,7 @@ import { RobotTaskService } from 'src/app/services/robotTask.service';
 import { StoreService } from 'src/app/services/store.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -35,6 +36,10 @@ export class TaskCreatorComponent implements OnInit {
   loggedUserID: string;
 
   modalID = "taskBehaviourEditModal";
+  editingBehaviourIndex: number;
+  editingBehaviour: Behaviour = new Behaviour(null, null);
+  editingBehaviourParams: any;
+  editingBehaviourParamKeys: string[] = [];
 
   constructor(private behaviourService: BehaviourService,
     private taskPriorityService: TaskPriorityService,
@@ -115,8 +120,38 @@ export class TaskCreatorComponent implements OnInit {
     this.behavioursComplete.splice(index, 1)
   }
 
-  openEditModal(index): void {
-    console.log("openEditModal");
+  reset() {
+    console.log("reset");
+  }
+
+  updateBehaviour(modalForm: NgForm) {
+    console.log("updateBehaviour");
+    console.log(modalForm.value);
+
+    this.editingBehaviour.parameters = JSON.stringify(modalForm.value);
+    this.behavioursComplete[this.editingBehaviourIndex] = this.editingBehaviour;
+    this.robotTaskService.save(this.robotTask).subscribe(result => {
+      console.log("Updated task")
+      console.log(result);
+    });
+
+    // this.behaviourService.save(this.editingBehaviour).subscribe(result => {
+    //   console.log("Updated behaviour")
+    //   console.log(result);
+    // });
+  }
+
+  edit(index: number, behaviour: Behaviour) {
+    this.editingBehaviourIndex = index;
+    console.log(this.editingBehaviourIndex);
+
+    Object.assign(this.editingBehaviour, behaviour);
+
+    const params = JSON.parse(String(behaviour.parameters));
+    this.editingBehaviourParams = params;
+
+    Object.assign(this.editingBehaviourParamKeys, Object.keys(params));
+
   }
 
 }

@@ -43,22 +43,20 @@
         (cdkDropListDropped)="drop($event)">
         <h2>Sekwencje zachowań</h2>
 
-        <div class="behaviour-box" *ngFor="let behaviour of behavioursComplete; let i = index" cdkDrag>
-          <div>
+        <div class="behaviour-box" *ngFor="let beh of behavioursComplete; let i = index" cdkDrag>
 
-            <div class="behaviour-container">
-              <div class="behaviour-title">
-                <p> {{ i + 1 }}. {{ behaviour.name }}</p>
-              </div>
-              <div>
-                <button class="btn btn-primary btn-rounded btn-sm my-0" (click)="openEditModal(i)"> <i class="fas fa-edit"></i> </button>
-                <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID"> <i class="fas fa-edit"></i> </button>
-                <button class="btn btn-danger btn-rounded btn-sm my-0" (click)="removeBehaviour(i)"> <i class="fas fa-trash-alt"></i> </button>
-              </div>
-
+          <div class="behaviour-container">
+            <div class="behaviour-title">
+              <p> {{ i + 1 }}. {{ beh.name }}</p>
             </div>
-
+            <div>
+              <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal"
+                [attr.data-target]="'#' + modalID" (click)="edit(i, beh)"> <i class="fas fa-edit"></i> </button>
+              <button class="btn btn-danger btn-rounded btn-sm my-0" (click)="removeBehaviour(i)"> <i
+                  class="fas fa-trash-alt"></i> </button>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -72,4 +70,34 @@
   </form>
 </div>
 
-<app-task-behaviour></app-task-behaviour>
+
+
+
+
+
+<app-form-modal-template [modalName]="'Edycja zachowania'" [modalID]="modalID" (onModalCancel)="reset()"
+  (onModalClose)="updateBehaviour(modalForm)">
+
+  <form class="md-form mb-5" #modalForm="ngForm" >
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="behaviourName" class="form-control validate" [(ngModel)]="editingBehaviour.name"
+        name="name" disabled>
+      <label for="behaviourName" [class.active]="editingBehaviour.name && editingBehaviour.name.length > 0">Nazwa
+        zachowania</label>
+    </div>
+
+    <p>Parametry zachowania</p>
+    <div *ngFor="let paramKey of editingBehaviourParamKeys; let i = index">
+
+      <div class="md-form">
+        <i class="fas fa-file-signature prefix grey-text"></i>
+        <input [id]="paramKey" [name]="paramKey" class="form-control validate"
+          [(ngModel)]="editingBehaviourParams[paramKey]">
+        <label [class.active]="editingBehaviourParams[paramKey]" for="editingBehaviour">{{paramKey}}</label>
+      </div>
+
+    </div>
+  </form>
+
+</app-form-modal-template>

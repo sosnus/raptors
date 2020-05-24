@@ -76,7 +76,6 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { TaskListComponent } from './components/task-creator-panel/task-list/task-list.component';
 import { TaskCreatorComponent } from './components/task-creator-panel/task-creator/task-creator.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { TaskBehaviourComponent } from './components/task-creator-panel/task-behaviour/task-behaviour.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { TaskDetailsComponent } from './components/task-creator-panel/task-details/task-details.component';
 
@@ -138,7 +137,6 @@ const config: InputFileConfig = {};
     TaskCreatorPanelComponent,
     TaskListComponent,
     TaskCreatorComponent,
-    TaskBehaviourComponent,
     TaskDetailsComponent
   ],
   imports: [

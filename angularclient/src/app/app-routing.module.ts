@@ -20,7 +20,6 @@ import {TaskpanelListComponent} from "./components/taskpanel/taskpanel-list/task
 import {RobotListComponent} from "./components/robot-list/robot-list.component";
 import { TaskCreatorPanelComponent } from './components/task-creator-panel/task-creator-panel.component';
 import { TaskCreatorComponent } from './components/task-creator-panel/task-creator/task-creator.component';
-import { TaskBehaviourComponent } from './components/task-creator-panel/task-behaviour/task-behaviour.component';
 import { TaskDetailsComponent } from './components/task-creator-panel/task-details/task-details.component';
 
 
