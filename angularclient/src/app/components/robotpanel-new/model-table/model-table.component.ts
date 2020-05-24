@@ -15,7 +15,6 @@ export class ModelTableComponent {
   header: string;
   @Input()
   properties;
-  private prevRoot: Property;
   public breadcrumbs: Array<Property> = [];
 
   constructor() { }
