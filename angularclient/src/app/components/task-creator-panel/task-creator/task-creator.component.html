@@ -74,30 +74,32 @@
 
 
 
+<div *ngIf="editingBehaviour.id">
+  <app-form-modal-template [modalName]="'Edycja zachowania'" [modalID]="modalID" (onModalCancel)="reset()"
+    (onModalClose)="updateBehaviour(modalForm)">
 
-<app-form-modal-template [modalName]="'Edycja zachowania'" [modalID]="modalID" (onModalCancel)="reset()"
-  (onModalClose)="updateBehaviour(modalForm)">
-
-  <form class="md-form mb-5" #modalForm="ngForm" >
-    <div class="md-form">
-      <i class="fas fa-file-signature prefix grey-text"></i>
-      <input type="text" id="behaviourName" class="form-control validate" [(ngModel)]="editingBehaviour.name"
-        name="name" disabled>
-      <label for="behaviourName" [class.active]="editingBehaviour.name && editingBehaviour.name.length > 0">Nazwa
-        zachowania</label>
-    </div>
-
-    <p>Parametry zachowania</p>
-    <div *ngFor="let paramKey of editingBehaviourParamKeys; let i = index">
-
+    <form class="md-form mb-5" #modalForm="ngForm">
       <div class="md-form">
         <i class="fas fa-file-signature prefix grey-text"></i>
-        <input [id]="paramKey" [name]="paramKey" class="form-control validate"
-          [(ngModel)]="editingBehaviourParams[paramKey]">
-        <label [class.active]="editingBehaviourParams[paramKey]" for="editingBehaviour">{{paramKey}}</label>
+        <input type="text" id="behaviourName" class="form-control validate" [(ngModel)]="editingBehaviour.name"
+          name="name" disabled>
+        <label for="behaviourName" [class.active]="editingBehaviour.name && editingBehaviour.name.length > 0">Nazwa
+          zachowania</label>
       </div>
 
-    </div>
-  </form>
+      <p>Parametry zachowania</p>
+      <div *ngFor="let paramKey of editingBehaviourParamKeys; let i = index">
 
-</app-form-modal-template>
+        <div class="md-form">
+          <i class="fas fa-file-signature prefix grey-text"></i>
+          <input [id]="paramKey" [name]="paramKey" class="form-control validate"
+            [(ngModel)]="editingBehaviourParams[paramKey]">
+          <label [class.active]="editingBehaviourParams[paramKey]" for="editingBehaviour">{{paramKey}}</label>
+        </div>
+
+      </div>
+    </form>
+
+  </app-form-modal-template>
+
+</div>

@@ -122,35 +122,68 @@ export class TaskCreatorComponent implements OnInit {
 
   reset() {
     console.log("reset");
+    this.editingBehaviourIndex = null;
+    this.editingBehaviour = new Behaviour(null, null);
+    this.editingBehaviourParams = null;
+    this.editingBehaviourParamKeys = [];
   }
 
   updateBehaviour(modalForm: NgForm) {
     console.log("updateBehaviour");
-    console.log(modalForm.value);
+
+    console.log(this.behavioursComplete[this.editingBehaviourIndex]);
+    console.log(this.editingBehaviour);
 
     this.editingBehaviour.parameters = JSON.stringify(modalForm.value);
-    this.behavioursComplete[this.editingBehaviourIndex] = this.editingBehaviour;
-    this.robotTaskService.save(this.robotTask).subscribe(result => {
-      console.log("Updated task")
-      console.log(result);
-    });
 
-    // this.behaviourService.save(this.editingBehaviour).subscribe(result => {
-    //   console.log("Updated behaviour")
-    //   console.log(result);
-    // });
+    if (this.behavioursComplete[this.editingBehaviourIndex].id === this.editingBehaviour.id) {
+
+      this.behavioursComplete[this.editingBehaviourIndex] = this.editingBehaviour;
+      this.robotTask.behaviours = this.behavioursComplete;
+
+      this.robotTaskService.save(this.robotTask).subscribe(
+        result => {
+          if (this.robotTaskExist(this.robotTask.id)) {
+            this.storeService.robotTaskList[this.storeService.robotTaskList.findIndex(item => item.id == result.id)] = result;
+          } else {
+            this.storeService.robotTaskList.push(result);
+          }
+
+          this.editingBehaviourIndex = null;
+          this.editingBehaviour = new Behaviour(null, null);
+          this.editingBehaviourParams = null;
+          this.editingBehaviourParamKeys = [];
+          this.toastr.success("Pomyślnie zaktualizowano zachowanie");
+        },
+        error => {
+          this.toastr.error("Wystąpił bład podczas edycji zachowania");
+        }
+      );
+
+    }
+
   }
 
   edit(index: number, behaviour: Behaviour) {
-    this.editingBehaviourIndex = index;
-    console.log(this.editingBehaviourIndex);
+    try {
+      this.editingBehaviourIndex = index;
 
-    Object.assign(this.editingBehaviour, behaviour);
+      Object.assign(this.editingBehaviour, behaviour);
 
-    const params = JSON.parse(String(behaviour.parameters));
-    this.editingBehaviourParams = params;
+      const params = JSON.parse(String(behaviour.parameters));
+      this.editingBehaviourParams = params;
 
-    Object.assign(this.editingBehaviourParamKeys, Object.keys(params));
+      Object.assign(this.editingBehaviourParamKeys, Object.keys(params));
+
+    } catch (error) {
+      this.editingBehaviourIndex = null;
+      this.editingBehaviour = new Behaviour(null, null);
+      this.editingBehaviourParams = null;
+      this.editingBehaviourParamKeys = [];
+
+      this.toastr.error("Błędne parametry zachowania");
+    }
+
 
   }
 
