@@ -13,7 +13,15 @@ h1 {
   resize: horizontal;
   font-size: 15px;
 }
+
 .card-header{
   text-align: center;
   font-size: 1.5rem;
+}
+
+.link{
+  color: blue;
+  text-decoration: underline;
+  font-style: italic;
+  cursor: pointer;
 }

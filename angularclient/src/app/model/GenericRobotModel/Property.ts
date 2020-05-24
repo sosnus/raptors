@@ -28,4 +28,8 @@ export class Property {
   getValue() {
     return this.type === PropertyTypeEnum.SIMPLE ? this.simpleValue : this.complexValue;
   }
+
+  isComplex(){
+    return this.type === PropertyTypeEnum.SIMPLE ? false : true;
+  }
 }

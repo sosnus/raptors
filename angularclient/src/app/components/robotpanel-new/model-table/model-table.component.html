@@ -1,12 +1,10 @@
 <div class="card-header">{{header}}</div>
+<h5>Navigation: </h5>
+<span (click)="goToRoot()" class="link">root</span>
+<span *ngFor="let item of breadcrumbs; let i = index;" (click)="goToSelectedItem(item, i)"> >> <span class="link">{{item.name}}</span> </span>
 <table class="table">
   <tbody>
-  <tr (click)="goToRoot()">
-    <th>
-      < go back
-    </th>
-  </tr>
-  <tr *ngFor="let prop of properties" (click)="updateRoot(prop)">
+  <tr *ngFor="let prop of properties" (click)="updateRoot(prop)"> 
     <app-table-row [prop]="prop"></app-table-row>
   </tr>
   </tbody>

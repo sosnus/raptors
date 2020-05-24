@@ -1,12 +1,15 @@
-app-robot-details, app-robot-details-new{
+app-robot-details{
   width: 50%;
 }
+
 app-map-scaled{
   margin-left: 1rem;
 }
+
 hr{
   border-top: 3px solid rgba(0,0,0,.1);
 }
+
 .item{
   width: 50%;
   padding-right: 1rem;
