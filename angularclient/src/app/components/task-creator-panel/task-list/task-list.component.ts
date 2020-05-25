@@ -49,7 +49,6 @@ export class TaskListComponent implements OnInit {
       behaviour => {
         console.log("Pobrane wszystkie zachowania: " + behaviour);
         this.behaviours = behaviour;
-        console.log("Pobrane wszystkie tablica: " + this.behaviours);
       }
     );
 

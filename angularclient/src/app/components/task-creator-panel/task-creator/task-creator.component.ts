@@ -24,7 +24,7 @@ export class TaskCreatorComponent implements OnInit {
   defaultBehaviours: Behaviour[] = [];
   behavioursComplete: Behaviour[] = [];
 
-  robotTask: RobotTask = new RobotTask(null, null, null, null, null, null, null);
+  robotTask: RobotTask = new RobotTask(null, null, null, null, new TaskPriority("", 0), null, null);
   robot = new Robot(null, null, null, null, null, null, null, null, null);
   robotStatusFree: RobotStatus = new RobotStatus(null);
   robotStatusDuringTask: RobotStatus = new RobotStatus(null);
@@ -94,7 +94,7 @@ export class TaskCreatorComponent implements OnInit {
   createOrUpdate() {
     let dateTime = new Date();
     this.robotTask.startTime = dateTime.toLocaleString();
-    this.robotTask.status = this.selectedTaskPriority;
+    this.robotTask.priority.id = this.selectedTaskPriority;
     this.robotTask.userID = this.loggedUserID;
     this.robotTask.behaviours = this.behavioursComplete;
 
