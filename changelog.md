@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [1.0.3] - 2020-05-25
+### Added
+- settings endpoint
+- frontend settings view
+
+
 ## [1.0.2] - 2020-05-06
 ### Changed
 - add scroll to sidebar
