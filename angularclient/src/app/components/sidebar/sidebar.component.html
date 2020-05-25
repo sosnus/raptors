@@ -4,7 +4,15 @@
   <div class="accordion md-accordion sideBar card" id="sideBarContainer">
     <!-- Accordion group -->
     <div class="accordion-group">
+      <div>
 
+
+        <div [matTooltip]="instanceInfo.instanceDescription + instanceInfo.instanceAddress" matTooltipPosition="right" style="display: inline-block">
+          {{instanceInfo.instanceName}}
+        </div>
+
+
+      </div>
       <!-- Card header -->
       <div class="card-header z-depth-2" role="tab" id="headingTwo1">
         <a class="collapsed text-uppercase mb-0 py-1" data-toggle="collapse" data-target="#collapseTwo1"
@@ -15,6 +23,7 @@
           </h5>
         </a>
       </div>
+
 
       <!-- Card body -->
       <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1">
