@@ -35,6 +35,7 @@ function createFromArray(name: string, arr: Array<any>) {
     const displayName = namePrefix + (index + 1);
     if (isComplex(prop)) {
       property = PropertyFactory.createFromObject(displayName, prop);
+      property.name = findName(property);
     } else {
       property = Property.simpleProperty(displayName, prop);
     }
@@ -45,4 +46,15 @@ function createFromArray(name: string, arr: Array<any>) {
 
 function isComplex(obj: object): boolean {
   return typeof(obj) === 'object';
+}
+
+function findName(property: Property) {
+  const value = property.getValue();
+  if (Array.isArray(value)) {
+    const nameProp = value.find(prop => prop.name === 'name');
+    if (nameProp !== undefined) {
+      return nameProp.getValue();
+    }
+  }
+  return property.name;
 }
