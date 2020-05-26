@@ -25,6 +25,13 @@ jobs:
         cd ./ra-front/
         npm install
         npm run build --if-present
+        
+    - name: PRINT
+      run: |
+        ls .
+        cd ./ra-front/
+        echo "cd ./ra-front/"
+        ls .
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v1
