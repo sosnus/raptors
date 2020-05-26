@@ -1,8 +1,10 @@
 {
   "name": "ra-front",
-  "version": "1.0.4",
+  "version": "1.5.0",
   "scripts": {
     "ng": "ng",
+    "build-prod": "ng build --prod",
+    "serve-prod": "lite-server",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
