@@ -1,0 +1,20 @@
+h3{
+  color: white;
+}
+
+.mask{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 85px;
+  background-color: #dfdfdf;
+}
+
+.red-motive{
+  background-color: #a03337 !important;
+}
+
+.tabelka{
+  font-size: 150px;
+  margin-top: 20px;
+}

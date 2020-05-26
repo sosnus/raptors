@@ -1,0 +1,115 @@
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+<a *ngIf="robotModels.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+
+<div *ngIf="robotModels.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nazwa</th>
+      <th scope="col">Maksymalny udźwig</th>
+      <th scope="col">Maksymalna prędkość</th>
+      <th scope="col">Długość</th>
+      <th scope="col">Szerokość</th>
+      <th scope="col">Wysokość</th>
+      <th scope="col">Promień skrętu</th>
+      <th scope="col">Typ napędu</th>
+      <th scope="col">Typ baterii</th>
+      <th scope="col">Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let type of robotModels;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{type.name}}</td>
+      <td>{{type.maxLiftingCapacity}}</td>
+      <td>{{type.maxVelocity}}</td>
+      <td>{{type.length}}</td>
+      <td>{{type.width}}</td>
+      <td>{{type.height}}</td>
+      <td>{{type.turningRadius}}</td>
+      <td>{{type.propulsionType.name}}</td>
+      <td>{{type.batteryType.name}}</td>
+      <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" [attr.data-target]="'#' + modalID"
+                (click)="edit(type)">Edytuj
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID + 'Confirm'"
+                (click)="robotModel=type">Usuń
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(robotModel)">
+</app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Dodawanie nowego modelu robota'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <div class="md-form">
+    <i class="fas fa-file-signature prefix grey-text"></i>
+    <input type="text" id="robotModelName" class="form-control validate" required [(ngModel)]="robotModel.name" name="name">
+    <label for="robotModelName" [class.active]="robotModel.name && robotModel.name.length > 0">Nazwa modelu robota</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="robotModelLiftCapacity" class="form-control validate" required [(ngModel)]="robotModel.maxLiftingCapacity" name="maxLiftingCapacity">
+      <label for="robotModelLiftCapacity" [class.active]="robotModel.maxLiftingCapacity">Maksymalny udźwig</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="robotModelmaxVelocity" class="form-control validate" required [(ngModel)]="robotModel.maxVelocity" name="maxVelocity">
+      <label for="robotModelmaxVelocity" [class.active]="robotModel.maxVelocity">Maksymalna prędkość</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="robotModelLength" class="form-control validate" required [(ngModel)]="robotModel.length" name="length">
+      <label for="robotModelLength" [class.active]="robotModel.length">Długość</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="robotModelWidth" class="form-control validate" required [(ngModel)]="robotModel.width" name="width">
+      <label for="robotModelWidth" [class.active]="robotModel.width">Szerokość</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="robotModelmaxHeight" class="form-control validate" required [(ngModel)]="robotModel.height" name="height">
+      <label for="robotModelmaxHeight" [class.active]="robotModel.height">Wysokość</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="robotModelturningRadius" class="form-control validate" required [(ngModel)]="robotModel.turningRadius" name="turningRadius">
+      <label for="robotModelturningRadius" [class.active]="robotModel.turningRadius">Promień skrętu</label>
+    </div>
+    <div class="md-form">
+      <select
+        name="propulsionType"
+        id="robotModelpropulsionType"
+        class="form-control validate"
+        required [(ngModel)]="robotModel.propulsionType">
+        <option *ngFor="let propulsion of propulsionTypes" [ngValue]="propulsion">{{ propulsion.name }}</option>
+      </select>
+      <label for="robotModelpropulsionType" [class.active]="robotModel.propulsionType">Typ napędu</label>
+    </div>
+    <div class="md-form">
+      <select
+        name="batteryType"
+        id="robotModelbatteryType"
+        class="form-control validate"
+        required [(ngModel)]="robotModel.batteryType">
+        <option *ngFor="let battery of batteryTypes" [ngValue]="battery">{{ battery.name }}</option>
+      </select>
+      <label for="robotModelbatteryType" [class.active]="robotModel.batteryType">Typ baterii</label>
+    </div>
+  </form>
+</app-form-modal-template>

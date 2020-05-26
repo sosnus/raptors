@@ -1,0 +1,81 @@
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+<a *ngIf="batteryTypes.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+<div *ngIf="batteryTypes.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nazwa</th>
+      <th scope="col">Pojemność</th>
+      <th scope="col">Napięcie</th>
+      <th scope="col">Maksymalny prąd</th>
+      <th scope="col">Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let type of batteryTypes;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{type.name}}</td>
+      <td>{{type.capacity}}</td>
+      <td>{{type.ratedVoltage}}</td>
+      <td>{{type.maxCurrent}}</td>
+      <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID"
+                (click)="edit(type)">Edytuj
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal"
+                [attr.data-target]="'#' + modalID+'Confirm'"
+                (click)="batteryType=type">Usuń
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(batteryType)"></app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Tworzenie nowego typu baterii'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="batteryTypeName" class="form-control validate" required [(ngModel)]="batteryType.name"
+             name="name">
+      <label for="batteryTypeName" [class.active]="batteryType.name && batteryType.name.length > 0">Nazwa typu
+        baterii</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-battery-full prefix grey-text"></i>
+      <input type="text" id="batteryTypeCapacity" class="form-control validate" required
+             [(ngModel)]="batteryType.capacity" name="capacity">
+      <label for="batteryTypeCapacity" [class.active]="batteryType.capacity && batteryType.capacity.length > 0">Pojemność</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-bolt prefix grey-text"></i>
+      <input type="text" id="batteryTypeVoltage" class="form-control validate" required
+             [(ngModel)]="batteryType.ratedVoltage" name="voltage">
+      <label for="batteryTypeVoltage" [class.active]="batteryType.ratedVoltage && batteryType.ratedVoltage.length > 0">Napięcie</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-car-battery prefix grey-text"></i>
+      <input type="text" id="batteryTypeMaxCurrent" class="form-control validate" required
+             [(ngModel)]="batteryType.maxCurrent" name="maxcurrent">
+      <label for="batteryTypeMaxCurrent" [class.active]="batteryType.maxCurrent && batteryType.maxCurrent.length > 0">Maksymalny
+        prąd</label>
+    </div>
+  </form>
+</app-form-modal-template>
+
+
+
+
+
