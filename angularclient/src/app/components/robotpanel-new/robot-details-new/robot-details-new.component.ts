@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import {Robot} from "../../../model/Robots/Robot";
 
 @Component({
@@ -10,6 +10,13 @@ export class RobotDetailsComponentNew implements OnInit {
 
   @Input()
   robot: Robot;
+
+  @Output("refreshEvent")
+  refreshEvent: EventEmitter<any> = new EventEmitter();
+
+  refresh() {
+    this.refreshEvent.emit();
+  }
 
   constructor() { }
 

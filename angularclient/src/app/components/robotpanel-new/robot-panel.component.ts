@@ -25,6 +25,10 @@ export class RobotPanelComponentNew implements OnInit {
               private logService: LogService) {
   }
 
+  private refreshStatus() {
+    this.getRobotData(this.activatedRoute.params['id']);
+  }
+
   private fetchIDfromRoute() {
     this.activatedRoute.params.subscribe(params => {
       const id = params['id'];

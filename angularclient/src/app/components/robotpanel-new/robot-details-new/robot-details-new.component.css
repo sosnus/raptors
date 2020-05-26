@@ -18,3 +18,12 @@ h1 {
   text-align: center;
   font-size: 1.5rem;
 }
+
+.w-75 {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.refresh {
+  align-self: right !important;
+}
