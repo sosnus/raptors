@@ -17,8 +17,9 @@ export class StoreService {
   public mapID = '5e19f1fa9b1eab79e9a58e08';
 
   // public baseURL = 'http://tebe.westeurope.cloudapp.azure.com:3333';
-  public baseURL = 'http://localhost:3333';
+//   public baseURL = 'http://localhost:3333';
   // public baseURL = 'http://localhost:8080';
+  public baseURL = 'http://larissa-ra-back.azurewebsites.net';
 
   public robotTaskList: RobotTask[]= [];
   public robotTaskListTemp: RobotTask[] = [];
