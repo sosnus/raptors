@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>pl.raptors</groupId>
-    <artifactId>RaptorsAppBackend</artifactId>
-    <version>1.0.3</version>
-    <name>RaptorsAppBackend</name>
+    <artifactId>ra-back</artifactId>
+    <version>1.0.4</version>
+    <name>ra-back</name>
     <description>Spring Boot project for RaptorsAppBackend</description>
 
     <properties>

@@ -7,7 +7,7 @@ import {AuthService} from './services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'angularclient';
+  title = 'ra-frontend';
 
   constructor(public authService: AuthService) { }
 }
