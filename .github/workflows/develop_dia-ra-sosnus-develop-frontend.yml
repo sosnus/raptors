@@ -32,4 +32,4 @@ jobs:
         app-name: 'dia-ra-sosnus-develop-frontend'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_7207decc2ea34d29821b71960d707a2a }}
-        package: .
+        package: ./ra-front/dist/ra-front/
