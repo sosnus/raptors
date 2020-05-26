@@ -1,12 +1,8 @@
 {
   "name": "ra-front",
-  "version": "1.5.0",
+  "version": "1.6.8",
   "scripts": {
     "ng": "ng",
-    "build-prod": "ng build --prod",
-    "build-dev": "ng build",
-    "serve-dev": "lite-server",
-    "serve-prod": "lite-server --baseDir='./dist/ra-front/'",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
