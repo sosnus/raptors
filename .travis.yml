@@ -8,7 +8,18 @@ sudo: required
 branches:
   only:
   - master
-  
+
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
+cache:
+  directories:
+     - ./node_modules
+
 before_script:
   - cd angularclient
   - npm install -g @angular/cli
@@ -16,3 +27,5 @@ before_script:
 script:
   - npm install
   - ng build 
+  - ng test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+#   - ng e2e -- --protractor-config=e2e/protractor-ci.conf.js
