@@ -16,8 +16,8 @@ export class StoreService {
   public imageResolution = 1984;
   public mapID = '5e19f1fa9b1eab79e9a58e08';
 
-  // public baseURL = 'http://tebe.westeurope.cloudapp.azure.com:3333';
-  public baseURL = 'http://localhost:3333';
+  public baseURL = 'http://tebe.westeurope.cloudapp.azure.com:3333';
+  // public baseURL = 'http://localhost:3333';
   // public baseURL = 'http://localhost:8080';
 
   public robotTaskList: RobotTask[]= [];
