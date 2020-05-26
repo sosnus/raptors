@@ -10,8 +10,8 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import pl.raptors.ra_back.service.healthz.HealthzService;
 
-import java.io.FileReader;
-import java.io.IOException;
+// import java.io.FileReader;
+// import java.io.IOException;
 
 @RestController
 @CrossOrigin
@@ -24,20 +24,20 @@ public class HealthzController {
     @Autowired
     private HealthzService healthzService;
 
-    private static final String version = HealthzController.getVersion();
+    // private static final String version = HealthzController.getVersion();
 
-    private static String getVersion() {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        Model model = null;
-        try {
-            model = reader.read(new FileReader("pom.xml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
-        return model.getVersion();
-    }
+    // private static String getVersion() {
+    //     MavenXpp3Reader reader = new MavenXpp3Reader();
+    //     Model model = null;
+    //     try {
+    //         model = reader.read(new FileReader("pom.xml"));
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     } catch (XmlPullParserException e) {
+    //         e.printStackTrace();
+    //     }
+    //     return model.getVersion();
+    // }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/backend")
@@ -48,7 +48,8 @@ public class HealthzController {
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/backend/version")//zróbmy żeby bez tokenu może odrazu? no jest bez tokenu xD
     public String getBackendVersion() {
-        return version;
+        return "1.6.6-MANUALLY";
+        //return version;
     }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
