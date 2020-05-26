@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "build-prod": "ng build --prod",
-    "serve-prod": "lite-server",
+    "build-dev": "ng build",
+    "serve-dev": "lite-server",
+    "serve-prod": "lite-server --baseDir='./dist/ra-front/'",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
