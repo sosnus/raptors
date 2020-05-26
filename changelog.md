@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+
+
+## [1.6.0] - 2020-05-26
+### Added
+- deploy ra-front to larissa-ra-front
+- add azure pipeline
+
 ## [1.5.0] - 2020-05-26
 ### Added
 - create documentation /docs
