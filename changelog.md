@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [1.5.0] - 2020-05-26
+### Added
+- create documentation /docs
+### Changed
+- extend budget "anyComponentStyle" from 10kB to 100kB
+
+## [1.0.4] - 2020-05-26
+### Changed
+- refactoring raptorsRobotsApp to ra-back
+- refactoring angularclinet to ra-front
+
 ## [1.0.3] - 2020-05-25
 ### Added
 - settings endpoint
