@@ -1,9 +1,9 @@
 {
-  "name": "angularclient",
-  "version": "1.0.3",
+  "name": "ra-front",
+  "version": "1.0.4",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --open --watch",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
