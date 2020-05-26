@@ -1,0 +1,28 @@
+package pl.raptors.ra_back.domain.movement;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import pl.raptors.ra_back.domain.type.AreaType;
+
+import java.util.List;
+
+@NoArgsConstructor
+@Data
+@Document(collection = "map_areas")
+public class MapArea {
+
+    @Id
+    private String id;
+    private String name;
+    private MovementMap map;
+    private AreaType type;
+    private List<UniversalPoint> points;
+
+    public MapArea(String name, MovementMap map, AreaType type) {
+        this.name = name;
+        this.map = map;
+        this.type = type;
+    }
+}
