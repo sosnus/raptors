@@ -6,4 +6,6 @@ COPY . .
 RUN npm run build
 
 FROM nginx:1.17.1-alpine
-COPY /dist/ra-front /usr/share/nginx/html
+RUN ls
+
+ADD /dist/ra-front /usr/share/nginx/html
