@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem, copyArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, copyArrayItem } from '@angular/cdk/drag-drop';
 import { BehaviourService } from 'src/app/services/type/behaviour.service';
 import { Behaviour } from 'src/app/model/Robots/Behaviour';
 import { RobotTask } from 'src/app/model/Robots/RobotTask';
@@ -44,6 +44,8 @@ export class TaskCreatorComponent implements OnInit {
   editingBehaviourParams: any;
   editingBehaviourParamKeys: string[] = [];
 
+  specialBehaviourParams: string[] = ['stand', 'robot'];
+
   constructor(private behaviourService: BehaviourService,
     private taskPriorityService: TaskPriorityService,
     private robotTaskService: RobotTaskService,
@@ -53,6 +55,7 @@ export class TaskCreatorComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
+
     this.taskPriorityService.getAll().subscribe(priority => {
       this.taskPriorities = priority;
     });
@@ -139,9 +142,14 @@ export class TaskCreatorComponent implements OnInit {
 
   updateBehaviour(modalForm: NgForm) {
     console.log("updateBehaviour");
-
-    console.log(this.behavioursComplete[this.editingBehaviourIndex]);
-    console.log(this.editingBehaviour);
+    
+    this.specialBehaviourParams.forEach(element => {
+      const e = document.getElementById(element) as HTMLSelectElement;
+      if(e !== null) {
+        const val = e.options[e.selectedIndex].value;
+        modalForm.value[element] = val;
+      }
+    });
 
     this.editingBehaviour.parameters = JSON.stringify(modalForm.value);
 

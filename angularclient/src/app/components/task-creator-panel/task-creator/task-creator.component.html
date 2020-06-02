@@ -10,7 +10,7 @@
       <label for="robotTaskname" [class.active]="robotTask.name && robotTask.name.length > 0">Nazwa zadania</label>
     </div>
 
-    <p class="input-paragraph">Wybierz status zadania</p>
+    <p class="input-paragraph">Status zadania</p>
     <div class="md-form">
       <select class="browser-default custom-select" [(ngModel)]="selectedTaskStatus"
         [ngModelOptions]="{ standalone: true }">
@@ -20,7 +20,7 @@
       </select>
     </div>
 
-    <p class="input-paragraph">Wybierz priorytet zadania</p>
+    <p class="input-paragraph">Priorytet zadania</p>
     <div class="md-form">
       <select class="browser-default custom-select" [(ngModel)]="selectedTaskPriorityId"
         [ngModelOptions]="{ standalone: true }">
@@ -30,7 +30,7 @@
       </select>
     </div>
 
-    <p class="input-paragraph">Dodaj sekwencje zachowań</p>
+    <p class="input-paragraph">Sekwencje zachowań</p>
     <div class="md-form behaviour-container">
       <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="behaviours" [cdkDropListConnectedTo]="[doneList]"
         class="behaviour-list" (cdkDropListDropped)="drop($event)">
@@ -105,11 +105,17 @@
       <p>Parametry zachowania</p>
       <div *ngFor="let paramKey of editingBehaviourParamKeys; let i = index">
 
-        <div class="md-form">
-          <i class="fas fa-file-signature prefix grey-text"></i>
-          <input [id]="paramKey" [name]="paramKey" class="form-control validate"
-            [(ngModel)]="editingBehaviourParams[paramKey]">
-          <label [class.active]="editingBehaviourParams[paramKey]" for="editingBehaviour">{{paramKey}}</label>
+        <div *ngIf="specialBehaviourParams.includes(paramKey)">
+          <app-special-type-select [typeName]="paramKey" displayName="Stand"></app-special-type-select>
+        </div>
+
+        <div *ngIf="!specialBehaviourParams.includes(paramKey)">
+          <div class="md-form">
+            <i class="fas fa-file-signature prefix grey-text"></i>
+            <input [id]="paramKey" [name]="paramKey" class="form-control validate"
+              [(ngModel)]="editingBehaviourParams[paramKey]">
+            <label [class.active]="editingBehaviourParams[paramKey]" [for]="paramKey" >{{paramKey}}</label>
+          </div>
         </div>
 
       </div>
