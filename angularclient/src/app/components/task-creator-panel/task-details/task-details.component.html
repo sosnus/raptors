@@ -15,12 +15,20 @@
     <td>{{task.status}}</td>
   </tr>
   <tr>
+    <th scope="row">Priorytet zadania</th>
+    <td>{{task.priority.name}}</td>
+  </tr>
+  <tr>
     <th scope="row">Dodane przez</th>
     <td>{{task.userID}}</td>
   </tr>
   <tr >
-    <th scope="row" >Szczegóły  zadania</th>
-    <h1><td *ngFor="let item of task.behaviours">{{item.name}}</td></h1>
+    <th scope="row">Przyporządkowane zachowania</th>
+    <td style="word-wrap: break-word; width: 60vw;">
+      <span style="margin: 0 1rem 0 0;" *ngFor="let item of task.behaviours">
+        {{item.name}}
+      </span>
+    </td>
   </tr>
   </tbody>
 </table>

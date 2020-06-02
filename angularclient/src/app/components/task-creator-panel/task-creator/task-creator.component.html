@@ -10,32 +10,40 @@
       <label for="robotTaskname" [class.active]="robotTask.name && robotTask.name.length > 0">Nazwa zadania</label>
     </div>
 
-    <p>Wybierz priorytet zadania</p>
+    <p class="input-paragraph">Wybierz status zadania</p>
     <div class="md-form">
-      <select class="browser-default custom-select" (change)="selectTaskPriority($event.target.value)"
-        [(ngModel)]="selectedTaskPriority" [ngModelOptions]="{ standalone: true }">
+      <select class="browser-default custom-select" [(ngModel)]="selectedTaskStatus"
+        [ngModelOptions]="{ standalone: true }">
+        <option [value]="item" *ngFor="let item of taskStatuses">{{
+          item
+        }}</option>
+      </select>
+    </div>
+
+    <p class="input-paragraph">Wybierz priorytet zadania</p>
+    <div class="md-form">
+      <select class="browser-default custom-select" [(ngModel)]="selectedTaskPriorityId"
+        [ngModelOptions]="{ standalone: true }">
         <option [value]="item.id" *ngFor="let item of taskPriorities">{{
           item.name
         }}</option>
       </select>
     </div>
 
-    <p>Dodaj sekwencje zachowań</p>
-    <div class="behaviour-container">
+    <p class="input-paragraph">Dodaj sekwencje zachowań</p>
+    <div class="md-form behaviour-container">
       <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="behaviours" [cdkDropListConnectedTo]="[doneList]"
         class="behaviour-list" (cdkDropListDropped)="drop($event)">
         <h2>Dostępne zachowania</h2>
 
         <div class="behaviour-box" *ngFor="let behaviour of behaviours; let i = index" cdkDrag>
-          <div>
 
-            <div class="behaviour-container">
-              <div class="behaviour-title">
-                <p> {{ i + 1 }}. {{ behaviour.name }}</p>
-              </div>
+          <div class="behaviour">
+            <div class="behaviour-title">
+              <p> {{ i + 1 }}. {{ behaviour.name }}</p>
             </div>
-
           </div>
+
         </div>
       </div>
 
@@ -45,16 +53,23 @@
 
         <div class="behaviour-box" *ngFor="let beh of behavioursComplete; let i = index" cdkDrag>
 
-          <div class="behaviour-container">
-            <div class="behaviour-title">
-              <p> {{ i + 1 }}. {{ beh.name }}</p>
+          <div class="behaviour">
+
+            <div class="behaviour-general">
+              <div class="behaviour-title">
+                <p> {{ i + 1 }}. {{ beh.name }}</p>
+              </div>
+              <div>
+                <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal"
+                  [attr.data-target]="'#' + modalID" (click)="edit(i, beh)"> <i class="fas fa-edit"></i> </button>
+                <button class="btn btn-danger btn-rounded btn-sm my-0" (click)="removeBehaviour(i)"> <i
+                    class="fas fa-trash-alt"></i> </button>
+              </div>
             </div>
-            <div>
-              <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal"
-                [attr.data-target]="'#' + modalID" (click)="edit(i, beh)"> <i class="fas fa-edit"></i> </button>
-              <button class="btn btn-danger btn-rounded btn-sm my-0" (click)="removeBehaviour(i)"> <i
-                  class="fas fa-trash-alt"></i> </button>
+            <div class="behaviour-details">
+              <p>{{ beh.parameters }}</p>
             </div>
+
           </div>
 
         </div>

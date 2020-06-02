@@ -31,7 +31,10 @@ export class TaskCreatorComponent implements OnInit {
   selectedBehaviour: string;
 
   taskPriorities: TaskPriority[] = [];
-  selectedTaskPriority: string;
+  selectedTaskPriorityId: string;
+
+  taskStatuses: string[] = ['To Do', 'In Progress', 'Done']
+  selectedTaskStatus: string;
 
   loggedUserID: string;
 
@@ -50,16 +53,9 @@ export class TaskCreatorComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-    if (this.route.snapshot.paramMap.get('id') !== null) {
-      this.robotTaskService.getRobotTask(this.route.snapshot.paramMap.get('id')).subscribe(
-        robotTask => {
-          console.log(robotTask)
-          this.robotTask = robotTask;
-          this.selectedTaskPriority = robotTask.priority.id;
-          this.behavioursComplete = robotTask.behaviours;
-        }
-      )
-    }
+    this.taskPriorityService.getAll().subscribe(priority => {
+      this.taskPriorities = priority;
+    });
 
     this.behaviourService.getAll().subscribe(
       behaviours => {
@@ -70,9 +66,19 @@ export class TaskCreatorComponent implements OnInit {
 
     this.loggedUserID = JSON.parse(atob(localStorage.getItem('userID')));
 
-    this.taskPriorityService.getAll().subscribe(priority => {
-      this.taskPriorities = priority;
-    });
+
+    if (this.route.snapshot.paramMap.get('id') !== null) {
+      this.robotTaskService.getRobotTask(this.route.snapshot.paramMap.get('id')).subscribe(
+        robotTask => {
+          console.log(robotTask)
+          this.robotTask = robotTask;
+          this.selectedTaskPriorityId = robotTask.priority.id;
+          this.selectedTaskStatus = robotTask.status;
+          this.behavioursComplete = robotTask.behaviours;
+        }
+      )
+    }
+
 
   }
 
@@ -94,7 +100,10 @@ export class TaskCreatorComponent implements OnInit {
   createOrUpdate() {
     let dateTime = new Date();
     this.robotTask.startTime = dateTime.toLocaleString();
-    this.robotTask.priority.id = this.selectedTaskPriority;
+    this.robotTask.priority = this.taskPriorities.find(p => {
+      return p.id === this.selectedTaskPriorityId;
+    });
+    this.robotTask.status = this.selectedTaskStatus;
     this.robotTask.userID = this.loggedUserID;
     this.robotTask.behaviours = this.behavioursComplete;
 
