@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ViewChild} from '@angular/core';
 import {InputFileComponent} from 'ngx-input-file';
 import {MapService} from '../../../services/map.service';
+import {BarrierService} from '../../../services/barrier.service';
 import {Map} from '../../../model/Map';
 import {ToastrService} from "ngx-toastr";
 
@@ -14,14 +15,17 @@ export class BarrierGeneratorComponent implements OnInit {
 
   mapSelected = false;
   yamlSelected = false;
-  mapName: string = '';
+  robotSize: string = '';
   success = false;
   error = false;
 
   constructor(private mapService: MapService,
+    private barrierService: BarrierService,
               private toastrService: ToastrService) {
-
+           
   }
+
+ 
 
   ngOnInit() {
   }
@@ -33,10 +37,12 @@ export class BarrierGeneratorComponent implements OnInit {
   @ViewChild('yamlInput', {static: false})
   private yamlInput: InputFileComponent;
 
-  submitFiles(): void {
-    this.mapService.save(this.mapName, this.mapInputComponent.files[0].file, this.yamlInput.files[0].file).subscribe(
+  generateBarriers(): void {
+    this.barrierService.getBarriers(this.robotSize).subscribe(
       data => {
+        console.log(data)
         this.toastrService.success('Mapa dodana pomyślnie');
+        // Run here polygon servide adding data from barrier service
         this.success = true;
       },
       error => {
@@ -46,6 +52,6 @@ export class BarrierGeneratorComponent implements OnInit {
   }
 
   checkForm() {
-    return (!this.mapSelected) || (!this.yamlSelected) || (this.mapName.length < 1);
+    return (this.robotSize.length < 1);
   }
 }

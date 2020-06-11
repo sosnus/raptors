@@ -2,29 +2,17 @@
 
   <div class="md-form">
     <input type="text" id="inputIconEx2" class="form-control"
-           [(ngModel)]="mapName">
-    <label for="inputIconEx2">Nazwa mapy</label>
+           [(ngModel)]="robotSize">
+    <label for="inputIconEx2">Wielkość robota</label>
   </div>
-  <input-file fileAccept=".pgm" fileLimit="1"
-              placeholder="Dodaj mapę(.pgm)"
-              (acceptedFile)="mapSelected = true"
-              (deletedFile)="mapSelected = false"
-              #mapInput>
-  </input-file>
-  <input-file fileAccept=".yaml" fileLimit="1"
-              placeholder="Dodaj plik .yaml"
-              (acceptedFile)="yamlSelected = true"
-              (deletedFile)="yamlSelected = false"
-              #yamlInput>
-  </input-file>
   <button class="btn btn-light"
           data-toggle="modal"
           data-target="#loadingModal"
           data-backdrop="static"
           data-keyboard="false"
           [disabled]="checkForm()"
-          (click)="submitFiles()">
-    Zapisz
+          (click)="generateBarriers()">
+    Generuj obszary zabronione
   </button>
 
 </div>
@@ -42,14 +30,14 @@
         <i class="fas fa-check-circle success" *ngIf="success"></i>
         <i class="fas fa-exclamation-circle error" *ngIf="error"></i>
         <div clas="loader-txt" *ngIf="!error && !success">
-          <p>Trwa zapisywanie mapy w bazie danych<br><br><small>Proszę czekać...</small></p>
+          <p>Trwa generowanie obszarów zabronoinych<br><br><small>Proszę czekać...</small></p>
         </div>
         <div clas="loader-txt" *ngIf="success">
-          <p>Dane zapisane pomyślnie<br><br></p>
+          <p>Obszary zabronione wygenerowane pomyślnie<br><br></p>
           <button type="button" class="btn btn-light" data-dismiss="modal">OK</button>
         </div>
         <div clas="loader-txt" *ngIf="error">
-          <p>Wystąpił błąd podczas apisywania danych<br><br></p>
+          <p>Wystąpił błąd podczas generowania obszarów zabronionych<br><br></p>
           <button type="button" class="btn btn-light" data-dismiss="modal">OK</button>
         </div>
       </div>
