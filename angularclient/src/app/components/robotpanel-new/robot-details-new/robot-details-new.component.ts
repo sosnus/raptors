@@ -1,4 +1,5 @@
 import {Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {timer} from 'rxjs';
 import {Robot} from "../../../model/Robots/Robot";
 
 @Component({
@@ -18,9 +19,16 @@ export class RobotDetailsComponentNew implements OnInit {
     this.refreshEvent.emit();
   }
 
+  private refreshRepeater() {
+    timer(60000, 60000).subscribe(x => {
+      this.refreshEvent.emit();
+    })
+  }
+
   constructor() { }
 
   ngOnInit() {
+    this.refreshRepeater();
   }
 
 }
