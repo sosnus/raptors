@@ -22,7 +22,7 @@ export class Property {
   }
 
   toString(): string {
-    return this.type === PropertyTypeEnum.SIMPLE ? this.simpleValue : 'see more';
+    return this.type === PropertyTypeEnum.SIMPLE ? this.simpleValue : 'see more ➡';
   }
 
   getValue() {
