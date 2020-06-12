@@ -44,7 +44,7 @@ export class TaskCreatorComponent implements OnInit {
   editingBehaviourParams: any;
   editingBehaviourParamKeys: string[] = [];
 
-  specialBehaviourParams: string[] = ['edge', 'elementFunc', 'parkingType', 'robot', 'robotModel', 'route', 'stand', 'standType'];
+  specialBehaviourParams: string[] = ['corridor', 'edge', 'elementFunc', 'parkingType', 'robot', 'robotModel', 'route', 'stand', 'standType'];
 
   constructor(private behaviourService: BehaviourService,
     private taskPriorityService: TaskPriorityService,

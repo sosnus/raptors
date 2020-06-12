@@ -18,6 +18,7 @@ export class SpecialTypeSelectComponent implements OnInit {
   specialTypes: any[] = [];
 
   constructor(
+    private corridorService: CorridorService,
     private elementFuncService: ElementFunctionalityService, 
     private parkingTypeService: ParkingTypeService,
     private standService: StandService,
@@ -26,7 +27,12 @@ export class SpecialTypeSelectComponent implements OnInit {
     private standTypeService: StandTypeService ) { }
 
   ngOnInit() {
-
+    
+    if (this.typeName === 'corridor') {
+      this.corridorService.getCorridors().subscribe(res => {
+        this.specialTypes = res;
+      });
+    }
 
     // EdgeService doesn't exist
     if (this.typeName === 'edge') {
