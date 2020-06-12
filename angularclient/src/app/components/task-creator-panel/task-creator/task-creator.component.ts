@@ -33,7 +33,7 @@ export class TaskCreatorComponent implements OnInit {
   taskPriorities: TaskPriority[] = [];
   selectedTaskPriorityId: string;
 
-  taskStatuses: string[] = ['To Do', 'In Progress', 'Done']
+  taskStatuses: string[] = ['To Do'] //, 'In Progress', 'Done']
   selectedTaskStatus: string;
 
   loggedUserID: string;
@@ -44,7 +44,7 @@ export class TaskCreatorComponent implements OnInit {
   editingBehaviourParams: any;
   editingBehaviourParamKeys: string[] = [];
 
-  specialBehaviourParams: string[] = ['stand', 'robot'];
+  specialBehaviourParams: string[] = ['edge', 'elementFunc', 'parkingType', 'robot', 'robotModel', 'route', 'stand', 'standType'];
 
   constructor(private behaviourService: BehaviourService,
     private taskPriorityService: TaskPriorityService,

@@ -106,7 +106,7 @@
       <div *ngFor="let paramKey of editingBehaviourParamKeys; let i = index">
 
         <div *ngIf="specialBehaviourParams.includes(paramKey)">
-          <app-special-type-select [typeName]="paramKey" displayName="Stand"></app-special-type-select>
+          <app-special-type-select [typeName]="paramKey" [displayName]="paramKey"></app-special-type-select>
         </div>
 
         <div *ngIf="!specialBehaviourParams.includes(paramKey)">
