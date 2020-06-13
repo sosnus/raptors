@@ -1,5 +1,5 @@
-import {Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import {timer} from 'rxjs';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
+import { timer } from 'rxjs';
 import {Robot} from "../../../model/Robots/Robot";
 import { Orientation } from 'src/app/model/Stand/Orientation';
 
@@ -8,7 +8,7 @@ import { Orientation } from 'src/app/model/Stand/Orientation';
   templateUrl: './robot-details-new.component.html',
   styleUrls: ['./robot-details-new.component.css']
 })
-export class RobotDetailsComponentNew implements OnInit {
+export class RobotDetailsComponentNew implements OnInit, OnChanges {
 
   @Input()
   robot: Robot;
@@ -18,6 +18,19 @@ export class RobotDetailsComponentNew implements OnInit {
 
   refresh() {
     this.refreshEvent.emit();
+    this.updateBatteryIcon();
+  }
+
+  private updateBatteryIcon() {
+    document.getElementById("batteryLevel").style.height = `${this.robot.batteryLevel}%`;
+
+    if (this.robot.batteryLevel < 15) {
+      document.getElementById("batteryLevel").className = 'battery-level error';
+    } else if (this.robot.batteryLevel < 30) {
+      document.getElementById("batteryLevel").className = 'battery-level warn';
+    } else {
+      document.getElementById("batteryLevel").className = 'battery-level';
+    }
   }
 
   private refreshRepeater() {
@@ -57,6 +70,10 @@ export class RobotDetailsComponentNew implements OnInit {
 
   ngOnInit() {
     this.refreshRepeater();
+  }
+
+  ngOnChanges(){
+    this.updateBatteryIcon();
   }
 
 }

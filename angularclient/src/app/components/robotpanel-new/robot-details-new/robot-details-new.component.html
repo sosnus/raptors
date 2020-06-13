@@ -34,7 +34,10 @@
   </tr>
   <tr>
     <th scope="row">Bateria</th>
-    <td>{{robot.batteryLevel}}</td>
+    <td>{{robot.batteryLevel.toFixed(2)}}%</td>
+    <div class="battery">
+      <div id="batteryLevel" class="battery-level" style="height:0%;"></div>
+    </div>
   </tr>
   </tbody>
 </table>
