@@ -1,5 +1,5 @@
 <div class="card-header">{{header}}</div>
-<div class="breadcrumbs breadcrumbs_type5">
+<div class="breadcrumbs breadcrumbs_type5 breadcrumb-header">
   <span (click)="goToRoot()" class="breadcrumbs__item">root</span>
   <span *ngFor="let item of breadcrumbs; let i = index; last as isLast" (click)="goToSelectedItem(item, i)">
     <span class="breadcrumbs__item" [ngClass]="{ 'breadcrumbs__item_active' : isLast }">{{item.name}}</span>
