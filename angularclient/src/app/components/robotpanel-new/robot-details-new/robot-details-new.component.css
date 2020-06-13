@@ -73,6 +73,7 @@ h1 {
   bottom: 0px;
   left: 0;
   right: 0;
+  transition: height 1s, background-color 1s;
 }
 
 .battery-level.error {
