@@ -20,8 +20,9 @@ export class StoreService {
 //   public baseURL = 'http://localhost:3333';
   // public baseURL = 'http://localhost:8080';
   public baseURL = 'http://larissa-ra-back.azurewebsites.net';
-  
-  public barrierURL = 'http://raptors-barrier-generator.herokuapp.com/'
+    
+  // public barrierURL = 'http://raptors-barrier-generator.herokuapp.com/'
+  public barrierURL = 'http://localhost:5000/'
 
   public robotTaskList: RobotTask[]= [];
   public robotTaskListTemp: RobotTask[] = [];
