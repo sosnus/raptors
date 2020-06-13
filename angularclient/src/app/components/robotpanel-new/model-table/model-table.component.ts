@@ -1,6 +1,7 @@
-import {AfterViewChecked, Component, Input, OnChanges, OnInit} from '@angular/core';
-import {Property} from "../../../model/GenericRobotModel/Property";
-import {PropertyTypeEnum} from "../../../model/GenericRobotModel/PropertyTypeEnum";
+import { Component, Input, } from '@angular/core';
+import { Router } from '@angular/router';
+import { Property } from "../../../model/GenericRobotModel/Property";
+import { PropertyTypeEnum } from "../../../model/GenericRobotModel/PropertyTypeEnum";
 
 @Component({
   selector: 'app-model-table',
@@ -17,10 +18,12 @@ export class ModelTableComponent {
   properties;
   public breadcrumbs: Array<Property> = [];
 
-  constructor() { }
+  constructor(private router: Router) {
+    router.events.subscribe((val) => { this.breadcrumbs = []; })
+  }
 
   updateRoot(prop: Property): void {
-    if(prop.isComplex()){
+    if (prop.isComplex()) {
       this.breadcrumbs.push(prop);
     }
 
