@@ -1,7 +1,11 @@
 <div class="card-header">{{header}}</div>
-<h5>Navigation: </h5>
-<span (click)="goToRoot()" class="link">root</span>
-<span *ngFor="let item of breadcrumbs; let i = index;" (click)="goToSelectedItem(item, i)"> >> <span class="link">{{item.name}}</span> </span>
+<div class="breadcrumbs breadcrumbs_type5">
+  <span (click)="goToRoot()" class="breadcrumbs__item">root</span>
+  <span *ngFor="let item of breadcrumbs; let i = index; last as isLast" (click)="goToSelectedItem(item, i)">
+    <span class="breadcrumbs__item" [ngClass]="{ 'breadcrumbs__item_active' : isLast }">{{item.name}}</span>
+  </span>
+</div>
+
 <table class="table">
   <tbody>
   <tr *ngFor="let prop of properties" (click)="updateRoot(prop)"> 
