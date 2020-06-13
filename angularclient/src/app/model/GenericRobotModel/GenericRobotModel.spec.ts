@@ -1,5 +1,5 @@
 import {Property} from './Property';
-import {PropertyFactory} from './PropertyFactory';
+import {PropertyAssembler} from './PropertyAssembler';
 
 describe('Property', () => {
   it('#toString should return value for simple property', () => {
@@ -9,7 +9,7 @@ describe('Property', () => {
 
   it('#toString should return "see more" for complex property', () => {
     const property = Property.complexProperty('name', null);
-    expect(property.toString()).toBe('see more');
+    expect(property.toString()).toBe('see more ➡');
   });
 
   it('#getValue should return proper value for both property types', () => {
@@ -48,7 +48,7 @@ describe('PropertyFactory', () => {
         ]
       }`;
     const object = JSON.parse(json);
-    property = PropertyFactory.createFromObject('object', object);
+    property = new PropertyAssembler('object', object).rootProperty;
   });
 
   it('#createFromObject should create a property for every field', () => {

@@ -7,37 +7,23 @@
   </div>
 </div>
 <table class="table">
-  <thead>
-<!--  <tr>-->
-<!--    <th scope="col">#</th>-->
-<!--    <th scope="col">First</th>-->
-<!--    <th scope="col">Last</th>-->
-<!--    <th scope="col">Handle</th>-->
-<!--  </tr>-->
-  </thead>
   <tbody>
-  <tr>
-    <th scope="row">Online</th>
-    <td>{{robot.available}}</td>
-  </tr>
-  <tr>
-    <th scope="row">IP</th>
-    <td>{{robot.robotIp}}</td>
-  </tr>
-  <tr>
-    <th scope="row">Pozycja</th>
-    <td>X {{robot.pose.position.x}} : Y {{robot.pose.position.y}} : Z {{robot.pose.position.z}}</td>
-  </tr>
-  <tr>
-    <th scope="row">Orientacja</th>
-    <td>{{orientationToString(robot.pose.orientation)}}</td>
-  </tr>
-  <tr>
-    <th scope="row">Bateria</th>
-    <td>{{robot.batteryLevel.toFixed(2)}}%</td>
-    <div class="battery">
-      <div id="batteryLevel" class="battery-level" style="height:0%;"></div>
-    </div>
+  <tr *ngFor="let prop of properties">
+    <ng-container [ngSwitch]="prop.specialType">
+      <ng-container *ngSwitchCase="typeEnum.BATTERY_LEVEL">
+        <th scope="row">{{prop.getName()}}</th>
+        <td>
+          <div class="battery">
+            <div id="batteryLevel" class="battery-level" style="height:0%;"></div>
+          </div>
+          <div style="float: left">{{prop.toString()}}</div>
+        </td>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <th scope="row">{{prop.getName()}}</th>
+        <td>{{prop.toString()}}</td>
+      </ng-container>
+    </ng-container>
   </tr>
   </tbody>
 </table>

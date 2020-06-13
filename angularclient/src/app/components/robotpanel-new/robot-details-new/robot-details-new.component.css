@@ -29,13 +29,14 @@ h1 {
 }
 
 .battery {
+  display: inline-block;
   border: 3px solid #333;
   width: 18px;
   height: 28px;
   padding: 2px;
   border-radius: 4px;
   position: relative;
-  margin: 15px 0;
+  margin: -4px 0 0 15px;
 
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
@@ -93,4 +94,8 @@ h1 {
   content: '';
   display: inline-block;
   position: absolute;
+}
+
+th {
+  width: 50%;
 }

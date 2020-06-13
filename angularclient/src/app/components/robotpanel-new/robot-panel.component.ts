@@ -4,8 +4,9 @@ import {RobotService} from "../../services/robot.service";
 import {Robot} from "../../model/Robots/Robot";
 import {LogService} from "../../services/log.service";
 import {Log} from "../../model/Robots/Log";
-import {PropertyFactory} from "../../model/GenericRobotModel/PropertyFactory";
+import {PropertyAssembler} from "../../model/GenericRobotModel/PropertyAssembler";
 import {Property} from "../../model/GenericRobotModel/Property";
+import {SpecialProperty} from "../../model/GenericRobotModel/SpecialProperty/SpecialProperty";
 
 @Component({
   selector: 'app-robot-panel',
@@ -17,6 +18,7 @@ export class RobotPanelComponentNew implements OnInit {
   private robot: Robot = new Robot();
   private logs: Log[] = [];
   private genericModel: Property;
+  private specialProperties: Array<SpecialProperty>;
   private rootName: string;
   private rootProperties;
 
@@ -46,7 +48,9 @@ export class RobotPanelComponentNew implements OnInit {
 
   private getGenericRobotModel(id) {
     this.robotService.getRawByID(id).subscribe(data => {
-      const genericModel = PropertyFactory.createFromObject('Model', data);
+      const assembler = new PropertyAssembler('Model', data);
+      const genericModel = assembler.rootProperty;
+      this.specialProperties = assembler.specialProperties;
       this.genericModel = genericModel;
       this.rootName = genericModel.name;
       this.rootProperties = genericModel.getValue();

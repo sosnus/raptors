@@ -2,8 +2,8 @@ import {PropertyTypeEnum} from './PropertyTypeEnum';
 
 export class Property {
   name: string;
-  private simpleValue: string;
-  private complexValue: Array<Property>;
+  protected simpleValue: string;
+  protected complexValue: Array<Property>;
   type: PropertyTypeEnum;
 
   static simpleProperty(name: string, value: string): Property {
@@ -14,11 +14,15 @@ export class Property {
     return new this(name, null, value, PropertyTypeEnum.COMPLEX);
   }
 
-  private constructor(name: string, simpleValue: string, complexValue: Array<Property>, type: PropertyTypeEnum) {
+  protected constructor(name: string, simpleValue: string, complexValue: Array<Property>, type: PropertyTypeEnum) {
     this.name = name;
     this.simpleValue = simpleValue;
     this.complexValue = complexValue;
     this.type = type;
+  }
+
+  getName(): string {
+    return this.name;
   }
 
   toString(): string {
