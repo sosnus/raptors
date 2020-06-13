@@ -26,11 +26,11 @@
   </tr>
   <tr>
     <th scope="row">Pozycja</th>
-    <td>{{robot.pose.position.x}}, {{robot.pose.position.y}}, {{robot.pose.position.z}}</td>
+    <td>X {{robot.pose.position.x}} : Y {{robot.pose.position.y}} : Z {{robot.pose.position.z}}</td>
   </tr>
   <tr>
     <th scope="row">Orientacja</th>
-    <td>{{robot.pose.orientation.x}}, {{robot.pose.orientation.y}}, {{robot.pose.orientation.z}}, {{robot.pose.orientation.w}}</td>
+    <td>{{orientationToString(robot.pose.orientation)}}</td>
   </tr>
   <tr>
     <th scope="row">Bateria</th>
