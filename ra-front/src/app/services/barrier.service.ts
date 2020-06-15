@@ -32,7 +32,7 @@ export class BarrierService {
       var b = [];
       a.forEach((ae) => {
         var c = ae.split(",");
-        b.push(new UniversalPoint(parseInt(c[0]), parseInt(c[1]), 0));
+        b.push(new UniversalPoint(parseFloat(c[0]), parseFloat(c[1]), 0));
       });
       polygons.push(new Polygon(`Barrier${i}`, area, b));
       i += 1;
