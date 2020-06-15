@@ -13,7 +13,6 @@ export class BarrierService {
 
   constructor(private http: HttpClient, private store: StoreService) {
     this.barrierURL = store.barrierURL;
-    console.log(this.store.mapID);
   }
 
   public getBarriers(robot_diameter: string): Observable<any> {
@@ -24,10 +23,10 @@ export class BarrierService {
     );
   }
 
-  public parseToPolygons(barriers) {
+  public parseToPolygons(barriers, area) {
     var polygons = [];
-    console.log(barriers);
     barriers = barriers.split("p");
+    var i = 0;
     barriers.forEach((element) => {
       var a = element.split("|");
       var b = [];
@@ -35,8 +34,9 @@ export class BarrierService {
         var c = ae.split(",");
         b.push(new UniversalPoint(parseInt(c[0]), parseInt(c[1]), 0));
       });
-      polygons.push(new Polygon("o", null, b));
+      polygons.push(new Polygon(`Barrier${i}`, area, b));
+      i += 1;
     });
-    console.log(polygons);
+    return polygons;
   }
 }
