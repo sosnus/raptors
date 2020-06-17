@@ -7,11 +7,13 @@ import {HomeComponent} from './components/home/home.component';
 import {MapComponent} from './components/map/map.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {MapService} from './services/map.service';
+import {BarrierService} from './services/barrier.service';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {RobotService} from './services/robot.service';
 import {GraphcreatorComponent} from './components/map/graphcreator/graphcreator.component';
 import {GraphService} from './services/graph.service';
 import {MapUploadComponent} from './components/map/map-upload/map-upload.component';
+import {BarrierGeneratorComponent} from './components/map/barrier-generator/barrier-generator.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {InputFileConfig, InputFileModule} from 'ngx-input-file';
 import {StoreService} from './services/store.service';
@@ -86,6 +88,7 @@ const config: InputFileConfig = {};
     HomeComponent,
     MapComponent,
     MapUploadComponent,
+    BarrierGeneratorComponent,
     SidebarComponent,
     GraphcreatorComponent,
     PolygonsComponent,
@@ -147,7 +150,7 @@ const config: InputFileConfig = {};
     MatIconModule,
     MatTooltipModule
   ],
-  providers: [MapService, HttpClient, RobotService, GraphService, StoreService,
+  providers: [MapService, BarrierService, HttpClient, RobotService, GraphService, StoreService,
     StandService, AreaTypeService, BatteryTypeService, PropulsionTypeService,
     ParkingTypeService, TaskPriorityService, StandTypeService, StandStatusService,
     ReviewTypeService, RobotaApprovalService],

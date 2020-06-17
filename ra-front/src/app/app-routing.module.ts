@@ -4,6 +4,7 @@ import {HomeComponent} from './components/home/home.component';
 import {GraphcreatorComponent} from './components/map/graphcreator/graphcreator.component';
 import {PolygonsComponent} from './components/map/polygons/polygons.component';
 import {MapUploadComponent} from './components/map/map-upload/map-upload.component';
+import {BarrierGeneratorComponent} from './components/map/barrier-generator/barrier-generator.component';
 import {StandCreatorComponent} from './components/map/stand-creator/stand-creator.component';
 import {AdminPanelComponent} from './components/adminpanel/admin-panel.component';
 import {LoginComponent} from './components/login/login.component';
@@ -35,6 +36,7 @@ const routes: Routes = [
   {path: 'polygons', component: PolygonsComponent},
   {path: 'mapupload', component: MapUploadComponent},
   {path: 'stands', component: StandCreatorComponent},
+  {path: 'barriers', component: BarrierGeneratorComponent},
   {
     path: 'adminpanel', component: AdminPanelComponent,
     canActivate: [AuthGuard],
