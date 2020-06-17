@@ -24,20 +24,21 @@ public class HealthzController {
     @Autowired
     private HealthzService healthzService;
 
-    private static final String version = HealthzController.getVersion();
+    private static final String version = "1.7.1-manually"; //HealthzController.getVersion();
 
-    private static String getVersion() {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        Model model = null;
-        try {
-            model = reader.read(new FileReader("pom.xml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
-        return model.getVersion();
-    }
+    // private static String getVersion() {
+    //     // MavenXpp3Reader reader = new MavenXpp3Reader();
+    //     // Model model = null;
+    //     // try {
+    //     //     model = reader.read(new FileReader("pom.xml"));
+    //     // } catch (IOException e) {
+    //     //     e.printStackTrace();
+    //     // } catch (XmlPullParserException e) {
+    //     //     e.printStackTrace();
+    //     // }
+    //     // return model.getVersion();
+    //     return "1.5.1-manually-NOPE";
+    // }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/backend")

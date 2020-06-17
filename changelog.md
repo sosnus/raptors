@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [1.7.1] - 2020-06-17
+### Added
+- Dockerfile (front, back)
+### Changed
+- disable access to pom.xml from healthz
+- some angular packages (downgrade and upgrade)
+- npm babel package added
+
+
 ## [1.5.0] - 2020-05-26
 ### Added
 - create documentation /docs
