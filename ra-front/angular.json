@@ -72,7 +72,7 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "angularclient:build:production"
+              "browserTarget": "ra-front:build:production"
             }
           }
         },
