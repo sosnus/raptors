@@ -1,5 +1,5 @@
-import {Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
-import {MapService} from '../../../services/map.service';
+import { Component, Input, OnChanges, OnInit, SimpleChange } from '@angular/core';
+import { MapService } from '../../../services/map.service';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
 import '../../../../../node_modules/leaflet-path-transform/dist/L.Path.Transform.js'
 import '../../../../lib/leaflet-circle-to-polygon/leaflet.circle.topolygon-src.js'
@@ -7,9 +7,9 @@ import '../../../../lib/leaflet-easybutton/src/easy-button';
 import '../../../../lib/leaflet-easybutton/src/easy-button.css';
 
 import 'leaflet-path-transform';
-import {StoreService} from "../../../services/store.service";
-import {Robot} from "../../../model/Robots/Robot";
-import {ROBOTICON} from "../../map/map.component";
+import { StoreService } from "../../../services/store.service";
+import { Robot } from "../../../model/Robots/Robot";
+import { ROBOTICON } from "../../map/map.component";
 
 declare var L: any;
 
@@ -36,7 +36,7 @@ export class MapScaledComponent implements OnInit, OnChanges {
 
 
   constructor(private mapService: MapService,
-              private store: StoreService) {
+    private store: StoreService) {
   }
 
   ngOnInit() {
@@ -75,7 +75,6 @@ export class MapScaledComponent implements OnInit, OnChanges {
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
-      //
     }
   }
 
@@ -104,7 +103,7 @@ export class MapScaledComponent implements OnInit, OnChanges {
       this.getMapCoordinates(Number(robot.pose.position.y)),
       this.getMapCoordinates(Number(robot.pose.position.x))
     ];
-    this.marker = L.marker(position, {icon: ROBOTICON});
+    this.marker = L.marker(position, { icon: ROBOTICON });
     this.marker.addTo(this.map);
     this.marker.bindPopup(
       "Robot Details<br />Position x: "
@@ -121,7 +120,7 @@ export class MapScaledComponent implements OnInit, OnChanges {
     return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (this.mapContainerSize / this.imageResolution)
   }
 
-  getRounded(value){
-    if(value) return value.toFixed(4);
+  getRounded(value) {
+    if (value) return value.toFixed(4);
   }
 }

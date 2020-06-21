@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  serverUrl: 'http://adrastea.westus2.cloudapp.azure.com:3333'
+  serverUrl: 'http://adrastea.westus2.cloudapp.azure.com:3333',
+  refreshRate: 5000
 };
 
 /*

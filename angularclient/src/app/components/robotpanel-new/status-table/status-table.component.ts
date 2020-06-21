@@ -1,14 +1,16 @@
-import {AfterViewChecked, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {timer} from 'rxjs';
-import {SpecialProperty} from "../../../model/GenericRobotModel/SpecialProperty/SpecialProperty";
-import {SpecialPropertyEnum} from "../../../model/GenericRobotModel/SpecialProperty/SpecialPropertyEnum";
+import { AfterViewChecked, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { timer } from 'rxjs';
+import { SpecialProperty } from "../../../model/GenericRobotModel/SpecialProperty/SpecialProperty";
+import { SpecialPropertyEnum } from "../../../model/GenericRobotModel/SpecialProperty/SpecialPropertyEnum";
+import {environment} from "../../../../environments/environment"
+
 
 @Component({
-  selector: 'app-robot-details-new',
-  templateUrl: './robot-details-new.component.html',
-  styleUrls: ['./robot-details-new.component.css'],
+  selector: 'app-status-table',
+  templateUrl: './status-table.component.html',
+  styleUrls: ['./status-table.component.css'],
 })
-export class RobotDetailsComponentNew implements OnInit, AfterViewChecked {
+export class StatusTableComponent implements OnInit, AfterViewChecked {
 
   @Input()
   properties: Array<SpecialProperty>;
@@ -22,7 +24,7 @@ export class RobotDetailsComponentNew implements OnInit, AfterViewChecked {
     this.refreshRepeater();
   }
 
-  ngAfterViewChecked(){
+  ngAfterViewChecked() {
     this.updateBatteryIcon();
   }
 
@@ -32,7 +34,7 @@ export class RobotDetailsComponentNew implements OnInit, AfterViewChecked {
   }
 
   private refreshRepeater() {
-    timer(60000, 60000).subscribe(x => {
+    timer(environment.refreshRate, environment.refreshRate).subscribe(x => {
       this.refreshEvent.emit();
     })
   }

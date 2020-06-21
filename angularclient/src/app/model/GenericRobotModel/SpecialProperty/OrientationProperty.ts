@@ -53,6 +53,6 @@ export class OrientationProperty extends SpecialProperty {
   }
 
   getName(): string {
-    return "Oriantacja";
+    return "Orientacja";
   }
 }

@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Property} from "../../../../model/GenericRobotModel/Property";
-import {PropertyTypeEnum} from "../../../../model/GenericRobotModel/PropertyTypeEnum";
+import { Component, Input, OnInit } from '@angular/core';
+import { Property } from "../../../../model/GenericRobotModel/Property";
 
 @Component({
   selector: 'app-table-row',

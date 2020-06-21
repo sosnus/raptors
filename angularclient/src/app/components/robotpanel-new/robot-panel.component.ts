@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {RobotService} from "../../services/robot.service";
-import {Robot} from "../../model/Robots/Robot";
-import {LogService} from "../../services/log.service";
-import {Log} from "../../model/Robots/Log";
-import {PropertyAssembler} from "../../model/GenericRobotModel/PropertyAssembler";
-import {Property} from "../../model/GenericRobotModel/Property";
-import {SpecialProperty} from "../../model/GenericRobotModel/SpecialProperty/SpecialProperty";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
+import { RobotService } from "../../services/robot.service";
+import { Robot } from "../../model/Robots/Robot";
+import { LogService } from "../../services/log.service";
+import { Log } from "../../model/Robots/Log";
+import { PropertyAssembler } from "../../model/GenericRobotModel/PropertyAssembler";
+import { Property } from "../../model/GenericRobotModel/Property";
+import { SpecialProperty } from "../../model/GenericRobotModel/SpecialProperty/SpecialProperty";
 
 @Component({
   selector: 'app-robot-panel',
@@ -23,8 +23,8 @@ export class RobotPanelComponentNew implements OnInit {
   private rootProperties;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private robotService: RobotService,
-              private logService: LogService) {
+    private robotService: RobotService,
+    private logService: LogService) {
   }
 
   private refreshStatus() {
@@ -59,7 +59,7 @@ export class RobotPanelComponentNew implements OnInit {
 
   private getLogs() {
     this.logService.getLogsFromRobot(this.robot.id).subscribe(logs => {
-      this.logs = logs;
+      this.logs = logs.slice(-5);
     });
   }
 

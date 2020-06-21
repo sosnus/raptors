@@ -1,14 +1,14 @@
 th {
- width: 100%
+  width: 100%
 }
 
-.link{
+.link {
   color: blue;
   text-decoration: underline;
   font-style: italic;
   cursor: pointer;
 }
 
-.pointer{
+.pointer {
   cursor: pointer;
 }

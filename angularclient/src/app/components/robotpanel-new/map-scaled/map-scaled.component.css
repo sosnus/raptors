@@ -1,30 +1,31 @@
 @import url("../../map/map.component.css");
-
-.switch{
+.switch {
   width: 14rem;
 }
 
-.btn-save{
+.btn-save {
   margin: auto;
   margin-bottom: 3rem;
 }
 
-.inline-container{
+.inline-container {
   display: flex;
 }
 
-.map{
+.map {
   display: inline-block;
 }
-.list{
+
+.list {
   display: inline-block;
   padding-left: 1rem;
 }
-.md-form{
+
+.md-form {
   width: 33%;
 }
 
-.row{
+.row {
   margin: 0;
 }
 
@@ -32,10 +33,11 @@
   width: 98%;
 }
 
-.map-container{
+.map-container {
   padding: 0;
 }
-.card-header{
+
+.card-header {
   text-align: center;
   font-size: 1.5rem;
 }

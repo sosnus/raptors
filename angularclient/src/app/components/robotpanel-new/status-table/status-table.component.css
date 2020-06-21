@@ -1,4 +1,4 @@
-.table{
+.table {
   width: 100%;
   margin-top: 2rem;
 }
@@ -14,7 +14,7 @@ h1 {
   font-size: 15px;
 }
 
-.card-header{
+.card-header {
   text-align: center;
   font-size: 1.5rem;
 }
@@ -37,7 +37,6 @@ h1 {
   border-radius: 4px;
   position: relative;
   margin: -4px 0 0 15px;
-
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
   -o-transform: rotate(-90deg);
