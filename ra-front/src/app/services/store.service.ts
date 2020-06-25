@@ -19,10 +19,11 @@ export class StoreService {
   // public baseURL = 'http://tebe.westeurope.cloudapp.azure.com:3333';
 //   public baseURL = 'http://localhost:3333';
   // public baseURL = 'http://localhost:8080';
-  public baseURL = 'http://larissa-ra-back.azurewebsites.net';
+  public baseURL = 'http://karme-ra-back.azurewebsites.net'; // BEZ "/"
+  //temp
     
   // public barrierURL = 'http://raptors-barrier-generator.herokuapp.com/'
-  public barrierURL = 'http://localhost:5000/'
+  public barrierURL = 'http://karme-ra-barrier.azurewebsites.net/' // dopisać "/"
 
   public robotTaskList: RobotTask[]= [];
   public robotTaskListTemp: RobotTask[] = [];
