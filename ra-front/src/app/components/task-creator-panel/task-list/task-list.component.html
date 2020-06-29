@@ -1,0 +1,64 @@
+
+<a *ngIf="storeService.robotTaskList.length < 1">
+  <h6 class="mt-1 mb-0 text-blue">
+    Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ
+  </h6>
+</a>
+
+<div *ngIf="storeService.robotTaskList.length > 0">
+  <table class="table table-sm table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Rozpoczęcie</th>
+        <th scope="col">Nazwa</th>
+        <th scope="col">Status</th>
+        <th scope="col">Priorytet</th>
+        <th scope="col">ID Twórcy</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of storeService.robotTaskList; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ data.startTime }}</td>
+        <td>{{ data.name }}</td>
+        <td>{{ data.status }}</td>
+        <td>{{ data.priority.name }}</td>
+        <td>{{ data.userID }}</td>
+        <td>
+          <button
+          class="btn btn-success btn-rounded btn-sm my-0"
+          [routerLink]="['details', data.id]"
+          >
+          Więcej
+        </button>
+          <button
+            class="btn btn-info btn-rounded btn-sm my-0"
+            data-toggle="modal"
+            [attr.data-target]="'#' + modalID"
+            (click)="edit(data)"
+            [routerLink]="['edit', data.id]"
+          >
+            Edytuj
+          </button>
+          <button
+            class="btn btn-danger btn-rounded btn-sm my-0"
+            data-toggle="modal"
+            [attr.data-target]="'#' + modalID + 'Confirm'"
+            (click)="robotTask = data"
+          >
+            Usuń
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-confirm-modal-template
+  [modalID]="modalID + 'Confirm'"
+  (onConfirm)="delete(robotTask)"
+></app-confirm-modal-template>
+
+
+<button [routerLink]="['add']" class="btn btn-primary mb-3"><i class="fas fa-plus"></i> Dodaj</button>
