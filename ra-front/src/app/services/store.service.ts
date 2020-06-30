@@ -16,11 +16,14 @@ export class StoreService {
   public imageResolution = 1984;
   public mapID = '5e19f1fa9b1eab79e9a58e08';
 
-  public baseURL = 'https://himalia-ra-backend-sosnus-develop.azurewebsites.net';
-//   public baseURL = 'http://larissa-ra-back.azurewebsites.net';
-  //public baseURL = 'http://tebe.westeurope.cloudapp.azure.com:3333';
-  // public baseURL = 'http://localhost:3333';
+  // public baseURL = 'http://karme-ra-back.azurewebsites.net'; // BEZ "/"
+    public baseURL = 'http://localhost:3333';
+  // public baseURL = 'http://tebe.westeurope.cloudapp.azure.com:3333';
   // public baseURL = 'http://localhost:8080';
+  //temp
+    
+  // public barrierURL = 'http://raptors-barrier-generator.herokuapp.com/'
+  public barrierURL = 'http://karme-ra-barrier.azurewebsites.net/' // dopisać "/"
 
   public robotTaskList: RobotTask[]= [];
   public robotTaskListTemp: RobotTask[] = [];
