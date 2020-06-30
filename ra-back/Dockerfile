@@ -12,8 +12,9 @@
 FROM maven:3.6.3-openjdk-8 AS build
 WORKDIR /usr/src/app
 COPY . .
-RUN mvn -U -e package
-# -U force update # -e pront error #-X debug
+RUN mvn -U package
+# RUN mvn -U -e package
+# -U force update # -e print error #-X debug
 
 
 
