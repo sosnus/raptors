@@ -3,8 +3,6 @@
   "version": "1.8.2",
   "scripts": {
     "ng": "ng",
-    "build-prod": "ng build --prod",
-    "serve-prod": "lite-server",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",

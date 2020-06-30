@@ -21,5 +21,11 @@ RUN mvn -U package
 FROM openjdk:8-jdk-alpine
 ARG JAR_FILE=target/*.jar
 COPY --from=build /usr/src/app/${JAR_FILE} app.jar
-ENTRYPOINT ["java","-Dserver.port=3333","-jar","/app.jar"]
-EXPOSE 3333
+
+# LOCAL:
+# ENTRYPOINT ["java","-Dserver.port=3333","-jar","/app.jar"]
+# EXPOSE 3333
+
+# CLOUD:
+ENTRYPOINT ["java","-jar","/app.jar"]
+EXPOSE 8080:8080

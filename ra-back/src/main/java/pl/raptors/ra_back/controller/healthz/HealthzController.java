@@ -10,8 +10,8 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import pl.raptors.ra_back.service.healthz.HealthzService;
 
-import java.io.FileReader;
-import java.io.IOException;
+// import java.io.FileReader;
+// import java.io.IOException;
 
 @RestController
 @CrossOrigin
@@ -25,6 +25,7 @@ public class HealthzController {
     private HealthzService healthzService;
 
     private static final String version = "1.8.2-manually"; //HealthzController.getVersion();
+// private static final String version = HealthzController.getVersion();
 
     // private static String getVersion() {
     //     // MavenXpp3Reader reader = new MavenXpp3Reader();
@@ -49,7 +50,8 @@ public class HealthzController {
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/backend/version")//zróbmy żeby bez tokenu może odrazu? no jest bez tokenu xD
     public String getBackendVersion() {
-        return version;
+        return "1.6.6-MANUALLY";
+        //return version;
     }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
