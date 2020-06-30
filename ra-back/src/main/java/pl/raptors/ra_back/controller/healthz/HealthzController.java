@@ -24,7 +24,7 @@ public class HealthzController {
     @Autowired
     private HealthzService healthzService;
 
-    private static final String version = "1.8.2-manually"; //HealthzController.getVersion();
+    private static final String version = "1.8.5-manually"; //HealthzController.getVersion();
 // private static final String version = HealthzController.getVersion();
 
     // private static String getVersion() {
@@ -50,7 +50,7 @@ public class HealthzController {
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/backend/version")//zróbmy żeby bez tokenu może odrazu? no jest bez tokenu xD
     public String getBackendVersion() {
-        return "1.6.6-MANUALLY";
+        return version;
         //return version;
     }
 
