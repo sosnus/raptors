@@ -1,0 +1,35 @@
+<table class="table">
+  <thead>
+  </thead>
+  <tbody>
+  <tr>
+    <th scope="row">ID</th>
+    <td>{{task.id}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Start Time</th>
+    <td>{{task.startTime}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Status zadania</th>
+    <td>{{task.status}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Priorytet zadania</th>
+    <td>{{task.priority.name}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Dodane przez</th>
+    <td>{{task.userID}}</td>
+  </tr>
+  <tr >
+    <th scope="row">Przyporządkowane zachowania</th>
+    <td style="word-wrap: break-word; width: 60vw;">
+      <span style="margin: 0 1rem 0 0;" *ngFor="let item of task.behaviours">
+        {{item.name}}
+      </span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+

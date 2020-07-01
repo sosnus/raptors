@@ -5,12 +5,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [1.8.5] - 2020-07-01
+### Changed
+- Dockerfile (front - rm node_env param)
+### Fixed
+- bug in sidebar (InstanceInfo engine log error)
+### Removed
+- Disable github action
 
-
-## [1.6.0] - 2020-05-26
+## [1.8.2] - 2020-06-30
 ### Added
-- deploy ra-front to larissa-ra-front
-- add azure pipeline
+- Merge task-creator-feature
+### Changed
+- database changet to tebe
+
+## [1.7.1] - 2020-06-17
+### Added
+- Dockerfile (front, back)
+### Changed
+- disable access to pom.xml from healthz
+- some angular packages (downgrade and upgrade)
+- npm babel package added
 
 ## [1.5.0] - 2020-05-26
 ### Added

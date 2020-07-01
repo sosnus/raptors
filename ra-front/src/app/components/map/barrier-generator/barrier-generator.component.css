@@ -1,0 +1,59 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import url("../map.component.css");
+
+.container{
+  padding: 30px 100px 30px 100px;
+  width: 23%;
+  margin: 0;
+}
+
+.mat-button-base{
+  opacity: 0;
+}
+.btn-light{
+  margin: 10px 0 0 0;
+  padding-left: 16px;
+  width: 10rem;
+  padding-right: 10px;
+}
+
+.loader {
+  position: relative;
+  text-align: center;
+  margin: 15px auto 35px auto;
+  z-index: 9999;
+  display: block;
+  width: 80px;
+  height: 80px;
+  border: 10px solid rgba(0, 0, 0, .3);
+  border-radius: 50%;
+  border-top-color: #000;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.success{
+  font-size: 6rem;
+  color: darkseagreen;
+}
+.error{
+  font-size: 6rem;
+  color: red;
+}
+.map-container {
+  padding: 0;
+  width: 800px;
+  height: 800px;
+}

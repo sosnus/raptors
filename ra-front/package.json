@@ -1,13 +1,14 @@
 {
   "name": "ra-front",
-  "version": "1.6.8",
+  "version": "1.8.5",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "local": "ng serve --port 4444 --host 0.0.0.0 --disable-host-check"
   },
   "private": true,
   "dependencies": {
@@ -42,6 +43,7 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^8.9.5",
+    "babel-preset-es2015-node4": "^2.1.1",
     "codelyzer": "^5.2.1",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",

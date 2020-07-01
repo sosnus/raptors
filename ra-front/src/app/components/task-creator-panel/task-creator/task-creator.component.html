@@ -1,0 +1,126 @@
+<div class="task-creator-container">
+  <div class="task-creator-title">
+    <h4>Panel zarządzania zadaniem</h4>
+  </div>
+  <form #modalForm="ngForm">
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="robotTaskname" class="form-control validate" required [(ngModel)]="robotTask.name"
+        name="name" />
+      <label for="robotTaskname" [class.active]="robotTask.name && robotTask.name.length > 0">Nazwa zadania</label>
+    </div>
+
+    <p class="input-paragraph">Status zadania</p>
+    <div class="md-form">
+      <select class="browser-default custom-select" [(ngModel)]="selectedTaskStatus"
+        [ngModelOptions]="{ standalone: true }">
+        <option [value]="item" *ngFor="let item of taskStatuses">{{
+          item
+        }}</option>
+      </select>
+    </div>
+
+    <p class="input-paragraph">Priorytet zadania</p>
+    <div class="md-form">
+      <select class="browser-default custom-select" [(ngModel)]="selectedTaskPriorityId"
+        [ngModelOptions]="{ standalone: true }">
+        <option [value]="item.id" *ngFor="let item of taskPriorities">{{
+          item.name
+        }}</option>
+      </select>
+    </div>
+
+    <p class="input-paragraph">Sekwencje zachowań</p>
+    <div class="md-form behaviour-container">
+      <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="behaviours" [cdkDropListConnectedTo]="[doneList]"
+        class="behaviour-list" (cdkDropListDropped)="drop($event)">
+        <h2>Dostępne zachowania</h2>
+
+        <div class="behaviour-box" *ngFor="let behaviour of behaviours; let i = index" cdkDrag>
+
+          <div class="behaviour">
+            <div class="behaviour-title">
+              <p> {{ i + 1 }}. {{ behaviour.name }}</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="behavioursComplete" class="behaviour-list"
+        (cdkDropListDropped)="drop($event)">
+        <h2>Sekwencje zachowań</h2>
+
+        <div class="behaviour-box" *ngFor="let beh of behavioursComplete; let i = index" cdkDrag>
+
+          <div class="behaviour">
+
+            <div class="behaviour-general">
+              <div class="behaviour-title">
+                <p> {{ i + 1 }}. {{ beh.name }}</p>
+              </div>
+              <div>
+                <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal"
+                  [attr.data-target]="'#' + modalID" (click)="edit(i, beh)"> <i class="fas fa-edit"></i> </button>
+                <button class="btn btn-danger btn-rounded btn-sm my-0" (click)="removeBehaviour(i)"> <i
+                    class="fas fa-trash-alt"></i> </button>
+              </div>
+            </div>
+            <div class="behaviour-details">
+              <p>{{ beh.parameters }}</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary mb-3" [routerLink]="['/task-creator-panel']">
+      Anuluj
+    </button>
+    <button class="btn btn-secondary mb-3" (click)="createOrUpdate()">
+      Zapisz
+    </button>
+  </form>
+</div>
+
+
+
+
+
+<div *ngIf="editingBehaviour.id">
+  <app-form-modal-template [modalName]="'Edycja zachowania'" [modalID]="modalID" (onModalCancel)="reset()"
+    (onModalClose)="updateBehaviour(modalForm)">
+
+    <form class="md-form mb-5" #modalForm="ngForm">
+      <div class="md-form">
+        <i class="fas fa-file-signature prefix grey-text"></i>
+        <input type="text" id="behaviourName" class="form-control validate" [(ngModel)]="editingBehaviour.name"
+          name="name" disabled>
+        <label for="behaviourName" [class.active]="editingBehaviour.name && editingBehaviour.name.length > 0">Nazwa
+          zachowania</label>
+      </div>
+
+      <p>Parametry zachowania</p>
+      <div *ngFor="let paramKey of editingBehaviourParamKeys; let i = index">
+
+        <div *ngIf="specialBehaviourParams.includes(paramKey)">
+          <app-special-type-select [typeName]="paramKey" [displayName]="paramKey"></app-special-type-select>
+        </div>
+
+        <div *ngIf="!specialBehaviourParams.includes(paramKey)">
+          <div class="md-form">
+            <i class="fas fa-file-signature prefix grey-text"></i>
+            <input [id]="paramKey" [name]="paramKey" class="form-control validate"
+              [(ngModel)]="editingBehaviourParams[paramKey]">
+            <label [class.active]="editingBehaviourParams[paramKey]" [for]="paramKey" >{{paramKey}}</label>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+  </app-form-modal-template>
+
+</div>

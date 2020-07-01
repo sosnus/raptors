@@ -26,7 +26,7 @@ export class SidebarComponent implements OnInit {
   usersID: string[] = [];
   frontVersion = '';
   backVersion = '';
-  private instanceInfo: InstanceInfo;
+  private instanceInfo: InstanceInfo = new InstanceInfo('', '', '');
 
   constructor(private storeService: StoreService,
               private robotTaskService: RobotTaskService,
