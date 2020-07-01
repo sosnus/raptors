@@ -5,19 +5,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [1.9.0] - 2020-07-01
+### Changed
+- Enable quiet mvn build
+### Added
+- Pipeline badges add to Readme.md
+### Deploy changes
+- addr to new HELIKE standard
+
 ## [1.8.5] - 2020-07-01
 ### Changed
 - Dockerfile (front - rm node_env param)
 ### Fixed
 - bug in sidebar (InstanceInfo engine log error)
-### Removed
+### Deploy changes
 - Disable github action
 
 ## [1.8.2] - 2020-06-30
 ### Added
 - Merge task-creator-feature
-### Changed
-- database changet to tebe
+### Deploy changes
+- database change to tebe
 
 ## [1.7.1] - 2020-06-17
 ### Added
