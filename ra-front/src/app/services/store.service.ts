@@ -17,7 +17,7 @@ export class StoreService {
   public mapID = '5e19f1fa9b1eab79e9a58e08';
 
   // BEZ "/" na koncu adresu
-    public baseURL = 'http://helike-ra-back-sosnus-develop.azurewebsites.net';
+    public baseURL = 'https://helike-ra-back-sosnus-develop.azurewebsites.net';
   // public baseURL = 'http://localhost:8080';
     
   // public barrierURL = 'http://raptors-barrier-generator.herokuapp.com/'
