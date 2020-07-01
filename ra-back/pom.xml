@@ -10,7 +10,7 @@
     </parent>
     <groupId>pl.raptors</groupId>
     <artifactId>ra-back</artifactId>
-    <version>1.8.2</version>
+    <version>1.9.0</version>
     <name>ra-back</name>
     <description>ra-back - Backend for RaptorsApp. Based on Java 1.8, Spring and MongoDB</description>
 
