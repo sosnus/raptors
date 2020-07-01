@@ -24,7 +24,7 @@ public class HealthzController {
     @Autowired
     private HealthzService healthzService;
 
-    private static final String version = "1.8.5-manually"; //HealthzController.getVersion();
+    private static final String version = "1.8.6-manually-test-devops"; //HealthzController.getVersion();
 // private static final String version = HealthzController.getVersion();
 
     // private static String getVersion() {
