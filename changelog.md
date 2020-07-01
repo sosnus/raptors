@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [1.9.5] - 2020-07-01
 ### Added
 - Update docs, add info about Azure pipelines
+- Scroll on main angular components
+- Add addr to backend in healthz
 ### Deploy changes
 - Prepare new Azure pipeline (for ra-docs)
 
