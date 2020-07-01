@@ -1,103 +1,96 @@
 <spinner *ngIf="!ready"></spinner>
 <ng-container *ngIf="ready">
-  <button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+    <button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
     <i class="fas fa-plus"></i> Dodaj
   </button>
-  <a *ngIf="robots.length<1">
-    <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
-  </a>
-  <div *ngIf="robots.length>0">
-    <table class="table table-sm table-striped">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nazwa</th>
-        <th scope="col">Akcja</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let type of robots;let i = index;">
-        <th scope="row">{{i + 1}}</th>
-        <td>{{type.id}}</td>
-        <td>
-          <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID"
-                  (click)="edit(type)">Edytuj
+    <a *ngIf="robots.length<1">
+        <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+    </a>
+    <div *ngIf="robots.length>0" style="overflow-y: scroll; height: 70vh">
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nazwa</th>
+                    <th scope="col">Akcja</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let type of robots;let i = index;">
+                    <th scope="row">{{i + 1}}</th>
+                    <td>{{type.id}}</td>
+                    <td>
+                        <button class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID" (click)="edit(type)">Edytuj
           </button>
-          <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID+'Confirm'"
-                  (click)="robot=type">Usuń
+                        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID+'Confirm'" (click)="robot=type">Usuń
           </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </ng-container>
 
-<app-confirm-modal-template [modalID]="modalID+'Confirm'"
-                            (onConfirm)="delete(robot)"></app-confirm-modal-template>
+<app-confirm-modal-template [modalID]="modalID+'Confirm'" (onConfirm)="delete(robot)"></app-confirm-modal-template>
 
-<app-form-modal-template [modalName]="'Tworzenie nowego robota'"
-                         [modalID]="modalID"
-                         [disableSubmit]="!modalForm.form.valid"
-                         (onModalCancel)="reset()"
-                         (onModalClose)="createOrUpdate()">
+<app-form-modal-template [modalName]="'Tworzenie nowego robota'" [modalID]="modalID" [disableSubmit]="!modalForm.form.valid" (onModalCancel)="reset()" (onModalClose)="createOrUpdate()">
 
-  <form class="md-form mb-5" #modalForm="ngForm">
-    <div class="md-form">
-      <i class="fas fa-file-signature prefix grey-text"></i>
-      <input type="text" id="id" class="form-control validate" required [(ngModel)]="robot.id" name="id" [disabled]="robot.id && robot.id.length>0">
-      <label for="id" [class.active]="robot.id && robot.id.length > 0">Klucz identyfikacyjny (opcjonalnie) <i class="fas fa-lock" *ngIf="robot.id && robot.id.length>0"></i></label>
-    </div>
-    <div class="md-form">
-      <i class="fas fa-network-wired prefix grey-text"></i>
-      <input type="text" id="robotIp" class="form-control validate" required [(ngModel)]="robot.robotIp" name="robotIp">
-      <label for="robotIp" [class.active]="robot.robotIp && robot.robotIp.length > 0">IP</label>
-    </div>
-    <div class="md-form">
-      <mat-slide-toggle [(ngModel)]="robot.available" name="available"><div class="clickable">Dostępny</div></mat-slide-toggle>
-    </div>
-    <div class="md-form">
-      <i class="fas fa-swatchbook prefix grey-text"></i>
-      <mat-form-field>
-        <mat-label>Element rozszerzający</mat-label>
-        <mat-select [(ngModel)]="robot.extraRobotElement" name="extraRobotElement" [compareWith]="compareItems">
-          <mat-option *ngFor="let extraRobotElement of extraRobotElements" [value]="extraRobotElement">
-            {{extraRobotElement.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="md-form">
-      <i class="fas fa-microchip prefix grey-text"></i>
-      <mat-form-field>
-        <mat-label>Model</mat-label>
-        <mat-select [(ngModel)]="robot.model" name="model" [compareWith]="compareItems">
-          <mat-option *ngFor="let model of robotModels" [value]="model">
-            {{model.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="md-form">
-      <i class="fas fa-plug prefix grey-text"></i>
-      <mat-form-field class="multiselect">
-        <mat-label>Status</mat-label>
-        <mat-select multiple [(ngModel)]="robot.status" name="status" [compareWith]="compareItems">
-          <mat-option *ngFor="let status of statuses" [value]="status">{{status.name}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="md-form">
-      <i class="fas fa-battery-full prefix grey-text"></i>
-      <input type="number" id="batteryLevel" class="form-control validate" required
-             [(ngModel)]="robot.batteryLevel" name="batteryLevel">
-      <label for="batteryLevel" [class.active]="true">Poziom baterii</label>
-    </div>
-    <div class="md-form">
-      <i class="fas fa-key prefix grey-text"></i>
-      <input type="text" id="password" class="form-control validate"
-             [(ngModel)]="password" name="password">
-      <label for="batteryLevel" [class.active]="password&&password.length>0">Hasło robota (zostaw aby nie zmieniać)e</label>
-    </div>
-  </form>
+    <form class="md-form mb-5" #modalForm="ngForm">
+        <div class="md-form">
+            <i class="fas fa-file-signature prefix grey-text"></i>
+            <input type="text" id="id" class="form-control validate" required [(ngModel)]="robot.id" name="id" [disabled]="robot.id && robot.id.length>0">
+            <label for="id" [class.active]="robot.id && robot.id.length > 0">Klucz identyfikacyjny (opcjonalnie) <i class="fas fa-lock" *ngIf="robot.id && robot.id.length>0"></i></label>
+        </div>
+        <div class="md-form">
+            <i class="fas fa-network-wired prefix grey-text"></i>
+            <input type="text" id="robotIp" class="form-control validate" required [(ngModel)]="robot.robotIp" name="robotIp">
+            <label for="robotIp" [class.active]="robot.robotIp && robot.robotIp.length > 0">IP</label>
+        </div>
+        <div class="md-form">
+            <mat-slide-toggle [(ngModel)]="robot.available" name="available">
+                <div class="clickable">Dostępny</div>
+            </mat-slide-toggle>
+        </div>
+        <div class="md-form">
+            <i class="fas fa-swatchbook prefix grey-text"></i>
+            <mat-form-field>
+                <mat-label>Element rozszerzający</mat-label>
+                <mat-select [(ngModel)]="robot.extraRobotElement" name="extraRobotElement" [compareWith]="compareItems">
+                    <mat-option *ngFor="let extraRobotElement of extraRobotElements" [value]="extraRobotElement">
+                        {{extraRobotElement.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="md-form">
+            <i class="fas fa-microchip prefix grey-text"></i>
+            <mat-form-field>
+                <mat-label>Model</mat-label>
+                <mat-select [(ngModel)]="robot.model" name="model" [compareWith]="compareItems">
+                    <mat-option *ngFor="let model of robotModels" [value]="model">
+                        {{model.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="md-form">
+            <i class="fas fa-plug prefix grey-text"></i>
+            <mat-form-field class="multiselect">
+                <mat-label>Status</mat-label>
+                <mat-select multiple [(ngModel)]="robot.status" name="status" [compareWith]="compareItems">
+                    <mat-option *ngFor="let status of statuses" [value]="status">{{status.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="md-form">
+            <i class="fas fa-battery-full prefix grey-text"></i>
+            <input type="number" id="batteryLevel" class="form-control validate" required [(ngModel)]="robot.batteryLevel" name="batteryLevel">
+            <label for="batteryLevel" [class.active]="true">Poziom baterii</label>
+        </div>
+        <div class="md-form">
+            <i class="fas fa-key prefix grey-text"></i>
+            <input type="text" id="password" class="form-control validate" [(ngModel)]="password" name="password">
+            <label for="batteryLevel" [class.active]="password&&password.length>0">Hasło robota (zostaw aby nie zmieniać)e</label>
+        </div>
+    </form>
 </app-form-modal-template>
