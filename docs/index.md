@@ -1,4 +1,12 @@
 # **RaptorsApp docs**
+### Version 1.9.5
+
+
+## Azure pipelines (Helike deployment)
+* [helike-ra-front-sosnus-develop](http://helike-ra-back-sosnus-develop.azurewebsites.net/) ![alt text](https://dev.azure.com/RaptorsApp/helike-ra-sosnus-develop-and-master/_apis/build/status/helike-ra-front-sosnus-develop)
+* [helike-ra-back-sosnus-develop](http://helike-ra-back-sosnus-develop.azurewebsites.net/) ![alt text](https://dev.azure.com/RaptorsApp/helike-ra-sosnus-develop-and-master/_apis/build/status/helike-ra-back-sosnus-develop)
+* [helike-ra-docs-sosnus-develop](http://helike-ra-docs-sosnus-develop.azurewebsites.net/) ![alt text](https://dev.azure.com/RaptorsApp/helike-ra-sosnus-develop-and-master/_apis/build/status/helike-ra-docs-sosnus-develop)
+
 
 # **Services list**
 * [ra-back docs](#ra-back)

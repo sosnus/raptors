@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [1.9.5] - 2020-07-01
+### Added
+- Update docs, add info about Azure pipelines
+### Deploy changes
+- Prepare new Azure pipeline (for ra-docs)
+
 ## [1.9.0] - 2020-07-01
 ### Changed
 - Enable quiet mvn build

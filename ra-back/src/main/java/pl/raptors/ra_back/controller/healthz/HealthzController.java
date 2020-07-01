@@ -24,7 +24,7 @@ public class HealthzController {
     @Autowired
     private HealthzService healthzService;
 
-    private static final String version = "1.9.0-manually"; //HealthzController.getVersion();
+    private static final String version = "1.9.5-manually"; //HealthzController.getVersion();
 // private static final String version = HealthzController.getVersion();
 
     // private static String getVersion() {
