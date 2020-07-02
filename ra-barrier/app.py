@@ -25,6 +25,12 @@ def after_request(response):
     return response
 
 @app.route('/')
+def index5():
+    print("blank request!!!!!!")
+    healthz_data = {'status': True, 'version': '1.10.1, 'info': 'blank request'}
+    return jsonify(healthz_data)
+
+@app.route('/generate')
 def index():
     start = timeit.default_timer()
     # Get parameters
