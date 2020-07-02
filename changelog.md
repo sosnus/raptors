@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [1.10.1] - 2020-07-01
+### Added
+- merge ra-barrier
+### Deploy changes
+- change ra-barrier in ra-front (barrierURL) 
+
 ## [1.9.5] - 2020-07-01
 ### Added
 - Update docs, add info about Azure pipelines

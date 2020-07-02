@@ -1,0 +1,28 @@
+@startuml
+
+node "Raptor Barrier Generator" {
+    [RaptorBarrierGenerator]
+}
+
+
+
+node "Raptors App" {
+   [RaptorsApp]
+}
+
+
+
+database "RaptorsDatabase" {
+}
+
+RaptorsDatabase - JDBC
+JDBC )- RaptorBarrierGenerator
+RaptorBarrierGenerator -- FTP
+RaptorBarrierGenerator -- BarrierAPI
+FTP )-- RaptorsApp
+BarrierAPI )-- RaptorsApp
+
+
+
+
+@enduml
