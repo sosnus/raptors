@@ -13,7 +13,7 @@ import numpy as np
 from io import BytesIO
 import yaml
 
-load_dotenv()q
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -74,6 +74,7 @@ def index2():
 
     dummpy_map_test_result = {'map': 'mock_map.pgm', 'polygons': polygons_to_string(barriers, offset_x, offset_y, resolution), 'time': stop-start}
     print("return jsonify(dummpy_map_test_result)")
+    print("time:", stop-start)
     return jsonify(dummpy_map_test_result)
 
 
@@ -115,9 +116,17 @@ def map_request_test():
 
 
     stop = timeit.default_timer()
-    console.log("time:", stop-start)
+    print("time:", stop-start)
     performance_test_result = {'time': stop-start, 'passed': True}
     return jsonify(performance_test_result)
+
+
+
+@app.route('/healthz')
+def index4():
+    healthz_data = {'status': True, 'version': '1.9.8'}
+    return jsonify(healthz_data)
+
 
 # HELPERS
 
