@@ -165,4 +165,4 @@ def polygons_to_string(polygons, offset_x, offset_y, resolution):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0',port=80)
