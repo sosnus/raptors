@@ -124,7 +124,7 @@ def map_request_test():
 
 @app.route('/healthz')
 def index4():
-    healthz_data = {'status': True, 'version': '1.9.8'}
+    healthz_data = {'status': True, 'version': '1.10.1'}
     return jsonify(healthz_data)
 
 
