@@ -21,7 +21,8 @@ export class StoreService {
   // public baseURL = 'http://localhost:8080';
     
   // public barrierURL = 'http://raptors-barrier-generator.herokuapp.com/'
-  public barrierURL = 'http://localhost:5000/' // dopisać "/"
+  // public barrierURL = 'http://localhost:5000/' // dopisać "/"
+  public barrierURL = 'https://helike-ra-barrier-sosnus-develop.azurewebsites.net' // dopisać "/"
 
   public robotTaskList: RobotTask[]= [];
   public robotTaskListTemp: RobotTask[] = [];
