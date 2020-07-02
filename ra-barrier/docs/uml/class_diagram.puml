@@ -1,0 +1,55 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam maxMessageSize 100
+
+class DatabaseConfig {
+  -url
+  -credentials
+}
+
+class MapProcessing {
+    +extract_countours() : Image
+    +load_image_from_database(map_id:String) : Image
+}
+
+class BoundaryExtractor{
+    +extract_geometries(map_countours:Image) : List<Geometry>
+    -poligonize_image(image:Image) : List<Geometry>
+}
+
+class Geometry{
+    -internal_boundary
+    -external_boundary
+}
+
+class Boundary{
+    -boundary_points
+}
+
+class BarrierGenerator{
+    +generate_barrier_boundaries(exteral_geometry:Geometry, \n\t internal_geometries:List<Geometry>) : List<Boundary>
+    -add_unpassable_lines(external_boundary_geometry:Geometry,  \n\t internal_boundary_geometries:List<Geometry>) : Image
+    -extract_and_merge_regions(map_image:Image):List<Boundary>
+}
+
+class RobotConfig{
+    -diameter
+}
+
+class RaptorsBarrierGeneratorAPI{
+    +generate_barriers(map_id:String, robot_diameter:Integer) : Json
+}
+
+
+DatabaseConfig <-- MapProcessing
+MapProcessing <- BoundaryExtractor
+Geometry <-- BoundaryExtractor
+BoundaryExtractor <- BarrierGenerator
+Boundary <-- BarrierGenerator
+Geometry o- Boundary
+BarrierGenerator --> RobotConfig
+BarrierGenerator <-- RaptorsBarrierGeneratorAPI
+MapProcessing <-- RaptorsBarrierGeneratorAPI
+
+
+@enduml

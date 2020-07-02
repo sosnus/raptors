@@ -1,0 +1,6 @@
+/venv/
+.idea/*
+*.pyc
+.env
+.vscode/settings.json
+/env/
