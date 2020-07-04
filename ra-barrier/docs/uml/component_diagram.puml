@@ -1,0 +1,18 @@
+@startuml
+
+database "RaptorsDatabase" {
+}
+
+RaptorsDatabase - JDBC
+[RaptorsApp] --( BarrierAPI
+[RaptorsApp] --( FTP
+
+
+package "Raptor Barrier Generator" {
+JDBC )- [Map Processing]
+[Map Processing] <-- [Barrier Generator]
+BarrierAPI -- [Barrier Generator]
+FTP -- [Barrier Generator]
+}
+
+@enduml

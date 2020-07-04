@@ -1,0 +1,7 @@
+# Project exclude paths
+/venv/
+.idea/*
+*.pyc
+.env
+.vscode/settings.json
+/env/

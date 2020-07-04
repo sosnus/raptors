@@ -1,64 +1,67 @@
-<div class="row">
+<div class="row" style="overflow-y: scroll; height: 90vh">
 
-  <table class="table table-sm table-striped">
-    <!--      <thead>-->
-    <!--      <tr>-->
-    <!--        <th scope="col">nazwa</th>-->
-    <!--        <th scope="col">wartość</th>-->
-    <!--      </tr>-->
-    <!--      </thead>-->
+    <table class="table table-sm table-striped">
+        <!--      <thead>-->
+        <!--      <tr>-->
+        <!--        <th scope="col">nazwa</th>-->
+        <!--        <th scope="col">wartość</th>-->
+        <!--      </tr>-->
+        <!--      </thead>-->
 
-    <tbody>
-    <tr>
-      <th scope="row">wersja aplikacji frontend</th>
-      <td *ngIf="frontVersion!=''">{{frontVersion}}</td>
-      <td *ngIf="frontVersion==''">brak danych</td>
-    </tr>
-    <tr>
-      <th scope="row">wersja aplikacji backend</th>
-      <td *ngIf="backVersion!=''">{{backVersion}}</td>
-      <td *ngIf="backVersion==''">brak połączenia z aplikacją backend</td>
-    </tr>
-    <tr>
-      <th scope="row">backend: wolna pamięć [Kb]</th>
-      <td *ngIf="jvmDate.freeMemory!=''">{{jvmDate.freeMemory}}</td>
-      <td *ngIf="jvmDate.freeMemory==''">brak danych</td>
-    </tr>
-    <tr>
-      <th scope="row">backend: zajęta pamięć [Kb]</th>
-      <td *ngIf="jvmDate.allocatedMemory!=''">{{jvmDate.allocatedMemory}}</td>
-      <td *ngIf="jvmDate.allocatedMemory==''">brak danych</td>
-    </tr>
-    <tr>
-      <th scope="row">backend: maksymalna pamięć [Kb]</th>
-      <td *ngIf="jvmDate.maxMemory!=''">{{jvmDate.maxMemory}}</td>
-      <td *ngIf="jvmDate.maxMemory==''">brak danych</td>
-    </tr>
-    <tr>
-      <th scope="row">backend: całkowita pamięć [Kb]</th>
-      <td *ngIf="jvmDate.totalFreeMemory!=''">{{jvmDate.totalFreeMemory}}</td>
-      <td *ngIf="jvmDate.totalFreeMemory==''">brak danych</td>
-    </tr>
-    <th scope="row">połączenie z bazą danych</th>
-    <td>
-      <table class="table table-sm table-striped">
-        <tr *ngIf="!database">
-          <th scope="row">brak połączenia z bazą danych</th>
-          <td></td>
-        </tr>
-        <ng-container *ngIf="database">
+        <tbody>
             <tr>
-              <th scope="row">nazwa bazy danych</th>
-              <td>{{databaseName}}</td>
+                <th scope="row">wersja aplikacji frontend</th>
+                <td *ngIf="frontVersion!=''">{{frontVersion}}</td>
+                <td *ngIf="frontVersion==''">brak danych</td>
             </tr>
             <tr>
-              <th scope="row">adres bazy danych</th>
-              <td>{{databaseAdress}}</td>
+                <th scope="row">wersja aplikacji backend</th>
+                <td *ngIf="backVersion!=''">{{backVersion}}</td>
+                <td *ngIf="backVersion==''">brak połączenia z aplikacją backend</td>
             </tr>
-          </ng-container>
-      </table>
-    </td>
-    </tbody>
-  </table>
+            <tr>
+                <th scope="row">adres aplikacji backend</th>
+                <td>{{backendAdress}}</td>
+            </tr>
+            <tr>
+                <th scope="row">backend: wolna pamięć [Kb]</th>
+                <td *ngIf="jvmDate.freeMemory!=''">{{jvmDate.freeMemory}}</td>
+                <td *ngIf="jvmDate.freeMemory==''">brak danych</td>
+            </tr>
+            <tr>
+                <th scope="row">backend: zajęta pamięć [Kb]</th>
+                <td *ngIf="jvmDate.allocatedMemory!=''">{{jvmDate.allocatedMemory}}</td>
+                <td *ngIf="jvmDate.allocatedMemory==''">brak danych</td>
+            </tr>
+            <tr>
+                <th scope="row">backend: maksymalna pamięć [Kb]</th>
+                <td *ngIf="jvmDate.maxMemory!=''">{{jvmDate.maxMemory}}</td>
+                <td *ngIf="jvmDate.maxMemory==''">brak danych</td>
+            </tr>
+            <tr>
+                <th scope="row">backend: całkowita pamięć [Kb]</th>
+                <td *ngIf="jvmDate.totalFreeMemory!=''">{{jvmDate.totalFreeMemory}}</td>
+                <td *ngIf="jvmDate.totalFreeMemory==''">brak danych</td>
+            </tr>
+            <th scope="row">połączenie z bazą danych</th>
+            <td>
+                <table class="table table-sm table-striped">
+                    <tr *ngIf="!database">
+                        <th scope="row">brak połączenia z bazą danych</th>
+                        <td></td>
+                    </tr>
+                    <ng-container *ngIf="database">
+                        <tr>
+                            <th scope="row">nazwa bazy danych</th>
+                            <td>{{databaseName}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">adres bazy danych</th>
+                            <td>{{databaseAdress}}</td>
+                        </tr>
+                    </ng-container>
+                </table>
+            </td>
+        </tbody>
+    </table>
 </div>
-

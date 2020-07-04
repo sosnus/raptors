@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+﻿import {Injectable} from '@angular/core';
 import {Orientation} from "../model/Stand/Orientation";
 import {RobotTask} from "../model/Robots/RobotTask";
 
@@ -16,15 +16,13 @@ export class StoreService {
   public imageResolution = 1984;
   public mapID = '5e19f1fa9b1eab79e9a58e08';
 
-  // public baseURL = 'http://karme-ra-back.azurewebsites.net'; // BEZ "/"
-    // public baseURL = 'http://localhost:3333';
-    public baseURL = 'http://karme-ra-front-1-8-2.azurewebsites.net';
-  // public baseURL = 'http://tebe.westeurope.cloudapp.azure.com:3333';
+  // BEZ "/"
+    public baseURL = 'https://helike-ra-back-sosnus-develop.azurewebsites.net';
   // public baseURL = 'http://localhost:8080';
-  //temp
     
   // public barrierURL = 'http://raptors-barrier-generator.herokuapp.com/'
-  public barrierURL = 'http://karme-ra-barrier.azurewebsites.net/' // dopisać "/"
+  // public barrierURL = 'http://localhost:5000/' // dopisać "/"
+  public barrierURL = 'https://helike-ra-barrier-sosnus-develop.azurewebsites.net' // dopisać "/"
 
   public robotTaskList: RobotTask[]= [];
   public robotTaskListTemp: RobotTask[] = [];

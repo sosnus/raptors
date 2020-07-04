@@ -1,66 +1,69 @@
-import {Component, OnInit} from '@angular/core';
-import {HealthzService} from '../../services/healthz.service';
-import {JVMdata} from '../../model/JVMdata';
+import { Component, OnInit } from "@angular/core";
+import { HealthzService } from "../../services/healthz.service";
+import { JVMdata } from "../../model/JVMdata";
+import { StoreService } from "../../services/store.service";
 
 declare var require: any;
 
 @Component({
-  selector: 'app-healthz',
-  templateUrl: './healthz.component.html',
-  styleUrls: ['./healthz.component.css']
+  selector: "app-healthz",
+  templateUrl: "./healthz.component.html",
+  styleUrls: ["./healthz.component.css"],
 })
 export class HealthzComponent implements OnInit {
-
-  frontVersion: string = require('../../../../package.json').version;
-  backVersion = '';
+  frontVersion: string = require("../../../../package.json").version;
+  backVersion = "";
   backend = false;
+  backendAdress = "";
   database = false;
-  databaseAdress = '';
-  databaseName = '';
+  databaseAdress = "";
+  databaseName = "";
   jvmDate: JVMdata = new JVMdata();
 
-  constructor(private healthzService: HealthzService) {
-  }
+  constructor(private healthzService: HealthzService) {}
 
   ngOnInit() {
-    this.healthzService.isBackendWorking().subscribe(data =>
-        this.backend = data,
-      error => {
+    this.backendAdress = this.healthzService.getBaseURL();
+    this.healthzService.isBackendWorking().subscribe(
+      (data) => (this.backend = data),
+      (error) => {
         console.log(error);
       }
     );
-    this.healthzService.isDatabaseWorking().subscribe(data =>
-        this.database = data,
-      error => {
+    this.healthzService.isDatabaseWorking().subscribe(
+      (data) => (this.database = data),
+      (error) => {
         console.log(error);
       }
     );
-    this.healthzService.getDatabaseAdress().subscribe(data =>
-        this.databaseAdress = data,
-      error => {
+    this.healthzService.getDatabaseAdress().subscribe(
+      (data) => (this.databaseAdress = data),
+      (error) => {
         console.log(error);
       }
     );
-    this.healthzService.getDatabaseName().subscribe(data =>
-        this.databaseName = data,
-      error => {
+    this.healthzService.getDatabaseName().subscribe(
+      (data) => (this.databaseName = data),
+      (error) => {
         console.log(error);
       }
     );
-    this.healthzService.getBackendVersion().subscribe(data => {
+    this.healthzService.getBackendVersion().subscribe(
+      (data) => {
         this.backVersion = data;
       },
-      error => {
+      (error) => {
         console.log(error);
         console.log(this.backVersion);
       }
     );
-    this.healthzService.getJVMData().subscribe(data => {
+    this.healthzService.getJVMData().subscribe(
+      (data) => {
         this.jvmDate = data;
       },
-      error => {
+      (error) => {
         console.log(error);
-      });
+      }
+    );
   }
-
 }
