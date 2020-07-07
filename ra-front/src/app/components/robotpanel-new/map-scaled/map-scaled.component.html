@@ -1,0 +1,12 @@
+<div class="card-header">Pozycja</div>
+<div class="inline-container">
+  <div class="map">
+    <div class="map-container" [style.width]="mapContainerSize+'px'" [style.height]="mapContainerSize+'px'">
+      <div class="map-frame">
+        <div class="lds-dual-ring" [hidden]="dataLoaded"></div>
+        <div id="map"></div>
+      </div>
+    </div>
+    <div>Aktualne współrzędne: {{getRounded(robot.pose.position.x)}} | {{getRounded(robot.pose.position.y)}}</div>
+  </div>
+</div>

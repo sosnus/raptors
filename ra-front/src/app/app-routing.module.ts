@@ -24,6 +24,7 @@ import { SettingsComponent } from "./components/settings/settings.component";
 import { TaskCreatorPanelComponent } from "./components/task-creator-panel/task-creator-panel.component";
 import { TaskCreatorComponent } from "./components/task-creator-panel/task-creator/task-creator.component";
 import { TaskDetailsComponent } from "./components/task-creator-panel/task-details/task-details.component";
+import {RobotPanelComponentNew} from "./components/robotpanel-new/robot-panel.component";
 
 const routes: Routes = [
   {
@@ -42,6 +43,7 @@ const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "robotpanel/:id", component: RobotPanelComponent },
   { path: "taskpanel-details/:id", component: TaskpanelListComponent },
+{path: 'robotpanel-new/:id', component: RobotPanelComponentNew},
   { path: "graphcreator", component: GraphcreatorComponent },
   { path: "polygons", component: PolygonsComponent },
   { path: "mapupload", component: MapUploadComponent },
@@ -50,6 +52,8 @@ const routes: Routes = [
   {
     path: "adminpanel",
     component: AdminPanelComponent,
+	canActivate: [AuthGuard],
+    data: {rolesIDs: ['ROLE_ADMIN']},
   },
   {
     path: "users",
