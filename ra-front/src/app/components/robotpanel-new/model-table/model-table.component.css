@@ -1,0 +1,100 @@
+.table {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+h1 {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 10px;
+  margin: 0;
+  resize: horizontal;
+  font-size: 15px;
+}
+
+.card-header {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.link {
+  color: blue;
+  text-decoration: underline;
+  font-style: italic;
+  cursor: pointer;
+}
+
+
+/* Breadcurmbs section */
+
+.breadcrumb-header {
+  padding: 1rem 1rem 0rem 1rem;
+}
+
+.breadcrumbs {
+  --cssuiBreadcrumbsTextColor: var(--breadcrumbsTextColor);
+  --cssuiBreadcrumbsTextColorActive: var(--breadcrumbsTextColorActive);
+  --cssuiBreadcrumbsDivider: var(--breadcrumbsDivider);
+  --cssuiBreadcrumbsDividerColor: var(--breadcrumbsDividerColor, inherit);
+  --cssuiBreadcrumbsDividerSize: var(--breadcrumbsDividerSize, 16px);
+  --cssuiBreadcrumbsIndent: var(--breadcrumbsIndent, 8px);
+  margin-top: 1rem;
+  margin-bottom: 0;
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.breadcrumbs__item {
+  display: inline-block;
+  position: relative;
+  padding-right: calc(var(--cssuiBreadcrumbsDividerSize) + var(--cssuiBreadcrumbsIndent));
+  margin-right: var(--cssuiBreadcrumbsIndent);
+  color: var(--cssuiBreadcrumbsTextColor);
+  cursor: pointer;
+}
+
+.breadcrumbs__item:after {
+  content: var(--cssuiBreadcrumbsDivider);
+  width: var(--cssuiBreadcrumbsDividerSize);
+  height: var(--cssuiBreadcrumbsDividerSize);
+  line-height: 1;
+  text-align: center;
+  font-family: "Arial";
+  font-size: var(--cssuiBreadcrumbsDividerSize);
+  color: var(--cssuiBreadcrumbsDividerColor);
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.breadcrumbs__item_active {
+  margin-right: 0;
+  padding-right: 0;
+  color: var(--cssuiBreadcrumbsTextColorActive);
+}
+
+.breadcrumbs__item_active:after {
+  display: none;
+}
+
+.breadcrumbs__element {
+  color: inherit;
+}
+
+.breadcrumbs {
+  --breadcrumbsTextColor: #747474;
+  --breadcrumbsTextColorActive: rgb(0, 0, 0);
+}
+
+.breadcrumbs_type5 {
+  --breadcrumbsDivider: "›";
+  --breadcrumbsDividerSize: 20px;
+}

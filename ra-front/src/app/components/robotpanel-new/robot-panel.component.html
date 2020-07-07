@@ -1,0 +1,15 @@
+<div style="display: flex">
+  <app-status-table class="card" [properties]="specialProperties" (refreshEvent)="fetchIDfromRoute()">
+  </app-status-table>
+  <app-map-scaled class="card" [mapContainerSize]="400" [robot]="robot"></app-map-scaled>
+</div>
+<hr size="30" noshade />
+<div class="container">
+  <div class="row">
+    <app-logs-table class="col-xl-12" [logs]="logs"></app-logs-table>
+  </div>
+  <div class="row">
+    <app-model-table class="col-xl-12" [root]="genericModel" [header]="rootName" [properties]="rootProperties">
+    </app-model-table>
+  </div>
+</div>

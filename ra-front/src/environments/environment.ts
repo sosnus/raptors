@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  serverUrl: 'http://adrastea.westus2.cloudapp.azure.com:3333',
+  refreshRate: 5000
 };
 
 /*

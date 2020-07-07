@@ -1,0 +1,54 @@
+<!--Accordion wrapper-->
+<div class="accordion md-accordion sideBar card" id="sideBarContainer">
+  <!-- Accordion group -->
+  <div class="accordion-group">
+
+    <!-- Card header -->
+    <div class="card-header z-depth-2" role="tab" id="headingTwo1">
+      <a class="collapsed text-uppercase mb-0 py-1" data-toggle="collapse" data-target="#collapseTwo1" (click)="rotateIcon('collapseIcon1')">
+        <h5 class="mb-0 white-text font-weight-bold">
+          Zadania
+          <i class="fa fa-angle-down rotate-icon" style="float: right;" id="collapseIcon1"></i>
+        </h5>
+      </a>
+    </div>
+
+    <!-- Card body -->
+    <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1">
+      <div *ngFor="let task of storeService.robotTaskList">
+        <div class="card-header card-item clickable" [routerLink]="['/taskpanel-details', task.id]"> <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
+          {{task.name}}
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- Accordion group -->
+
+  <!-- Accordion group -->
+  <div class="accordion-group">
+
+    <!-- Card header -->
+    <div class="card-header z-depth-2" role="tab" id="headingTwo2">
+      <a class="collapsed text-uppercase mb-0 py-1" data-toggle="collapse" data-target="#collapseTwo2" (click)="rotateIcon('collapseIcon2')">
+        <h5 class="mb-0 white-text font-weight-bold">
+          Roboty
+          <i class="fa fa-angle-down rotate-icon" style="float: right;" id="collapseIcon2"></i>
+        </h5>
+      </a>
+    </div>
+
+    <!-- Card body -->
+    <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2">
+      <div *ngFor="let robot of robotList">
+        <div class="card-header card-item clickable"> <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
+          <span [routerLink]="['/robotpanel', robot.id]">Robot IP: {{robot.robotIp}}</span>
+          <i class="material-icons warning" *ngIf="robot.batteryLevel<10">battery_alert</i>
+          <i class="material-icons arrow" [routerLink]="['/robotpanel-new', robot.id]">play_arrow</i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Accordion group -->
+</div>
+<!-- Accordion wrapper -->
