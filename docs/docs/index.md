@@ -15,16 +15,77 @@
 * [ra-supervisor docs](#ra-supervisor)
 * [ra-database docs](#ra-database)
 
+
 # **Services description**
 
-# ra-back
+# ra-back 
+![DOCKER](https://img.shields.io/badge/Docker-DONE-greenb)
+![AZURE](https://img.shields.io/badge/Azure-DONE-greenb)
+![AZURE+DOCKER](https://img.shields.io/badge/Azure+Docker-NOT_YET-orange)
+
 [ra-back docs](./ra-back/ra-back.md) ![version](https://img.shields.io/badge/version-1.6.3-greenb)
+### About
+Backend for RaptorsApp solution. Middleware between clients and storage like Mongo database and Minio.
+### Users, clients, dependencies
+(Enumerate all users: Personal actors, Non-personal actors, External systems, Devices, Time in bulletpoint)
+* *ra-front*
+* *ra-kiosk*
+* *supervisor/dispatcher*
+* robots
+### Stack
+* Java 1.8
+* Spring Boot 2.9.2
+* Maven 3.3.9
+
+# ra-barrier
+![DOCKER](https://img.shields.io/badge/Docker-DONE-greenb)
+![AZURE](https://img.shields.io/badge/Azure-DONE-greenb)
+![AZURE+DOCKER](https://img.shields.io/badge/Azure+Docker-NOT_YET-orange)
+[ra-barrier DOCS](./ra-barrier/ra-barrier.md) 
+
+### About
+ra-barrier can generate polygons for database based on image analysis.
+TODO
+### Users, clients, dependencies
+(Enumerate all users: Personal actors, Non-personal actors, External systems, Devices, Time in bulletpoint)
+* ra-front - trigger for run alghoritm
+* ra-storage - storage maps and yaml files - input data
+* ra-back - storage barrier colection, receive output from ra-barrier
+### Stack
+* Python (TODO more)
+
+# ra-database
+[ra-database docs](./ra-database/ra-database.md)
+
+### About
+ra-database contains almost all data from RaptorsApp solution.
+### Users, clients, dependencies
+* ra-backend
+### Stack
+* MongoDatabase 4.2
 
 # ra-front
 [ra-front docs](./ra-front/ra-front.md)
 
+### About
+ra-front is user friendly interface to show data from ra-storage.
+### Users, clients, dependencies
+* Humans
+### Stack
+* Angular8
+* Typescript
+* Node
 # ra-storage
 [ra-storage docs](./ra-storage/ra-storage.md)
+### About
+ra-storage is storage for large files like maps or pictures. Based on minio. Data can be storage directly on disc or Azure blob storage. API compatible with Amazon S3.
+### Clients
+* ra-back - can add and remove files
+* ra-front - read
+* robots - read
+* Minio webpage service-address/minio - can add and remove files, but only for debug!
+* ### Stack
+* Minio
 
 # ra-supervisor
 [ra-supervisor DOCS](./ra-supervisor/ra-supervisor.md) , [ra-supervisor CODE](./ra-supervisor) , [ra-supervisor CHANGELOG](../ra-supervisor/changelog.md)   ![version](https://img.shields.io/badge/version-0.1.0-yellow)
@@ -41,5 +102,7 @@ TODO
 * TODO
 * TODO
 
-# ra-database
-[ra-database docs](./ra-database/ra-database.md)
+# placeholders_________
+# ra-kiosk
+# ra-control
+# ra-dashboard
