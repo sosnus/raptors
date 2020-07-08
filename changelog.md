@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [1.10.3] - 2020-07-08
+### Changed
+- Documentation: info about stacks, users, technologies, etc.
+- Up version to 1.10.3
+
 ## [1.10.1] - 2020-07-01
 ### Added
 - merge ra-barrier
