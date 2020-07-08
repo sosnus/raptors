@@ -17,12 +17,14 @@ export class StoreService {
   public mapID = '5e19f1fa9b1eab79e9a58e08';
 
   // BEZ "/"
-    public baseURL = 'https://helike-ra-back-sosnus-develop.azurewebsites.net';
+    // public baseURL = 'https://helike-ra-back-sosnus-develop.azurewebsites.net';
   // public baseURL = 'http://localhost:8080';
+  public baseURL = 'http://localhost:4401';
     
   // public barrierURL = 'http://raptors-barrier-generator.herokuapp.com/'
   // public barrierURL = 'http://localhost:5000/' // dopisać "/"
-  public barrierURL = 'https://helike-ra-barrier-sosnus-develop.azurewebsites.net' // dopisać "/"
+  public barrierURL = 'http://localhost:4406/' // dopisać "/"
+  // public barrierURL = 'https://helike-ra-barrier-sosnus-develop.azurewebsites.net' // dopisać "/"
 
   public robotTaskList: RobotTask[]= [];
   public robotTaskListTemp: RobotTask[] = [];
