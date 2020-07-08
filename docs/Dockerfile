@@ -8,5 +8,5 @@ RUN mkdocs build
 FROM nginx:1.19.0
 
 COPY --from=build /docs/site /usr/share/nginx/html
-
+# // TODO: ngix settings
 CMD ["nginx","-g","daemon off;"]
