@@ -21,9 +21,9 @@
 # ra-back 
 ![DOCKER](https://img.shields.io/badge/Docker-DONE-greenb)
 ![AZURE](https://img.shields.io/badge/Azure-DONE-greenb)
-![AZURE+DOCKER](https://img.shields.io/badge/Azure+Docker-NOT_YET-orange)
+![AZURE+DOCKER](https://img.shields.io/badge/Azure+Docker-DONE-greenb)
 
-[ra-back docs](./ra-back/ra-back.md) ![version](https://img.shields.io/badge/version-1.6.3-greenb)
+[ra-back docs](./ra-back/ra-back.md)
 ### About
 Backend for RaptorsApp solution. Middleware between clients and storage like Mongo database and Minio.
 ### Users, clients, dependencies
@@ -42,10 +42,8 @@ Backend for RaptorsApp solution. Middleware between clients and storage like Mon
 ![AZURE](https://img.shields.io/badge/Azure-DONE-greenb)
 ![AZURE+DOCKER](https://img.shields.io/badge/Azure+Docker-NOT_YET-orange)
 [ra-barrier DOCS](./ra-barrier/ra-barrier.md) 
-
 ### About
 ra-barrier can generate polygons for database based on image analysis.
-TODO
 ### Users, clients, dependencies
 (Enumerate all users: Personal actors, Non-personal actors, External systems, Devices, Time in bulletpoint)
 * ra-front - trigger for run alghoritm
@@ -53,8 +51,13 @@ TODO
 * ra-back - storage barrier colection, receive output from ra-barrier
 ### Stack
 * Python (TODO more)
+### CI-CD problem
+* Azure WebApp for Containers can't hit endpoint (no http respond on port 80)
 
 # ra-database
+![DOCKER](https://img.shields.io/badge/Docker-NOT_YET-orange)
+![AZURE](https://img.shields.io/badge/Azure-DONE-greenb)
+![AZURE+DOCKER](https://img.shields.io/badge/Azure+Docker-NOT_YET-orange)
 [ra-database docs](./ra-database/ra-database.md)
 
 ### About
@@ -63,8 +66,28 @@ ra-database contains almost all data from RaptorsApp solution.
 * ra-backend
 ### Stack
 * MongoDatabase 4.2
+### CI-CD Problem
+* How to run app with parameters or start script to prepare db config?
+* How to connect disc?
+
+# ra-docs
+![DOCKER](https://img.shields.io/badge/Docker-DONE-greenb)
+![AZURE](https://img.shields.io/badge/Azure-DONE-greenb)
+![AZURE+DOCKER](https://img.shields.io/badge/Azure+Docker-DONE-greenb)
+### About
+ra-docs contains instructions/manuals for developers and users.
+### Users, clients, dependencies
+* Users
+### Stack
+* Markdown
+* MkDocs
+* AsciiDocs (maybe ra-barrier?)
+
 
 # ra-front
+![DOCKER](https://img.shields.io/badge/Docker-DONE-greenb)
+![AZURE](https://img.shields.io/badge/Azure-DONE-greenb)
+![AZURE+DOCKER](https://img.shields.io/badge/Azure+Docker-DONE-greenb)
 [ra-front docs](./ra-front/ra-front.md)
 
 ### About
@@ -73,9 +96,14 @@ ra-front is user friendly interface to show data from ra-storage.
 * Humans
 ### Stack
 * Angular8
-* Typescript
-* Node
+* Typescript (version?)
+* Node (version?)
+
+
 # ra-storage
+![DOCKER](https://img.shields.io/badge/Docker-DONE-greenb)
+![AZURE](https://img.shields.io/badge/Azure-DONE-greenb)
+![AZURE+DOCKER](https://img.shields.io/badge/Azure+Docker-NOT_YET-orange)
 [ra-storage docs](./ra-storage/ra-storage.md)
 ### About
 ra-storage is storage for large files like maps or pictures. Based on minio. Data can be storage directly on disc or Azure blob storage. API compatible with Amazon S3.
@@ -86,6 +114,10 @@ ra-storage is storage for large files like maps or pictures. Based on minio. Dat
 * Minio webpage service-address/minio - can add and remove files, but only for debug!
 * ### Stack
 * Minio
+### CI-CD Problem
+* How to run app with parameters or start script to prepare config?
+* (If without Azure Blob storage) How to connect disc?
+
 
 # ra-supervisor
 [ra-supervisor DOCS](./ra-supervisor/ra-supervisor.md) , [ra-supervisor CODE](./ra-supervisor) , [ra-supervisor CHANGELOG](../ra-supervisor/changelog.md)   ![version](https://img.shields.io/badge/version-0.1.0-yellow)
