@@ -1,0 +1,47 @@
+<div class="card container">
+
+  <div class="md-form">
+    <input type="text" id="inputIconEx2" class="form-control"
+           [(ngModel)]="robotSize">
+    <label for="inputIconEx2">Wielkość robota</label>
+  </div>
+  <button class="btn btn-light"
+          data-toggle="modal"
+          data-target="#loadingModal"
+          data-backdrop="static"
+          data-keyboard="false"
+          [disabled]="checkForm()"
+          (click)="generateBarriers()">
+    Generuj obszary zabronione
+  </button>
+
+</div>
+
+
+
+<!-- Central Modal Small -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <!-- Change class .modal-sm to change the size of the modal -->
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <div class="loader" *ngIf="!error && !success"></div>
+        <i class="fas fa-check-circle success" *ngIf="success"></i>
+        <i class="fas fa-exclamation-circle error" *ngIf="error"></i>
+        <div clas="loader-txt" *ngIf="!error && !success">
+          <p>Trwa generowanie obszarów zabronoinych<br><br><small>Proszę czekać...</small></p>
+        </div>
+        <div clas="loader-txt" *ngIf="success">
+          <p>Obszary zabronione wygenerowane pomyślnie<br><br></p>
+          <button type="button" class="btn btn-light" data-dismiss="modal">OK</button>
+        </div>
+        <div clas="loader-txt" *ngIf="error">
+          <p>Wystąpił błąd podczas generowania obszarów zabronionych<br><br></p>
+          <button type="button" class="btn btn-light" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Central Modal Small -->

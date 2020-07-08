@@ -10,3 +10,7 @@ Aplikacja wykorzystuje w warstwie frontowej framework Angular w wersji 8.
 Connection string Mongodb Compass: mongodb+srv://user:user@robotapp-t7ifm.mongodb.net/test  
 Username: user  
 password: user
+
+# Azure pipelines
+* [helike-ra-front-sosnus-develop](http://helike-ra-back-sosnus-develop.azurewebsites.net/) ![alt text](https://dev.azure.com/RaptorsApp/helike-ra-sosnus-develop-and-master/_apis/build/status/helike-ra-front-sosnus-develop)
+* [helike-ra-back-sosnus-develop](http://helike-ra-back-sosnus-develop.azurewebsites.net/) ![alt text](https://dev.azure.com/RaptorsApp/helike-ra-sosnus-develop-and-master/_apis/build/status/helike-ra-back-sosnus-develop)
