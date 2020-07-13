@@ -43,6 +43,11 @@ public class SettingsController {
         return contactInfoService.getAll();
     }
 
+    @GetMapping("/updateCurrentMap/{id}")
+    public CurrentMap updateCurrentMap(@PathVariable String id) {
+        return currentMapService.update(id);
+    }
+
     @PostMapping("/updateInstanceInfo")
     public InstanceInfo updateInstanceInfo(@RequestBody @Valid InstanceInfo instanceInfo) {
         return instanceInfoService.updateOne(instanceInfo);
