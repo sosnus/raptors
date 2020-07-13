@@ -12,7 +12,9 @@ export class StoreService {
   public readonly robotIP: string;
 
   // TODO: zapisać w postaci zmiennych w obiekcie
-  public mapResolution = 0.01;
+  public mapResolution = 0.05;
+  public originX = -10.0;
+  public originY = -10.0;
   public imageResolution = 1984;
   public mapID = "5e19f1fa9b1eab79e9a58e08";
 

@@ -33,7 +33,7 @@ export class CorridorsComponent implements OnInit, OnDestroy {
   //Map related variables
   private map;
   private imageURL = '';
-  private mapResolution = 0.01;//TODO()
+  private mapResolution = 0.05;//TODO()
   private imageResolution;
   private mapContainerSize = 800;
   private subscription;
@@ -125,8 +125,8 @@ export class CorridorsComponent implements OnInit, OnDestroy {
     let universalPoints: UniversalPoint[] = [];
     this.polygonPoints.forEach(corridorP => {
       let coords: L.latLng = new L.latLng([
-        this.getRealCoordinates(corridorP.lng),
-        this.getRealCoordinates(corridorP.lat)]);
+        this.getRealCoordinates(corridorP.lng, this.store.originX),
+        this.getRealCoordinates(corridorP.lat, this.store.originY)]);
       let universalPoint: UniversalPoint = new UniversalPoint(
         coords.lat,
         coords.lng,
@@ -220,8 +220,8 @@ export class CorridorsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getRealCoordinates(value) {
-    return (value * this.mapResolution * (this.imageResolution /  this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2));
+  getRealCoordinates(value: number, origin : number) {
+    return (value * this.store.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
   }
 
   private initMap(): void {
@@ -270,8 +270,8 @@ export class CorridorsComponent implements OnInit, OnDestroy {
     this.cancelCorridor();
   }
 
-  private getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * ( this.mapContainerSize / this.imageResolution)
+  private getMapCoordinates(value, origin) {
+    return (value - origin) * (1 / this.store.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
   editExistingCorridor(corridor: Corridor) {
@@ -285,7 +285,7 @@ export class CorridorsComponent implements OnInit, OnDestroy {
     }
 
     corridor.points.forEach(e => {
-      const translatedPoint = L.latLng([this.getMapCoordinates(e.y), this.getMapCoordinates(e.x)]);
+      const translatedPoint = L.latLng([this.getMapCoordinates(e.y, this.store.originY), this.getMapCoordinates(e.x, this.store.originX)]);
       this.polygon.addLatLng(translatedPoint);
       this.createNewMarker(translatedPoint);
     });
@@ -323,7 +323,7 @@ export class CorridorsComponent implements OnInit, OnDestroy {
     let points = path.points;
     let check = true;
     points.forEach(e => {
-      const translatedPoint = L.latLng([this.getMapCoordinates(e.y), this.getMapCoordinates(e.x)]);
+      const translatedPoint = L.latLng([this.getMapCoordinates(e.y, this.store.originY), this.getMapCoordinates(e.x, this.store.originX)]);
       let marker = new L.marker(translatedPoint);
       if (!polygon.getBounds().contains(marker.getLatLng())) {
         check = false;
@@ -336,7 +336,7 @@ export class CorridorsComponent implements OnInit, OnDestroy {
     paths.forEach(path => {
         let polylinePoints = [];
         path.points.forEach(point => {
-          const pointPosition = L.latLng([this.getMapCoordinates(point.y),this.getMapCoordinates(point.x)]);
+          const pointPosition = L.latLng([this.getMapCoordinates(point.y, this.store.originY),this.getMapCoordinates(point.x, this.store.originX)]);
           polylinePoints.push(pointPosition);
         });
         new L.Polyline(polylinePoints).addTo(this.movementPaths).bindTooltip(path.name, {

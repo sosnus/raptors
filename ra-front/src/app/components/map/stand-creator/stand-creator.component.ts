@@ -63,7 +63,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   //Map related variables
   private map;
   private imageURL = '';
-  private mapResolution = 0.01;//TODO()
+  private mapResolution = 0.05;//TODO()
   private imageResolution;
   private mapContainerSize = 800;
   private subscription;
@@ -196,8 +196,8 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     let relatedPathsWithFinishStand: MovementPath[] = this.paths.filter(e => e.finishStandId == id);
     let relatedPathsWithStartStand: MovementPath[] = this.paths.filter(e => e.startStandId == id);
 
-    const a = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
-    const b = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
+    const a = this.getRealCoordinates(this.selectedMarker.getLatLng().lng, this.store.originX);
+    const b = this.getRealCoordinates(this.selectedMarker.getLatLng().lat, this.store.originY);
     relatedPathsWithStartStand.forEach(e => {
       const c = e.points[1].x;
       const d = e.points[1].y;
@@ -242,8 +242,8 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
         disableTimeOut: true,
       });
     }
-      this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
-      this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
+      this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng, this.store.originX);
+      this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat, this.store.originY);
       this.stand.pose.orientation = quaternionFromAxisAngle([0, 1, 0], this.degToRad(this.orientationAngle));
       this.standService.save(this.stand).subscribe(
         result => {
@@ -336,7 +336,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     this.orientationAngle = this.radToDeg(axisAngleFromQuaternion(stand.pose.orientation));
     this.tempAngle = this.orientationAngle;
     this.standID = stand.id;
-    const vertPos = L.latLng([this.getMapCoordinates(stand.pose.position.y), this.getMapCoordinates(stand.pose.position.x)]);
+    const vertPos = L.latLng([this.getMapCoordinates(stand.pose.position.y, this.store.originY), this.getMapCoordinates(stand.pose.position.x, this.store.originX)]);
     this.createNewMarker(vertPos);
     this.stand = stand;
   }
@@ -349,12 +349,12 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     }
   }
 
-  getRealCoordinates(value: number) {
-    return (value * this.mapResolution * (this.imageResolution / this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
+  getRealCoordinates(value: number, origin : number) {
+    return (value * this.store.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
   }
 
-  getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (this.mapContainerSize / this.imageResolution)
+  getMapCoordinates(value, origin) {
+    return (value - origin) * (1 / this.store.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
   compareItems(id1: any, id2: any): boolean {
@@ -373,7 +373,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
 
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
-      const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+      const pointPosition = L.latLng([this.getMapCoordinates(point.x, this.store.originX), this.getMapCoordinates(point.y, this.store.originY)]);
       existingPolygonpoints.push(pointPosition);
 
     });
@@ -394,7 +394,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     paths.forEach(path => {
         let polylinePoints = [];
         path.points.forEach(point => {
-          const pointPosition = L.latLng([this.getMapCoordinates(point.y),this.getMapCoordinates(point.x)]);
+          const pointPosition = L.latLng([this.getMapCoordinates(point.y, this.store.originY), this.getMapCoordinates(point.x, this.store.originX)]);
           polylinePoints.push(pointPosition);
         });
         new L.Polyline(polylinePoints).addTo(this.movementPathsLayer).bindTooltip(path.name, {

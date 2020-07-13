@@ -45,7 +45,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
 
   constructor(private mapService: MapService,
               private polygonService: PolygonService,
-              private storeService: StoreService,
+              private store: StoreService,
               private areaTypeService: AreaTypeService,
               private toast: ToastrService) {
   }
@@ -66,13 +66,13 @@ export class PolygonsComponent implements OnInit, OnDestroy {
   }
 
   private loadMap() {
-    if (localStorage.getItem(this.storeService.mapID) !== null) {
-      this.afterMapLoaded(localStorage.getItem(this.storeService.mapID))
+    if (localStorage.getItem(this.store.mapID) !== null) {
+      this.afterMapLoaded(localStorage.getItem(this.store.mapID))
     } else {
-      this.mapService.getMap(this.storeService.mapID).subscribe(
+      this.mapService.getMap(this.store.mapID).subscribe(
         data => {
           this.afterMapLoaded(data);
-          localStorage.setItem(this.storeService.mapID, data)
+          localStorage.setItem(this.store.mapID, data)
         }
       );
     }
@@ -191,8 +191,8 @@ export class PolygonsComponent implements OnInit, OnDestroy {
 
   }
 
-  private getRealCoordinates(value) {
-    return (value * this.mapResolution * (this.imageResolution / this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
+  getRealCoordinates(value: number, origin : number) {
+    return (value * this.store.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
   }
 
   private savePoly() {
@@ -207,8 +207,8 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       let polygonPointz: UniversalPoint[] = [];
       this.polygonPoints.forEach(polygonP => {
         let coords: L.latLng = new L.latLng([
-          this.getRealCoordinates(polygonP.lat),
-          this.getRealCoordinates(polygonP.lng)]);
+          this.getRealCoordinates(polygonP.lat, this.store.originY),
+          this.getRealCoordinates(polygonP.lng, this.store.originX)]);
         this.convertedPoints.push(coords)
       });
 
@@ -288,7 +288,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.areaType = polygon.type;
     //let existingPolygonpoints = [];
     polygon.points.forEach(point => {
-      const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+      const pointPosition = L.latLng([this.getMapCoordinates(point.x, this.store.originX), this.getMapCoordinates(point.y, this.store.originX)]);
       const markerIcon = L.icon({
         iconUrl: '/assets/icons/position.png',
         iconSize: [36, 36],
@@ -315,8 +315,8 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.createPoly();
   }
 
-  getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (this.mapContainerSize / this.imageResolution)
+  getMapCoordinates(value, origin) {
+    return (value - origin) * (1 / this.store.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
   delete(polygon: Polygon) {

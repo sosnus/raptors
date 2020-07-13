@@ -16,7 +16,7 @@ import { CorridorService } from '../../services/corridor.service';
 import { MovementPathService } from '../../services/movementPath.service';
 import { Corridor } from '../../model/MapAreas/Corridors/Corridor';
 import { MovementPath } from '../../model/MapAreas/MovementPaths/MovementPath';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent, Subscription, timer } from 'rxjs';
 import {Robot} from "../../model/Robots/Robot";
 import {RobotStatus} from "../../model/Robots/RobotStatus";
 
@@ -75,16 +75,20 @@ export class MapComponent implements OnInit, OnDestroy {
   };
 
   //Leaflet accepts coordinates in [y,x]
-  private robotMarkers = [];
+  private robotMarkers = {};
   private allpolygons: Polygon[];
   private robotStatus : string[] = [];
+  private source = timer(1000, 1000);
+  private subscribe;
 
   //Map related variables
   private map;
   private imageURL = '';
-  private mapResolution = 0.01;//TODO()
+  private mapResolution = 0.05;//TODO()
   private imageResolution;
   private mapContainerSize = 800;
+
+  
 
   //private robotIP = '';
 
@@ -101,21 +105,36 @@ export class MapComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (localStorage.getItem(this.store.mapID) !== null) {
-      this.afterMapLoaded(localStorage.getItem(this.store.mapID))
+      this.afterMapLoaded(localStorage.getItem(this.store.mapID));
+      this.subscribe = this.source.subscribe(val => 
+        {
+          this.robotService.getAll().subscribe(
+          robots=>{
+            this.updateRobots(robots);
+          });
+        });
     } else {
       this.mapService.getMap(this.store.mapID).subscribe(
         data => {
           this.afterMapLoaded(data);
-          localStorage.setItem(this.store.mapID, data)
+          localStorage.setItem(this.store.mapID, data);
+          this.subscribe = this.source.subscribe(val => 
+            {
+              this.robotService.getAll().subscribe(
+              robots=>{
+                this.updateRobots(robots);
+              });
+            });
         }
       );
     }
     //setTimeout(() => this.updateRobotMarkerPositions([[100, 992]], 0.01), 3000);
-    this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
+    //this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscribe.unsubscribe();
+    //this.subscription.unsubscribe();
   }
 
   onResize() {
@@ -194,7 +213,7 @@ export class MapComponent implements OnInit, OnDestroy {
     corridor.forEach(corridor => {
       let corridorPoints = [];
       corridor.points.forEach(point => {
-        const pointPosition = L.latLng([this.getMapCoordinates(point.y), this.getMapCoordinates(point.x)]);
+        const pointPosition = L.latLng([this.getMapCoordinates(point.y, this.store.originY), this.getMapCoordinates(point.x, this.store.originX)]);
         corridorPoints.push(pointPosition);
       });
       let corridorPolygon = L.polygon(corridorPoints, {color: 'red'}).addTo(this.corridors).bindTooltip(corridor.name, {
@@ -208,7 +227,7 @@ export class MapComponent implements OnInit, OnDestroy {
     paths.forEach(path => {
         let polylinePoints = [];
         path.points.forEach(point => {
-          const pointPosition = L.latLng([this.getMapCoordinates(point.y),this.getMapCoordinates(point.x)]);
+          const pointPosition = L.latLng([this.getMapCoordinates(point.y, this.store.originY),this.getMapCoordinates(point.x, this.store.originX)]);
           polylinePoints.push(pointPosition);
         });
         new L.Polyline(polylinePoints).addTo(this.movementPaths).bindTooltip(path.name, {
@@ -221,8 +240,8 @@ export class MapComponent implements OnInit, OnDestroy {
   private drawStand(stands: Stand[]) {
     stands.forEach(stand => {
       const position = [
-        this.getMapCoordinates(Number(stand.pose.position.y)),
-        this.getMapCoordinates(Number(stand.pose.position.x))
+        this.getMapCoordinates(Number(stand.pose.position.y), this.store.originY),
+        this.getMapCoordinates(Number(stand.pose.position.x), this.store.originX)
       ];
       let circleMarker = L.marker(position, {icon: CIRCLEBACK});
       circleMarker.addTo(this.standLayer);
@@ -252,8 +271,8 @@ export class MapComponent implements OnInit, OnDestroy {
   private drawGraph(graph: Graph) {
     let existingWaypoints = [];
     graph.edges.forEach(edge => {
-      const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
-      const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+      const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY, this.store.originY), this.getMapCoordinates(edge.vertexA.posX, this.store.originX)]);
+      const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY, this.store.originY), this.getMapCoordinates(edge.vertexB.posX, this.store.originX)]);
       if (!existingWaypoints.includes(vertPosA)) {
         const marker = new L.marker(vertPosA, {icon: WAYPOINTICON});
         marker.addTo(this.graphs);
@@ -275,7 +294,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
-      const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+      const pointPosition = L.latLng([this.getMapCoordinates(point.x, this.store.originX), this.getMapCoordinates(point.y, this.store.originY)]);
       existingPolygonpoints.push(pointPosition);
 
     });
@@ -296,17 +315,19 @@ export class MapComponent implements OnInit, OnDestroy {
     robots.forEach(robot => {
       if(robot.pose !=null){
         const position = L.latLng([
-          this.getMapCoordinates(robot.pose.position.y),
-          this.getMapCoordinates(robot.pose.position.x)
+          this.getMapCoordinates(robot.pose.position.y, this.store.originX),
+          this.getMapCoordinates(robot.pose.position.x, this.store.originY)
         ]);
         let marker = L.marker(position, {icon: ROBOTICON});
         marker.addTo(this.robotStatusLayer);
         marker.bindPopup(
-          'Robot Details<br />Position x: '
-          + this.getRealCoordinates(marker.getLatLng().lng)
+          'Robot Details <br />Name : '
+          + robot.id
+          + '<br />Position x: '
+          + this.getRealCoordinates(this.robotMarkers[robot.id].getLatLng().lng, this.store.originX)
           + '<br />Position y: ' +
-          +this.getRealCoordinates(marker.getLatLng().lat) + '<br />Status: ' + this.showRobotStatus(robot.status));
-        this.robotMarkers.push(marker);
+          +this.getRealCoordinates(this.robotMarkers[robot.id].getLatLng().lat, this.store.originY) + '<br />Status: ' + this.showRobotStatus(robot.status));
+        this.robotMarkers[robot.id] = marker;
         this.robotStatusLayer.addTo(this.map);
       }
     })
@@ -320,23 +341,57 @@ export class MapComponent implements OnInit, OnDestroy {
     return this.robotStatus;
   }
 
+  private updateRobots(robots) {
+    //this.robotStatusLayer.clearLayers();
+    robots.forEach(robot => {
+      if(robot.pose !=null){
+        const position = L.latLng([
+          this.getMapCoordinates(robot.pose.position.y, this.store.originX),
+          this.getMapCoordinates(robot.pose.position.x, this.store.originY)
+        ]);
+        if(robot.id in this.robotMarkers) {
+          this.robotMarkers[robot.id].setLatLng(position);
+          console.log(position);
+          this.robotMarkers[robot.id]._popup.setContent(
+            'Robot Details <br />Name : '
+            + robot.id
+            + '<br />Position x: '
+            + this.getRealCoordinates(this.robotMarkers[robot.id].getLatLng().lng, this.store.originX)
+            + '<br />Position y: ' +
+            +this.getRealCoordinates(this.robotMarkers[robot.id].getLatLng().lat, this.store.originY) + '<br />Status: ' + this.showRobotStatus(robot.status));
+        }
+        else {
+          let marker = L.marker(position, {icon: ROBOTICON});
+          marker.addTo(this.robotStatusLayer);
+          marker.bindPopup(
+            'Robot Details<br />Position x: '
+            + this.getRealCoordinates(marker.getLatLng().lng, this.store.originX)
+            + '<br />Position y: ' +
+            +this.getRealCoordinates(marker.getLatLng().lat, this.store.originY) + '<br />Status: ' + this.showRobotStatus(robot.status));
+          this.robotMarkers[robot.id] = marker;
+          this.robotStatusLayer.addTo(this.map);
+        }
+      }
+    })
+  }
+
   private parseToJpeg(image: any): string {
     return 'data:image/jpg;base64,' + image;
   }
 
-  getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * ( this.mapContainerSize / this.imageResolution)
+  getMapCoordinates(value, origin) {
+    return (value - origin) * (1 / this.store.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
-  getRealCoordinates(value: number) {
-    return (value * this.mapResolution * (this.imageResolution /  this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
+  getRealCoordinates(value: number, origin : number) {
+    return (value * this.store.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
   }
 
   private updateRobotMarkerPositions(robots: number[][]) {
     for (let i = 0; i < robots.length; i++) {
       const position = [
-        this.getMapCoordinates(robots[i][1]),
-        this.getMapCoordinates(robots[i][1])
+        this.getMapCoordinates(robots[i][0], this.store.originX),
+        this.getMapCoordinates(robots[i][1], this.store.originY)
       ];
       this.robotMarkers[i].setLatLng(position);
     }
