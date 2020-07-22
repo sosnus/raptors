@@ -12,7 +12,7 @@
 
     <p class="input-paragraph">Status zadania</p>
     <div class="md-form">
-      <select class="browser-default custom-select" [(ngModel)]="selectedTaskStatus"
+      <select class="browser-default custom-select" [(ngModel)]="selectedTaskStatusName"
         [ngModelOptions]="{ standalone: true }">
         <option [value]="item" *ngFor="let item of taskStatuses">{{
           item
@@ -105,16 +105,16 @@
       <p>Parametry zachowania</p>
       <div *ngFor="let paramKey of editingBehaviourParamKeys; let i = index">
 
-        <div *ngIf="specialBehaviourParams.includes(paramKey)">
-          <app-special-type-select [typeName]="paramKey" [displayName]="paramKey"></app-special-type-select>
+        <div *ngIf="specialBehaviourParams.includes(editingBehaviourDefaultParams[paramKey])">
+          <app-special-type-select [typeName]="editingBehaviourDefaultParams[paramKey]" [displayName]="paramKey" [selectedOption]="editingBehaviourParams[paramKey]"></app-special-type-select>
         </div>
 
-        <div *ngIf="!specialBehaviourParams.includes(paramKey)">
+        <div *ngIf="!specialBehaviourParams.includes(editingBehaviourDefaultParams[paramKey])">
           <div class="md-form">
             <i class="fas fa-file-signature prefix grey-text"></i>
             <input [id]="paramKey" [name]="paramKey" class="form-control validate"
-              [(ngModel)]="editingBehaviourParams[paramKey]">
-            <label [class.active]="editingBehaviourParams[paramKey]" [for]="paramKey" >{{paramKey}}</label>
+              [(ngModel)]="editingBehaviourDefaultParams[paramKey]">
+            <label [class.active]="editingBehaviourDefaultParams[paramKey]" [for]="paramKey" >{{paramKey}}</label>
           </div>
         </div>
 
