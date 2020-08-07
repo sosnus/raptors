@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MapService} from '../../../services/map.service';
+import { SettingsService } from '../../../services/settings.service';
 import {Marker} from 'leaflet/src/layer/marker/Marker.js';
 import {Polygon} from 'leaflet/src/layer/vector/Polygon.js';
 import {Polygon as CustomPolygon} from '../../../model/MapAreas/Polygons/Polygon';
@@ -63,7 +64,10 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   //Map related variables
   private map;
   private imageURL = '';
-  private mapResolution = 0.05;//TODO()
+  private mapId;
+  private mapResolution;
+  private mapOriginX;
+  private mapOriginY;
   private imageResolution;
   private mapContainerSize = 800;
   private subscription;
@@ -76,6 +80,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   private polygons: CustomPolygon[];
 
   constructor(private mapService: MapService,
+              private settingsService: SettingsService,
               private standService: StandService,
               private parkingTypeService: ParkingTypeService,
               private standTypeService: StandTypeService,
@@ -106,16 +111,20 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   }
 
   private loadMap() {
-    if (localStorage.getItem(this.store.mapID) !== null) {
-      this.afterMapLoaded(localStorage.getItem(this.store.mapID))
-    } else {
-      this.mapService.getMap(this.store.mapID).subscribe(
-        data => {
-          this.afterMapLoaded(data);
-          localStorage.setItem(this.store.mapID, data)
-        }
-      );
-    }
+    this.settingsService.getCurrentMap().subscribe(
+      mapData => {
+        this.mapId = mapData.currentMapId;
+        this.mapResolution = mapData.mapResolutionX;
+        this.mapOriginX = mapData.mapOriginX;
+        this.mapOriginY = mapData.mapOriginY;
+        this.mapService.getMap(this.mapId).subscribe(
+          data => {
+            this.afterMapLoaded(data);
+            localStorage.setItem(this.store.mapID, data)
+          }
+        );
+      }
+    );
   }
 
   private afterMapLoaded(data: String) {
