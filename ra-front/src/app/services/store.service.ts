@@ -55,7 +55,10 @@ export function quaternionFromAxisAngle(axis, angle): Orientation {
 
 export function axisAngleFromQuaternion(orientation: Orientation): number {
   // Q = [cos(angle / 2), v * sin(angle / 2)]
-  const angle = Math.acos(orientation.x) * 2;
+  var sign = 1
+  if (orientation.w < 0) sign = 1;
+  var angle = Math.asin(orientation.z) * 2 * sign;
+  if (angle < 0) angle += 360.0 
   //TODO()
   return angle;
 }

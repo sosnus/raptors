@@ -138,8 +138,8 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
     stands.forEach(stand => {
       const position = [
-        this.getMapCoordinates(Number(stand.pose.position.y), this.store.originY),
-        this.getMapCoordinates(Number(stand.pose.position.x), this.store.originX)
+        this.getMapCoordinates(Number(stand.pose.position.y), this.mapOriginY),
+        this.getMapCoordinates(Number(stand.pose.position.x), this.mapOriginX)
       ];
       let circleMarker = L.marker(position, {
         icon: CIRCLEBACK
@@ -286,7 +286,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   }
 
   getRealCoordinates(value: number, origin : number) {
-    return (value * this.store.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
+    return (value * this.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
   }
 
   private clearStartAndFinishTooltip() {
@@ -308,8 +308,8 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     let universalPoints: UniversalPoint[] = [];
     this.polyline.getLatLngs().forEach(lang => {
       let universalPoint: UniversalPoint = new UniversalPoint(
-        this.getRealCoordinates(lang.lng, this.store.originX),
-        this.getRealCoordinates(lang.lat, this.store.originY),
+        this.getRealCoordinates(lang.lng, this.mapOriginX),
+        this.getRealCoordinates(lang.lat, this.mapOriginY),
         0);
       universalPoints.push(universalPoint)
     });
@@ -340,7 +340,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     this.name = path.name;
     this.polyline = new L.Polyline([]);
     path.points.forEach(e => {
-      const translatedPoint = L.latLng([this.getMapCoordinates(e.y, this.store.originY), this.getMapCoordinates(e.x, this.store.originX)]);
+      const translatedPoint = L.latLng([this.getMapCoordinates(e.y, this.mapOriginY), this.getMapCoordinates(e.x, this.mapOriginX)]);
       this.polyline.addLatLng(translatedPoint);
       if (path.points[0] != e && path.points[path.points.length - 1] != e) {
         this.createNewMarker(translatedPoint);
@@ -393,7 +393,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   }
 
   private getMapCoordinates(value, origin) {
-    return (value - origin) * (1 / this.store.mapResolution) * ( this.mapContainerSize / this.imageResolution)
+    return (value - origin) * (1 / this.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
   private createNewMarker(position: L.latlng) {
@@ -547,8 +547,8 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     let id: string;
     stands.forEach(stand => {
       const position = [
-        this.getMapCoordinates(Number(stand.pose.position.y), this.store.originY),
-        this.getMapCoordinates(Number(stand.pose.position.x), this.store.originX)
+        this.getMapCoordinates(Number(stand.pose.position.y), this.mapOriginY),
+        this.getMapCoordinates(Number(stand.pose.position.x), this.mapOriginX)
       ];
       if (position[0] == marker._latlng.lat && position[1] == marker._latlng.lng) {
         id = stand.id;
@@ -564,8 +564,8 @@ export class MovementPathComponent implements OnInit, OnDestroy {
       var currentMarker;
       this.standMarkers.forEach(e => {
         const position = [
-          this.getMapCoordinates(Number(stand.pose.position.y), this.store.originY),
-          this.getMapCoordinates(Number(stand.pose.position.x), this.store.originX)
+          this.getMapCoordinates(Number(stand.pose.position.y), this.mapOriginY),
+          this.getMapCoordinates(Number(stand.pose.position.x), this.mapOriginX)
         ];
         if (position[0] == e._latlng.lat && position[1] == e._latlng.lng) {
           currentMarker = e;
@@ -579,7 +579,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     corridor.forEach(corridor => {
       let corridorPoints = [];
       corridor.points.forEach(point => {
-        const pointPosition = L.latLng([this.getMapCoordinates(point.y, this.store.originY), this.getMapCoordinates(point.x, this.store.originX)]);
+        const pointPosition = L.latLng([this.getMapCoordinates(point.y, this.mapOriginY), this.getMapCoordinates(point.x, this.mapOriginX)]);
         corridorPoints.push(pointPosition);
       });
       let corridorPolygon = L.polygon(corridorPoints, {color: 'red'}).addTo(this.corridorsLayer).bindTooltip(corridor.name, {
@@ -598,7 +598,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
 
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
-      const pointPosition = L.latLng([this.getMapCoordinates(point.x, this.store.originX), this.getMapCoordinates(point.y, this.store.originY)]);
+      const pointPosition = L.latLng([this.getMapCoordinates(point.x, this.mapOriginX), this.getMapCoordinates(point.y, this.mapOriginY)]);
       existingPolygonpoints.push(pointPosition);
 
     });

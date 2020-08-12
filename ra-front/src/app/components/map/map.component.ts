@@ -392,11 +392,11 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   getMapCoordinates(value, origin) {
-    return (value - origin) * (1 / this.store.mapResolution) * ( this.mapContainerSize / this.imageResolution)
+    return (value - origin) * (1 / this.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
   getRealCoordinates(value: number, origin : number) {
-    return (value * this.store.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
+    return (value * this.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
   }
 
   private updateRobotMarkerPositions(robots: number[][]) {
