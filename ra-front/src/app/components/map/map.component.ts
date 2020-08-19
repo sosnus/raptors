@@ -200,12 +200,12 @@ export class MapComponent implements OnInit, OnDestroy {
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
-      this.robotService.getAll().subscribe(
-        robots=>{
-          this.drawRobots(robots);
+      // this.robotService.getAll().subscribe(
+      //   robots=>{
+      //     this.drawRobots(robots);
 
-        }
-      );
+      //   }
+      // );
       //this.drawRobots(this.robots);
     };
     this.corridorService.getCorridors().subscribe(
