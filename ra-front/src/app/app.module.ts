@@ -88,6 +88,7 @@ import { RobotPanelComponentNew } from "./components/robotpanel-new/robot-panel.
 import { StatusTableComponent } from "./components/robotpanel-new/status-table/status-table.component";
 import { ModelTableComponent } from "./components/robotpanel-new/model-table/model-table.component";
 import { TableRowComponent } from "./components/robotpanel-new/model-table/table-row/table-row.component";
+import { MapMetadataComponent } from './components/map-metadata/map-metadata.component';
 
 const config: InputFileConfig = {};
 
@@ -156,6 +157,7 @@ const config: InputFileConfig = {};
     TaskCreatorComponent,
     TaskDetailsComponent,
     SpecialTypeSelectComponent,
+    MapMetadataComponent,
   ],
   imports: [
     BrowserModule,

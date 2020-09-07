@@ -22,6 +22,7 @@ import { TaskCreatorPanelComponent } from "./components/task-creator-panel/task-
 import { TaskCreatorComponent } from "./components/task-creator-panel/task-creator/task-creator.component";
 import { TaskDetailsComponent } from "./components/task-creator-panel/task-details/task-details.component";
 import { RobotPanelComponentNew } from "./components/robotpanel-new/robot-panel.component";
+import { MapMetadataComponent } from "./components/map-metadata/map-metadata.component"
 
 const routes: Routes = [
   {
@@ -74,6 +75,7 @@ const routes: Routes = [
   { path: "access-denied", component: AccessForbiddenComponent },
   { path: "healthz", component: HealthzComponent },
   { path: "settings", component: SettingsComponent },
+  { path: "map-metadata", component: MapMetadataComponent },
 ];
 
 @NgModule({

@@ -13,4 +13,15 @@ export class Maps {
          mapTransformation: MapTransformation;
          mapRotation: MapRotation;
 
+
+  constructor() {
+    this.id = "";
+    this.urlYaml = "";
+    this.urlPng = "";
+    this.urlPgm = "";
+    this.tags = [];
+    this.mapMetadata = new MapMetadata("", "", "", [], "", "", "");
+    this.mapTransformation = new MapTransformation("", 0, 0, 0);
+    this.mapRotation = new MapRotation("", 0);
+  }
 }

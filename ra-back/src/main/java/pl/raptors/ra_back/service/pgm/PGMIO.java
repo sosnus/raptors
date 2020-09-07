@@ -190,4 +190,22 @@ public class PGMIO {
         return imageInByte;
     }
 
+    public static byte[] pgm2png(byte[] bytes) throws IOException {
+        int[][] pixels = PGMIO.read(bytes);
+
+        BufferedImage image = new BufferedImage(pixels.length, pixels[0].length, BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < pixels.length; y++) {
+            for (int x = 0; x < pixels[0].length; x++) {
+                int value = pixels[y][x] << 16 | pixels[y][x] << 8 | pixels[y][x];
+                image.setRGB(x, y, value);
+            }
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write( image, "png", baos );
+        baos.flush();
+        byte[] imageInByte = baos.toByteArray();
+        baos.close();
+        return imageInByte;
+    }
+
 }

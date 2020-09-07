@@ -3,6 +3,8 @@ package pl.raptors.ra_back.service.mapsMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.raptors.ra_back.domain.mapsMetadata.MapMetadata;
+import pl.raptors.ra_back.domain.mapsMetadata.MapRotation;
+import pl.raptors.ra_back.domain.mapsMetadata.MapTransformation;
 import pl.raptors.ra_back.domain.mapsMetadata.Maps;
 import pl.raptors.ra_back.repository.mapsMetadata.MapsRepository;
 import pl.raptors.ra_back.service.CRUDService;
@@ -13,6 +15,11 @@ public class MapsService implements CRUDService<Maps> {
 
     @Autowired
     MapsRepository mapsRepository;
+
+    public Maps addMaps(String urlYaml, String urlPng, String urlPgm, String[] tags, MapMetadata mapMetadata, MapTransformation mapTransformation, MapRotation mapRotation) {
+        Maps maps = new Maps(urlYaml, urlPng, urlPgm, tags, mapMetadata, mapTransformation, mapRotation);
+        return mapsRepository.save(maps);
+    }
 
     @Override
     public Maps addOne(Maps maps) {
