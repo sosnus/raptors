@@ -1,17 +1,14 @@
-<div class="" style="overflow-y: scroll; height: 90vh">
-
+<div class="" style="overflow-y: scroll; height: 90vh;">
     <!--Accordion wrapper-->
     <div class="accordion md-accordion sideBar card" id="sideBarContainer">
         <!-- Accordion group -->
         <div class="accordion-group">
             <div>
-
-
-                <div [matTooltip]="instanceInfo.instanceDescription + instanceInfo.instanceAddress" matTooltipPosition="right" style="display: inline-block">
-                    {{instanceInfo.instanceName}}
+                <div [matTooltip]="
+            instanceInfo.instanceDescription + instanceInfo.instanceAddress
+          " matTooltipPosition="right" style="display: inline-block;">
+                    {{ instanceInfo.instanceName }}
                 </div>
-
-
             </div>
             <!-- Card header -->
             <div class="card-header z-depth-2" role="tab" id="headingTwo1">
@@ -23,27 +20,24 @@
                 </a>
             </div>
 
-
             <!-- Card body -->
             <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1">
                 <div *ngFor="let task of storeService.robotTaskList">
                     <div class="card-header card-item clickable" [routerLink]="['/taskpanel-details', task.id]">
                         <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
-                        <div [matTooltip]="task.status.name" matTooltipPosition="right" style="display: inline-block">
+                        <div [matTooltip]="task.status.name" matTooltipPosition="right" style="display: inline-block;">
                             <mat-icon matBadge="29" matBadgePosition="above after" id="badge"></mat-icon>
-                            {{task.status.symbol}}
+                            {{ task.status.symbol }}
                         </div>
-                        {{task.name}}
+                        {{ task.name }}
                     </div>
                 </div>
             </div>
-
         </div>
         <!-- Accordion group -->
 
         <!-- Accordion group -->
         <div class="accordion-group">
-
             <!-- Card header -->
             <div class="card-header z-depth-2" role="tab" id="headingTwo2">
                 <a class="collapsed text-uppercase mb-0 py-1" data-toggle="collapse" data-target="#collapseTwo2" (click)="rotateIcon('collapseIcon2')">
@@ -59,25 +53,33 @@
                 <div *ngFor="let robot of robotList">
                     <div class="card-header card-item clickable" [routerLink]="['/robotpanel', robot.id]">
                         <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
-                        <div><b>{{robot.id}}</b></div>
                         <div>
-                            <i> {{robot.model.id}}
-                <i class="material-icons warning" *ngIf="robot.batteryLevel<10">battery_alert</i>
-                            <i class="material-icons arrow">play_arrow</i>
+                            <b>{{ robot.id }}</b>
+                        </div>
+                        <div>
+                            <i>
+                {{ robot.model.id }}
+                <i
+                  class="material-icons warning"
+                  *ngIf="robot.batteryLevel < 10"
+                  >battery_alert</i
+                >
+                <i class="material-icons arrow">play_arrow</i>
                             </i>
                         </div>
                         <div>
                             <u>
-                {{robot.robotIp}}
+                {{ robot.robotIp }}
               </u>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="version" *ngIf="this.authService.isAdmin() || this.authService.isServiceman()">wersja frontendu: {{frontVersion}}<br/> wersja backendu: {{backVersion}}</div>
+            <div class="version" *ngIf="this.authService.isAdmin() || this.authService.isServiceman()">
+                wersja frontendu: {{ frontVersion }}<br /> wersja backendu: {{ backVersion }}
+            </div>
         </div>
         <!-- Accordion group -->
     </div>
     <!-- Accordion wrapper -->
-
 </div>

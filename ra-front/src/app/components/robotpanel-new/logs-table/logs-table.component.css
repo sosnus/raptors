@@ -1,0 +1,21 @@
+.btn-rounded {
+  border-radius: 1rem;
+}
+
+.text-blue {
+  color: #007bff;
+}
+
+table.table td,
+table.table th {
+  vertical-align: middle;
+}
+
+.card-header {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+h6 {
+  text-align: center;
+}

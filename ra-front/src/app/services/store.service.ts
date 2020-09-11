@@ -1,12 +1,12 @@
-﻿import {Injectable} from '@angular/core';
-import {Orientation} from "../model/Stand/Orientation";
-import {RobotTask} from "../model/Robots/RobotTask";
+﻿import { Injectable } from "@angular/core";
+import { Orientation } from "../model/Stand/Orientation";
+import { RobotTask } from "../model/Robots/RobotTask";
+import { environment } from "../../environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class StoreService {
-
   public mapURL: string;
   public robotIDlist: any;
   public readonly robotIP: string;
@@ -14,21 +14,19 @@ export class StoreService {
   // TODO: zapisać w postaci zmiennych w obiekcie
   public mapResolution = 0.01;
   public imageResolution = 1984;
-  public mapID = '5e19f1fa9b1eab79e9a58e08';
+  public mapID = "5e19f1fa9b1eab79e9a58e08";
 
   // BEZ "/"
-    public baseURL = 'https://helike-ra-back-sosnus-develop.azurewebsites.net';
-  // public baseURL = 'http://localhost:8080';
-    
+  public baseURL = environment.baseURL;
+
   // public barrierURL = 'http://raptors-barrier-generator.herokuapp.com/'
   // public barrierURL = 'http://localhost:5000/' // dopisać "/"
-  public barrierURL = 'https://helike-ra-barrier-sosnus-develop.azurewebsites.net' // dopisać "/"
+  public barrierURL = environment.barrierURL; // dopisać "/"
 
-  public robotTaskList: RobotTask[]= [];
+  public robotTaskList: RobotTask[] = [];
   public robotTaskListTemp: RobotTask[] = [];
 
   public loggedUserID: string;
-
 }
 
 export function quaternionFromAxisAngle(axis, angle): Orientation {
@@ -42,9 +40,15 @@ export function quaternionFromAxisAngle(axis, angle): Orientation {
   const sin = Math.sin(halfAngle);
   const cos = Math.cos(halfAngle);
 
-  const sin_norm = sin / Math.sqrt(xAxis * xAxis + yAxis * yAxis + zAxis * zAxis);
+  const sin_norm =
+    sin / Math.sqrt(xAxis * xAxis + yAxis * yAxis + zAxis * zAxis);
 
-  return new Orientation(cos, xAxis * sin_norm, yAxis * sin_norm, zAxis * sin_norm);
+  return new Orientation(
+    cos,
+    xAxis * sin_norm,
+    yAxis * sin_norm,
+    zAxis * sin_norm
+  );
 }
 
 export function axisAngleFromQuaternion(orientation: Orientation): number {
@@ -57,9 +61,9 @@ export function axisAngleFromQuaternion(orientation: Orientation): number {
 export function getCentroid(points) {
   let centerX = 0;
   let centerY = 0;
-  points.map(point => {
+  points.map((point) => {
     centerX += point.lat;
     centerY += point.lng;
   });
-  return [centerX / points.length, centerY / points.length]
+  return [centerX / points.length, centerY / points.length];
 }

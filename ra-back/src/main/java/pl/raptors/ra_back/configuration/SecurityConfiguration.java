@@ -37,6 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/robots/tasks/all").permitAll()
                 .antMatchers("/healthz/*").permitAll()
                 .antMatchers("/settings/*").permitAll()
+                .antMatchers("/movement/maps/minio/*").permitAll()
                 .anyRequest().authenticated().and().csrf().disable()
                 .logout()
                 .logoutUrl("/logout")

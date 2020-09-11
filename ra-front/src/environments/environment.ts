@@ -3,10 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  serverUrl: "http://adrastea.westus2.cloudapp.azure.com:3333",
+  refreshRate: 5000,
+  baseURL: "http://helike-ra-back-sosnus-develop.azurewebsites.net",
+  barrierURL: "https://helike-ra-barrier-sosnus-develop.azurewebsites.net",
+  enviromentStatus: "environment.ts",
 };
 
 /*
+http://helike-ra-back-sosnus-develop.azurewebsites.net
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
  *
