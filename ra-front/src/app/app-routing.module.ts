@@ -13,10 +13,7 @@ import { CorridorsComponent } from "./components/map/corridors/corridors.compone
 import { TaskpanelComponent } from "./components/taskpanel/taskpanel.component";
 import { AuthGuard } from "./services/auth.guard";
 import { AccessForbiddenComponent } from "./components/access-forbidden/access-forbidden.component";
-import { RobotPanelComponent } from "./components/robotpanel/robot-panel.component";
 import { UserspanelComponent } from "./components/userspanel/userspanel.component";
-import { RobotTask } from "./model/Robots/RobotTask";
-import { TaskpanelDetailsComponent } from "./components/taskpanel/taskpanel-details/taskpanel-details.component";
 import { TaskpanelListComponent } from "./components/taskpanel/taskpanel-list/taskpanel-list.component";
 import { RobotListComponent } from "./components/robot-list/robot-list.component";
 import { HealthzComponent } from "./components/healthz/healthz.component";
@@ -24,6 +21,8 @@ import { SettingsComponent } from "./components/settings/settings.component";
 import { TaskCreatorPanelComponent } from "./components/task-creator-panel/task-creator-panel.component";
 import { TaskCreatorComponent } from "./components/task-creator-panel/task-creator/task-creator.component";
 import { TaskDetailsComponent } from "./components/task-creator-panel/task-details/task-details.component";
+import { RobotPanelComponentNew } from "./components/robotpanel-new/robot-panel.component";
+import { MapMetadataComponent } from "./components/map-metadata/map-metadata.component"
 
 const routes: Routes = [
   {
@@ -40,8 +39,8 @@ const routes: Routes = [
     },
   },
   { path: "", component: HomeComponent },
-  { path: "robotpanel/:id", component: RobotPanelComponent },
   { path: "taskpanel-details/:id", component: TaskpanelListComponent },
+  { path: "robotpanel/:id", component: RobotPanelComponentNew },
   { path: "graphcreator", component: GraphcreatorComponent },
   { path: "polygons", component: PolygonsComponent },
   { path: "mapupload", component: MapUploadComponent },
@@ -50,6 +49,8 @@ const routes: Routes = [
   {
     path: "adminpanel",
     component: AdminPanelComponent,
+    canActivate: [AuthGuard],
+    data: { rolesIDs: ["ROLE_ADMIN"] },
   },
   {
     path: "users",
@@ -74,6 +75,7 @@ const routes: Routes = [
   { path: "access-denied", component: AccessForbiddenComponent },
   { path: "healthz", component: HealthzComponent },
   { path: "settings", component: SettingsComponent },
+  { path: "map-metadata", component: MapMetadataComponent },
 ];
 
 @NgModule({

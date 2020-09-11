@@ -1,0 +1,29 @@
+<div class="card-header">
+  <div class="d-flex align-items-center">
+    <h3 class="w-75">Status robota</h3>
+    <div class="col-md-2 float-right">
+      <button class="material-icons refresh" (click)="refresh()">refresh</button>
+    </div>
+  </div>
+</div>
+<table class="table">
+  <tbody>
+    <tr *ngFor="let prop of properties">
+      <ng-container [ngSwitch]="prop.specialType">
+        <ng-container *ngSwitchCase="typeEnum.BATTERY_LEVEL">
+          <th scope="row">{{prop.getName()}}</th>
+          <td>
+            <div class="battery">
+              <div id="batteryLevel" class="battery-level" style="height:0%;"></div>
+            </div>
+            <div style="float: left">{{prop.toString()}}</div>
+          </td>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <th scope="row">{{prop.getName()}}</th>
+          <td>{{prop.toString()}}</td>
+        </ng-container>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
