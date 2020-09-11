@@ -38,7 +38,7 @@ public class HealthzController {
     //     //     e.printStackTrace();
     //     // }
     //     // return model.getVersion();
-    //     return "1.5.1-manually-NOPE";
+    //     return "1.5.1-NOPE";
     // }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")

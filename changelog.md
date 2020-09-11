@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+
 ## [1.11.2] - 2020-09-11
 ### Added
 - merge status robota
@@ -14,6 +15,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Deploy changes
 - change back addr to helike
 
+## [1.10.3] - 2020-07-08
+### Added
+- Docker run script files
+### Changed
+- all addr change to localhost (without MongoDb on Tebe)
+
+## [1.10.3] - 2020-07-08
+### Changed
+- Documentation: info about stacks, users, technologies, etc.
+- Up version to 1.10.3
 
 ## [1.10.1] - 2020-07-01
 ### Added
