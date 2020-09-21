@@ -253,7 +253,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     }
       this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng, this.mapOriginX);
       this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat, this.mapOriginY);
-      this.stand.pose.orientation = quaternionFromAxisAngle([0, 0, 1], this.degToRad(this.orientationAngle));
+      this.stand.pose.orientation = quaternionFromAxisAngle([0, 0, 1], this.degToRad(-this.orientationAngle + 90.0)); // korekta obrotu
       this.standService.save(this.stand).subscribe(
         result => {
           this.toast.success("Dodano nowe stanowisko");
@@ -342,7 +342,9 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   editExistingStand(stand: Stand) {
     this.clearMap();
     if (!stand) return;
-    this.orientationAngle = this.radToDeg(axisAngleFromQuaternion(stand.pose.orientation));
+    this.orientationAngle = 90.0 - this.radToDeg(axisAngleFromQuaternion(stand.pose.orientation));
+    while (this.orientationAngle > 360) this.orientationAngle -= 360;
+    while (this.orientationAngle < 0) this.orientationAngle += 360;
     this.tempAngle = this.orientationAngle;
     this.standID = stand.id;
     const vertPos = L.latLng([this.getMapCoordinates(stand.pose.position.y, this.mapOriginY), this.getMapCoordinates(stand.pose.position.x, this.mapOriginX)]);
