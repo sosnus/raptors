@@ -12,7 +12,9 @@ export class StoreService {
   public readonly robotIP: string;
 
   // TODO: zapisać w postaci zmiennych w obiekcie
-  public mapResolution = 0.01;
+  public mapResolution = 0.05;
+  public originX = -10.0;
+  public originY = -10.0;
   public imageResolution = 1984;
   public mapID = "5e19f1fa9b1eab79e9a58e08";
 
@@ -53,8 +55,12 @@ export function quaternionFromAxisAngle(axis, angle): Orientation {
 
 export function axisAngleFromQuaternion(orientation: Orientation): number {
   // Q = [cos(angle / 2), v * sin(angle / 2)]
-  const angle = Math.acos(orientation.x) * 2;
-  //TODO()
+  var sign = 1
+  if (orientation.w < 0) sign = -1;
+  var angle = Math.asin(orientation.z) * 2 * sign;
+  while (angle < 0) angle += 360.0;
+  while (angle > 360) angle -= 360.0;
+
   return angle;
 }
 

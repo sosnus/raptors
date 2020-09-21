@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MapService} from '../../../services/map.service';
+import { SettingsService } from '../../../services/settings.service';
 import * as L from 'leaflet';
 import {Marker} from 'leaflet/src/layer/marker/Marker.js';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
@@ -36,12 +37,16 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
   //Map related variables
   private map;
   private imageURL = '';
-  private mapResolution = 0.01;//TODO()
+  private mapId;
+  private mapResolution;
+  private mapOriginX;
+  private mapOriginY;
   private imageResolution;
   private mapContainerSize = 800;
   private subscription;
 
   constructor(private mapService: MapService,
+              private settingsService: SettingsService,
               private graphService: GraphService,
               private store: StoreService,
               private toast: ToastrService) {
@@ -63,16 +68,20 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
   }
 
   private loadMap() {
-    if (localStorage.getItem(this.store.mapID) !== null) {
-      this.afterMapLoaded(localStorage.getItem(this.store.mapID))
-    } else {
-      this.mapService.getMap(this.store.mapID).subscribe(
-        data => {
-          this.afterMapLoaded(data);
-          localStorage.setItem(this.store.mapID, data)
-        }
-      );
-    }
+    this.settingsService.getCurrentMap().subscribe(
+      mapData => {
+        this.mapId = mapData.currentMapId;
+        this.mapResolution = mapData.mapResolutionX;
+        this.mapOriginX = mapData.mapOriginX;
+        this.mapOriginY = mapData.mapOriginY;
+        this.mapService.getMap(this.mapId).subscribe(
+          data => {
+            this.afterMapLoaded(data);
+            localStorage.setItem(this.store.mapID, data)
+          }
+        );
+      }
+    );
   }
 
   private afterMapLoaded(data: String) {
@@ -234,12 +243,12 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     let graphEdges: Edge[] = [];
     this.edges.forEach(edge => {
       let vertexA: Vertex = new Vertex(
-        this.getRealCoordinates(edge._latlngs[0].lng),
-        this.getRealCoordinates(edge._latlngs[0].lat)
+        this.getRealCoordinates(edge._latlngs[0].lng, this.mapOriginX),
+        this.getRealCoordinates(edge._latlngs[0].lat, this.mapOriginY)
       );
       let vertexB: Vertex = new Vertex(
-        this.getRealCoordinates(edge._latlngs[1].lng),
-        this.getRealCoordinates(edge._latlngs[1].lat)
+        this.getRealCoordinates(edge._latlngs[1].lng, this.mapOriginX),
+        this.getRealCoordinates(edge._latlngs[1].lat, this.mapOriginY)
       );
       let graphEdge = new Edge(vertexA, vertexB, edge.biDirected);
       graphEdges.push(graphEdge)
@@ -252,12 +261,12 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     });
   }
 
-  getRealCoordinates(value: number) {
-    return (value * this.mapResolution * (this.imageResolution / this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
+  getRealCoordinates(value: number, origin : number) {
+    return (value * this.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
   }
 
-  getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (this.mapContainerSize / this.imageResolution)
+  getMapCoordinates(value, origin) {
+    return (value - origin) * (1 / this.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
   clearMap() {
@@ -279,8 +288,8 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     graph.edges.forEach(edge => {
       let marker1Temp = marker1;
       let marker2Temp = marker2;
-      const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
-      const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+      const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY, this.mapOriginY), this.getMapCoordinates(edge.vertexA.posX, this.mapOriginX)]);
+      const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY, this.mapOriginY), this.getMapCoordinates(edge.vertexB.posX, this.mapOriginX)]);
 
       if (!existingWaypoints.includes(vertPosA + '')) {//toString in order to not mind about reference
         marker1 = this.createNewMarker(vertPosA);
@@ -295,8 +304,8 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
       }
     });
     graph.edges.forEach(edge => {
-      const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY), this.getMapCoordinates(edge.vertexA.posX)]);
-      const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY), this.getMapCoordinates(edge.vertexB.posX)]);
+      const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY, this.mapOriginY), this.getMapCoordinates(edge.vertexA.posX, this.mapOriginX)]);
+      const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY, this.mapOriginY), this.getMapCoordinates(edge.vertexB.posX, this.mapOriginX)]);
       marker1 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosA));
       marker2 = markers.find(marker => JSON.stringify(marker._latlng) === JSON.stringify(vertPosB));
       this.drawEditableEdge(marker1, marker2, edge.biDirected)

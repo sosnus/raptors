@@ -24,7 +24,7 @@ export class SettingsService {
   }
 
   getCurrentMap() {
-    // const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
+    const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
     return this.http.get<CurrentMap>(this.url + 'getCurrentMap');
   }
 
@@ -36,6 +36,11 @@ export class SettingsService {
   updateInstanceInfo(nowaInstancja) {
     // const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
     return this.http.post<InstanceInfo>(this.url + 'updateInstanceInfo', nowaInstancja);
+  }
+
+  updateCurrentMap(mapId) {
+    const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<CurrentMap>(this.url + 'updateCurrentMap/' + mapId, {headers: headers, responseType: 'json'});
   }
 
   updateContactInfo(noweInformacje) {
