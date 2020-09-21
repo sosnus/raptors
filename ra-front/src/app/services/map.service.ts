@@ -10,10 +10,12 @@ import {StoreService} from "./store.service";
 export class MapService {
 
   private readonly mapURL: string;
+  private readonly minioURL: string;
 
   constructor(private http: HttpClient,
               private store: StoreService) {
     this.mapURL = store.baseURL + '/movement/maps/';
+    this.minioURL = store.baseURL + '/movement/maps/minio/';
   }
 
   public getMap(id: string): Observable<any> {
@@ -27,6 +29,7 @@ export class MapService {
     formData.append('name', name);
     formData.append('mapImage', map);
     formData.append('yamlFile', yaml);
-    return this.http.post<any>(this.mapURL + 'upload', formData, {headers: headers});
+    // return this.http.post<any>(this.mapURL + 'upload', formData, {headers: headers});
+     return this.http.post<any>(this.minioURL + 'upload', formData, {headers: headers});
   }
 }

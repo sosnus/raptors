@@ -84,6 +84,11 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { MatDialogModule } from "@angular/material/dialog";
 import { TaskDetailsComponent } from "./components/task-creator-panel/task-details/task-details.component";
 import { SpecialTypeSelectComponent } from "./components/task-creator-panel/special-type-select/special-type-select.component";
+import { RobotPanelComponentNew } from "./components/robotpanel-new/robot-panel.component";
+import { StatusTableComponent } from "./components/robotpanel-new/status-table/status-table.component";
+import { ModelTableComponent } from "./components/robotpanel-new/model-table/model-table.component";
+import { TableRowComponent } from "./components/robotpanel-new/model-table/table-row/table-row.component";
+import { MapMetadataComponent } from './components/map-metadata/map-metadata.component';
 
 const config: InputFileConfig = {};
 
@@ -129,6 +134,8 @@ const config: InputFileConfig = {};
     RobotPanelComponent,
     RobotDetailsComponent,
     MapScaledComponent,
+    RobotPanelComponentNew,
+    StatusTableComponent,
     ExtraRobotElementComponent,
     ElementFunctionalityComponent,
     UserspanelComponent,
@@ -140,6 +147,9 @@ const config: InputFileConfig = {};
     RobotsTableComponent,
     RobotsToApproveTableComponent,
     SpinnerComponent,
+    ModelTableComponent,
+    TableRowComponent,
+    TaskCreatorComponent,
     HealthzComponent,
     SettingsComponent,
     TaskCreatorPanelComponent,
@@ -147,6 +157,7 @@ const config: InputFileConfig = {};
     TaskCreatorComponent,
     TaskDetailsComponent,
     SpecialTypeSelectComponent,
+    MapMetadataComponent,
   ],
   imports: [
     BrowserModule,

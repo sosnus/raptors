@@ -1,0 +1,53 @@
+<ul>
+  <li *ngFor="let map of mapsArray">
+    <img src="#" alt="Miniaturka mapy.png">
+    <div>
+      <div>
+        <button type="button">ID(id mapy a nie napis ze id...chbya)</button>
+        <button type="button">PREVIEW(a nie po polsku?)</button>
+        <button type="button">MORE</button>
+      </div>
+      <div>tags... as budgets</div>
+    </div>
+    <button type="button">Ustaw jako główną mapę</button>
+    <button type="button" (click)="deleteMap()">Usuń mapę</button>
+  </li>
+</ul>
+
+<button *ngIf="authService.isAdmin()" class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal"
+        [attr.data-target]="'#' + modalID" (click)="addNewMap(newMap)"
+>Dodaj mapę
+</button>
+
+
+
+
+
+<app-form-modal-template [modalName]="'Dodawanie mapy'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="updateMaps()">
+  <form #modalForm="ngForm">
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="mapTransformationX" class="form-control validate" required
+             [(ngModel)]="newMap.mapTransformation.x" name="nazwa">
+      <label for="mapTransformationX">transformacja po osi x</label>
+    </div>
+
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="mapTransformationY" class="form-control validate" required
+             [(ngModel)]="newMap.mapTransformation.y" name="adres">
+      <label for="mapTransformationY">transformacja po osi y</label>
+    </div>
+
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="mapTransformationYaw" class="form-control validate" required
+             [(ngModel)]="newMap.mapTransformation.yaw" name="opis">
+      <label for="mapTransformationYaw">yaw transformacji xD</label>
+    </div>
+  </form>
+</app-form-modal-template>

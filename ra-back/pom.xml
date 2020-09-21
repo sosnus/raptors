@@ -10,7 +10,7 @@
     </parent>
     <groupId>pl.raptors</groupId>
     <artifactId>ra-back</artifactId>
-    <version>1.9.5</version>
+    <version>1.11.3</version>
     <name>ra-back</name>
     <description>ra-back - Backend for RaptorsApp. Based on Java 1.8, Spring and MongoDB</description>
 
@@ -70,11 +70,40 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+<!-- https://mvnrepository.com/artifact/io.minio/minio -->
+<dependency>
+    <groupId>io.minio</groupId>
+    <artifactId>minio</artifactId>
+    <version>7.1.2</version>
+</dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-model</artifactId>
             <version>3.3.9</version>
         </dependency>
+<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
+
+
+
+<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
+<dependency>
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+    <artifactId>jackson-dataformat-yaml</artifactId>
+    <version>2.0.0-RC1</version>
+</dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
+<!--            <artifactId>jackson-datatype-jsr310</artifactId>-->
+<!--            <version>2.9.8</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>io.minio</groupId>-->
+<!--            <artifactId>minio</artifactId>-->
+<!--            <version>7.0.2</version>-->
+<!--&lt;!&ndash;            <version>7.1.0</version>&ndash;&gt;-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <build>

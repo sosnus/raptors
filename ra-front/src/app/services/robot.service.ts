@@ -3,7 +3,6 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Robot} from '../model/Robots/Robot';
 import {StoreService} from "./store.service";
-import {AreaType} from "../model/type/AreaType";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +20,11 @@ export class RobotService {
   public getAll(): Observable<Robot[]> {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
     return this.http.get<Robot[]>(this.robotURL + 'all', {headers: headers, responseType: 'json'})
+  }
+
+  public getRawByID(id: string): Observable<object> {
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get(this.robotURL + id, {headers: headers, responseType: 'json'});
   }
 
   public getByID(id: string): Observable<Robot> {

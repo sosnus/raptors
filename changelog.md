@@ -5,6 +5,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+
+## [1.11.3] - 2020-09-11
+### Changed
+- add minio and fasterxml as dependencies in pom.xml
+
+## [1.11.2] - 2020-09-11
+### Added
+- merge status robota
+- environments files (variables)
+### Changed
+- change version frontend and backend to  1.11.2
+### Deploy changes
+- change back addr to helike
+
 ## [1.10.3] - 2020-07-08
 ### Added
 - Docker run script files

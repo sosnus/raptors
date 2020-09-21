@@ -1,0 +1,15 @@
+<div class="card-header">{{header}}</div>
+<div class="breadcrumbs breadcrumbs_type5 breadcrumb-header">
+  <span (click)="goToRoot()" class="breadcrumbs__item">root</span>
+  <span *ngFor="let item of breadcrumbs; let i = index; last as isLast" (click)="goToSelectedItem(item, i)">
+    <span class="breadcrumbs__item" [ngClass]="{ 'breadcrumbs__item_active' : isLast }">{{item.name}}</span>
+  </span>
+</div>
+
+<table class="table">
+  <tbody>
+    <tr *ngFor="let prop of properties" (click)="updateRoot(prop)">
+      <app-table-row [prop]="prop"></app-table-row>
+    </tr>
+  </tbody>
+</table>
