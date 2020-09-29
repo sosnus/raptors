@@ -1,7 +1,7 @@
 <p class="input-paragraph">{{displayName}}</p>
 <div class="md-form">
-    <select [id]="typeName" [name]="typeName" class="browser-default custom-select" >
-        <option [value]="item.id" *ngFor="let item of specialTypes">
+    <select [id]="displayName" [name]="displayName" [value]="selectedOption" class="browser-default custom-select" >
+        <option [value]="item.id" [ngValue]="item.id" *ngFor="let item of specialTypes" [selected]="item.id === selectedOption" >
             {{item.name}}
         </option>
     </select>

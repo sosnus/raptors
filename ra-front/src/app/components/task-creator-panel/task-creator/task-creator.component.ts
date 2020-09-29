@@ -25,7 +25,7 @@ import { StatusType } from "src/app/model/Robots/StatusType";
 })
 export class TaskCreatorComponent implements OnInit {
   behaviours: Behaviour[] = [];
-  defaultBehaviours: Behaviour[] = [];
+  // defaultBehaviours: Behaviour{} = {};
   behavioursComplete: Behaviour[] = [];
 
   robotTask: RobotTask = new RobotTask(
@@ -37,6 +37,7 @@ export class TaskCreatorComponent implements OnInit {
     null,
     null
   );
+  defaultBehaviours = {};
   robot = new Robot(null, null, null, null, null, null, null, null, null);
   robotStatusFree: RobotStatus = new RobotStatus(null);
   robotStatusDuringTask: RobotStatus = new RobotStatus(null);
@@ -47,6 +48,7 @@ export class TaskCreatorComponent implements OnInit {
 
   taskStatuses: string[] = ["To Do"]; //, 'In Progress', 'Done']
   selectedTaskStatus: StatusType;
+  selectedTaskStatusName: string;
 
   loggedUserID: string;
 
@@ -55,6 +57,7 @@ export class TaskCreatorComponent implements OnInit {
   editingBehaviour: Behaviour = new Behaviour(null, null);
   editingBehaviourParams: any;
   editingBehaviourParamKeys: string[] = [];
+  editingBehaviourDefaultParams: any;
 
   specialBehaviourParams: string[] = [
     "corridor",
@@ -85,7 +88,9 @@ export class TaskCreatorComponent implements OnInit {
 
     this.behaviourService.getAll().subscribe((behaviours) => {
       this.behaviours = behaviours;
-      this.defaultBehaviours = behaviours;
+      behaviours.forEach(element => {
+        this.defaultBehaviours[element.name] = element;
+      });
     });
 
     this.loggedUserID = JSON.parse(atob(localStorage.getItem("userID")));
@@ -130,7 +135,9 @@ export class TaskCreatorComponent implements OnInit {
     this.robotTask.priority = this.taskPriorities.find((p) => {
       return p.id === this.selectedTaskPriorityId;
     });
-    this.robotTask.status = this.selectedTaskStatus;
+    this.robotTask.status = new StatusType(null, this.selectedTaskStatusName, null, null);
+    console.log(this.selectedTaskStatusName);
+    // this.robotTask.status.name = this.selectedTaskStatusName;
     this.robotTask.userID = this.loggedUserID;
     this.robotTask.behaviours = this.behavioursComplete;
 
@@ -172,13 +179,14 @@ export class TaskCreatorComponent implements OnInit {
     this.editingBehaviourIndex = null;
     this.editingBehaviour = new Behaviour(null, null);
     this.editingBehaviourParams = null;
+    this.editingBehaviourDefaultParams = null;
     this.editingBehaviourParamKeys = [];
   }
 
   updateBehaviour(modalForm: NgForm) {
     console.log("updateBehaviour");
 
-    this.specialBehaviourParams.forEach((element) => {
+    this.editingBehaviourParamKeys.forEach((element) => {
       const e = document.getElementById(element) as HTMLSelectElement;
       if (e !== null) {
         const val = e.options[e.selectedIndex].value;
@@ -197,28 +205,35 @@ export class TaskCreatorComponent implements OnInit {
       ] = this.editingBehaviour;
       this.robotTask.behaviours = this.behavioursComplete;
 
-      this.robotTaskService.save(this.robotTask).subscribe(
-        (result) => {
-          if (this.robotTaskExist(this.robotTask.id)) {
-            this.storeService.robotTaskList[
-              this.storeService.robotTaskList.findIndex(
-                (item) => item.id == result.id
-              )
-            ] = result;
-          } else {
-            this.storeService.robotTaskList.push(result);
-          }
+      this.editingBehaviourIndex = null;
+      this.editingBehaviour = new Behaviour(null, null);
+      this.editingBehaviourParams = null;
+      this.editingBehaviourDefaultParams = null;
+      this.editingBehaviourParamKeys = [];
+      this.toastr.success("Pomyślnie zaktualizowano zachowanie");
 
-          this.editingBehaviourIndex = null;
-          this.editingBehaviour = new Behaviour(null, null);
-          this.editingBehaviourParams = null;
-          this.editingBehaviourParamKeys = [];
-          this.toastr.success("Pomyślnie zaktualizowano zachowanie");
-        },
-        (error) => {
-          this.toastr.error("Wystąpił bład podczas edycji zachowania");
-        }
-      );
+      // this.robotTaskService.save(this.robotTask).subscribe(
+      //   (result) => {
+      //     if (this.robotTaskExist(this.robotTask.id)) {
+      //       this.storeService.robotTaskList[
+      //         this.storeService.robotTaskList.findIndex(
+      //           (item) => item.id == result.id
+      //         )
+      //       ] = result;
+      //     } else {
+      //       this.storeService.robotTaskList.push(result);
+      //     }
+
+      //     this.editingBehaviourIndex = null;
+      //     this.editingBehaviour = new Behaviour(null, null);
+      //     this.editingBehaviourParams = null;
+      //     this.editingBehaviourParamKeys = [];
+      //     this.toastr.success("Pomyślnie zaktualizowano zachowanie");
+      //   },
+      //   (error) => {
+      //     this.toastr.error("Wystąpił bład podczas edycji zachowania");
+      //   }
+      // );
     }
   }
 
@@ -226,16 +241,33 @@ export class TaskCreatorComponent implements OnInit {
     try {
       this.editingBehaviourIndex = index;
 
-      Object.assign(this.editingBehaviour, behaviour);
-
+      var thisBehaviour = new Behaviour(null, null);
+      Object.assign(thisBehaviour, this.defaultBehaviours[behaviour.name]);
       const params = JSON.parse(String(behaviour.parameters));
-      this.editingBehaviourParams = params;
+      const defaultParams = JSON.parse(String(thisBehaviour.parameters));
+      // Object.keys(params).forEach(element => {
+      //   if(defaultParams.includes(element)){
+      //     defaultParams[element] = params[element];
+      //   }
+      // });
 
-      Object.assign(this.editingBehaviourParamKeys, Object.keys(params));
+
+      Object.assign(this.editingBehaviour, thisBehaviour);
+
+      // const params = JSON.parse(String(behaviour.parameters));
+      this.editingBehaviourParams = params;
+      this.editingBehaviourDefaultParams = defaultParams;
+
+      console.log(this.defaultBehaviours);
+      console.log(params);
+
+      Object.assign(this.editingBehaviourParamKeys, Object.keys(defaultParams));
     } catch (error) {
+      console.log(error);
       this.editingBehaviourIndex = null;
       this.editingBehaviour = new Behaviour(null, null);
       this.editingBehaviourParams = null;
+      this.editingBehaviourDefaultParams = null;
       this.editingBehaviourParamKeys = [];
 
       this.toastr.error("Błędne parametry zachowania");
