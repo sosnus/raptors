@@ -22,7 +22,8 @@ export class StoreService {
 
   // BEZ "/"
   public baseURL = environment.baseURL;
-  private url = (window.location.host).replace( /:(\d+)/gi, ':8080');
+  // private url = (window.location.host).replace( /:(\d+)/gi, ':8080');
+  // public baseURL = 'http://192.168.2.45:4401';
 
   // public barrierURL = 'http://raptors-barrier-generator.herokuapp.com/'
   // public barrierURL = 'http://localhost:5000/' // dopisać "/"
@@ -52,10 +53,10 @@ export function quaternionFromAxisAngle(axis, angle): Orientation {
     sin / Math.sqrt(xAxis * xAxis + yAxis * yAxis + zAxis * zAxis);
 
   return new Orientation(
-    cos,
     xAxis * sin_norm,
     yAxis * sin_norm,
-    zAxis * sin_norm
+    zAxis * sin_norm,
+    cos
   );
 }
 
@@ -64,8 +65,8 @@ export function axisAngleFromQuaternion(orientation: Orientation): number {
   var sign = 1
   if (orientation.w < 0) sign = -1;
   var angle = Math.asin(orientation.z) * 2 * sign;
-  while (angle < 0) angle += 360.0;
-  while (angle > 360) angle -= 360.0;
+  while (angle < 0) angle += 2*Math.PI;
+  while (angle > 2*Math.PI) angle -= 2*Math.PI;
 
   return angle;
 }
