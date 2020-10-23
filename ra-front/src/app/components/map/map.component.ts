@@ -27,6 +27,36 @@ export const WAYPOINTICON = L.icon({
   iconSize: [36, 36],
   iconAnchor: [36 / 2, 36 / 2]
 });
+export const WAYPOINTICONRED = L.icon({
+  iconUrl: '/assets/icons/position_red.png',
+  iconSize: [36, 36],
+  iconAnchor: [36 / 2, 36 / 2]
+});
+export const WAYPOINTICONMAGENTA = L.icon({
+  iconUrl: '/assets/icons/position_magenta.png',
+  iconSize: [36, 36],
+  iconAnchor: [36 / 2, 36 / 2]
+});
+export const WAYPOINTICONORANGE = L.icon({
+  iconUrl: '/assets/icons/position_orange.png',
+  iconSize: [36, 36],
+  iconAnchor: [36 / 2, 36 / 2]
+});
+export const WAYPOINTICONYELLOW = L.icon({
+  iconUrl: '/assets/icons/position_yellow.png',
+  iconSize: [36, 36],
+  iconAnchor: [36 / 2, 36 / 2]
+});
+export const WAYPOINTICONGREEN = L.icon({
+  iconUrl: '/assets/icons/position_green.png',
+  iconSize: [36, 36],
+  iconAnchor: [36 / 2, 36 / 2]
+});
+export const WAYPOINTICONAQUA = L.icon({
+  iconUrl: '/assets/icons/position_aqua.png',
+  iconSize: [36, 36],
+  iconAnchor: [36 / 2, 36 / 2]
+});
 export const STANDICON = L.icon({
   iconUrl: '/assets/icons/stand.png',
   iconSize: [50, 50],
@@ -295,10 +325,14 @@ export class MapComponent implements OnInit, OnDestroy {
         marker.addTo(this.graphs);
         existingWaypoints.push(vertPosB);
       }
-      const color = edge.biDirected ? 'yellow' : 'red';
+
+      const color = edge.isActive? 'green' : 'red';
+      const weight = edge.narrow? 6 : 12;
+
       const polyLine = new L.polyline([vertPosA, vertPosB],
-        {color: color, weight: 7, opacity: 0.8, smoothFactor: 1});
+        {color: color, weight: weight, opacity: 0.8, smoothFactor: 1});
       polyLine.addTo(this.graphs);
+
     });
   }
 
