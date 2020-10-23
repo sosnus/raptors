@@ -169,6 +169,7 @@ export class MapComponent implements OnInit, OnDestroy {
         );
       }
     );
+    // console.log(this.storeService.url);
     // }
     //setTimeout(() => this.updateRobotMarkerPositions([[100, 992]], 0.01), 3000);
     //this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
@@ -397,7 +398,7 @@ export class MapComponent implements OnInit, OnDestroy {
         ]);
         if(robot.id in this.robotMarkers) {
           this.robotMarkers[robot.id].setLatLng(position);
-          console.log(position);
+          // console.log(position);
           this.robotMarkers[robot.id]._popup.setContent(
             'Robot Details <br />Name : '
             + robot.id
