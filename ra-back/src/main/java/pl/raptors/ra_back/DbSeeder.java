@@ -196,16 +196,16 @@ public class DbSeeder implements CommandLineRunner {
         this.userService.addOne(testowyAdmin1);*/
 
         //GRAFY
-        Vertex vertex1 = new Vertex(17.5, 25.0, "A");
-        Vertex vertex2 = new Vertex(15.0, 20.0, "B");
-        Vertex vertex3 = new Vertex(20.0, 20.0, "C");
-        Vertex vertex4 = new Vertex(15.0, 15.0, "D");
-        Vertex vertex5 = new Vertex(20.0, 15.0, "E");
+        Vertex vertex1 = new Vertex(17.5, 25.0, "A", null, 13);
+        Vertex vertex2 = new Vertex(15.0, 20.0, "B", null, 13);
+        Vertex vertex3 = new Vertex(20.0, 20.0, "C", null, 13);
+        Vertex vertex4 = new Vertex(15.0, 15.0, "D", null, 13);
+        Vertex vertex5 = new Vertex(20.0, 15.0, "E", null, 13);
 
-        Edge edge1 = new Edge(vertex1, vertex2, false);
-        Edge edge2 = new Edge(vertex1, vertex3, false);
-        Edge edge3 = new Edge(vertex2, vertex4, false);
-        Edge edge4 = new Edge(vertex3, vertex5, false);
+        Edge edge1 = new Edge(vertex1, vertex2, false, false, true);
+        Edge edge2 = new Edge(vertex1, vertex3, false, false, true);
+        Edge edge3 = new Edge(vertex2, vertex4, false, false, true);
+        Edge edge4 = new Edge(vertex3, vertex5, false, false, true);
 
         List<Vertex> verticesToAdd = Arrays.asList(vertex1, vertex2, vertex3, vertex4, vertex5);
         List<Edge> edgesToAdd = Arrays.asList(edge1, edge2, edge3, edge4);
