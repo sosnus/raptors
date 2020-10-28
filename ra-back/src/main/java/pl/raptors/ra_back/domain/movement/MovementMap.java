@@ -21,4 +21,7 @@ public class MovementMap {
         this.mapImage = mapImage;
         this.yamlFile = yamlFile;
     }
+
+    // public Binary getYamlFile() { return yamlFile; }
+    // public Binary getMapImage() { return mapImage; }
 }

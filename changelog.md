@@ -4,9 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
-## [1.11.4] - 2020-09-29
+
+## [1.11.5a] - 2020-09-29
 ### Changed
 - Fix task creator
+
+## [1.11.4a] - 2020-09-21
+### Added
+- endpoint with current map information
+- map changing functionality in settings
+### Changed
+- fixed wrong coordinates calculation on map
+- use map parameters from new endpoint instead of storage service
 
 ## [1.11.3] - 2020-09-11
 ### Changed

@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MapService} from "../../../services/map.service";
+import { SettingsService } from '../../../services/settings.service';
 import * as L from 'leaflet';
 import '../../../../../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js'
 import '../../../../lib/leaflet-easybutton/src/easy-button';
@@ -38,14 +39,18 @@ export class PolygonsComponent implements OnInit, OnDestroy {
   //Map related variables
   private map;
   private imageURL = '';
-  private mapResolution = 0.01;//TODO()
+  private mapId;
+  private mapResolution;
+  private mapOriginX;
+  private mapOriginY;
   private imageResolution;
   private mapContainerSize = 800;
   private subscription;
 
   constructor(private mapService: MapService,
+              private settingsService: SettingsService,
               private polygonService: PolygonService,
-              private storeService: StoreService,
+              private store: StoreService,
               private areaTypeService: AreaTypeService,
               private toast: ToastrService) {
   }
@@ -66,16 +71,20 @@ export class PolygonsComponent implements OnInit, OnDestroy {
   }
 
   private loadMap() {
-    if (localStorage.getItem(this.storeService.mapID) !== null) {
-      this.afterMapLoaded(localStorage.getItem(this.storeService.mapID))
-    } else {
-      this.mapService.getMap(this.storeService.mapID).subscribe(
-        data => {
-          this.afterMapLoaded(data);
-          localStorage.setItem(this.storeService.mapID, data)
-        }
-      );
-    }
+    this.settingsService.getCurrentMap().subscribe(
+      mapData => {
+        this.mapId = mapData.currentMapId;
+        this.mapResolution = mapData.mapResolutionX;
+        this.mapOriginX = mapData.mapOriginX;
+        this.mapOriginY = mapData.mapOriginY;
+        this.mapService.getMap(this.mapId).subscribe(
+          data => {
+            this.afterMapLoaded(data);
+            localStorage.setItem(this.store.mapID, data)
+          }
+        );
+      }
+    );
   }
 
   private afterMapLoaded(data: String) {
@@ -185,14 +194,14 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       this.polygonsList.push(this.polygonPoints);
 
       this.polygon = L.polygon(this.polygonPoints, {color: this.areaType.color}).addTo(this.map);
-      this.map.fitBounds(this.polygon.getBounds());
+      // this.map.fitBounds(this.polygon.getBounds());
     }
     this.isDrawed = true;
 
   }
 
-  private getRealCoordinates(value) {
-    return (value * this.mapResolution * (this.imageResolution / this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
+  getRealCoordinates(value: number, origin : number) {
+    return (value * this.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
   }
 
   private savePoly() {
@@ -207,8 +216,8 @@ export class PolygonsComponent implements OnInit, OnDestroy {
       let polygonPointz: UniversalPoint[] = [];
       this.polygonPoints.forEach(polygonP => {
         let coords: L.latLng = new L.latLng([
-          this.getRealCoordinates(polygonP.lat),
-          this.getRealCoordinates(polygonP.lng)]);
+          this.getRealCoordinates(polygonP.lat, this.mapOriginY),
+          this.getRealCoordinates(polygonP.lng, this.mapOriginX)]);
         this.convertedPoints.push(coords)
       });
 
@@ -288,7 +297,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.areaType = polygon.type;
     //let existingPolygonpoints = [];
     polygon.points.forEach(point => {
-      const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+      const pointPosition = L.latLng([this.getMapCoordinates(point.x, this.mapOriginX), this.getMapCoordinates(point.y, this.mapOriginX)]);
       const markerIcon = L.icon({
         iconUrl: '/assets/icons/position.png',
         iconSize: [36, 36],
@@ -315,8 +324,8 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.createPoly();
   }
 
-  getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (this.mapContainerSize / this.imageResolution)
+  getMapCoordinates(value, origin) {
+    return (value - origin) * (1 / this.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
   delete(polygon: Polygon) {

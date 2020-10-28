@@ -18,11 +18,15 @@ public class Edge {
     private Vertex vertexA;
     private Vertex vertexB;
     private Boolean biDirected;
+    private Boolean narrow;
+    private Boolean isActive;
 
-    public Edge(Vertex vertexA, Vertex vertexB, Boolean bidirected) {
+    public Edge(Vertex vertexA, Vertex vertexB, Boolean bidirected, Boolean narrow, Boolean isActive) {
         this.vertexA = vertexA;
         this.vertexB = vertexB;
         this.biDirected = bidirected;
+        this.narrow = narrow;
+        this.isActive = isActive;
     }
 
     public List<Vertex> getVerticesList(){

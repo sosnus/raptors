@@ -15,6 +15,7 @@ import { ParkingTypeService } from 'src/app/services/type/parking-type.service';
 export class SpecialTypeSelectComponent implements OnInit {
   @Input() typeName = "";
   @Input() displayName = "";
+  @Input() selectedOption = "";
   specialTypes: any[] = [];
 
   constructor(

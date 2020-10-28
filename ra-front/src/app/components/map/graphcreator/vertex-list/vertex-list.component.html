@@ -12,9 +12,7 @@
     <tbody>
     <tr *ngFor="let vert of markers;let i = index;">
       <th scope="row">{{++i}}</th>
-      <td> <div contenteditable="true" class="edit" [attr.id]="i+'x'">{{getMarkerPos(vert).x}}</div>
-
-      </td>
+      <td> <div contenteditable="true" class="edit" [attr.id]="i+'x'">{{getMarkerPos(vert).x}}</div></td>
       <td> <div contenteditable="true" class="edit" [attr.id]="i+'y'">{{getMarkerPos(vert).y}}</div></td>
       <td>
         <button class="btn btn-primary btn-sm"

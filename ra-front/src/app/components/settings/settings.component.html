@@ -10,7 +10,15 @@
 
     <tbody>
     <tr>
-      <th scope="row">Aktualna mapa</th>
+      <th scope="row">Aktualna mapa
+        <div style="margin: 10px">
+          <button *ngIf="authService.isAdmin()" class="btn btn-info btn-rounded btn-sm my-0" data-toggle="modal"
+                  [attr.data-target]="'#' + mapModal" (click)="editMapInfo(currentMap)"
+          >Edytuj
+          </button>
+        </div>
+
+      </th>
       <table class="table table-sm table-striped">
         <tr>
           <th scope="row">ID mapy</th>
@@ -22,7 +30,11 @@
         </tr>
         <tr>
           <th scope="row">rozdzielczość mapy</th>
-          <td>{{currentMap.mapResolutionX}} x {{currentMap.mapResolutionY}}</td>
+          <td>{{this.currentMap.mapResolutionX}} x {{this.currentMap.mapResolutionY}}</td>
+        </tr>
+        <tr>
+          <th scope="row">origin mapy</th>
+          <td>x: {{this.currentMap.mapOriginX}}, y: {{this.currentMap.mapOriginY}}</td>
         </tr>
       </table>
     </tr>
@@ -88,6 +100,22 @@
     </tbody>
   </table>
 </div>
+
+
+<app-form-modal-template [modalName]="'Wybór mapy'"
+                         [modalID]="mapModal"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="updateMapInfo()">
+  <form #modalForm="ngForm">
+    <div class="md-form mb-5">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="currentMapId" class="form-control validate" required
+             [(ngModel)]="currentMap.currentMapId" name="id">
+      <label for="newMapId">Id mapy</label>
+    </div>
+  </form>
+</app-form-modal-template>
 
 
 <app-form-modal-template [modalName]="'Edycja danych instancji'"

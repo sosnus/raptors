@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MapService} from '../../../services/map.service';
+import { SettingsService } from '../../../services/settings.service';
 import {Marker} from 'leaflet/src/layer/marker/Marker.js';
 import {Polygon} from 'leaflet/src/layer/vector/Polygon.js';
 import {Polygon as CustomPolygon} from '../../../model/MapAreas/Polygons/Polygon';
@@ -63,7 +64,10 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   //Map related variables
   private map;
   private imageURL = '';
-  private mapResolution = 0.01;//TODO()
+  private mapId;
+  private mapResolution;
+  private mapOriginX;
+  private mapOriginY;
   private imageResolution;
   private mapContainerSize = 800;
   private subscription;
@@ -76,6 +80,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   private polygons: CustomPolygon[];
 
   constructor(private mapService: MapService,
+              private settingsService: SettingsService,
               private standService: StandService,
               private parkingTypeService: ParkingTypeService,
               private standTypeService: StandTypeService,
@@ -106,16 +111,20 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   }
 
   private loadMap() {
-    if (localStorage.getItem(this.store.mapID) !== null) {
-      this.afterMapLoaded(localStorage.getItem(this.store.mapID))
-    } else {
-      this.mapService.getMap(this.store.mapID).subscribe(
-        data => {
-          this.afterMapLoaded(data);
-          localStorage.setItem(this.store.mapID, data)
-        }
-      );
-    }
+    this.settingsService.getCurrentMap().subscribe(
+      mapData => {
+        this.mapId = mapData.currentMapId;
+        this.mapResolution = mapData.mapResolutionX;
+        this.mapOriginX = mapData.mapOriginX;
+        this.mapOriginY = mapData.mapOriginY;
+        this.mapService.getMap(this.mapId).subscribe(
+          data => {
+            this.afterMapLoaded(data);
+            localStorage.setItem(this.store.mapID, data)
+          }
+        );
+      }
+    );
   }
 
   private afterMapLoaded(data: String) {
@@ -196,8 +205,8 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     let relatedPathsWithFinishStand: MovementPath[] = this.paths.filter(e => e.finishStandId == id);
     let relatedPathsWithStartStand: MovementPath[] = this.paths.filter(e => e.startStandId == id);
 
-    const a = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
-    const b = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
+    const a = this.getRealCoordinates(this.selectedMarker.getLatLng().lng, this.mapOriginX);
+    const b = this.getRealCoordinates(this.selectedMarker.getLatLng().lat, this.mapOriginY);
     relatedPathsWithStartStand.forEach(e => {
       const c = e.points[1].x;
       const d = e.points[1].y;
@@ -242,9 +251,9 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
         disableTimeOut: true,
       });
     }
-      this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng);
-      this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat);
-      this.stand.pose.orientation = quaternionFromAxisAngle([0, 1, 0], this.degToRad(this.orientationAngle));
+      this.stand.pose.position.x = this.getRealCoordinates(this.selectedMarker.getLatLng().lng, this.mapOriginX);
+      this.stand.pose.position.y = this.getRealCoordinates(this.selectedMarker.getLatLng().lat, this.mapOriginY);
+      this.stand.pose.orientation = quaternionFromAxisAngle([0, 0, 1], this.degToRad(-this.orientationAngle + 90.0)); // korekta obrotu
       this.standService.save(this.stand).subscribe(
         result => {
           this.toast.success("Dodano nowe stanowisko");
@@ -333,10 +342,12 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   editExistingStand(stand: Stand) {
     this.clearMap();
     if (!stand) return;
-    this.orientationAngle = this.radToDeg(axisAngleFromQuaternion(stand.pose.orientation));
+    this.orientationAngle = 90.0 - this.radToDeg(axisAngleFromQuaternion(stand.pose.orientation));
+    while (this.orientationAngle > 360) this.orientationAngle -= 360;
+    while (this.orientationAngle < 0) this.orientationAngle += 360;
     this.tempAngle = this.orientationAngle;
     this.standID = stand.id;
-    const vertPos = L.latLng([this.getMapCoordinates(stand.pose.position.y), this.getMapCoordinates(stand.pose.position.x)]);
+    const vertPos = L.latLng([this.getMapCoordinates(stand.pose.position.y, this.mapOriginY), this.getMapCoordinates(stand.pose.position.x, this.mapOriginX)]);
     this.createNewMarker(vertPos);
     this.stand = stand;
   }
@@ -349,12 +360,12 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     }
   }
 
-  getRealCoordinates(value: number) {
-    return (value * this.mapResolution * (this.imageResolution / this.mapContainerSize) - ((this.imageResolution * this.mapResolution) / 2))
+  getRealCoordinates(value: number, origin : number) {
+    return (value * this.mapResolution * (this.imageResolution /  this.mapContainerSize) + origin)
   }
 
-  getMapCoordinates(value) {
-    return ((value) + (this.imageResolution * this.mapResolution) / 2) * (1 / this.mapResolution) * (this.mapContainerSize / this.imageResolution)
+  getMapCoordinates(value, origin) {
+    return (value - origin) * (1 / this.mapResolution) * ( this.mapContainerSize / this.imageResolution)
   }
 
   compareItems(id1: any, id2: any): boolean {
@@ -373,7 +384,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
 
     let existingPolygonpoints = [];
     polygon.points.forEach(point => {
-      const pointPosition = L.latLng([this.getMapCoordinates(point.x), this.getMapCoordinates(point.y)]);
+      const pointPosition = L.latLng([this.getMapCoordinates(point.x, this.mapOriginX), this.getMapCoordinates(point.y, this.mapOriginY)]);
       existingPolygonpoints.push(pointPosition);
 
     });
@@ -394,7 +405,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     paths.forEach(path => {
         let polylinePoints = [];
         path.points.forEach(point => {
-          const pointPosition = L.latLng([this.getMapCoordinates(point.y),this.getMapCoordinates(point.x)]);
+          const pointPosition = L.latLng([this.getMapCoordinates(point.y, this.mapOriginY), this.getMapCoordinates(point.x, this.mapOriginX)]);
           polylinePoints.push(pointPosition);
         });
         new L.Polyline(polylinePoints).addTo(this.movementPathsLayer).bindTooltip(path.name, {

@@ -19,10 +19,11 @@ export class SettingsComponent implements OnInit {
   modalID = 'settingsTypeModal';
   modalID1 = 'settingsTypeModal1';
   modalID2 = 'settingsTypeModal2';
+  mapModal = 'settingsTypeModal3';
 
   contactInfo: ContactInfo[] = [new ContactInfo(), new ContactInfo()];
   instanceInfo: InstanceInfo = new InstanceInfo('', '', '');
-  currentMap: CurrentMap = new CurrentMap('', 0, 0, 0, 0);
+  currentMap: CurrentMap = new CurrentMap('', 0, 0, 0, 0, 0, 0);
 
   constructor(private settingsService: SettingsService,
               public authService: AuthService,
@@ -46,6 +47,18 @@ export class SettingsComponent implements OnInit {
         this.currentMap = data,
       error => {
         console.log(error);
+      }
+    );
+  }
+
+  updateMapInfo() {
+    this.settingsService.updateCurrentMap(this.currentMap.currentMapId).subscribe(
+      result => {
+        this.toastr.success('Edytowano pomyślnie');
+      },
+      error => {
+        console.log(error);
+        this.toastr.error('Wystąpił bład podczas dodawania lub edycji');
       }
     );
   }
@@ -80,6 +93,10 @@ export class SettingsComponent implements OnInit {
 
   editInstanceInfo(instanceInfo: InstanceInfo) {
     Object.assign(this.instanceInfo, instanceInfo);
+  }
+
+  editMapInfo(currentMap: CurrentMap) {
+    Object.assign(this.currentMap, currentMap);
   }
 
   editContactInfo(contactInfoArray: ContactInfo[]) {
