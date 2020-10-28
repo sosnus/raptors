@@ -15,12 +15,10 @@ import {StoreService} from "../../../services/store.service";
 import { StandService } from '../../../services/stand.service';
 import { Stand } from '../../../model/Stand/Stand';
 import {WAYPOINTICON} from "../map.component";
-import {WAYPOINTICONRED} from "../map.component";
-import {WAYPOINTICONMAGENTA} from "../map.component";
-import {WAYPOINTICONORANGE} from "../map.component";
-import {WAYPOINTICONYELLOW} from "../map.component";
-import {WAYPOINTICONGREEN} from "../map.component";
-import {WAYPOINTICONAQUA} from "../map.component";
+import {WAYPOINTICON_WAITING} from "../map.component";
+import {WAYPOINTICON_WAITING_DEPARTURE} from "../map.component";
+import {WAYPOINTICON_DEPARTURE} from "../map.component";
+import {WAYPOINTICON_INTERSECTION} from "../map.component";
 import {STANDICON} from "../map.component";
 import {ToastrService} from "ngx-toastr";
 import {fromEvent} from "rxjs";
@@ -136,7 +134,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     this.addContextMenuShowHandler();
     this.map.on('click', e => {
       if (!this.editEdges) {
-        this.createNewMarker(e.latlng,null,13);
+        this.createNewMarker(e.latlng,"0",13);
       }
     });
   }
@@ -590,10 +588,10 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
 
   setMarkerColor(type: number){
     switch(type){
-      case 14: return WAYPOINTICONAQUA;
-      case 10: return WAYPOINTICONORANGE;
-      case  9: return WAYPOINTICONYELLOW;
-      case  8: return WAYPOINTICONRED;
+      case 14: return WAYPOINTICON_INTERSECTION;
+      case 10: return WAYPOINTICON_WAITING_DEPARTURE;
+      case  9: return WAYPOINTICON_DEPARTURE;
+      case  8: return WAYPOINTICON_WAITING;
       case 13:
       default: return WAYPOINTICON;
     }

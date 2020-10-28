@@ -27,33 +27,23 @@ export const WAYPOINTICON = L.icon({
   iconSize: [36, 36],
   iconAnchor: [36 / 2, 36 / 2]
 });
-export const WAYPOINTICONRED = L.icon({
-  iconUrl: '/assets/icons/position_red.png',
+export const WAYPOINTICON_WAITING = L.icon({
+  iconUrl: '/assets/icons/position_waiting.png',
   iconSize: [36, 36],
   iconAnchor: [36 / 2, 36 / 2]
 });
-export const WAYPOINTICONMAGENTA = L.icon({
-  iconUrl: '/assets/icons/position_magenta.png',
+export const WAYPOINTICON_WAITING_DEPARTURE = L.icon({
+  iconUrl: '/assets/icons/position_waiting_departure.png',
   iconSize: [36, 36],
   iconAnchor: [36 / 2, 36 / 2]
 });
-export const WAYPOINTICONORANGE = L.icon({
-  iconUrl: '/assets/icons/position_orange.png',
+export const WAYPOINTICON_DEPARTURE = L.icon({
+  iconUrl: '/assets/icons/position_departure.png',
   iconSize: [36, 36],
   iconAnchor: [36 / 2, 36 / 2]
 });
-export const WAYPOINTICONYELLOW = L.icon({
-  iconUrl: '/assets/icons/position_yellow.png',
-  iconSize: [36, 36],
-  iconAnchor: [36 / 2, 36 / 2]
-});
-export const WAYPOINTICONGREEN = L.icon({
-  iconUrl: '/assets/icons/position_green.png',
-  iconSize: [36, 36],
-  iconAnchor: [36 / 2, 36 / 2]
-});
-export const WAYPOINTICONAQUA = L.icon({
-  iconUrl: '/assets/icons/position_aqua.png',
+export const WAYPOINTICON_INTERSECTION = L.icon({
+  iconUrl: '/assets/icons/position_intersection.png',
   iconSize: [36, 36],
   iconAnchor: [36 / 2, 36 / 2]
 });
