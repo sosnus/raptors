@@ -5,7 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
-## [1.11.4] - 2020-09-21
+## [1.11.5a] - 2020-09-29
+### Changed
+- Fix task creator
+
+## [1.11.4a] - 2020-09-21
 ### Added
 - endpoint with current map information
 - map changing functionality in settings
