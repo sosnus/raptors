@@ -387,7 +387,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     this.edges[index] = this.selectedElement;
   }
 
-  public saveGraph(msg = 0){
+  public saveGraph(){
     let graph: Graph = new Graph();
     let graphEdges: Edge[] = [];
     let verticles_all = this.vertices.concat(this.vertices_hidden);
@@ -413,11 +413,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     if (this.graphID) graph.id = this.graphID;
     this.graphService.save(graph).subscribe(result => {
       this.graph = graph;
-      if(!msg){
-        this.toast.success('Graf zapisany w bazie')
-      } else {
-        this.toast.success('Usunięto nieistniejące połączenia z POI')
-      }
+      this.toast.success('Graf zapisany w bazie');
     });
   }
 
@@ -548,7 +544,6 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
 
   hiddenPOImarkersFix(){
     let dummyPOI = this.vertices_hidden.filter(marker => marker.dummy == 1);
-    let isUpdated = 0;
     dummyPOI.forEach(dummy => {
       let standPOI = this.poiStandsMarkers.filter(stand => stand.poiID === dummy.poiID);
       if(standPOI.length){
@@ -580,10 +575,8 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
           }
         });
         this.edges = tempEdges;
-        isUpdated = 1;
       }
     });
-    if(isUpdated) this.saveGraph(1);
   }
 
   setMarkerColor(type: number){
