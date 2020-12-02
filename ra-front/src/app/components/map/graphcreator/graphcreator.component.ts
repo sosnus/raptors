@@ -19,6 +19,7 @@ import {WAYPOINTICON_WAITING} from "../map.component";
 import {WAYPOINTICON_WAITING_DEPARTURE} from "../map.component";
 import {WAYPOINTICON_DEPARTURE} from "../map.component";
 import {WAYPOINTICON_INTERSECTION} from "../map.component";
+import {WAYPOINTICON_DUMMY} from "../map.component";
 import {STANDICON} from "../map.component";
 import {ToastrService} from "ngx-toastr";
 import {fromEvent} from "rxjs";
@@ -144,7 +145,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     if(poiID !== "0"){ // poi marker form edge
       marker = new L.marker(position, {
         draggable: false,
-        icon: WAYPOINTICON,
+        icon: WAYPOINTICON_DUMMY,
         opacity: 0.0
       });
       marker.poiID = poiID;
