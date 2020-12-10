@@ -47,6 +47,11 @@ export const WAYPOINTICON_INTERSECTION = L.icon({
   iconSize: [36, 36],
   iconAnchor: [36 / 2, 36 / 2]
 });
+export const WAYPOINTICON_DUMMY = L.icon({
+  iconUrl: '/assets/icons/position_dummy.png',
+  iconSize: [1, 1],
+  iconAnchor: [1 / 2, 1 / 2]
+});
 export const STANDICON = L.icon({
   iconUrl: '/assets/icons/stand.png',
   iconSize: [50, 50],
