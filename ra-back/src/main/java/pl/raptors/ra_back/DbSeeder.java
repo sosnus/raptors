@@ -196,11 +196,11 @@ public class DbSeeder implements CommandLineRunner {
         this.userService.addOne(testowyAdmin1);*/
 
         //GRAFY
-        Vertex vertex1 = new Vertex(17.5, 25.0, "A", null, 13);
-        Vertex vertex2 = new Vertex(15.0, 20.0, "B", null, 13);
-        Vertex vertex3 = new Vertex(20.0, 20.0, "C", null, 13);
-        Vertex vertex4 = new Vertex(15.0, 15.0, "D", null, 13);
-        Vertex vertex5 = new Vertex(20.0, 15.0, "E", null, 13);
+        Vertex vertex1 = new Vertex(17.5, 25.0, "A", null, 1, 13);
+        Vertex vertex2 = new Vertex(15.0, 20.0, "B", null, 2, 13);
+        Vertex vertex3 = new Vertex(20.0, 20.0, "C", null, 3, 13);
+        Vertex vertex4 = new Vertex(15.0, 15.0, "D", null, 4, 13);
+        Vertex vertex5 = new Vertex(20.0, 15.0, "E", null, 5, 13);
 
         Edge edge1 = new Edge(vertex1, vertex2, false, false, true);
         Edge edge2 = new Edge(vertex1, vertex3, false, false, true);
@@ -245,12 +245,12 @@ public class DbSeeder implements CommandLineRunner {
         universalPoints1.add(movementPathUniversalPoint2);
         universalPoints1.add(movementPathUniversalPoint3);
 
-        StandType standType = new StandType("receiving");
-        StandType standType1 = new StandType("loading");
+        StandType standType = new StandType("receiving",1);
+        StandType standType1 = new StandType("loading",2);
 
-        StandType standType3 = new StandType("charger");
-        StandType standType4 = new StandType("receiving-loading");
-        StandType standType5 = new StandType("parking");
+        StandType standType3 = new StandType("charger",3);
+        StandType standType4 = new StandType("receiving-loading",4);
+        StandType standType5 = new StandType("parking",5);
 
         StandStatus standStatus = new StandStatus("free");
         StandStatus standStatus1 = new StandStatus("occupied");

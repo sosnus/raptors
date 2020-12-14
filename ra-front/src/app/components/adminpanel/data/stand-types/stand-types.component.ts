@@ -11,7 +11,7 @@ import {StandTypeService} from "../../../../services/type/stand-type.service";
 export class StandTypesComponent implements OnInit {
 
   standTypes: StandType[] = [];
-  standType: StandType = new StandType(null);
+  standType: StandType = new StandType(null, null);
   modalID = "standTypeModal";
 
   constructor(private standTypeService: StandTypeService, private toastr: ToastrService) { }
@@ -27,7 +27,7 @@ export class StandTypesComponent implements OnInit {
   }
 
   reset(){
-    this.standType = new StandType(null);
+    this.standType = new StandType(null, null);
   }
 
   createOrUpdate() {
@@ -38,7 +38,7 @@ export class StandTypesComponent implements OnInit {
         } else {
           this.standTypes.push(result)
         }
-        this.standType = new StandType(null);
+        this.standType = new StandType(null, null);
         this.toastr.success("Dodano lub edytowano pomyślnie");
       },
       error => {
@@ -60,7 +60,7 @@ export class StandTypesComponent implements OnInit {
       result => {
         this.standTypes = this.standTypes.filter(item => item != standType)
         this.toastr.success("Usunięto pomyślnie");
-        this.standType = new StandType(null);
+        this.standType = new StandType(null, null);
       },
       error => {
         this.toastr.error("Wystąpił błąd podczas usuwania");

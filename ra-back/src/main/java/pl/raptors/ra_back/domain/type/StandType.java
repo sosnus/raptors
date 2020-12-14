@@ -12,9 +12,11 @@ public class StandType {
     @Id
     private String id;
     private String name;
+    private Integer type;
 
-    public StandType(String name) {
+    public StandType(String name, Integer type) {
         this.name = name;
+        this.type = type;
     }
 }
 

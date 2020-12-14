@@ -1,8 +1,10 @@
 export class StandType{
   id: string;
   name: string;
+  type: number;
 
-  constructor(name: string) {
+  constructor(name: string, type: number) {
     this.name = name;
+    this.type = type;
   }
 }
