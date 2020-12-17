@@ -191,8 +191,15 @@ export class TaskTemplateCreatorComponent implements OnInit {
     console.log("updateBehaviour");
 
     this.editingBehaviourParamKeys.forEach((element) => {
-      const e = document.getElementById(element) as HTMLSelectElement;
-      if (e !== null) {
+      // console.log(element)
+      const input_element = document.getElementById(element) as HTMLInputElement;
+      // console.log(input_element)
+      if (input_element.type == "text") {
+        const val = input_element.value;
+        modalForm.value[element] = val;
+      }
+      else if (input_element.type == "select-one") {
+        const e = document.getElementById(element) as HTMLSelectElement;
         const val = e.options[e.selectedIndex].value;
         modalForm.value[element] = val;
       }

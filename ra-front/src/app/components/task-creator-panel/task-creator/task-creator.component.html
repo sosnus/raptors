@@ -112,8 +112,7 @@
         <div *ngIf="!specialBehaviourParams.includes(editingBehaviourDefaultParams[paramKey])">
           <div class="md-form">
             <i class="fas fa-file-signature prefix grey-text"></i>
-            <input [id]="paramKey" [name]="paramKey" class="form-control validate"
-              [(ngModel)]="editingBehaviourDefaultParams[paramKey]">
+            <input [id]="paramKey" [name]="paramKey" class="form-control validate">
             <label [class.active]="editingBehaviourDefaultParams[paramKey]" [for]="paramKey" >{{paramKey}}</label>
           </div>
         </div>
