@@ -54,15 +54,18 @@
         </div>
       </li>
 
-      <li class="nav-item" *ngIf="authService.userLoggedIn()">
+      <li class="nav-item dropdown" *ngIf="authService.userLoggedIn()">
         <div *ngIf="authService.isAdmin() || authService.isServiceman() || authService.isRegularUser() || authService.isSuperUser()">
-        <a class="nav-link" [routerLink]="['task-creator-panel']">
-          <i class="fas fa-tasks"></i>
-          Panel zadań
-          <span class="sr-only">(current)</span>
-        </a>
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false"> <i class="fas fa-cogs"></i>Zadania</a>
+        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" [routerLink]="['task-creator-panel']">Dodaj zadanie</a>
+          <a class="dropdown-item" [routerLink]="['task-template-creator-panel']">Dodaj wzorzec zadanie</a>
+          <a class="dropdown-item" [routerLink]="['kiosk-task-mapping']">Przypisz do Kiosku</a>
+        </div>
         </div>
       </li>
+
       <li class="nav-item" *ngIf="authService.userLoggedIn()">
         <div *ngIf="authService.isAdmin() || authService.isServiceman()">
           <a class="nav-link" [routerLink]="['robots']">

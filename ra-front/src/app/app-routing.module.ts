@@ -24,6 +24,12 @@ import { TaskDetailsComponent } from "./components/task-creator-panel/task-detai
 import { RobotPanelComponentNew } from "./components/robotpanel-new/robot-panel.component";
 import { MapMetadataComponent } from "./components/map-metadata/map-metadata.component"
 
+import { TaskTemplateCreatorPanelComponent } from "./components/task-template-creator-panel/task-template-creator-panel.component";
+import { TaskTemplateListComponent } from "./components/task-template-creator-panel/task-template-list/task-template-list.component";
+import { TaskTemplateCreatorComponent } from "./components/task-template-creator-panel/task-template-creator/task-template-creator.component";
+import { TaskTemplateDetailsComponent } from "./components/task-template-creator-panel/task-template-details/task-template-details.component";
+
+
 const routes: Routes = [
   {
     path: "",
@@ -72,6 +78,12 @@ const routes: Routes = [
   { path: "task-creator-panel/add", component: TaskCreatorComponent },
   { path: "task-creator-panel/edit/:id", component: TaskCreatorComponent },
   { path: "task-creator-panel/details/:id", component: TaskDetailsComponent },
+  { path: "task-template-creator-panel", component: TaskTemplateCreatorPanelComponent },
+  { path: "task-template-creator-panel/add", component: TaskTemplateCreatorComponent },
+  { path: "task-template-creator-panel/edit/:id", component: TaskTemplateCreatorComponent },
+  { path: "task-template-creator-panel/details/:id", component: TaskTemplateDetailsComponent },
+  // { path: "task-kiosk-mapping-panel", component: TaskKioskMappingPanelComponent },
+  // { path: "task-kiosk-mapping-panel/edit/:id", component: TaskKioskMappingCreatorComponent },
   { path: "access-denied", component: AccessForbiddenComponent },
   { path: "healthz", component: HealthzComponent },
   { path: "settings", component: SettingsComponent },

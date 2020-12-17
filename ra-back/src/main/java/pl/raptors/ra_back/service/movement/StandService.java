@@ -9,6 +9,7 @@ import pl.raptors.ra_back.domain.type.ParkingType;
 import pl.raptors.ra_back.domain.type.StandStatus;
 import pl.raptors.ra_back.domain.type.StandType;
 import pl.raptors.ra_back.repository.movement.StandRepository;
+import pl.raptors.ra_back.repository.type.StandTypeRepository;
 import pl.raptors.ra_back.service.CRUDService;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class StandService implements CRUDService<Stand> {
 
     @Autowired
     StandRepository standrepository;
+
+    @Autowired
+    StandTypeRepository standTypeRepository;
 
     @Autowired
     MovementPathService movementPathService;
@@ -99,6 +103,11 @@ public class StandService implements CRUDService<Stand> {
     }
 
     public List<Stand> getByStandType(StandType standType) {
+        return standrepository.findAllByStandType(standType);
+    }
+
+    public List<Stand> getByStandTypeName(String standTypeName) {
+        StandType standType = standTypeRepository.findByName(standTypeName);
         return standrepository.findAllByStandType(standType);
     }
 

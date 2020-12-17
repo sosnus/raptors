@@ -8,6 +8,8 @@ import {UserService} from '../../services/user.service';
 import {HealthzService} from '../../services/healthz.service';
 import {SettingsService} from '../../services/settings.service';
 import {InstanceInfo} from '../../model/Settings/InstanceInfo';
+import {RobotTask} from "../../model/Robots/RobotTask";
+import {timer} from 'rxjs';
 
 declare var require: any;
 
@@ -27,6 +29,9 @@ export class SidebarComponent implements OnInit {
   frontVersion = '';
   backVersion = '';
   private instanceInfo: InstanceInfo = new InstanceInfo('', '', '');
+
+  private source = timer(1000, 1000);
+  private taskSubscribe;
 
   constructor(private storeService: StoreService,
               private robotTaskService: RobotTaskService,
@@ -74,6 +79,13 @@ export class SidebarComponent implements OnInit {
       error => {
       console.log(error);
       });
+
+    this.taskSubscribe = this.source.subscribe(val => {
+      this.robotTaskService.getRobotTasks().subscribe(
+        tasks=>{
+          this.autoUpdate(tasks);
+      });
+    });
   }
 
   rotateIcon(elementID: string): void {
@@ -120,6 +132,20 @@ export class SidebarComponent implements OnInit {
         });
 
       });
+    });
+  }
+
+  robotTaskExist(id: string) {
+    return this.storeService.robotTaskList.some(item => item.id == id);
+  }
+
+  autoUpdate(taskList: RobotTask[]) {
+    taskList.forEach(task => {
+      if (this.robotTaskExist(task.id)) {
+        this.storeService.robotTaskList[this.storeService.robotTaskList.findIndex(item => item.id == task.id)] = task;
+      } else {
+        this.storeService.robotTaskList.push(task);
+      }      
     });
   }
 
