@@ -34,6 +34,14 @@ public class RobotTaskService implements CRUDService<RobotTask> {
 
     @Override
     public RobotTask updateOne(RobotTask robotTask) {
+        RobotTask oldRobotTask = robotTaskRepository.findById(robotTask.getId()).orElse(null);
+        if(robotTask.getRobot()==null)robotTask.setRobot(oldRobotTask.getRobot());
+        if(robotTask.getName()==null) robotTask.setName(oldRobotTask.getName());
+        if(robotTask.getBehaviours()==null)robotTask.setBehaviours(oldRobotTask.getBehaviours());
+        if(robotTask.getStartTime()==null)robotTask.setStartTime(oldRobotTask.getStartTime());
+        if(robotTask.getPriority()==null)robotTask.setPriority(oldRobotTask.getPriority());
+        if(robotTask.getStatus()==null)robotTask.setStatus(oldRobotTask.getStatus());
+        if(robotTask.getUserID()==null)robotTask.setUserID(oldRobotTask.getUserID());
         return robotTaskRepository.save(robotTask);
     }
 

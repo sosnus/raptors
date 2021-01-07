@@ -1,23 +1,13 @@
-<div class="task-creator-container">
-  <div class="task-creator-title">
-    <h4>Panel zarządzania zadaniem</h4>
+<div class="task-template-creator-container">
+  <div class="task-template-creator-title">
+    <h4>Tworzenie wzorca zadania</h4>
   </div>
   <form #modalForm="ngForm">
     <div class="md-form mb-5">
       <i class="fas fa-file-signature prefix grey-text"></i>
-      <input type="text" id="robotTaskname" class="form-control validate" required [(ngModel)]="robotTask.name"
+      <input type="text" id="robotTaskname" class="form-control validate" required [(ngModel)]="taskTemplate.name"
         name="name" />
-      <label for="robotTaskname" [class.active]="robotTask.name && robotTask.name.length > 0">Nazwa zadania</label>
-    </div>
-
-    <p class="input-paragraph">Status zadania</p>
-    <div class="md-form">
-      <select class="browser-default custom-select" [(ngModel)]="selectedTaskStatusName"
-        [ngModelOptions]="{ standalone: true }">
-        <option [value]="item" *ngFor="let item of taskStatuses">{{
-          item
-        }}</option>
-      </select>
+      <label for="robotTaskname" [class.active]="taskTemplate.name && taskTemplate.name.length > 0">Nazwa zadania</label>
     </div>
 
     <p class="input-paragraph">Priorytet zadania</p>
@@ -25,6 +15,16 @@
       <select class="browser-default custom-select" [(ngModel)]="selectedTaskPriorityId"
         [ngModelOptions]="{ standalone: true }">
         <option [value]="item.id" *ngFor="let item of taskPriorities">{{
+          item.name
+        }}</option>
+      </select>
+    </div>
+
+    <p class="input-paragraph">Przypisany kiosk</p>
+    <div class="md-form">
+      <select class="browser-default custom-select" [(ngModel)]="selectedKioskId"
+        [ngModelOptions]="{ standalone: true }">
+        <option [value]="item.id" *ngFor="let item of kiosks">{{
           item.name
         }}</option>
       </select>
@@ -76,7 +76,7 @@
       </div>
     </div>
 
-    <button class="btn btn-primary mb-3" [routerLink]="['/task-creator-panel']">
+    <button class="btn btn-primary mb-3" [routerLink]="['/task-template-creator-panel']">
       Anuluj
     </button>
     <button class="btn btn-secondary mb-3" (click)="createOrUpdate()">

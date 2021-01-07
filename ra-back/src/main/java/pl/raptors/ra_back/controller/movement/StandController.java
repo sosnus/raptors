@@ -55,4 +55,10 @@ public class StandController {
     public void deleteByID(@PathVariable String id) {
         standService.deleteByID(id);
     }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER')")
+    @GetMapping("/type/{name}")
+    public List<Stand> getByStandTypeName(@PathVariable String name) {
+        return standService.getByStandTypeName(name);
+    }
 }

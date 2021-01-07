@@ -90,6 +90,14 @@ import { ModelTableComponent } from "./components/robotpanel-new/model-table/mod
 import { TableRowComponent } from "./components/robotpanel-new/model-table/table-row/table-row.component";
 import { MapMetadataComponent } from './components/map-metadata/map-metadata.component';
 
+// import { TaskpanelComponent } from "./components/taskpanel/taskpanel.component";
+// import { TaskpanelDetailsComponent } from "./components/taskpanel/taskpanel-details/taskpanel-details.component";
+// import { TaskpanelListComponent } from "./components/taskpanel/taskpanel-list/taskpanel-list.component";
+import { TaskTemplateCreatorPanelComponent } from "./components/task-template-creator-panel/task-template-creator-panel.component";
+import { TaskTemplateListComponent } from "./components/task-template-creator-panel/task-template-list/task-template-list.component";
+import { TaskTemplateCreatorComponent } from "./components/task-template-creator-panel/task-template-creator/task-template-creator.component";
+import { TaskTemplateDetailsComponent } from "./components/task-template-creator-panel/task-template-details/task-template-details.component";
+
 const config: InputFileConfig = {};
 
 // @ts-ignore
@@ -158,6 +166,13 @@ const config: InputFileConfig = {};
     TaskDetailsComponent,
     SpecialTypeSelectComponent,
     MapMetadataComponent,
+
+    TaskTemplateCreatorComponent,
+    TaskTemplateCreatorPanelComponent,
+    TaskTemplateListComponent,
+    // TaskTemplateCreatorComponent,
+    TaskTemplateDetailsComponent,
+    
   ],
   imports: [
     BrowserModule,
