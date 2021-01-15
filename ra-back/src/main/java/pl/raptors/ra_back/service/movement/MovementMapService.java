@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.raptors.ra_back.domain.movement.MapArea;
 import pl.raptors.ra_back.domain.movement.MovementMap;
+import pl.raptors.ra_back.domain.movement.MovementMapData;
 import pl.raptors.ra_back.domain.movement.Route;
 import pl.raptors.ra_back.repository.movement.MovementMapRepository;
 import pl.raptors.ra_back.service.CRUDService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 @Service
 public class MovementMapService implements CRUDService<MovementMap> {
@@ -83,5 +85,15 @@ public class MovementMapService implements CRUDService<MovementMap> {
         for (MovementMap movementMap : movementMapList) {
             this.deleteOne(movementMap);
         }
+    }
+
+    public List<MovementMapData> getList() {
+        List<MovementMap> mapList =  movementMapRepository.findAll();
+        List<MovementMapData> mapDataList = new ArrayList<MovementMapData>();
+        for (MovementMap map : mapList) {
+            // MovementMapData mapData = new MovementMapData();
+            mapDataList.add(new MovementMapData(map.getName(), map.getId()));
+        }
+        return mapDataList;
     }
 }
