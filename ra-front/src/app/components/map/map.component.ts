@@ -20,7 +20,7 @@ import { MovementPath } from '../../model/MapAreas/MovementPaths/MovementPath';
 import { fromEvent, Subscription, timer } from 'rxjs';
 import {Robot} from "../../model/Robots/Robot";
 import {RobotStatus} from "../../model/Robots/RobotStatus";
-import {CurrentMap} from "../../model/Settings/CurrentMap";
+import {MapInfo} from "../../model/Settings/MapInfo";
 
 export const WAYPOINTICON = L.icon({
   iconUrl: '/assets/icons/position.png',
@@ -147,7 +147,8 @@ export class MapComponent implements OnInit, OnDestroy {
     // } else {
     this.settingsService.getCurrentMap().subscribe(
       mapData => {
-        this.mapId = mapData.currentMapId;
+        console.log(mapData);
+        this.mapId = mapData.mapId;
         this.mapResolution = mapData.mapResolutionX;
         this.mapOriginX = mapData.mapOriginX;
         this.mapOriginY = mapData.mapOriginY;

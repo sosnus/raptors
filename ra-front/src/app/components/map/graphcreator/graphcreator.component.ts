@@ -82,7 +82,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
   private loadMap() {
     this.settingsService.getCurrentMap().subscribe(
       mapData => {
-        this.mapId = mapData.currentMapId;
+        this.mapId = mapData.mapId;
         this.mapResolution = mapData.mapResolutionX;
         this.mapOriginX = mapData.mapOriginX;
         this.mapOriginY = mapData.mapOriginY;
