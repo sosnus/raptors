@@ -114,4 +114,8 @@ public class StandService implements CRUDService<Stand> {
     public List<Stand> getByStandStatus(StandStatus standStatus) {
         return standrepository.findAllByStandStatus(standStatus);
     }
+
+    public List<Stand> getByMapId(String mapId) {
+        return standrepository.findAllByMapId(mapId);
+    }
 }

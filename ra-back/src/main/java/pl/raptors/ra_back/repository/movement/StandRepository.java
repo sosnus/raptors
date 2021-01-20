@@ -20,4 +20,6 @@ public interface StandRepository extends MongoRepository<Stand, String> {
     List<Stand> findAllByStandType(StandType standType);
 
     List<Stand> findAllByStandStatus(StandStatus standStatus);
+
+    List<Stand> findAllByMapId(String mapId);
 }
