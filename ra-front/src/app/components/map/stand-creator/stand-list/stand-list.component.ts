@@ -31,14 +31,14 @@ export class StandListComponent implements OnInit, OnChanges {
   @Output()
   standToEdit: EventEmitter<Stand> = new EventEmitter<Stand>();
 
-  constructor(private store: StoreService,
+  constructor(private storeService: StoreService,
               private standService: StandService,
               private toast: ToastrService,
               private pathService: MovementPathService) {
   }
 
   ngOnInit() {
-    this.standService.getAll().subscribe(
+    this.standService.getAllByMapId(this.storeService.mapID).subscribe(
       stands => this.stands = stands,
       error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     )
@@ -51,7 +51,7 @@ export class StandListComponent implements OnInit, OnChanges {
   ngOnChanges(changes: { stand: SimpleChange }) {
     // Extract changes to the input property by its name
     if (changes.stand.currentValue)
-      this.standService.getAll().subscribe(
+      this.standService.getAllByMapId(this.storeService.mapID).subscribe(
         stands => this.stands = stands,
         error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
       )

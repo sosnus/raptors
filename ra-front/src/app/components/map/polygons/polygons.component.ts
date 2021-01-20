@@ -50,7 +50,7 @@ export class PolygonsComponent implements OnInit, OnDestroy {
   constructor(private mapService: MapService,
               private settingsService: SettingsService,
               private polygonService: PolygonService,
-              private store: StoreService,
+              private storeService: StoreService,
               private areaTypeService: AreaTypeService,
               private toast: ToastrService) {
   }
@@ -74,13 +74,13 @@ export class PolygonsComponent implements OnInit, OnDestroy {
     this.settingsService.getCurrentMap().subscribe(
       mapData => {
         this.mapId = mapData.mapId;
+        localStorage.setItem(this.storeService.mapID, this.mapId)
         this.mapResolution = mapData.mapResolutionX;
         this.mapOriginX = mapData.mapOriginX;
         this.mapOriginY = mapData.mapOriginY;
         this.mapService.getMap(this.mapId).subscribe(
           data => {
             this.afterMapLoaded(data);
-            localStorage.setItem(this.store.mapID, data)
           }
         );
       }

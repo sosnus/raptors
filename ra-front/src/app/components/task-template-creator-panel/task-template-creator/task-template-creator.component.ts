@@ -90,7 +90,7 @@ export class TaskTemplateCreatorComponent implements OnInit {
     });
 
 
-    this.standService.getAll().subscribe((kiosks) => {
+    this.standService.getAllByMapId(this.storeService.mapID).subscribe((kiosks) => {
       this.kiosks = kiosks;
     });
 

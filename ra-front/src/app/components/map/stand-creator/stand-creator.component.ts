@@ -85,7 +85,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
               private parkingTypeService: ParkingTypeService,
               private standTypeService: StandTypeService,
               private standStatusService: StandStatusService,
-              private store: StoreService,
+              private storeService: StoreService,
               private toast: ToastrService,
               private pathService: MovementPathService,
               private polygonService: PolygonService) {
@@ -114,13 +114,13 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     this.settingsService.getCurrentMap().subscribe(
       mapData => {
         this.mapId = mapData.mapId;
+        this.storeService.mapID = this.mapId;
         this.mapResolution = mapData.mapResolutionX;
         this.mapOriginX = mapData.mapOriginX;
         this.mapOriginY = mapData.mapOriginY;
         this.mapService.getMap(this.mapId).subscribe(
           data => {
             this.afterMapLoaded(data);
-            localStorage.setItem(this.store.mapID, data)
           }
         );
       }

@@ -60,7 +60,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
               private settingsService: SettingsService,
               private graphService: GraphService,
               private standService: StandService,
-              private store: StoreService,
+              private storeService: StoreService,
               private toast: ToastrService) {
     this.context = this;
   }
@@ -83,13 +83,13 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     this.settingsService.getCurrentMap().subscribe(
       mapData => {
         this.mapId = mapData.mapId;
+        localStorage.setItem(this.storeService.mapID, this.mapId )
         this.mapResolution = mapData.mapResolutionX;
         this.mapOriginX = mapData.mapOriginX;
         this.mapOriginY = mapData.mapOriginY;
         this.mapService.getMap(this.mapId).subscribe(
           data => {
             this.afterMapLoaded(data);
-            localStorage.setItem(this.store.mapID, data)
           }
         );
       }
@@ -105,7 +105,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
-      this.standService.getAll().subscribe(
+      this.standService.getAllByMapId(this.mapId).subscribe(
         stands => {
           stands.forEach(stand => {
             const position = L.latLng([

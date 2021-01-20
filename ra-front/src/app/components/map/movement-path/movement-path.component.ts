@@ -63,7 +63,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
   constructor(private mapService: MapService,
               private settingsService: SettingsService,
               private movementPathService: MovementPathService,
-              private store: StoreService,
+              private storeService: StoreService,
               private toast: ToastrService,
               private standService: StandService,
               private corridorService: CorridorService,
@@ -89,13 +89,13 @@ export class MovementPathComponent implements OnInit, OnDestroy {
     this.settingsService.getCurrentMap().subscribe(
       mapData => {
         this.mapId = mapData.mapId;
+        localStorage.setItem(this.storeService.mapID, this.mapId)
         this.mapResolution = mapData.mapResolutionX;
         this.mapOriginX = mapData.mapOriginX;
         this.mapOriginY = mapData.mapOriginY;
         this.mapService.getMap(this.mapId).subscribe(
           data => {
             this.afterMapLoaded(data);
-            localStorage.setItem(this.store.mapID, data)
           }
         );
       }
@@ -113,7 +113,7 @@ export class MovementPathComponent implements OnInit, OnDestroy {
       this.imageResolution = img.width;
     }
 
-    this.standService.getAll().subscribe(
+    this.standService.getAllByMapId(this.mapId).subscribe(
       stands => {
         this.drawStands(stands);
         this.stands = stands;

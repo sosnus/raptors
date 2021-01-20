@@ -40,4 +40,9 @@ export class StandService {
     };
     return this.http.delete(this.standURL + 'delete/' + id, httpOptions);
   }
+
+  public getAllByMapId(mapId: string): Observable<Stand[]> {
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Stand[]>(this.standURL + "formap/" + mapId, {headers: headers, responseType: 'json'})
+  }
 }

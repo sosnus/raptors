@@ -149,6 +149,8 @@ export class MapComponent implements OnInit, OnDestroy {
       mapData => {
         console.log(mapData);
         this.mapId = mapData.mapId;
+        this.storeService.mapID = this.mapId;
+        console.log(this.storeService.mapID);
         this.mapResolution = mapData.mapResolutionX;
         this.mapOriginX = mapData.mapOriginX;
         this.mapOriginY = mapData.mapOriginY;
@@ -224,7 +226,7 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.standService.getAll().subscribe(
+    this.standService.getAllByMapId(this.mapId).subscribe(
       stands => {
         this.drawStand(stands);
       }
