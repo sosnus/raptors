@@ -11,6 +11,8 @@ import pl.raptors.ra_back.domain.type.StandType;
 import pl.raptors.ra_back.repository.movement.StandRepository;
 import pl.raptors.ra_back.repository.type.StandTypeRepository;
 import pl.raptors.ra_back.service.CRUDService;
+import pl.raptors.ra_back.service.settings.CurrentMapService;
+import pl.raptors.ra_back.domain.settings.MapInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +30,17 @@ public class StandService implements CRUDService<Stand> {
     @Autowired
     MovementPathService movementPathService;
 
+    @Autowired
+    CurrentMapService currentMapService;
+
     @Override
     public Stand addOne(Stand stand) {
+        if (stand.getMapId() == null) {
+            List<MapInfo> currentMap = currentMapService.getAll();
+            if (currentMap.size() > 0){
+                stand.setMapId(currentMap.get(0).getMapId());
+            }
+        }
         return standrepository.save(stand);
     }
 
