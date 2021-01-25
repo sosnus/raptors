@@ -43,6 +43,6 @@ export class StandService {
 
   public getAllByMapId(mapId: string): Observable<Stand[]> {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<Stand[]>(this.standURL + "formap/" + mapId, {headers: headers, responseType: 'json'})
+    return this.http.get<Stand[]>(this.standURL + "map-id/" + mapId, {headers: headers, responseType: 'json'})
   }
 }

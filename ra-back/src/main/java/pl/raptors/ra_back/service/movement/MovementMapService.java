@@ -11,6 +11,7 @@ import pl.raptors.ra_back.domain.movement.MovementMapData;
 import pl.raptors.ra_back.domain.movement.Route;
 import pl.raptors.ra_back.repository.movement.MovementMapRepository;
 import pl.raptors.ra_back.service.CRUDService;
+import pl.raptors.ra_back.service.settings.CurrentMapService;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,6 +26,8 @@ public class MovementMapService implements CRUDService<MovementMap> {
     MapAreaService mapAreaService;
     @Autowired
     RouteService routeService;
+    @Autowired
+    CurrentMapService currentMapService;
 
     public MovementMap addMovementMap(String name, MultipartFile fileMap, MultipartFile fileYaml) throws IOException {
         Binary binaryMapImage = new Binary(BsonBinarySubType.BINARY, fileMap.getBytes());

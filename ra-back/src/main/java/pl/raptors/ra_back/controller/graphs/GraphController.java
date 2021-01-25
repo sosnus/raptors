@@ -56,4 +56,10 @@ public class GraphController {
     public void deleteByID(@PathVariable String id) {
         graphService.deleteByID(id);
     }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER')")
+    @GetMapping("/map-id/{id}")
+    public List<Graph> getByGraphMapId(@PathVariable String id) {
+        return graphService.getByMapId(id);
+    }
 }

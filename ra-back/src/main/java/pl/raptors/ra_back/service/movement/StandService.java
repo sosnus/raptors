@@ -8,11 +8,11 @@ import pl.raptors.ra_back.domain.movement.Stand;
 import pl.raptors.ra_back.domain.type.ParkingType;
 import pl.raptors.ra_back.domain.type.StandStatus;
 import pl.raptors.ra_back.domain.type.StandType;
+import pl.raptors.ra_back.domain.settings.MapInfo;
 import pl.raptors.ra_back.repository.movement.StandRepository;
 import pl.raptors.ra_back.repository.type.StandTypeRepository;
 import pl.raptors.ra_back.service.CRUDService;
 import pl.raptors.ra_back.service.settings.CurrentMapService;
-import pl.raptors.ra_back.domain.settings.MapInfo;
 
 import java.util.List;
 import java.util.Optional;

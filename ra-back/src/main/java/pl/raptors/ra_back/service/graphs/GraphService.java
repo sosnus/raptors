@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.raptors.ra_back.domain.graphs.Edge;
 import pl.raptors.ra_back.domain.graphs.Vertex;
+import pl.raptors.ra_back.domain.settings.MapInfo;
 import pl.raptors.ra_back.repository.graphs.EdgeRepository;
 import pl.raptors.ra_back.repository.graphs.GraphRepository;
 import pl.raptors.ra_back.repository.graphs.VertexRepository;
 import pl.raptors.ra_back.service.CRUDService;
+import pl.raptors.ra_back.service.settings.CurrentMapService;
 import pl.raptors.ra_back.domain.graphs.Graph;
 
 import java.util.List;
@@ -23,9 +25,17 @@ public class GraphService implements CRUDService<Graph> {
     EdgeRepository edgeRepository;
     @Autowired
     VertexRepository vertexRepository;
+    @Autowired
+    CurrentMapService currentMapService;
 
     @Override
     public Graph addOne(Graph graph) {
+        if (graph.getMapId() == null) {
+            List<MapInfo> currentMap = currentMapService.getAll();
+            if (currentMap.size() > 0){
+                graph.setMapId(currentMap.get(0).getMapId());
+            }
+        }
         List<Edge> edgesList = graph.getEdges();
         for (Edge e : edgesList) {
             List<Vertex> vertexList = e.getVerticesList();
@@ -47,6 +57,12 @@ public class GraphService implements CRUDService<Graph> {
 
     @Override
     public Graph updateOne(Graph graph) {
+        if (graph.getMapId() == null) {
+            List<MapInfo> currentMap = currentMapService.getAll();
+            if (currentMap.size() > 0){
+                graph.setMapId(currentMap.get(0).getMapId());
+            }
+        }
         List<Edge> edgesList = graph.getEdges();
         for (Edge e : edgesList) {
             List<Vertex> vertexList = e.getVerticesList();
@@ -91,5 +107,9 @@ public class GraphService implements CRUDService<Graph> {
         for (Graph graph : graphList) {
             this.deleteOne(graph);
         }
+    }
+
+    public List<Graph> getByMapId(String mapId) {
+        return graphRepository.findAllByMapId(mapId);
     }
 }

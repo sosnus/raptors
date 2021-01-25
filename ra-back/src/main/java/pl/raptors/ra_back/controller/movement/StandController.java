@@ -63,7 +63,7 @@ public class StandController {
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER')")
-    @GetMapping("/formap/{id}")
+    @GetMapping("/map-id/{id}")
     public List<Stand> getByStandMapId(@PathVariable String id) {
         return standService.getByMapId(id);
     }

@@ -13,13 +13,16 @@ public class Graph {
 
     @Id
     private String id;
+    private String mapId;
     private List<Edge> edges;
 
     protected Graph() {
+        this.mapId = null;
         this.edges = new ArrayList<>();
     }
 
     public Graph(List<Edge> edges) {
+        this.mapId = null;
         this.edges = edges;
     }
 }
