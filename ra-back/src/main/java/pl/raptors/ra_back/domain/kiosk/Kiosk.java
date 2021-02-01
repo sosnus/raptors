@@ -1,4 +1,4 @@
-package pl.raptors.ra_back.domain.type;
+package pl.raptors.ra_back.domain.kiosk;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

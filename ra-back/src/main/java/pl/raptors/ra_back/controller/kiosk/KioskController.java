@@ -1,16 +1,17 @@
-package pl.raptors.ra_back.controller.settings;
+package pl.raptors.ra_back.controller.kiosk;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.raptors.ra_back.domain.kiosk.Kiosk;
-import pl.raptors.ra_back.service.kiesk.KioskService;
+import pl.raptors.ra_back.service.kiosk.KioskService;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/kiosk")
+@RequestMapping("/kiosks")
 public class KioskController {
 
     @Autowired
@@ -18,7 +19,7 @@ public class KioskController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/all")
-    public Kiosk[] getAll() {
+    public List<Kiosk> getAll() {
         return kioskService.getAll();
     }
 

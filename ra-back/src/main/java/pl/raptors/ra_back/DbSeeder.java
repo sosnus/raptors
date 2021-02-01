@@ -261,17 +261,17 @@ public class DbSeeder implements CommandLineRunner {
         Pose pose = new Pose();
         pose.setOrientation(new Pose.Orientation(0.15, 0.54, 0.0, 1));
         pose.setPosition(new UniversalPoint(13.0, 66.6, 22.3));
-        Stand stand = new Stand("charging station", pose, parkingType1, standType3, standStatus1, null);
+        Stand stand = new Stand("charging station", pose, parkingType1, standType3, standStatus1, null, null);
 
         Pose pose1 = new Pose();
         pose1.setOrientation(new Pose.Orientation(1.0, 0.4, 0.0, 1));
         pose1.setPosition(new UniversalPoint(135.0, 8.6, 28.8));
-        Stand stand1 = new Stand("warehouse", pose1, parkingType1, standType1, standStatus1, null);
+        Stand stand1 = new Stand("warehouse", pose1, parkingType1, standType1, standStatus1, null, null);
 
         Pose pose2 = new Pose();
         pose2.setOrientation(new Pose.Orientation(0.8, 1.0, 0.0, 1.0));
         pose2.setPosition(new UniversalPoint(98.0, 76.4, 34.34));
-        Stand stand2 = new Stand("parking B", pose2, parkingType, standType5, standStatus, null);
+        Stand stand2 = new Stand("parking B", pose2, parkingType, standType5, standStatus, null, null);
 
         //create movement paths with empty lists
         MovementPath movementPath = new MovementPath("do magazynu", universalPoints,stand1.getId(),stand2.getId());

@@ -56,6 +56,13 @@ public class StandService implements CRUDService<Stand> {
 
     @Override
     public Stand updateOne(Stand stand) {
+        if (stand.getMapId() == null) {
+            List<MapInfo> currentMap = currentMapService.getAll();
+            if (currentMap.size() > 0){
+                stand.setMapId(currentMap.get(0).getMapId());
+            }
+        }
+
         String standId=stand.getId();
         List<MovementPath> movementPaths=movementPathService.getAll();
         for (MovementPath path:movementPaths) {

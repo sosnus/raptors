@@ -30,10 +30,10 @@
       <div class="row">
         <div class="md-form">
           <mat-form-field>
-            <mat-label>Status</mat-label>
-            <mat-select [(ngModel)]="stand.standStatus" name="standStatus" [compareWith]="compareItems">
-              <mat-option *ngFor="let standStatus of standStatuses" [value]="standStatus">
-                {{standStatus.name}}
+            <mat-label>Kiosk</mat-label>
+            <mat-select [(ngModel)]="stand.kioskId" name="kioskId">
+              <mat-option *ngFor="let kiosk of kiosks" [value]="kiosk.id">
+                {{kiosk.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>

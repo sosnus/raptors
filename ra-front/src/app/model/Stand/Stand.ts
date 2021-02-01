@@ -5,6 +5,7 @@ import {ParkingType} from "../type/ParkingType";
 
 export class Stand{
   id: string;
+  kiskId: string;
   name: string;
   pose: Pose = new Pose();
   parkingType: ParkingType = new ParkingType(null);

@@ -1,0 +1,45 @@
+<button class="btn btn-primary mb-3" data-toggle="modal" [attr.data-target]="'#' + modalID">
+  <i class="fas fa-plus"></i> Dodaj
+</button>
+<a *ngIf="kiosks.length<1">
+  <h6 class="mt-1 mb-0 text-blue">Nie zdefiniowano żadnych danych. Wciśnij przycisk DODAJ</h6>
+</a>
+<div *ngIf="kiosks.length>0">
+  <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nazwa</th>
+      <th scope="col">Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let kiosk of kiosks;let i = index;">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{kiosk.name}}</td>
+      <td>
+        <button class="btn btn-info btn-rounded btn-sm my-0"  data-toggle="modal" [attr.data-target]="'#' + modalID"
+                (click)="edit(kiosk)">Edytuj
+        </button>
+        <button class="btn btn-danger btn-rounded btn-sm my-0" data-toggle="modal" [attr.data-target]="'#' + modalID + 'Confirm'"
+                (click)="kiosk=kiosk">Usuń
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<app-confirm-modal-template [modalID]="modalID+'Confirm'"
+                            (onConfirm)="delete(kiosk.id)"></app-confirm-modal-template>
+
+<app-form-modal-template [modalName]="'Tworzenie nowego kioski'"
+                         [modalID]="modalID"
+                         [disableSubmit]="!modalForm.form.valid"
+                         (onModalCancel)="reset()"
+                         (onModalClose)="createOrUpdate()">
+  <form class="md-form mb-5" #modalForm="ngForm">
+    <i class="fas fa-file-signature prefix grey-text"></i>
+    <input kiosk="text" id="kioskName" class="form-control validate" required [(ngModel)]="kiosk.name" name="name">
+    <label for="kioskName" [class.active]="kiosk.name && kiosk.name.length > 0">Nazwa kiosku</label>
+  </form>
+</app-form-modal-template>

@@ -20,7 +20,9 @@ import { StoreService } from "./services/store.service";
 import { PolygonsComponent } from "./components/map/polygons/polygons.component";
 import { VertexListComponent } from "./components/map/graphcreator/vertex-list/vertex-list.component";
 import { StandCreatorComponent } from "./components/map/stand-creator/stand-creator.component";
+import { KioskPanelComponent } from "./components/map/kiosk-panel/kiosk-panel.component";
 import { StandService } from "./services/stand.service";
+import { KioskService } from "./services/kiosk.service";
 import { AdminPanelComponent } from "./components/adminpanel/admin-panel.component";
 import { AreaTypesComponent } from "./components/adminpanel/data/area-types/area-types.component";
 import { CollapsetemplateComponent } from "./components/adminpanel/shared/collapse-template/collapsetemplate.component";
@@ -53,6 +55,7 @@ import { TaskpanelComponent } from "./components/taskpanel/taskpanel.component";
 import { GraphListComponent } from "./components/map/graphcreator/graph-list/graph-list.component";
 import { PolygonListComponent } from "./components/map/polygons/polygon-list/polygon-list.component";
 import { StandListComponent } from "./components/map/stand-creator/stand-list/stand-list.component";
+import { KioskListComponent } from "./components/map/kiosk-panel/kiosk-list/kiosk-list.component";
 import { CorridorListComponent } from "./components/map/corridors/corridor-list/corridor-list.component";
 import { MovementPathListComponent } from "./components/map/movement-path/movement-path-list/movement-path-list.component";
 import { AccessForbiddenComponent } from "./components/access-forbidden/access-forbidden.component";
@@ -114,6 +117,7 @@ const config: InputFileConfig = {};
     PolygonsComponent,
     VertexListComponent,
     StandCreatorComponent,
+    KioskPanelComponent,
     AdminPanelComponent,
     AreaTypesComponent,
     CollapsetemplateComponent,
@@ -136,6 +140,7 @@ const config: InputFileConfig = {};
     GraphListComponent,
     PolygonListComponent,
     StandListComponent,
+    KioskListComponent,
     CorridorListComponent,
     MovementPathListComponent,
     AccessForbiddenComponent,
@@ -199,6 +204,7 @@ const config: InputFileConfig = {};
     GraphService,
     StoreService,
     StandService,
+    KioskService,
     AreaTypeService,
     BatteryTypeService,
     PropulsionTypeService,
