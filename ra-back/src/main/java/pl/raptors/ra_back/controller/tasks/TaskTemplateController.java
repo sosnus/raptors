@@ -61,4 +61,10 @@ public class TaskTemplateController {
         List<TaskTemplate> taskTemplates = taskTemplateService.getByKioskId(id);
         return taskTemplates;
     }
+
+    @GetMapping("/by-map/{mapId}")
+    public List<TaskTemplate> getByMapId(@PathVariable String mapId) {
+        List<TaskTemplate> taskTemplates = taskTemplateService.getByMapId(mapId);
+        return taskTemplates;
+    }
 }

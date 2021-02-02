@@ -59,4 +59,8 @@ public class TaskTemplateService implements CRUDService<TaskTemplate> {
     public List<TaskTemplate> getByPriority(TaskPriority priority) {
         return taskTemplateRepository.findAllByPriority(priority);
     }
+
+    public List<TaskTemplate> getByMapId(String mapId) {
+        return taskTemplateRepository.findAllByMapId(mapId);
+    }
 }

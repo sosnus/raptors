@@ -21,11 +21,13 @@ public class TaskTemplate {
     private List<Behaviour> behaviours;
     private TaskPriority priority;
     private String kioskId;
+    private String mapId;
 
-    public TaskTemplate(String name, List<Behaviour> behaviours, TaskPriority priority, String kioskId) {
+    public TaskTemplate(String name, List<Behaviour> behaviours, TaskPriority priority, String kioskId, String mapId) {
         this.name = name;
         this.behaviours = behaviours;
         this.priority = priority;
         this.kioskId = kioskId;
+        this.mapId = mapId;
     }
 }

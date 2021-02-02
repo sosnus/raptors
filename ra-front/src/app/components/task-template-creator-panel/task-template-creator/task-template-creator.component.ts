@@ -17,8 +17,8 @@ import { ToastrService } from "ngx-toastr";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NgForm } from "@angular/forms";
 import { StatusType } from "src/app/model/Robots/StatusType";
-import { Stand } from 'src/app/model/Stand/Stand';
-import { StandService } from 'src/app/services/stand.service';
+import { Kiosk } from 'src/app/model/Kiosk/Kiosk';
+import { KioskService } from 'src/app/services/kiosk.service';
 
 @Component({
   selector: "app-task-template-creator",
@@ -45,7 +45,7 @@ export class TaskTemplateCreatorComponent implements OnInit {
   taskPriorities: TaskPriority[] = [];
   selectedTaskPriorityId: string;
 
-  kiosks: Stand[] = [];
+  kiosks: Kiosk[] = [];
   selectedKioskId: string;
 
   taskStatuses: string[] = ["To Do"]; //, 'In Progress', 'Done']
@@ -77,7 +77,7 @@ export class TaskTemplateCreatorComponent implements OnInit {
     private behaviourService: BehaviourService,
     private taskPriorityService: TaskPriorityService,
     private taskTemplateService: TaskTemplateService,
-    private standService: StandService,
+    private kioskService: KioskService,
     private storeService: StoreService,
     private toastr: ToastrService,
     private router: Router,
@@ -90,7 +90,7 @@ export class TaskTemplateCreatorComponent implements OnInit {
     });
 
 
-    this.standService.getAllByMapId(this.storeService.mapID).subscribe((kiosks) => {
+    this.kioskService.getAll().subscribe((kiosks) => {
       this.kiosks = kiosks;
     });
 
