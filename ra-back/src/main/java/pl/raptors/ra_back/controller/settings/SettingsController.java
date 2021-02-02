@@ -3,7 +3,7 @@ package pl.raptors.ra_back.controller.settings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.raptors.ra_back.domain.settings.ContactInfo;
-import pl.raptors.ra_back.domain.settings.CurrentMap;
+import pl.raptors.ra_back.domain.settings.MapInfo;
 import pl.raptors.ra_back.domain.settings.InstanceInfo;
 import pl.raptors.ra_back.service.settings.ContactInfoService;
 import pl.raptors.ra_back.service.settings.CurrentMapService;
@@ -27,7 +27,7 @@ public class SettingsController {
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SERVICEMAN')")
     @GetMapping("/getCurrentMap")
-    public CurrentMap getCurrentMap() {
+    public MapInfo getCurrentMap() {
         return currentMapService.getAll().get(0);
     }
 
@@ -44,7 +44,7 @@ public class SettingsController {
     }
 
     @GetMapping("/updateCurrentMap/{id}")
-    public CurrentMap updateCurrentMap(@PathVariable String id) {
+    public MapInfo updateCurrentMap(@PathVariable String id) {
         return currentMapService.update(id);
     }
 

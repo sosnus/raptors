@@ -23,13 +23,15 @@
             <!-- Card body -->
             <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1">
                 <div *ngFor="let task of storeService.robotTaskList">
-                    <div class="card-header card-item clickable" [routerLink]="['/taskpanel-details', task.id]">
-                        <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
-                        <div [matTooltip]="task.status.name" matTooltipPosition="right" style="display: inline-block;">
-                            <mat-icon matBadge="29" matBadgePosition="above after" id="badge"></mat-icon>
-                            {{ task.status.symbol }}
+                    <div *ngIf="task.status.name == 'ASSIGNED'">
+                        <div class="card-header card-item clickable" [routerLink]="['/taskpanel-details', task.id]">
+                            <!--<div class="card-header card-item" (click)="showRobotonMap()">-->
+                            <div [matTooltip]="task.status.name" matTooltipPosition="right" style="display: inline-block;">
+                                <mat-icon matBadge="29" matBadgePosition="above after" id="badge"></mat-icon>
+                                {{ task.status.symbol }}
+                            </div>
+                            {{ task.name }}
                         </div>
-                        {{ task.name }}
                     </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.raptors.ra_back.domain.movement.MovementMap;
+import pl.raptors.ra_back.domain.movement.MovementMapData;
 import pl.raptors.ra_back.service.movement.MovementMapService;
 import pl.raptors.ra_back.service.pgm.PGMIO;
 
@@ -68,5 +69,11 @@ public class MovementMapController {
     @DeleteMapping("/delete")
     public void delete(@RequestBody @Valid MovementMap movementMap) {
         movementMapService.deleteOne(movementMap);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_REGULAR_USER') or hasAuthority('ROLE_SERVICEMAN') or hasAuthority('ROLE_SUPER_USER')")
+    @GetMapping("/list")
+    public List<MovementMapData> getList() {
+        return movementMapService.getList();
     }
 }

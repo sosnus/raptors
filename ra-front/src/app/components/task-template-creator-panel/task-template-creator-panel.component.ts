@@ -14,7 +14,7 @@ export class TaskTemplateCreatorPanelComponent implements OnInit {
               private taskTemplateService: TaskTemplateService) { }
 
   ngOnInit() {
-    this.taskTemplateService.getRobotTasks().subscribe(tasks => {
+    this.taskTemplateService.getTasksForCurrentMap().subscribe(tasks => {
       this.storeService.taskTemplateList = tasks;
     });
   }

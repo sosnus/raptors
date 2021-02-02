@@ -16,13 +16,15 @@ public class Vertex {
     private Double posY;
     private String name;
     private String poiID;
+    private long nodeID;
     private Integer type;
 
-    public Vertex(Double posX, Double posY, String name, String poiID, Integer type) {
+    public Vertex(Double posX, Double posY, String name, String poiID, long nodeID, Integer type) {
         this.posX = posX;
         this.posY = posY;
         this.name = name;
         this.poiID = poiID;
+        this.nodeID = nodeID;
         this.type = type;
     }
 }

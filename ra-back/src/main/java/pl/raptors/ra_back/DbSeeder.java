@@ -196,11 +196,11 @@ public class DbSeeder implements CommandLineRunner {
         this.userService.addOne(testowyAdmin1);*/
 
         //GRAFY
-        Vertex vertex1 = new Vertex(17.5, 25.0, "A", null, 13);
-        Vertex vertex2 = new Vertex(15.0, 20.0, "B", null, 13);
-        Vertex vertex3 = new Vertex(20.0, 20.0, "C", null, 13);
-        Vertex vertex4 = new Vertex(15.0, 15.0, "D", null, 13);
-        Vertex vertex5 = new Vertex(20.0, 15.0, "E", null, 13);
+        Vertex vertex1 = new Vertex(17.5, 25.0, "A", null, 1, 13);
+        Vertex vertex2 = new Vertex(15.0, 20.0, "B", null, 2, 13);
+        Vertex vertex3 = new Vertex(20.0, 20.0, "C", null, 3, 13);
+        Vertex vertex4 = new Vertex(15.0, 15.0, "D", null, 4, 13);
+        Vertex vertex5 = new Vertex(20.0, 15.0, "E", null, 5, 13);
 
         Edge edge1 = new Edge(vertex1, vertex2, false, false, true);
         Edge edge2 = new Edge(vertex1, vertex3, false, false, true);
@@ -245,12 +245,12 @@ public class DbSeeder implements CommandLineRunner {
         universalPoints1.add(movementPathUniversalPoint2);
         universalPoints1.add(movementPathUniversalPoint3);
 
-        StandType standType = new StandType("receiving");
-        StandType standType1 = new StandType("loading");
+        StandType standType = new StandType("receiving",1);
+        StandType standType1 = new StandType("loading",2);
 
-        StandType standType3 = new StandType("charger");
-        StandType standType4 = new StandType("receiving-loading");
-        StandType standType5 = new StandType("parking");
+        StandType standType3 = new StandType("charger",3);
+        StandType standType4 = new StandType("receiving-loading",4);
+        StandType standType5 = new StandType("parking",5);
 
         StandStatus standStatus = new StandStatus("free");
         StandStatus standStatus1 = new StandStatus("occupied");
@@ -261,17 +261,17 @@ public class DbSeeder implements CommandLineRunner {
         Pose pose = new Pose();
         pose.setOrientation(new Pose.Orientation(0.15, 0.54, 0.0, 1));
         pose.setPosition(new UniversalPoint(13.0, 66.6, 22.3));
-        Stand stand = new Stand("charging station", pose, parkingType1, standType3, standStatus1);
+        Stand stand = new Stand("charging station", pose, parkingType1, standType3, standStatus1, null, null);
 
         Pose pose1 = new Pose();
         pose1.setOrientation(new Pose.Orientation(1.0, 0.4, 0.0, 1));
         pose1.setPosition(new UniversalPoint(135.0, 8.6, 28.8));
-        Stand stand1 = new Stand("warehouse", pose1, parkingType1, standType1, standStatus1);
+        Stand stand1 = new Stand("warehouse", pose1, parkingType1, standType1, standStatus1, null, null);
 
         Pose pose2 = new Pose();
         pose2.setOrientation(new Pose.Orientation(0.8, 1.0, 0.0, 1.0));
         pose2.setPosition(new UniversalPoint(98.0, 76.4, 34.34));
-        Stand stand2 = new Stand("parking B", pose2, parkingType, standType5, standStatus);
+        Stand stand2 = new Stand("parking B", pose2, parkingType, standType5, standStatus, null, null);
 
         //create movement paths with empty lists
         MovementPath movementPath = new MovementPath("do magazynu", universalPoints,stand1.getId(),stand2.getId());

@@ -38,8 +38,15 @@
                          (onModalCancel)="reset()"
                          (onModalClose)="createOrUpdate()">
   <form class="md-form mb-5" #modalForm="ngForm">
-    <i class="fas fa-file-signature prefix grey-text"></i>
-    <input type="text" id="propulsionTypeName" class="form-control validate" required [(ngModel)]="standType.name" name="name">
-    <label for="propulsionTypeName" [class.active]="standType.name && standType.name.length > 0">Nazwa typu stanowiska</label>
+    <div class="md-form">
+      <i class="fas fa-file-signature prefix grey-text"></i>
+      <input type="text" id="standTypeName" class="form-control validate" required [(ngModel)]="standType.name" name="name">
+      <label for="standTypeName" [class.active]="standType.name && standType.name.length > 0">Nazwa typu stanowiska</label>
+    </div>
+    <div class="md-form">
+      <i class="fas fa-fingerprint prefix grey-text"></i>
+      <input type="number" min="0" max="100" id="standTypeId" class="form-control validate" required [(ngModel)]="standType.type" name="type">
+      <label for="standTypeId" [class.active]="standType.type && standType.type.length > 0">Kod typu</label>
+    </div>
   </form>
 </app-form-modal-template>

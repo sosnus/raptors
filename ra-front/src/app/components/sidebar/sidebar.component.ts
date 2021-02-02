@@ -30,7 +30,7 @@ export class SidebarComponent implements OnInit {
   backVersion = '';
   private instanceInfo: InstanceInfo = new InstanceInfo('', '', '');
 
-  private source = timer(1000, 1000);
+  private source = timer(1000, 5000);
   private taskSubscribe;
 
   constructor(private storeService: StoreService,

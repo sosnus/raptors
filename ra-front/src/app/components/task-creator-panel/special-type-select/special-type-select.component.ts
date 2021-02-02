@@ -6,6 +6,7 @@ import { RobotService } from 'src/app/services/robot.service';
 import { RobotModelService } from 'src/app/services/type/robot-model.service';
 import { StandTypeService } from 'src/app/services/type/stand-type.service';
 import { ParkingTypeService } from 'src/app/services/type/parking-type.service';
+import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-special-type-select',
@@ -22,6 +23,7 @@ export class SpecialTypeSelectComponent implements OnInit {
     private corridorService: CorridorService,
     private elementFuncService: ElementFunctionalityService, 
     private parkingTypeService: ParkingTypeService,
+    private storeService: StoreService,
     private standService: StandService,
     private robotService: RobotService,
     private robotModelService: RobotModelService,
@@ -70,7 +72,7 @@ export class SpecialTypeSelectComponent implements OnInit {
     }
 
     if (this.typeName === 'stand') {
-      this.standService.getAll().subscribe(res => {
+      this.standService.getAllByMapId(this.storeService.mapID).subscribe(res => {
         this.specialTypes = res;
       });
     }

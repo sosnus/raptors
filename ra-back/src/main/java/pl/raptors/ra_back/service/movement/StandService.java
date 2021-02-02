@@ -8,9 +8,11 @@ import pl.raptors.ra_back.domain.movement.Stand;
 import pl.raptors.ra_back.domain.type.ParkingType;
 import pl.raptors.ra_back.domain.type.StandStatus;
 import pl.raptors.ra_back.domain.type.StandType;
+import pl.raptors.ra_back.domain.settings.MapInfo;
 import pl.raptors.ra_back.repository.movement.StandRepository;
 import pl.raptors.ra_back.repository.type.StandTypeRepository;
 import pl.raptors.ra_back.service.CRUDService;
+import pl.raptors.ra_back.service.settings.CurrentMapService;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +30,17 @@ public class StandService implements CRUDService<Stand> {
     @Autowired
     MovementPathService movementPathService;
 
+    @Autowired
+    CurrentMapService currentMapService;
+
     @Override
     public Stand addOne(Stand stand) {
+        if (stand.getMapId() == null) {
+            List<MapInfo> currentMap = currentMapService.getAll();
+            if (currentMap.size() > 0){
+                stand.setMapId(currentMap.get(0).getMapId());
+            }
+        }
         return standrepository.save(stand);
     }
 
@@ -45,6 +56,13 @@ public class StandService implements CRUDService<Stand> {
 
     @Override
     public Stand updateOne(Stand stand) {
+        if (stand.getMapId() == null) {
+            List<MapInfo> currentMap = currentMapService.getAll();
+            if (currentMap.size() > 0){
+                stand.setMapId(currentMap.get(0).getMapId());
+            }
+        }
+
         String standId=stand.getId();
         List<MovementPath> movementPaths=movementPathService.getAll();
         for (MovementPath path:movementPaths) {
@@ -113,5 +131,9 @@ public class StandService implements CRUDService<Stand> {
 
     public List<Stand> getByStandStatus(StandStatus standStatus) {
         return standrepository.findAllByStandStatus(standStatus);
+    }
+
+    public List<Stand> getByMapId(String mapId) {
+        return standrepository.findAllByMapId(mapId);
     }
 }

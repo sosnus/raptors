@@ -21,6 +21,11 @@ export class TaskTemplateService {
     return this.http.get<TaskTemplate[]>(this.readonlyrobotTaskTemplateURL + 'all', {headers: headers, responseType: 'json'})
   }
 
+  public getTasksForCurrentMap(): Observable<TaskTemplate[]> {
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<TaskTemplate[]>(this.readonlyrobotTaskTemplateURL + 'by-map/' + this.store.mapID, {headers: headers, responseType: 'json'})
+  }
+
   public getRobotTask(id: string): Observable<TaskTemplate> {
     const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
     return this.http.get<TaskTemplate>(this.readonlyrobotTaskTemplateURL + id, {headers: headers, responseType: 'json'})

@@ -3,7 +3,7 @@ package pl.raptors.ra_back.service.settings;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.raptors.ra_back.domain.settings.CurrentMap;
+import pl.raptors.ra_back.domain.settings.MapInfo;
 import pl.raptors.ra_back.domain.movement.MovementMap;
 import pl.raptors.ra_back.repository.settings.CurrentMapRepository;
 import pl.raptors.ra_back.repository.movement.MovementMapRepository;
@@ -21,7 +21,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 @Service
-public class CurrentMapService implements CRUDService<CurrentMap> {
+public class CurrentMapService implements CRUDService<MapInfo> {
 
     @Autowired
     private CurrentMapRepository currentMapRepository;
@@ -30,27 +30,27 @@ public class CurrentMapService implements CRUDService<CurrentMap> {
     private MovementMapRepository movementMapRepository;
 
     @Override
-    public CurrentMap addOne(CurrentMap currentMap) {
+    public MapInfo addOne(MapInfo currentMap) {
         return null;
     }
 
     @Override
-    public CurrentMap getOne(String id) {
+    public MapInfo getOne(String id) {
         return null;
     }
 
     @Override
-    public List<CurrentMap> getAll() {
+    public List<MapInfo> getAll() {
         return currentMapRepository.findAll();
     }
 
     @Override
-    public CurrentMap updateOne(CurrentMap currentMap) {
+    public MapInfo updateOne(MapInfo currentMap) {
         return currentMapRepository.save(currentMap);
     }
     
-    public CurrentMap update(String id) {
-        CurrentMap currentMap;
+    public MapInfo update(String id) {
+        MapInfo currentMap;
         MovementMap map = movementMapRepository.findById(id).orElse(null);
         if(map!=null) {
             byte[] pgmBytes = map.getMapImage().getData();
@@ -62,7 +62,7 @@ public class CurrentMapService implements CRUDService<CurrentMap> {
             try {
                 BufferedImage img = ImageIO.read(new ByteArrayInputStream(PGMIO.pgm2jpg(pgmBytes)));
                 mapYaml = mapper.readValue(yamlBytes, MapYaml.class);
-                currentMap = new CurrentMap(map.getId(), mapYaml.resolution, mapYaml.resolution,
+                currentMap = new MapInfo(map.getId(), mapYaml.resolution, mapYaml.resolution,
                                         new Integer(img.getHeight()), new Integer(img.getWidth()),
                                         mapYaml.origin[0], mapYaml.origin[1]);
             }
@@ -76,12 +76,12 @@ public class CurrentMapService implements CRUDService<CurrentMap> {
     }
 
     @Override
-    public void deleteOne(CurrentMap currentMap) {
+    public void deleteOne(MapInfo currentMap) {
 
     }
 
     @Override
-    public void deleteAll(List<CurrentMap> t) {
+    public void deleteAll(List<MapInfo> t) {
 
     }
 }

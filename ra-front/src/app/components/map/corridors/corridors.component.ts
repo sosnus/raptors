@@ -182,14 +182,14 @@ export class CorridorsComponent implements OnInit, OnDestroy {
   private loadMap() {
     this.settingsService.getCurrentMap().subscribe(
       mapData => {
-        this.mapId = mapData.currentMapId;
+        this.mapId = mapData.mapId;
+        localStorage.setItem(this.store.mapID, this.mapId)
         this.mapResolution = mapData.mapResolutionX;
         this.mapOriginX = mapData.mapOriginX;
         this.mapOriginY = mapData.mapOriginY;
         this.mapService.getMap(this.mapId).subscribe(
           data => {
             this.afterMapLoaded(data);
-            localStorage.setItem(this.store.mapID, data)
           }
         );
       }

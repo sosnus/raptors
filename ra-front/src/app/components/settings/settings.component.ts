@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ContactInfo} from '../../model/Settings/ContactInfo';
 import {InstanceInfo} from '../../model/Settings/InstanceInfo';
-import {CurrentMap} from '../../model/Settings/CurrentMap';
+import {MapInfo} from '../../model/Settings/MapInfo';
 import {SettingsService} from '../../services/settings.service';
+import {MapService} from '../../services/map.service';
 import {ContactInfos} from '../../model/Settings/ContactInfos';
 import {AuthService} from '../../services/auth.service';
 import {RobotTask} from '../../model/Robots/RobotTask';
@@ -23,9 +24,11 @@ export class SettingsComponent implements OnInit {
 
   contactInfo: ContactInfo[] = [new ContactInfo(), new ContactInfo()];
   instanceInfo: InstanceInfo = new InstanceInfo('', '', '');
-  currentMap: CurrentMap = new CurrentMap('', 0, 0, 0, 0, 0, 0);
+  currentMap: MapInfo = new MapInfo('', 0, 0, 0, 0, 0, 0);
+  mapsData: MapInfo[];
 
   constructor(private settingsService: SettingsService,
+              private mapService: MapService,
               public authService: AuthService,
               private toastr: ToastrService) {
   }
@@ -49,10 +52,16 @@ export class SettingsComponent implements OnInit {
         console.log(error);
       }
     );
+    this.mapService.getMapsInfo().subscribe(data =>
+        this.mapsData = data,
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   updateMapInfo() {
-    this.settingsService.updateCurrentMap(this.currentMap.currentMapId).subscribe(
+    this.settingsService.updateCurrentMap(this.currentMap.mapId).subscribe(
       result => {
         this.toastr.success('Edytowano pomyślnie');
       },
@@ -95,7 +104,7 @@ export class SettingsComponent implements OnInit {
     Object.assign(this.instanceInfo, instanceInfo);
   }
 
-  editMapInfo(currentMap: CurrentMap) {
+  editMapInfo(currentMap: MapInfo) {
     Object.assign(this.currentMap, currentMap);
   }
 

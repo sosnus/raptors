@@ -10,7 +10,7 @@ RUN npm run build
 
 ### STAGE 2: Run ###
 FROM nginx:1.19.0
-# COPY nginx.conf /etc/nginx/nginx.conf
+COPY ra-front.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/src/app/dist/ra-front /usr/share/nginx/html
 # CMD ["nginx","-g","daemon off;"]
 

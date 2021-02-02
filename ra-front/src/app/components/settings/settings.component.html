@@ -22,7 +22,7 @@
       <table class="table table-sm table-striped">
         <tr>
           <th scope="row">ID mapy</th>
-          <td>{{this.currentMap.currentMapId}}</td>
+          <td>{{this.currentMap.mapId}}</td>
         </tr>
         <tr>
           <th scope="row">rozdzielczość obrazu</th>
@@ -108,12 +108,20 @@
                          (onModalCancel)="reset()"
                          (onModalClose)="updateMapInfo()">
   <form #modalForm="ngForm">
-    <div class="md-form mb-5">
+    <!-- <div class="md-form mb-5">
       <i class="fas fa-file-signature prefix grey-text"></i>
       <input type="text" id="currentMapId" class="form-control validate" required
              [(ngModel)]="currentMap.currentMapId" name="id">
       <label for="newMapId">Id mapy</label>
-    </div>
+    </div> -->
+    <mat-form-field>
+      <mat-label>Mapa</mat-label>
+      <mat-select [(ngModel)]="currentMap.mapId" name="id" [value]='currentMap.mapId'>
+          <mat-option *ngFor="let map of mapsData" [value]="map.id" >
+              {{map.name}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
   </form>
 </app-form-modal-template>
 

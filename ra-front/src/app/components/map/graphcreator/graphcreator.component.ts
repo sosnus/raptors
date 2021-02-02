@@ -56,11 +56,13 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
   private mapContainerSize = 800;
   private subscription;
 
+  private lastNodeID = 0;
+
   constructor(private mapService: MapService,
               private settingsService: SettingsService,
               private graphService: GraphService,
               private standService: StandService,
-              private store: StoreService,
+              private storeService: StoreService,
               private toast: ToastrService) {
     this.context = this;
   }
@@ -82,14 +84,14 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
   private loadMap() {
     this.settingsService.getCurrentMap().subscribe(
       mapData => {
-        this.mapId = mapData.currentMapId;
+        this.mapId = mapData.mapId;
+        localStorage.setItem(this.storeService.mapID, this.mapId )
         this.mapResolution = mapData.mapResolutionX;
         this.mapOriginX = mapData.mapOriginX;
         this.mapOriginY = mapData.mapOriginY;
         this.mapService.getMap(this.mapId).subscribe(
           data => {
             this.afterMapLoaded(data);
-            localStorage.setItem(this.store.mapID, data)
           }
         );
       }
@@ -105,7 +107,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     img.src = this.imageURL;
     img.onload = () => {
       this.imageResolution = img.width;
-      this.standService.getAll().subscribe(
+      this.standService.getAllByMapId(this.mapId).subscribe(
         stands => {
           stands.forEach(stand => {
             const position = L.latLng([
@@ -135,12 +137,16 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
     this.addContextMenuShowHandler();
     this.map.on('click', e => {
       if (!this.editEdges) {
-        this.createNewMarker(e.latlng,"0",13);
+        var d = new Date();
+        var nodeID = d.getTime();
+        if (nodeID <= this.lastNodeID) nodeID = this.lastNodeID + 1;
+        this.lastNodeID = nodeID;
+        this.createNewMarker(e.latlng,"0", nodeID, 13);
       }
     });
   }
 
-  private createNewMarker(position: L.latlng, poiID: string, type: number) {
+  private createNewMarker(position: L.latlng, poiID: string,  nodeID: number, type: number) {
     let marker = null;
     if(poiID !== "0"){ // poi marker form edge
       marker = new L.marker(position, {
@@ -149,6 +155,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
         opacity: 0.0
       });
       marker.poiID = poiID;
+      marker.nodeID = nodeID;
       marker.type = type;
       marker.dummy = 1;
       marker.addTo(this.map);
@@ -199,6 +206,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
         ]
       });
       marker.poiID = 0;
+      marker.nodeID = nodeID;
       marker.type = type;
       marker.on('click', e => {
         this.createEdge(e)
@@ -398,6 +406,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
         this.getRealCoordinates(edge._latlngs[0].lng, this.mapOriginX),
         this.getRealCoordinates(edge._latlngs[0].lat, this.mapOriginY),
         marker1.poiID,
+        marker1.nodeID,
         marker1.type
       );
       let marker2 = verticles_all.filter(marker => marker._leaflet_id === edge.markerIDs[1])[0];
@@ -405,6 +414,7 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
         this.getRealCoordinates(edge._latlngs[1].lng, this.mapOriginX),
         this.getRealCoordinates(edge._latlngs[1].lat, this.mapOriginY),
         marker2.poiID,
+        marker2.nodeID,
         marker2.type
       );
       let graphEdge = new Edge(vertexA, vertexB, edge.biDirected, edge.narrow, edge.isActive);
@@ -448,12 +458,27 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
       const vertPosA = L.latLng([this.getMapCoordinates(edge.vertexA.posY, this.mapOriginY), this.getMapCoordinates(edge.vertexA.posX, this.mapOriginX)]);
       const vertPosB = L.latLng([this.getMapCoordinates(edge.vertexB.posY, this.mapOriginY), this.getMapCoordinates(edge.vertexB.posX, this.mapOriginX)]);
       if (!existingWaypoints.includes(vertPosA + '')) {//toString in order to not mind about reference
-        marker1 = this.createNewMarker(vertPosA, edge.vertexA.poiID, edge.vertexA.type);
+        var nodeID = edge.vertexA.nodeID;
+        if (!nodeID){
+          var d = new Date();
+          nodeID = d.getTime();
+          if (nodeID <= this.lastNodeID) nodeID = this.lastNodeID + 1;
+          this.lastNodeID = nodeID;
+        }
+        marker1 = this.createNewMarker(vertPosA, edge.vertexA.poiID, nodeID, edge.vertexA.type);
         markers.push(marker1);
         existingWaypoints.push(vertPosA + '');
       }
       if (!existingWaypoints.includes(vertPosB + '')) {
-        marker2 = this.createNewMarker(vertPosB, edge.vertexB.poiID, edge.vertexB.type);
+        var nodeID = edge.vertexB.nodeID;
+        if (!nodeID){
+          var d = new Date();
+          nodeID = d.getTime();
+          if (nodeID <= this.lastNodeID) nodeID = this.lastNodeID + 1;
+          this.lastNodeID = nodeID;
+          
+        }
+        marker2 = this.createNewMarker(vertPosB, edge.vertexB.poiID, nodeID, edge.vertexB.type);
         markers.push(marker2);
         existingWaypoints.push(vertPosB + '');
       }
@@ -528,7 +553,12 @@ export class GraphcreatorComponent implements OnInit, OnDestroy {
       ]
     });
     marker.poiID = standData.id;
-    marker.type = 0;
+    marker.type = standData.standType.type;
+    var d = new Date();
+    var nodeID = d.getTime()
+    if (nodeID <= this.lastNodeID) nodeID = this.lastNodeID + 1;
+    this.lastNodeID = nodeID;
+    marker.nodeID = nodeID;
     marker.dummy = 0;
     marker.on('click', e => {
       this.createEdge(e)

@@ -21,9 +21,11 @@ import {
 import {ParkingType} from "../../../model/type/ParkingType";
 import {StandType} from "../../../model/type/StandType";
 import {StandStatus} from "../../../model/type/StandStatus";
+import {Kiosk} from "../../../model/Kiosk/Kiosk";
 import {ParkingTypeService} from "../../../services/type/parking-type.service";
 import {StandTypeService} from "../../../services/type/stand-type.service";
 import {StandStatusService} from "../../../services/type/stand-status.service";
+import {KioskService} from "../../../services/kiosk.service";
 import {ToastrService} from "ngx-toastr";
 
 import 'leaflet-path-transform';
@@ -76,6 +78,7 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   private parkingTypes: ParkingType[];
   private standTypes: StandType[];
   private standStatuses: StandStatus[];
+  private kiosks: Kiosk[];
   private paths: MovementPath[];
   private polygons: CustomPolygon[];
 
@@ -85,7 +88,8 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
               private parkingTypeService: ParkingTypeService,
               private standTypeService: StandTypeService,
               private standStatusService: StandStatusService,
-              private store: StoreService,
+              private kiosksService: KioskService,
+              private storeService: StoreService,
               private toast: ToastrService,
               private pathService: MovementPathService,
               private polygonService: PolygonService) {
@@ -96,7 +100,12 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
     this.parkingTypeService.getAll().subscribe(data => this.parkingTypes = data);
     this.pathService.getMovementPaths().subscribe(data => this.paths = data);
     this.standTypeService.getAll().subscribe(data => this.standTypes = data);
-    this.standStatusService.getAll().subscribe(data => this.standStatuses = data);
+    // this.standStatusService.getAll().subscribe(data => this.standStatuses = data);
+    this.kiosksService.getAll().subscribe(
+      data => {
+        this.kiosks = data;
+        this.kiosks.unshift(new Kiosk("Brak"));
+      });
     this.subscription = fromEvent(window, 'resize').subscribe(() => this.onResize());
     this.polygonService.getPolygons().subscribe(data => this.polygons = data);
   }
@@ -113,14 +122,14 @@ export class StandCreatorComponent implements OnInit, OnDestroy {
   private loadMap() {
     this.settingsService.getCurrentMap().subscribe(
       mapData => {
-        this.mapId = mapData.currentMapId;
+        this.mapId = mapData.mapId;
+        this.storeService.mapID = this.mapId;
         this.mapResolution = mapData.mapResolutionX;
         this.mapOriginX = mapData.mapOriginX;
         this.mapOriginY = mapData.mapOriginY;
         this.mapService.getMap(this.mapId).subscribe(
           data => {
             this.afterMapLoaded(data);
-            localStorage.setItem(this.store.mapID, data)
           }
         );
       }

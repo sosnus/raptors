@@ -17,4 +17,6 @@ public interface TaskTemplateRepository extends MongoRepository<TaskTemplate, St
     List<TaskTemplate> findAllByKioskId(String kioskId);
 
     List<TaskTemplate> findAllByPriority(TaskPriority priority);
+
+    List<TaskTemplate> findAllByMapId(String mapId);
 }

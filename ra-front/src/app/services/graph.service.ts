@@ -48,4 +48,9 @@ export class GraphService {
     };
     return this.http.delete(this.graphURL + 'delete/' + id, httpOptions);
   }
+
+  public getAllByMapId(mapId: string): Observable<Graph[]> {
+    const headers = {'Authorization': 'Basic ' + sessionStorage.getItem('token')};
+    return this.http.get<Graph[]>(this.graphURL + "map-id/" + mapId, {headers: headers, responseType: 'json'})
+  }
 }

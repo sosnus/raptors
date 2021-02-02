@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {StoreService} from './store.service';
 import {InstanceInfo} from '../model/Settings/InstanceInfo';
-import {CurrentMap} from '../model/Settings/CurrentMap';
+import {MapInfo} from '../model/Settings/MapInfo';
 import {ContactInfo} from '../model/Settings/ContactInfo';
 import {ContactInfos} from '../model/Settings/ContactInfos';
 
@@ -25,7 +25,7 @@ export class SettingsService {
 
   getCurrentMap() {
     const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<CurrentMap>(this.url + 'getCurrentMap');
+    return this.http.get<MapInfo>(this.url + 'getCurrentMap');
   }
 
   getContactInfo() {
@@ -40,7 +40,7 @@ export class SettingsService {
 
   updateCurrentMap(mapId) {
     const headers = {Authorization: 'Basic ' + sessionStorage.getItem('token')};
-    return this.http.get<CurrentMap>(this.url + 'updateCurrentMap/' + mapId, {headers: headers, responseType: 'json'});
+    return this.http.get<MapInfo>(this.url + 'updateCurrentMap/' + mapId, {headers: headers, responseType: 'json'});
   }
 
   updateContactInfo(noweInformacje) {

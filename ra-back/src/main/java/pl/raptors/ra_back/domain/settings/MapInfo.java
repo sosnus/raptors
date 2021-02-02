@@ -8,11 +8,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Data
 @Document(collection = "currentMap")
-public class CurrentMap {
+public class MapInfo {
 
     @Id
     private String Id = "default";
-    private String CurrentMapId;
+    private String mapId;
     private Double mapResolutionX;
     private Double mapResolutionY;
     private Integer imageResolutionX;
@@ -20,10 +20,10 @@ public class CurrentMap {
     private Double mapOriginX;
     private Double mapOriginY;
 
-    public CurrentMap(String CurrentMapId, Double mapResolutionX, Double mapResolutionY,
+    public MapInfo(String mapId, Double mapResolutionX, Double mapResolutionY,
                       Integer imageResolutionX,  Integer imageResolutionY,
                       Double mapOriginX, Double mapOriginY) {
-        this.CurrentMapId = CurrentMapId;
+        this.mapId = mapId;
         this.mapResolutionX = mapResolutionX;
         this.mapResolutionY = mapResolutionY;
         this.imageResolutionX = imageResolutionX;

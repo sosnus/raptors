@@ -1,5 +1,5 @@
-export class CurrentMap {
-  currentMapId;
+export class MapInfo {
+  mapId;
   mapResolutionX: number;
   mapResolutionY: number;
   imageResolutionX: number;
@@ -8,8 +8,8 @@ export class CurrentMap {
   mapOriginY: number;
 
 
-  constructor(CurrentMapId, mapResolutionX: number, mapResolutionY: number, imageResolutionX: number, imageResolutionY: number, mapOriginX: number, mapOriginY: number) {
-    this.currentMapId = CurrentMapId;
+  constructor(mapId, mapResolutionX: number, mapResolutionY: number, imageResolutionX: number, imageResolutionY: number, mapOriginX: number, mapOriginY: number) {
+    this.mapId = mapId;
     this.mapResolutionX = mapResolutionX;
     this.mapResolutionY = mapResolutionY;
     this.imageResolutionX = imageResolutionX;

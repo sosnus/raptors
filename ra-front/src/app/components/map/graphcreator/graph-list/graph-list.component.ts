@@ -31,7 +31,7 @@ export class GraphListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.graphService.getAll().subscribe(
+    this.graphService.getAllByMapId(this.store.mapID).subscribe(
       graphs => this.graphs = graphs,
       error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     )
@@ -39,7 +39,7 @@ export class GraphListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: { [property: string]: SimpleChange }) {
     // Extract changes to the input property by its name
-    this.graphService.getAll().subscribe(
+    this.graphService.getAllByMapId(this.store.mapID).subscribe(
       graphs => this.graphs = graphs,
       error => this.toast.error("Błąd podczas pobierania danych: " + error.message)
     )
